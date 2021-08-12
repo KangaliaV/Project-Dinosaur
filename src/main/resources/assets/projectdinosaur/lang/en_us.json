@@ -1,3 +1,10 @@
 {
-  "item.projectdinosaur.iron_chisel": "Iron Chisel"
+  "itemGroup.dino_blocks": "Project Dinosaur: Blocks",
+  "itemGroup.dino_items": "Project Dinosaur: Items",
+
+
+  "item.projectdinosaur.iron_chisel": "Iron Chisel",
+
+  "block.projectdinosaur.petrified_log": "Petrified Log",
+  "block.projectdinosaur.petrified_planks": "Petrified Planks"
 }
