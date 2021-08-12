@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "projectdinosaur:petrified_planks"
+    ]
+  },
+  "criteria": {
+    "petrified_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:petrified_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "projectdinosaur:petrified_planks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "petrified_log",
+      "has_the_recipe"
+    ]
+  ]
+}

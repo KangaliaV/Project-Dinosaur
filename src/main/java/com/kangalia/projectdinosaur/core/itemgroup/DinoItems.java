@@ -1,6 +1,5 @@
 package com.kangalia.projectdinosaur.core.itemgroup;
 
-import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
