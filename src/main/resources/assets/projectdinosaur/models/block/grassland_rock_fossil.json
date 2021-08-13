@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "projectdinosaur:blocks/grassland_rock_fossil"
+  }
+}
