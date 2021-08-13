@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur;
 
 import com.kangalia.projectdinosaur.core.init.BlockInit;
+import com.kangalia.projectdinosaur.core.init.FeatureInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import net.minecraft.block.Block;
@@ -10,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -42,6 +44,7 @@ public class ProjectDinosaur {
         ItemInit.ITEMS.register(bus);
         BlockInit.BLOCKS.register(bus);
 
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, FeatureInit::addOres);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
