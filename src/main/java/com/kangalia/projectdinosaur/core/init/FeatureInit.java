@@ -1,5 +1,6 @@
 package com.kangalia.projectdinosaur.core.init;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
@@ -15,6 +16,8 @@ public class FeatureInit {
 
     public static void addOres(final BiomeLoadingEvent event) {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
+        addOre(event, OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockInit.PETRIFIED_LOG.get().defaultBlockState(), 16, 4, 60, 10);
+
         if (event.getCategory().equals(Biome.Category.EXTREME_HILLS)) {
             addOre(event, OreFeatureConfig.FillerBlockType.NATURAL_STONE, BlockInit.ALPINE_ROCK_FOSSIL.get().defaultBlockState(), 5, 17, 60, 20);
         }
