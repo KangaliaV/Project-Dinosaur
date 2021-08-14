@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:petrified_log"
+    }
+  },
+  "result": {
+    "item": "minecraft:petrified_wood",
+    "count": 3
+  }
+}

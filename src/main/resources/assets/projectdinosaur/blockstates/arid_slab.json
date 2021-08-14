@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "minecraft:block/arid_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/arid_planks"
+    },
+    "type=top": {
+      "model": "minecraft:block/arid_slab_top"
+    }
+  }
+}

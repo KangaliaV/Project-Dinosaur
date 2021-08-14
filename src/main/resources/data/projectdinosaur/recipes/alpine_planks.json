@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "projectdinosaur:alpine_log"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:alpine_planks",
+    "count": 4
+  }
+}

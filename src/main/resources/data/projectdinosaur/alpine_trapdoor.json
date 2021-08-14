@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_trapdoor",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:alpine_planks"
+    }
+  },
+  "result": {
+    "item": "minecraft:alpine_trapdoor",
+    "count": 2
+  }
+}

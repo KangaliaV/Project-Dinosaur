@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "minecraft:block/blank_log_top",
+    "side": "minecraft:block/blank_log"
+  }
+}

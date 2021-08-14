@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "projectdinosaur:blocks/stripped_aquatic_log",
+    "end": "projectdinosaur:blocks/stripped_aquatic_log_top"
+  }
+}

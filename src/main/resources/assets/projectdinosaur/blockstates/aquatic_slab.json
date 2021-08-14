@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "minecraft:block/aquatic_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/aquatic_planks"
+    },
+    "type=top": {
+      "model": "minecraft:block/aquatic_slab_top"
+    }
+  }
+}

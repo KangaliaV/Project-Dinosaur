@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "projectdinosaur:blocks/alpine_log",
+    "end": "projectdinosaur:blocks/alpine_log_top"
+  }
+}

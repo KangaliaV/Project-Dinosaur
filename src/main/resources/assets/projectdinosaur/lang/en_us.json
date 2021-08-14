@@ -1,19 +1,48 @@
 {
   "itemGroup.dino_blocks": "Project Dinosaur: Blocks",
-  "itemGroup.dino_items": "Project Dinosaur: Items",
-
-
-  "item.projectdinosaur.iron_chisel": "Iron Chisel",
 
   "block.projectdinosaur.petrified_log": "Petrified Log",
   "block.projectdinosaur.petrified_planks": "Petrified Planks",
+  "block.projectdinosaur.stripped_petrified_log": "Stripped_petrified Log",
+  "block.projectdinosaur.stripped_petrified_planks": "Stripped_petrified Planks",
+
+  "block.projectdinosaur.alpine_log": "Alpine Log",
+  "block.projectdinosaur.alpine_planks": "Alpine Planks",
+  "block.projectdinosaur.stripped_alpine_log": "Stripped_alpine Log",
+  "block.projectdinosaur.stripped_alpine_planks": "Stripped_alpine Planks",
+
+  "block.projectdinosaur.aquatic_log": "Aquatic Log",
+  "block.projectdinosaur.aquatic_planks": "Aquatic Planks",
+  "block.projectdinosaur.stripped_aquatic_log": "Stripped_aquatic Log",
+  "block.projectdinosaur.stripped_aquatic_planks": "Stripped_aquatic Planks",
+
+  "block.projectdinosaur.arid_log": "Arid Log",
+  "block.projectdinosaur.arid_planks": "Arid Planks",
+  "block.projectdinosaur.stripped_arid_log": "Stripped_arid Log",
+  "block.projectdinosaur.stripped_arid_planks": "Stripped_arid Planks",
 
   "block.projectdinosaur.alpine_rock_fossil": "Alpine Rock Fossil",
   "block.projectdinosaur.aquatic_rock_fossil": "Aquatic Rock Fossil",
   "block.projectdinosaur.arid_rock_fossil": "Arid Rock Fossil",
-  "block.projectdinosaur.temperate_rock_fossil": "Temperate Rock Fossil",
   "block.projectdinosaur.frozen_rock_fossil": "Frozen Rock Fossil",
   "block.projectdinosaur.grassland_rock_fossil": "Grassland Rock Fossil",
+  "block.projectdinosaur.temperate_rock_fossil": "Temperate Rock Fossil",
   "block.projectdinosaur.tropical_rock_fossil": "Tropical Rock Fossil",
-  "block.projectdinosaur.wetland_rock_fossil": "Wetland Rock Fossil"
+  "block.projectdinosaur.wetland_rock_fossil": "Wetland Rock Fossil",
+
+  "block.projectdinosaur.encased_alpine_rock_fossil": "Encased Alpine Rock Fossil",
+  "block.projectdinosaur.encased_aquatic_rock_fossil": "Encased Aquatic Rock Fossil",
+  "block.projectdinosaur.encased_arid_rock_fossil": "Encased Arid Rock Fossil",
+  "block.projectdinosaur.encased_frozen_rock_fossil": "Encased Frozen Rock Fossil",
+  "block.projectdinosaur.encased_grassland_rock_fossil": "Encased Grassland Rock Fossil",
+  "block.projectdinosaur.encased_temperate_rock_fossil": "Encased Temperate Rock Fossil",
+  "block.projectdinosaur.encased_tropical_rock_fossil": "Encased Tropical Rock Fossil",
+  "block.projectdinosaur.encased_wetland_rock_fossil": "Encased Wetland Rock Fossil",
+
+
+  "itemGroup.dino_items": "Project Dinosaur: Items",
+
+  "item.projectdinosaur.iron_chisel": "Iron Chisel",
+  "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
+  "item.projectdinosaur.netherite_chisel": "Netherite Chisel"
 }
