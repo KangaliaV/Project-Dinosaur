@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "side": "projectdinosaur:blocks/aquatic_log",
-    "end": "projectdinosaur:blocks/aquatic_log_top"
+    "end": "minecraft:block/aquatic_log_top",
+    "side": "minecraft:block/aquatic_log"
   }
 }

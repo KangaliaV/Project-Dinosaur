@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "projectdinosaur:block/alpine_planks"
+      "model": "minecraft:block/alpine_planks"
     }
   }
 }

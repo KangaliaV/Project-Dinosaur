@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "projectdinosaur:block/aquatic_planks"
+      "model": "minecraft:block/aquatic_planks"
     }
   }
 }

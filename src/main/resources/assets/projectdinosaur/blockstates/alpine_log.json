@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "projectdinosaur:block/alpine_log_horizontal",
+      "model": "minecraft:block/alpine_log_horizontal",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "projectdinosaur:block/alpine_log"
+      "model": "minecraft:block/alpine_log"
     },
     "axis=z": {
-      "model": "projectdinosaur:block/alpine_log_horizontal",
+      "model": "minecraft:block/alpine_log_horizontal",
       "x": 90
     }
   }

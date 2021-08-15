@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "side": "projectdinosaur:blocks/arid_log",
-    "end": "projectdinosaur:blocks/arid_log_top"
+    "end": "minecraft:block/arid_log_top",
+    "side": "minecraft:block/arid_log"
   }
 }

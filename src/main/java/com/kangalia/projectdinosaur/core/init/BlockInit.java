@@ -70,13 +70,7 @@ public class BlockInit {
 
     //Rock Fossil Ores
     //Need JSON files for all of these yet. Nothing has been done with them except this registration.
-    public static final RegistryObject<Block> TROPICAL_ROCK_FOSSIL = BLOCKS.register("tropical_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-            .harvestTool(ToolType.PICKAXE)
-            .harvestLevel(2)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ARID_ROCK_FOSSIL = BLOCKS.register("arid_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = BLOCKS.register("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)
@@ -88,7 +82,7 @@ public class BlockInit {
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> TEMPERATE_ROCK_FOSSIL = BLOCKS.register("temperate_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ARID_ROCK_FOSSIL = BLOCKS.register("arid_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)
@@ -100,7 +94,19 @@ public class BlockInit {
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = BLOCKS.register("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> GRASSLAND_ROCK_FOSSIL = BLOCKS.register("grassland_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .harvestTool(ToolType.PICKAXE)
+            .harvestLevel(2)
+            .strength(3.0f, 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> TEMPERATE_ROCK_FOSSIL = BLOCKS.register("temperate_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .harvestTool(ToolType.PICKAXE)
+            .harvestLevel(2)
+            .strength(3.0f, 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> TROPICAL_ROCK_FOSSIL = BLOCKS.register("tropical_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)
@@ -112,22 +118,10 @@ public class BlockInit {
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> GRASSLAND_ROCK_FOSSIL = BLOCKS.register("grassland_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-            .harvestTool(ToolType.PICKAXE)
-            .harvestLevel(2)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
 
     //Encased Rock Fossil Ores
     //Need JSON files for all of these yet. Nothing has been done with them except this registration.
-    public static final RegistryObject<Block> ENCASED_TROPICAL_ROCK_FOSSIL = BLOCKS.register("encased_tropical_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-            .harvestTool(ToolType.PICKAXE)
-            .harvestLevel(2)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_ARID_ROCK_FOSSIL = BLOCKS.register("encased_arid_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ENCASED_ALPINE_ROCK_FOSSIL = BLOCKS.register("encased_alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)
@@ -139,7 +133,7 @@ public class BlockInit {
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_TEMPERATE_ROCK_FOSSIL = BLOCKS.register("encased_temperate_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ENCASED_ARID_ROCK_FOSSIL = BLOCKS.register("encased_arid_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)
@@ -151,19 +145,25 @@ public class BlockInit {
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_ALPINE_ROCK_FOSSIL = BLOCKS.register("encased_alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ENCASED_GRASSLAND_ROCK_FOSSIL = BLOCKS.register("encased_grassland_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .harvestTool(ToolType.PICKAXE)
+            .harvestLevel(2)
+            .strength(3.0f, 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ENCASED_TEMPERATE_ROCK_FOSSIL = BLOCKS.register("encased_temperate_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .harvestTool(ToolType.PICKAXE)
+            .harvestLevel(2)
+            .strength(3.0f, 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ENCASED_TROPICAL_ROCK_FOSSIL = BLOCKS.register("encased_tropical_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> ENCASED_WETLAND_ROCK_FOSSIL = BLOCKS.register("encased_wetland_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
-            .harvestTool(ToolType.PICKAXE)
-            .harvestLevel(2)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_GRASSLAND_ROCK_FOSSIL = BLOCKS.register("encased_grassland_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
             .strength(3.0f, 3.0f)

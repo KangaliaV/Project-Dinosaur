@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "projectdinosaur:block/petrified_planks"
+      "model": "minecraft:block/petrified_planks"
     }
   }
 }

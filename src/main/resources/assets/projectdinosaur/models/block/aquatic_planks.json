@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/aquatic_planks"
+    "all": "minecraft:block/petrified_planks"
   }
 }

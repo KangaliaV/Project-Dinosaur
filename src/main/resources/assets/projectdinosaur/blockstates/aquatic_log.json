@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "projectdinosaur:block/aquatic_log_horizontal",
+      "model": "minecraft:block/aquatic_log_horizontal",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "projectdinosaur:block/aquatic_log"
+      "model": "minecraft:block/aquatic_log"
     },
     "axis=z": {
-      "model": "projectdinosaur:block/aquatic_log_horizontal",
+      "model": "minecraft:block/aquatic_log_horizontal",
       "x": 90
     }
   }

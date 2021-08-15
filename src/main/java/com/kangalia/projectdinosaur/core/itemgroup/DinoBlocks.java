@@ -15,6 +15,6 @@ public class DinoBlocks extends ItemGroup {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(BlockInit.PETRIFIED_LOG.get());
+        return new ItemStack(BlockInit.PETRIFIED_PLANKS.get());
     }
 }
