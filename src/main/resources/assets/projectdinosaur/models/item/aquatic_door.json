@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/aquatic_door"
+    "layer0": "projectdinosaur:item/aquatic_door"
   }
 }

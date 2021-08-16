@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:block/slab_top",
+  "parent": "block/slab_top",
   "textures": {
-    "bottom": "minecraft:block/petrified_planks",
-    "top": "minecraft:block/petrified_planks",
-    "side": "minecraft:block/petrified_planks"
+    "bottom": "projectdinosaur:blocks/temperate_planks",
+    "top": "projectdinosaur:blocks/temperate_planks",
+    "side": "projectdinosaur:blocks/temperate_planks"
   }
 }

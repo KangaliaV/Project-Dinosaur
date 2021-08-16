@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/grassland_sign"
+      "model": "projectdinosaur:block/grassland_sign"
     }
   }
 }

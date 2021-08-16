@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/petrified_sign"
+      "model": "projectdinosaur:block/petrified_sign"
     }
   }
 }

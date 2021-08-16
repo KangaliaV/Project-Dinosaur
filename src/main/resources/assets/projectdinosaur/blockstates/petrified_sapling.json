@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/petrified_sapling"
+      "model": "projectdinosaur:block/petrified_sapling"
     }
   }
 }

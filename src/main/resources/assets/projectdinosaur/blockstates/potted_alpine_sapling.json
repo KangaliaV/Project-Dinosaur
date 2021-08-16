@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/potted_alpine_sapling"
+      "model": "projectdinosaur:block/potted_alpine_sapling"
     }
   }
 }

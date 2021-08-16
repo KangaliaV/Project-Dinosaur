@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "minecraft:block/arid_slab"
+      "model": "projectdinosaur:block/arid_slab"
     },
     "type=double": {
-      "model": "minecraft:block/arid_planks"
+      "model": "projectdinosaur:block/arid_planks"
     },
     "type=top": {
-      "model": "minecraft:block/arid_slab_top"
+      "model": "projectdinosaur:block/arid_slab_top"
     }
   }
 }

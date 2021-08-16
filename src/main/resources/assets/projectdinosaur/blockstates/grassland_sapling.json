@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/grassland_sapling"
+      "model": "projectdinosaur:block/grassland_sapling"
     }
   }
 }

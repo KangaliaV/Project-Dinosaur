@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "minecraft:block/tropical_log_horizontal",
+      "model": "projectdinosaur:block/tropical_log_horizontal",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "minecraft:block/tropical_log"
+      "model": "projectdinosaur:block/tropical_log"
     },
     "axis=z": {
-      "model": "minecraft:block/tropical_log_horizontal",
+      "model": "projectdinosaur:block/tropical_log_horizontal",
       "x": 90
     }
   }

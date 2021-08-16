@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/door_top",
+  "parent": "block/door_top",
   "textures": {
-    "top": "minecraft:block/arid_door_top",
-    "bottom": "minecraft:block/arid_door_bottom"
+    "top": "projectdinosaur:block/arid_door_top",
+    "bottom": "projectdinosaur:block/arid_door_bottom"
   }
 }

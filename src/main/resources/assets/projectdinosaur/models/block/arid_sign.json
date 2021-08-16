@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "minecraft:block/petrified_planks"
+    "particle": "projectdinosaur:block/petrified_planks"
   }
 }

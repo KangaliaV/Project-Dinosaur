@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:block/grassland_sapling"
+    "layer0": "projectdinosaur:block/grassland_sapling"
   }
 }

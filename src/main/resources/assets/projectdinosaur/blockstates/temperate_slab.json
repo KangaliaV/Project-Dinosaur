@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "minecraft:block/temperate_slab"
+      "model": "projectdinosaur:block/temperate_slab"
     },
     "type=double": {
-      "model": "minecraft:block/temperate_planks"
+      "model": "projectdinosaur:block/temperate_planks"
     },
     "type=top": {
-      "model": "minecraft:block/temperate_slab_top"
+      "model": "projectdinosaur:block/temperate_slab_top"
     }
   }
 }

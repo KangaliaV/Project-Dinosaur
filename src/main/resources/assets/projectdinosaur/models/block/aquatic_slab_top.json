@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:block/slab_top",
+  "parent": "block/slab_top",
   "textures": {
-    "bottom": "minecraft:block/aquatic_planks",
-    "top": "minecraft:block/aquatic_planks",
-    "side": "minecraft:block/aquatic_planks"
+    "bottom": "projectdinosaur:blocks/aquatic_planks",
+    "top": "projectdinosaur:blocks/aquatic_planks",
+    "side": "projectdinosaur:blocks/aquatic_planks"
   }
 }

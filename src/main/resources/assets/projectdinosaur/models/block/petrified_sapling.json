@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "block/cross",
   "textures": {
-    "cross": "minecraft:block/petrified_sapling"
+    "cross": "projectdinosaur:block/petrified_sapling"
   }
 }

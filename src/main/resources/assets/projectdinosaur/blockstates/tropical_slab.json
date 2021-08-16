@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "minecraft:block/tropical_slab"
+      "model": "projectdinosaur:block/tropical_slab"
     },
     "type=double": {
-      "model": "minecraft:block/tropical_planks"
+      "model": "projectdinosaur:block/tropical_planks"
     },
     "type=top": {
-      "model": "minecraft:block/tropical_slab_top"
+      "model": "projectdinosaur:block/tropical_slab_top"
     }
   }
 }

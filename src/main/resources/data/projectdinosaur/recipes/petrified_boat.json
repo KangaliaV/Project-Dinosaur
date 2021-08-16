@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "boat",
+  "pattern": [
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:petrified_planks"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:petrified_boat"
+  }
+}

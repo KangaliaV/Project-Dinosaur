@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "block/cube_column",
   "textures": {
-    "end": "minecraft:block/stripped_frozen_log_top",
-    "side": "minecraft:block/stripped_frozen_log"
+    "end": "projectdinosaur:blocks/stripped_frozen_log_top",
+    "side": "projectdinosaur:blocks/stripped_frozen_log"
   }
 }

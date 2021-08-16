@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/frozen_planks"
+      "model": "projectdinosaur:block/frozen_planks"
     }
   }
 }

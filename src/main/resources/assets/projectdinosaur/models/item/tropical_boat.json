@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/tropical_boat"
+    "layer0": "projectdinosaur:item/tropical_boat"
   }
 }

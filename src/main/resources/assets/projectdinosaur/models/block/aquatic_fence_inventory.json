@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/fence_inventory",
+  "parent": "block/fence_inventory",
   "textures": {
-    "texture": "minecraft:block/petrified_planks"
+    "texture": "projectdinosaur:block/petrified_planks"
   }
 }

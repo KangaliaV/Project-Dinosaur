@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/button_inventory",
+  "parent": "block/button_inventory",
   "textures": {
-    "texture": "minecraft:block/frozen_planks"
+    "texture": "projectdinosaur:block/frozen_planks"
   }
 }

@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "minecraft:block/wetland_slab"
+      "model": "projectdinosaur:block/wetland_slab"
     },
     "type=double": {
-      "model": "minecraft:block/wetland_planks"
+      "model": "projectdinosaur:block/wetland_planks"
     },
     "type=top": {
-      "model": "minecraft:block/wetland_slab_top"
+      "model": "projectdinosaur:block/wetland_slab_top"
     }
   }
 }

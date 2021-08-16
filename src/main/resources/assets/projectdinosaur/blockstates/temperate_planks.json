@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/temperate_planks"
+      "model": "projectdinosaur:block/temperate_planks"
     }
   }
 }

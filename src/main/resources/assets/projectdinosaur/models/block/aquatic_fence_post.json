@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/fence_post",
+  "parent": "block/fence_post",
   "textures": {
-    "texture": "minecraft:block/aquatic_planks"
+    "texture": "projectdinosaur:block/aquatic_planks"
   }
 }

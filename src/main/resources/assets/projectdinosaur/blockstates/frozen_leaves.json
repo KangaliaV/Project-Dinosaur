@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/frozen_leaves"
+      "model": "projectdinosaur:block/frozen_leaves"
     }
   }
 }

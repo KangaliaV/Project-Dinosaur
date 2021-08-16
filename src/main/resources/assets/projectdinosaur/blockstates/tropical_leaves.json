@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/tropical_leaves"
+      "model": "projectdinosaur:block/tropical_leaves"
     }
   }
 }

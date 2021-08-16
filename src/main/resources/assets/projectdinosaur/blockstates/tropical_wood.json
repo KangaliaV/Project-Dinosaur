@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "minecraft:block/tropical_wood",
+      "model": "projectdinosaur:block/tropical_wood",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "minecraft:block/tropical_wood"
+      "model": "projectdinosaur:block/tropical_wood"
     },
     "axis=z": {
-      "model": "minecraft:block/tropical_wood",
+      "model": "projectdinosaur:block/tropical_wood",
       "x": 90
     }
   }

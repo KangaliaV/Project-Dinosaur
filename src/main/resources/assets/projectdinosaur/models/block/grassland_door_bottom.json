@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/door_bottom",
+  "parent": "block/door_bottom",
   "textures": {
-    "top": "minecraft:block/grassland_door_top",
-    "bottom": "minecraft:block/grassland_door_bottom"
+    "top": "projectdinosaur:block/grassland_door_top",
+    "bottom": "projectdinosaur:block/grassland_door_bottom"
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/alpine_sign"
+      "model": "projectdinosaur:block/alpine_sign"
     }
   }
 }

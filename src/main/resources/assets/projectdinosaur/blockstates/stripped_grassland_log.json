@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "minecraft:block/stripped_grassland_log_horizontal",
+      "model": "projectdinosaur:block/stripped_grassland_log_horizontal",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "minecraft:block/stripped_grassland_log"
+      "model": "projectdinosaur:block/stripped_grassland_log"
     },
     "axis=z": {
-      "model": "minecraft:block/stripped_grassland_log_horizontal",
+      "model": "projectdinosaur:block/stripped_grassland_log_horizontal",
       "x": 90
     }
   }

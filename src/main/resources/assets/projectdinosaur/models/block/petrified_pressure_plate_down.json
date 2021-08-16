@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/pressure_plate_down",
+  "parent": "block/pressure_plate_down",
   "textures": {
-    "texture": "minecraft:block/petrified_planks"
+    "texture": "projectdinosaur:block/petrified_planks"
   }
 }

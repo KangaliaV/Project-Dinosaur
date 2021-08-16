@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/leaves",
+  "parent": "block/leaves",
   "textures": {
-    "all": "minecraft:block/aquatic_leaves"
+    "all": "projectdinosaur:block/aquatic_leaves"
   }
 }

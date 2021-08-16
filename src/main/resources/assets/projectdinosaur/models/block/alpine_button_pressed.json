@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/button_pressed",
+  "parent": "block/button_pressed",
   "textures": {
-    "texture": "minecraft:block/alpine_planks"
+    "texture": "projectdinosaur:block/alpine_planks"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "projectdinosaur:petrified_log"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:petrified_planks",
+    "count": 4
+  }
+}

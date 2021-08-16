@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "block/cube_column",
   "textures": {
-    "end": "minecraft:block/stripped_petrified_log",
-    "side": "minecraft:block/stripped_petrified_log"
+    "end": "projectdinosaur:block/stripped_petrified_log",
+    "side": "projectdinosaur:block/stripped_petrified_log"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "boat",
+  "pattern": [
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:arid_planks"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:arid_boat"
+  }
+}

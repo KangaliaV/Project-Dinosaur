@@ -1,10 +1,10 @@
 {
   "variants": {
     "powered=false": {
-      "model": "minecraft:block/aquatic_pressure_plate"
+      "model": "projectdinosaur:block/aquatic_pressure_plate"
     },
     "powered=true": {
-      "model": "minecraft:block/aquatic_pressure_plate_down"
+      "model": "projectdinosaur:block/aquatic_pressure_plate_down"
     }
   }
 }

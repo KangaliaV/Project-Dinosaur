@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/leaves",
+  "parent": "block/leaves",
   "textures": {
-    "all": "minecraft:block/grassland_leaves"
+    "all": "projectdinosaur:block/grassland_leaves"
   }
 }

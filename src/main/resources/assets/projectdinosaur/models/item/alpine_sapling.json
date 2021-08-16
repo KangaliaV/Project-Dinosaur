@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:block/alpine_sapling"
+    "layer0": "projectdinosaur:block/alpine_sapling"
   }
 }

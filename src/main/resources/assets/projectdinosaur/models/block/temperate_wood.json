@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "block/cube_column",
   "textures": {
-    "end": "minecraft:block/temperate_log",
-    "side": "minecraft:block/temperate_log"
+    "end": "projectdinosaur:block/temperate_log",
+    "side": "projectdinosaur:block/temperate_log"
   }
 }

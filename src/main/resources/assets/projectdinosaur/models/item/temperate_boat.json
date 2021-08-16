@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/temperate_boat"
+    "layer0": "projectdinosaur:item/temperate_boat"
   }
 }

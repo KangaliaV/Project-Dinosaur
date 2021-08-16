@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "minecraft:block/petrified_slab"
+      "model": "projectdinosaur:block/petrified_slab"
     },
     "type=double": {
-      "model": "minecraft:block/petrified_planks"
+      "model": "projectdinosaur:block/petrified_planks"
     },
     "type=top": {
-      "model": "minecraft:block/petrified_slab_top"
+      "model": "projectdinosaur:block/petrified_slab_top"
     }
   }
 }

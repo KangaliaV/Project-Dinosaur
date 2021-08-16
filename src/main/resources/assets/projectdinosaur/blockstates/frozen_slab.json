@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "minecraft:block/frozen_slab"
+      "model": "projectdinosaur:block/frozen_slab"
     },
     "type=double": {
-      "model": "minecraft:block/frozen_planks"
+      "model": "projectdinosaur:block/frozen_planks"
     },
     "type=top": {
-      "model": "minecraft:block/frozen_slab_top"
+      "model": "projectdinosaur:block/frozen_slab_top"
     }
   }
 }

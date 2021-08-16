@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/template_orientable_trapdoor_top",
+  "parent": "block/template_orientable_trapdoor_top",
   "textures": {
-    "texture": "minecraft:block/frozen_trapdoor"
+    "texture": "projectdinosaur:block/frozen_trapdoor"
   }
 }

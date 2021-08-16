@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:block/stairs",
+  "parent": "block/stairs",
   "textures": {
-    "bottom": "minecraft:block/aquatic_planks",
-    "top": "minecraft:block/aquatic_planks",
-    "side": "minecraft:block/aquatic_planks"
+    "bottom": "projectdinosaur:block/aquatic_planks",
+    "top": "projectdinosaur:block/aquatic_planks",
+    "side": "projectdinosaur:block/aquatic_planks"
   }
 }

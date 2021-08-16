@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/pressure_plate_up",
+  "parent": "block/pressure_plate_up",
   "textures": {
-    "texture": "minecraft:block/arid_planks"
+    "texture": "projectdinosaur:block/arid_planks"
   }
 }

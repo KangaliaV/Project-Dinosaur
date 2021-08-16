@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/flower_pot_cross",
+  "parent": "block/flower_pot_cross",
   "textures": {
-    "plant": "minecraft:block/petrified_sapling"
+    "plant": "projectdinosaur:block/petrified_sapling"
   }
 }

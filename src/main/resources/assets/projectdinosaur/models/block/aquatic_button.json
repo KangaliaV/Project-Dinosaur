@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/button",
+  "parent": "block/button",
   "textures": {
-    "texture": "minecraft:block/aquatic_planks"
+    "texture": "projectdinosaur:block/aquatic_planks"
   }
 }

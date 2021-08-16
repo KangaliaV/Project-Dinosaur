@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:block/slab_top",
+  "parent": "block/slab_top",
   "textures": {
-    "bottom": "minecraft:block/frozen_planks",
-    "top": "minecraft:block/frozen_planks",
-    "side": "minecraft:block/frozen_planks"
+    "bottom": "projectdinosaur:blocks/frozen_planks",
+    "top": "projectdinosaur:blocks/frozen_planks",
+    "side": "projectdinosaur:blocks/frozen_planks"
   }
 }

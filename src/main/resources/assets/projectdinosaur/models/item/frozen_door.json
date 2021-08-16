@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/frozen_door"
+    "layer0": "projectdinosaur:item/frozen_door"
   }
 }
