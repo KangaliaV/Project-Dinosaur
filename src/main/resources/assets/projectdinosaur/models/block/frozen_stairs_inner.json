@@ -1,0 +1,8 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "projectdinosaur:block/frozen_planks",
+    "top": "projectdinosaur:block/frozen_planks",
+    "side": "projectdinosaur:block/frozen_planks"
+  }
+}

@@ -2,13 +2,17 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "petrified_planks",
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "projectdinosaur:petrified_planks"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

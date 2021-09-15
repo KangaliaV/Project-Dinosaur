@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column_horizontal",
+  "textures": {
+    "end": "projectdinosaur:blocks/aquatic_log_top",
+    "side": "projectdinosaur:blocks/aquatic_log"
+  }
+}

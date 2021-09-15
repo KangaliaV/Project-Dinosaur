@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "projectdinosaur:aquatic_log"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:aquatic_planks",
+    "count": 4
+  }
+}

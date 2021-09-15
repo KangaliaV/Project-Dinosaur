@@ -1,0 +1,7 @@
+{
+  "parent": "block/door_bottom_rh",
+  "textures": {
+    "top": "projectdinosaur:block/frozen_door_top",
+    "bottom": "projectdinosaur:block/frozen_door_bottom"
+  }
+}

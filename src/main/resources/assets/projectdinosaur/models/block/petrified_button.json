@@ -1,0 +1,6 @@
+{
+  "parent": "block/button",
+  "textures": {
+    "texture": "projectdinosaur:block/petrified_planks"
+  }
+}
