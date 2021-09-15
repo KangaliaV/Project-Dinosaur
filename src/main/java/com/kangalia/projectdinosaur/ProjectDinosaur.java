@@ -1,8 +1,6 @@
 package com.kangalia.projectdinosaur;
 
-import com.kangalia.projectdinosaur.core.init.BlockInit;
-import com.kangalia.projectdinosaur.core.init.FeatureInit;
-import com.kangalia.projectdinosaur.core.init.ItemInit;
+import com.kangalia.projectdinosaur.core.init.*;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -29,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 import java.rmi.registry.Registry;
 import java.util.stream.Collectors;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(ProjectDinosaur.MODID)
 @Mod.EventBusSubscriber(modid = ProjectDinosaur.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ProjectDinosaur {
@@ -43,6 +40,8 @@ public class ProjectDinosaur {
 
         ItemInit.ITEMS.register(bus);
         BlockInit.BLOCKS.register(bus);
+        TileEntityTypesInit.TILE_ENTITY_TYPE.register(bus);
+        ContainerTypesInit.CONTAINER_TYPE.register(bus);
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, FeatureInit::addOres);
         MinecraftForge.EVENT_BUS.register(this);

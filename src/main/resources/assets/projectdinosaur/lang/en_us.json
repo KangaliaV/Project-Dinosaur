@@ -2,10 +2,12 @@
   "itemGroup.dino_blocks": "Project Dinosaur: Blocks",
   "itemGroup.dino_items": "Project Dinosaur: Items",
 
-
   "item.projectdinosaur.iron_chisel": "Iron Chisel",
+  "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
+  "item.projectdinosaur.netherite_chisel": "Netherite Chisel",
 
   "block.projectdinosaur.petrified_log": "Petrified Log",
+  "block.projectdinosaur.stripped_petrified_log": "Stripped Petrified Log",
   "block.projectdinosaur.petrified_planks": "Petrified Planks",
 
   "block.projectdinosaur.alpine_rock_fossil": "Alpine Rock Fossil",
@@ -15,5 +17,7 @@
   "block.projectdinosaur.frozen_rock_fossil": "Frozen Rock Fossil",
   "block.projectdinosaur.grassland_rock_fossil": "Grassland Rock Fossil",
   "block.projectdinosaur.tropical_rock_fossil": "Tropical Rock Fossil",
-  "block.projectdinosaur.wetland_rock_fossil": "Wetland Rock Fossil"
+  "block.projectdinosaur.wetland_rock_fossil": "Wetland Rock Fossil",
+
+  "block.projectdinosaur.fossil_excavator": "Fossil Excavator"
 }
