@@ -10,6 +10,11 @@
           "type": "minecraft:item",
           "name": "projectdinosaur:stripped_petrified_log"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
   ]

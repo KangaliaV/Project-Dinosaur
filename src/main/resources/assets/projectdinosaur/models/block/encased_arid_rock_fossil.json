@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "projectdinosaur:blocks/encased_arid_rock_fossil"
+  }
+}

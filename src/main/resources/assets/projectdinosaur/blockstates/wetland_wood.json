@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "projectdinosaur:block/wetland_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "projectdinosaur:block/wetland_wood"
+    },
+    "axis=z": {
+      "model": "projectdinosaur:block/wetland_wood",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "projectdinosaur:blocks/grassland_log_top",
+    "side": "projectdinosaur:blocks/grassland_log"
+  }
+}

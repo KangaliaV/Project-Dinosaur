@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:stripped_wetland_log"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:stripped_wetland_wood",
+    "count": 3
+  }
+}

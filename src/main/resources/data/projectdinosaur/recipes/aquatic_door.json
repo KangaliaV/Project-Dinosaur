@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_door",
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:aquatic_planks"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:aquatic_door",
+    "count": 3
+  }
+}

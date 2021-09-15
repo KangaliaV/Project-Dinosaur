@@ -1,0 +1,6 @@
+{
+  "parent": "block/fence_post",
+  "textures": {
+    "texture": "projectdinosaur:block/temperate_planks"
+  }
+}
