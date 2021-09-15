@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.common.block.FossilExcavator;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -69,6 +70,7 @@ public class BlockInit {
             .sound(SoundType.WOOD)));
 
     //Rock Fossil Ores
+
     //Need JSON files for all of these yet. Nothing has been done with them except this registration.
     public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = BLOCKS.register("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
@@ -120,6 +122,7 @@ public class BlockInit {
             .requiresCorrectToolForDrops()));
 
     //Encased Rock Fossil Ores
+  
     //Need JSON files for all of these yet. Nothing has been done with them except this registration.
     public static final RegistryObject<Block> ENCASED_ALPINE_ROCK_FOSSIL = BLOCKS.register("encased_alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
@@ -169,4 +172,7 @@ public class BlockInit {
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
+
+    //Machine Blocks
+    public static final RegistryObject<Block> FOSSIL_EXCAVATOR = BLOCKS.register("fossil_excavator", () -> new FossilExcavator());
 }
