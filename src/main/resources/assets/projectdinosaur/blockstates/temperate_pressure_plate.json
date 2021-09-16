@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "projectdinosaur:block/temperate_pressure_plate"
+    },
+    "powered=true": {
+      "model": "projectdinosaur:block/temperate_pressure_plate_down"
+    }
+  }
+}

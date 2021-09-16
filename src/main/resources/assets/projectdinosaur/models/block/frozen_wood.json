@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "projectdinosaur:block/frozen_log",
+    "side": "projectdinosaur:block/frozen_log"
+  }
+}

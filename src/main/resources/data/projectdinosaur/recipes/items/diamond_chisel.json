@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "d",
+    "o",
+    "q"
+  ],
+  "key": {
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "q": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:diamond_chisel"
+  }
+}

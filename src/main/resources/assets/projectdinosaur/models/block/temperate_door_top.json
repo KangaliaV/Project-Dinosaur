@@ -1,0 +1,7 @@
+{
+  "parent": "block/door_top",
+  "textures": {
+    "top": "projectdinosaur:block/temperate_door_top",
+    "bottom": "projectdinosaur:block/temperate_door_bottom"
+  }
+}

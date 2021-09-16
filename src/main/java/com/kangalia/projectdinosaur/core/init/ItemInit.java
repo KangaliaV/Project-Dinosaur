@@ -2,7 +2,9 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
+import net.minecraft.item.BoatItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.SignItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

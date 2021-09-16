@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "projectdinosaur:blocks/stripped_arid_log_top",
+    "side": "projectdinosaur:blocks/stripped_arid_log"
+  }
+}

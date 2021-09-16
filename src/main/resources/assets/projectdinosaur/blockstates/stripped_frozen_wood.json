@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "projectdinosaur:block/stripped_frozen_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "projectdinosaur:block/stripped_frozen_wood"
+    },
+    "axis=z": {
+      "model": "projectdinosaur:block/stripped_frozen_wood",
+      "x": 90
+    }
+  }
+}

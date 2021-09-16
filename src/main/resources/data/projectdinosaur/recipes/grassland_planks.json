@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "projectdinosaur:grassland_log"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:grassland_planks",
+    "count": 4
+  }
+}
