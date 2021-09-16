@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "projectdinosaur:block/fossil_excavator",
+      "x": 90
+    },
+    "facing=up,powered=false": {
+      "model": "projectdinosaur:block/fossil_excavator",
+      "x": -90
+    },
+    "facing=north,powered=false": {
+      "model": "projectdinosaur:block/fossil_excavator"
+    },
+    "facing=south,powered=false": {
+      "model": "projectdinosaur:block/fossil_excavator",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "projectdinosaur:block/fossil_excavator",
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "projectdinosaur:block/fossil_excavator",
+      "y": 90
+    },
+    "facing=down,powered=true": {
+      "model": "projectdinosaur:block/fossil_excavator_powered",
+      "x": 90
+    },
+    "facing=up,powered=true": {
+      "model": "projectdinosaur:block/fossil_excavator_powered",
+      "x": -90
+    },
+    "facing=north,powered=true": {
+      "model": "projectdinosaur:block/fossil_excavator_powered"
+    },
+    "facing=south,powered=true": {
+      "model": "projectdinosaur:block/fossil_excavator_powered",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "projectdinosaur:block/fossil_excavator_powered",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "projectdinosaur:block/fossil_excavator_powered",
+      "y": 90
+    }
+  }
+}
