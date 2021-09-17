@@ -1,6 +1,6 @@
 {
   "parent": "block/pressure_plate_down",
   "textures": {
-    "texture": "projectdinosaur:block/frozen_planks"
+    "texture": "projectdinosaur:blocks/frozen_planks"
   }
 }

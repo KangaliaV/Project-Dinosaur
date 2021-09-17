@@ -1,6 +1,6 @@
 {
   "parent": "block/template_fence_gate_wall",
   "textures": {
-    "texture": "projectdinosaur:block/wetland_planks"
+    "texture": "projectdinosaur:blocks/wetland_planks"
   }
 }

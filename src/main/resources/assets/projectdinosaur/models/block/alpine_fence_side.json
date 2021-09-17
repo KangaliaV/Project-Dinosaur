@@ -1,6 +1,6 @@
 {
   "parent": "block/fence_side",
   "textures": {
-    "texture": "projectdinosaur:block/alpine_planks"
+    "texture": "projectdinosaur:blocks/alpine_planks"
   }
 }

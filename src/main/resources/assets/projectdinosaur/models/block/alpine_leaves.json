@@ -1,6 +1,6 @@
 {
   "parent": "block/leaves",
   "textures": {
-    "all": "projectdinosaur:block/alpine_leaves"
+    "all": "projectdinosaur:blocks/alpine_leaves"
   }
 }

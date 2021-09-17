@@ -1,6 +1,6 @@
 {
   "parent": "block/button_inventory",
   "textures": {
-    "texture": "projectdinosaur:block/alpine_planks"
+    "texture": "projectdinosaur:blocks/alpine_planks"
   }
 }

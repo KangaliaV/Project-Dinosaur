@@ -1,6 +1,6 @@
 {
   "parent": "block/button_pressed",
   "textures": {
-    "texture": "projectdinosaur:block/arid_planks"
+    "texture": "projectdinosaur:blocks/arid_planks"
   }
 }

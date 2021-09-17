@@ -1,7 +1,7 @@
 {
   "parent": "block/cube_column",
   "textures": {
-    "end": "projectdinosaur:block/stripped_wetland_log",
-    "side": "projectdinosaur:block/stripped_wetland_log"
+    "end": "projectdinosaur:blocks/stripped_wetland_log",
+    "side": "projectdinosaur:blocks/stripped_wetland_log"
   }
 }

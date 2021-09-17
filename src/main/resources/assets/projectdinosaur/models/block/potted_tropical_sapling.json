@@ -1,6 +1,6 @@
 {
   "parent": "block/flower_pot_cross",
   "textures": {
-    "plant": "projectdinosaur:block/tropical_sapling"
+    "plant": "projectdinosaur:blocks/tropical_sapling"
   }
 }

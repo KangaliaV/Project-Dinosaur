@@ -1,7 +1,7 @@
 {
   "parent": "block/cube_column",
   "textures": {
-    "end": "projectdinosaur:block/stripped_frozen_log",
-    "side": "projectdinosaur:block/stripped_frozen_log"
+    "end": "projectdinosaur:blocks/stripped_frozen_log",
+    "side": "projectdinosaur:blocks/stripped_frozen_log"
   }
 }

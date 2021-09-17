@@ -1,6 +1,6 @@
 {
   "parent": "block/leaves",
   "textures": {
-    "all": "projectdinosaur:block/frozen_leaves"
+    "all": "projectdinosaur:blocks/frozen_leaves"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "block/button",
   "textures": {
-    "texture": "projectdinosaur:block/frozen_planks"
+    "texture": "projectdinosaur:blocks/frozen_planks"
   }
 }

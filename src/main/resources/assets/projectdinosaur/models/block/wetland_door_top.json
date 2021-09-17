@@ -1,7 +1,7 @@
 {
   "parent": "block/door_top",
   "textures": {
-    "top": "projectdinosaur:block/wetland_door_top",
-    "bottom": "projectdinosaur:block/wetland_door_bottom"
+    "top": "projectdinosaur:blocks/wetland_door_top",
+    "bottom": "projectdinosaur:blocks/wetland_door_bottom"
   }
 }

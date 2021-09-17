@@ -1,6 +1,6 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "projectdinosaur:block/alpine_sapling"
+    "cross": "projectdinosaur:blocks/alpine_sapling"
   }
 }

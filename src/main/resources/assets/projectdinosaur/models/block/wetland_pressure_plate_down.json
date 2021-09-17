@@ -1,6 +1,6 @@
 {
   "parent": "block/pressure_plate_down",
   "textures": {
-    "texture": "projectdinosaur:block/wetland_planks"
+    "texture": "projectdinosaur:blocks/wetland_planks"
   }
 }
