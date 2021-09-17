@@ -175,7 +175,6 @@
   "block.projectdinosaur.tropical_trapdoor": "Tropical Trapdoor",
   "block.projectdinosaur.potted_tropical_sapling": "Potted Tropical Sapling",
   "block.projectdinosaur.tropical_rock_fossil": "Tropical Rock Fossil",
-
   "block.projectdinosaur.encased_tropical_rock_fossil": "Encased Tropical Rock Fossil",
   "item.projectdinosaur.tropical_boat": "Tropical Boat",
 
@@ -203,5 +202,8 @@
 
   "item.projectdinosaur.iron_chisel": "Iron Chisel",
   "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
-  "item.projectdinosaur.netherite_chisel": "Netherite Chisel"
+  "item.projectdinosaur.netherite_chisel": "Netherite Chisel",
+
+  "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
+  "screen.projectdinosaur.fossil_excavator": "Fossil Excavator"
 }
