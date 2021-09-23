@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.FurnaceFuelSlot;
+import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -85,7 +86,6 @@ public class FossilExcavatorContainer extends Container {
 
     private void layoutPlayerInventorySlots(int leftCol, int topRow) {
         addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
-
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
