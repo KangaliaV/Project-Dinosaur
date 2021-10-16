@@ -204,6 +204,8 @@
   "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
   "item.projectdinosaur.netherite_chisel": "Netherite Chisel",
 
+  "item.projectdinosaur.plaster": "Plaster",
+
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
   "screen.projectdinosaur.fossil_excavator": "Fossil Excavator"
 }
