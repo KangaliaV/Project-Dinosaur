@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.block.FossilExcavatorBlock;
+import com.kangalia.projectdinosaur.common.block.fossilexcavator.FossilExcavatorBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -190,7 +190,6 @@ public class BlockInit {
 
 
     //Helper Methods
-
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

@@ -2,7 +2,7 @@ package com.kangalia.projectdinosaur.core.util;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
-import com.kangalia.projectdinosaur.core.init.ContainersInit;
+import com.kangalia.projectdinosaur.core.init.ContainerInit;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,7 +16,7 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        ScreenManager.register(ContainersInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
+        ScreenManager.register(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
     }
 
     @SubscribeEvent

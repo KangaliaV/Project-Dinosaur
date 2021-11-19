@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.client.gui;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
+import com.kangalia.projectdinosaur.common.block.fossilexcavator.FossilExcavatorContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

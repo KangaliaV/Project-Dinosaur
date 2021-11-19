@@ -1,13 +1,15 @@
-package com.kangalia.projectdinosaur.common.container;
+package com.kangalia.projectdinosaur.common.block.fossilexcavator;
 
 import com.kangalia.projectdinosaur.core.init.BlockInit;
-import com.kangalia.projectdinosaur.core.init.ContainersInit;
+import com.kangalia.projectdinosaur.core.init.ContainerInit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IRecipeHelperPopulator;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.FurnaceFuelSlot;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +25,7 @@ public class FossilExcavatorContainer extends Container {
     private final IItemHandler playerInventory;
 
     public FossilExcavatorContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(ContainersInit.FOSSIL_EXCAVATOR_CONTAINER.get(), windowId);
+        super(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), windowId);
         this.tileEntity = world.getBlockEntity(pos);
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
@@ -32,24 +34,28 @@ public class FossilExcavatorContainer extends Container {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                //Left Side, Left Column
+                //Left Side, Top Row
                 addSlot(new SlotItemHandler(h, 0, 29, 16));
-                addSlot(new SlotItemHandler(h, 1, 29, 34));
-                addSlot(new SlotItemHandler(h, 2, 29, 52));
+                addSlot(new SlotItemHandler(h, 1, 47, 16));
 
-                //Left Side Right Column
-                addSlot(new SlotItemHandler(h, 3, 47, 16));
-                addSlot(new SlotItemHandler(h, 4, 47, 34));
+                //Left Side, Middle Row
+                addSlot(new SlotItemHandler(h, 2, 29, 34));
+                addSlot(new SlotItemHandler(h, 3, 47, 34));
+
+                //Left Side, Bottom Row
+                addSlot(new SlotItemHandler(h, 4, 29, 52));
                 addSlot(new SlotItemHandler(h, 5, 47, 52));
 
-                //Right Side Left Column
+                //Right Side, Top Row
                 addSlot(new SlotItemHandler(h, 6, 113, 16));
-                addSlot(new SlotItemHandler(h, 7, 113, 34));
-                addSlot(new SlotItemHandler(h, 8, 113, 52));
+                addSlot(new SlotItemHandler(h, 7, 131, 16));
 
-                //Right Side Right Column
-                addSlot(new SlotItemHandler(h, 9, 131, 16));
-                addSlot(new SlotItemHandler(h, 10, 131, 34));
+                //Right Side, Middle Row
+                addSlot(new SlotItemHandler(h, 8, 113, 34));
+                addSlot(new SlotItemHandler(h, 9, 131, 34));
+
+                //Right Side, Bottom Row
+                addSlot(new SlotItemHandler(h, 10, 113, 52));
                 addSlot(new SlotItemHandler(h, 11, 131, 52));
 
                 //Chisel Slot

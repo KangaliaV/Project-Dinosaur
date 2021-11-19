@@ -1,0 +1,12 @@
+{
+  "type": "projectdinosaur:excavating",
+  "ingredients": [
+    {
+      "item": "projectdinosaur:encased_tropical_rock_fossil"
+    },
+    {
+      "item": "projectdinosaur:iron_chisel"
+    }
+  ],
+  "result": "projectdinosaur:tropical_rock_fossil_specimen"
+}
