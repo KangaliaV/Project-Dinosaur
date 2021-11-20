@@ -147,7 +147,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
 
     @Override
     public void tick() {
-        if (!level.isClientSide) {
+        if (level.isClientSide) {
             return;
         }
         craft();

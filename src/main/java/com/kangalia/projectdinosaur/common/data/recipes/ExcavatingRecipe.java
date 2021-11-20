@@ -31,7 +31,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
     @Override
     public boolean matches(IInventory inventory, World world) {
         if(inputs.get(0).test(inventory.getItem(0))) {
-            return inputs.get(12).test(inventory.getItem(12));
+            return inputs.get(1).test(inventory.getItem(1));
         }
         return false;
     }

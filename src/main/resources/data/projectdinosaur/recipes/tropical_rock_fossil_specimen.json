@@ -8,5 +8,7 @@
       "item": "projectdinosaur:iron_chisel"
     }
   ],
-  "result": "projectdinosaur:tropical_rock_fossil_specimen"
+  "result": {
+    "item": "projectdinosaur:tropical_rock_fossil_specimen"
+  }
 }
