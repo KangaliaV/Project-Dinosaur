@@ -5,9 +5,11 @@ import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.init.RecipeInit;
 import com.kangalia.projectdinosaur.core.init.TileEntitiesInit;
+import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -27,10 +29,14 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("NullableProblems")
 public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity {
+
+    private final RandomNumGen rng = new RandomNumGen();
 
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
@@ -116,10 +122,25 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.addItem(itemHandler.getStackInSlot(i));
 
-            Optional<ExcavatingRecipe> recipe = level.getRecipeManager().getRecipeFor(RecipeInit.EXCAVATING_RECIPE, inventory, level);
+            List<ExcavatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecipeInit.EXCAVATING_RECIPE, inventory, level);
+            //Filters recipes to check for weighting for each result item - not sure how to get this to work yet.
+//            List<ExcavatingRecipe> filteredRecipes = recipes.stream().filter(e -> {
+//                e.get();
+//                if
+//            }).collect(Collectors.toList());
 
-            recipe.ifPresent(IRecipe -> {
-                ItemStack output = IRecipe.getResultItem();
+            if (!recipes.isEmpty()) {
+                ExcavatingRecipe selectedRecipe;
+
+                if (recipes.size() == 1) {
+                    selectedRecipe = recipes.get(0);
+                } else {
+                    //Generate random number.
+                    int randomNum = rng.nextInt(recipes.size());
+                    //Select random recipe from (filtered) list.
+                    selectedRecipe = recipes.get(randomNum);
+                }
+                ItemStack output = selectedRecipe.getResultItem();
 
                 itemHandler.extractItem(0, 1, false);
 
@@ -141,7 +162,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                 level.playSound(blockEntityPos, SoundEvents.UI_STONECUTTER_TAKE_RESULT, 1.0F, 1.0F); */
 
                 setChanged();
-            });
+            }
         }
     }
 
