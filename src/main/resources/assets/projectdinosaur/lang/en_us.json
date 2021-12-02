@@ -205,5 +205,7 @@
   "item.projectdinosaur.netherite_chisel": "Netherite Chisel",
 
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
-  "screen.projectdinosaur.fossil_excavator": "Fossil Excavator"
+  "screen.projectdinosaur.fossil_excavator": "Fossil Excavator",
+
+  "item.projectdinosaur.tropical_rock_specimen": "Tropical Rock Specimen"
 }

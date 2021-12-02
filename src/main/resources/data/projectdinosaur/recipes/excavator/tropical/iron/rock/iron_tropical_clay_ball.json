@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 3,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:encased_tropical_rock_fossil"
+    },
+    {
+      "item": "projectdinosaur:iron_chisel"
+    }
+  ],
+  "result": {
+    "item": "minecraft:clay_ball"
+  }
+}

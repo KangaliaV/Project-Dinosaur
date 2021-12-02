@@ -21,11 +21,13 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> inputs;
+    private final Integer weight;
 
-    public ExcavatingRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputs) {
+    public ExcavatingRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputs, Integer weight) {
         this.id = id;
         this.output = output;
         this.inputs = inputs;
+        this.weight = weight;
     }
 
     @Override
@@ -35,6 +37,8 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
         }
         return false;
     }
+
+    public Integer getWeight() { return this.weight;}
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
@@ -78,13 +82,14 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
         public ExcavatingRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
             JsonArray ingredients = JSONUtils.getAsJsonArray(json, "ingredients");
+            int weight = Integer.parseInt(JSONUtils.getAsString(json, "weight"));
             NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new ExcavatingRecipe(id, output, inputs);
+            return new ExcavatingRecipe(id, output, inputs, weight);
         }
 
         @Nullable
@@ -97,7 +102,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
             }
 
             ItemStack output = buffer.readItem();
-            return new ExcavatingRecipe(id, output, inputs);
+            return new ExcavatingRecipe(id, output, inputs, 1);
         }
 
         @Override
