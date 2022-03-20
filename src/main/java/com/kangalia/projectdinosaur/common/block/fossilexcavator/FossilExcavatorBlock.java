@@ -28,6 +28,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -88,15 +89,16 @@ public class FossilExcavatorBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            TileEntity tileEntity = world.getBlockEntity(pos);
-            if (tileEntity instanceof IInventory) {
-                InventoryHelper.dropContents(world, pos, (IInventory) tileEntity);
-                world.updateNeighbourForOutputSignal(pos, this);
-            }
+        if(state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+            world.getBlockEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                for (int i = 0; i < h.getSlots(); i++) {
+                    popResource(world, pos, h.getStackInSlot(i));
+                }
+            });
         }
         super.onRemove(state, world, pos, newState, isMoving);
     }
+
 
 
     @Override
