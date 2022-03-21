@@ -159,16 +159,6 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
             public int getSlotLimit(int slot) {
                 return 64;
             }
-
-            /*@Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!isItemValid(slot, stack)) {
-                    return stack;
-                }
-
-                return super.insertItem(slot, stack, simulate);
-            }*/
         };
     }
 
@@ -219,6 +209,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                     //Generate random number.
                     int randomNum = rng.nextInt(weightArray.length);
                     int recipeIndex = weightArray[randomNum];
+
                     //Select random recipe from (filtered) list.
                     selectedRecipe = recipes.get(recipeIndex);
                     output = selectedRecipe.getResultItem();
@@ -227,73 +218,52 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                         current = itemHandler.getStackInSlot(o);
 
                         if (current.isEmpty()) {
-                            System.out.println("Is Empty:");
                             while (progress < WORK_TIME) {
                                 ++progress;
-                                //System.out.println("Progress = " + progress);
                             }
 
-                            System.out.println("Current ItemStack = " + current);
-                            System.out.println("Current Output = " + output);
-                            System.out.println("Current Slot = " + o);
                             itemHandler.insertItem(o, output, false);
                             calculated = 1;
-                            System.out.println("Set item");
 
                             if (calculated == 1) {
-                                System.out.println("Work Time = " + WORK_TIME);
                                 progress = 0;
-                                System.out.println("Progress = 0");
                                 for (int r = 0; r < 6; r++) {
                                     if (!itemHandler.getStackInSlot(r).isEmpty()) {
                                         itemHandler.extractItem(r, 1, false);
                                         setChanged();
-                                        System.out.println("Remove input");
-                                        o = 7;
+                                        //o = 7;
                                         return;
                                     }
                                 }
                             }
                         }
                         current = itemHandler.getStackInSlot(o);
-                        System.out.println("Gets stack in slot = " + itemHandler.getStackInSlot(o) + ". Slot = " + o);
 
                         if (!current.isEmpty()) {
-                            System.out.println("Isn't Empty:");
-                            Item currentItem = current.getItem();
                             int newCount = current.getCount() + output.getCount();
-                            System.out.println("newCount calculated = " + newCount);
 
                             if (!ItemStack.isSame(current, output) || newCount >= 64) {
                                 progress = 0;
-                                System.out.println("Matches check failed. Current / Output = "+ current + " / " + output);
-                                System.out.println("Slot = " + o);
                             } else {
                                 while (progress < WORK_TIME) {
                                     ++progress;
-                                    //System.out.println("Progress = " + progress);
                                 }
                                 current.grow(1);
                                 calculated = 1;
-                                System.out.println("Grow output = " + current.getCount());
 
                                 if (calculated == 1) {
-                                    System.out.println("Work Time = " + WORK_TIME);
                                     progress = 0;
-                                    System.out.println("Progress = 0");
                                     for (int r = 0; r < 6; r++) {
                                         if (!itemHandler.getStackInSlot(r).isEmpty()) {
                                             itemHandler.extractItem(r, 1, false);
                                             setChanged();
-                                            System.out.println("Remove input");
-                                            o = 7;
+                                            //o = 7;
                                             return;
                                         }
 
                                     }
                                 }
                             }
-                            System.out.println(o);
                         }
                     }
                 }
