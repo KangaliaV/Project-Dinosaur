@@ -12,19 +12,23 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,12 +36,43 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity {
+public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity, ISidedInventory {
 
-    public static final int CHISEL_SLOTS = 1;
-    public static final int INPUT_SLOTS = 6;
-    public static final int OUTPUT_SLOTS = 6;
-    public static final int TOTAL_SLOTS = CHISEL_SLOTS + INPUT_SLOTS + OUTPUT_SLOTS;
+    static final int WORK_TIME = 3 * 20;
+    private int progress = 0;
+    public int calculated = 0;
+
+    ItemStack current;
+    ItemStack output;
+
+    private final NonNullList<ItemStack> items;
+    private final LazyOptional<? extends IItemHandler>[] handlers;
+
+    private final IIntArray fields = new IIntArray() {
+        @Override
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return progress;
+                default:
+                    return 0;
+            }
+        }
+
+        @Override
+        public void set(int index, int value) {
+            switch (index) {
+                case 0:
+                    progress = value;
+                    break;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    };
 
     private final RandomNumGen rng = new RandomNumGen();
 
@@ -48,24 +83,28 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    public FossilExcavatorTileEntity(TileEntityType<?> tileEntityType) {
-        super(tileEntityType);
+    public FossilExcavatorTileEntity() {
+        super(TileEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get());
+        this.handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
+        this.items = NonNullList.withSize(12, ItemStack.EMPTY);
     }
 
-    public FossilExcavatorTileEntity() {
-        this(TileEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get());
+    void encodeExtraData(PacketBuffer buffer) {
+        buffer.writeByte(fields.getCount());
     }
 
 
     @Override
     public void load(BlockState state, CompoundNBT nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        this.progress = nbt.getInt("Progress");
         super.load(state, nbt);
     }
 
     @Override
     public CompoundNBT save(CompoundNBT compound) {
         compound.put("inv", itemHandler.serializeNBT());
+        compound.putInt("Progress", this.progress);
         return super.save(compound);
     }
 
@@ -88,7 +127,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == BlockInit.ENCASED_TROPICAL_ROCK_FOSSIL.get().asItem() ||
                             stack.getItem() == BlockInit.ENCASED_WETLAND_ROCK_FOSSIL.get().asItem();
                 }
-                if (slot >= 6 && slot < 12) {
+                if (slot >= 7 && slot < 13) {
                     return stack.getItem() == ItemInit.ALPINE_ROCK_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.AQUATIC_ROCK_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.ARID_ROCK_SPECIMEN.get() ||
@@ -108,7 +147,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == Blocks.PACKED_ICE.asItem() ||
                             stack.getItem() == Blocks.SAND.asItem();
                 }
-                if (slot == 12) {
+                if (slot == 6) {
                     return stack.getItem() == ItemInit.IRON_CHISEL.get() ||
                             stack.getItem() == ItemInit.DIAMOND_CHISEL.get() ||
                             stack.getItem() == ItemInit.NETHERITE_CHISEL.get();
@@ -121,7 +160,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                 return 64;
             }
 
-            @Nonnull
+            /*@Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
                 if (!isItemValid(slot, stack)) {
@@ -129,10 +168,9 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                 }
 
                 return super.insertItem(slot, stack, simulate);
-            }
+            }*/
         };
     }
-
 
 
     @Nonnull
@@ -145,9 +183,17 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         return super.getCapability(cap, side);
     }
 
+    @Override
+    public void tick() {
+        if (level.isClientSide) {
+            return;
+        }
+        craft();
+    }
+
     public void craft() {
         Inventory inventory = new Inventory(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
+        for (int i = 0; i < 7; i++) {
             inventory.addItem(itemHandler.getStackInSlot(i));
 
             List<ExcavatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecipeInit.EXCAVATING_RECIPE, inventory, level);
@@ -175,22 +221,169 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                     int recipeIndex = weightArray[randomNum];
                     //Select random recipe from (filtered) list.
                     selectedRecipe = recipes.get(recipeIndex);
-                    ItemStack output = selectedRecipe.getResultItem();
+                    output = selectedRecipe.getResultItem();
 
-                    itemHandler.extractItem(0, 1, false);
-                    itemHandler.insertItem(6, output, false);
+                    for (int o = 7; o < 13; o++) {
+                        current = itemHandler.getStackInSlot(o);
 
-                    setChanged();
+                        if (current.isEmpty()) {
+                            System.out.println("Is Empty:");
+                            while (progress < WORK_TIME) {
+                                ++progress;
+                                //System.out.println("Progress = " + progress);
+                            }
+
+                            System.out.println("Current ItemStack = " + current);
+                            System.out.println("Current Output = " + output);
+                            System.out.println("Current Slot = " + o);
+                            itemHandler.insertItem(o, output, false);
+                            calculated = 1;
+                            System.out.println("Set item");
+
+                            if (calculated == 1) {
+                                System.out.println("Work Time = " + WORK_TIME);
+                                progress = 0;
+                                System.out.println("Progress = 0");
+                                for (int r = 0; r < 6; r++) {
+                                    if (!itemHandler.getStackInSlot(r).isEmpty()) {
+                                        itemHandler.extractItem(r, 1, false);
+                                        setChanged();
+                                        System.out.println("Remove input");
+                                        o = 7;
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        current = itemHandler.getStackInSlot(o);
+                        System.out.println("Gets stack in slot = " + itemHandler.getStackInSlot(o) + ". Slot = " + o);
+
+                        if (!current.isEmpty()) {
+                            System.out.println("Isn't Empty:");
+                            Item currentItem = current.getItem();
+                            int newCount = current.getCount() + output.getCount();
+                            System.out.println("newCount calculated = " + newCount);
+
+                            if (!ItemStack.isSame(current, output) || newCount >= 64) {
+                                progress = 0;
+                                System.out.println("Matches check failed. Current / Output = "+ current + " / " + output);
+                                System.out.println("Slot = " + o);
+                            } else {
+                                while (progress < WORK_TIME) {
+                                    ++progress;
+                                    //System.out.println("Progress = " + progress);
+                                }
+                                current.grow(1);
+                                calculated = 1;
+                                System.out.println("Grow output = " + current.getCount());
+
+                                if (calculated == 1) {
+                                    System.out.println("Work Time = " + WORK_TIME);
+                                    progress = 0;
+                                    System.out.println("Progress = 0");
+                                    for (int r = 0; r < 6; r++) {
+                                        if (!itemHandler.getStackInSlot(r).isEmpty()) {
+                                            itemHandler.extractItem(r, 1, false);
+                                            setChanged();
+                                            System.out.println("Remove input");
+                                            o = 7;
+                                            return;
+                                        }
+
+                                    }
+                                }
+                            }
+                            System.out.println(o);
+                        }
+                    }
                 }
             }
         }
     }
 
+    private void getRecipeOutput() {
+
+    }
+
     @Override
-    public void tick() {
-        if (level.isClientSide) {
-            return;
-        }
-        craft();
+    public int[] getSlotsForFace(Direction direction) {
+        return new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12};
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
+        return this.canPlaceItem(index, stack);
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+        return true;
+    }
+
+    @Override
+    public int getContainerSize() {
+        return 13;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return getItem(0).isEmpty() &&
+                getItem(1).isEmpty() &&
+                getItem(2).isEmpty() &&
+                getItem(3).isEmpty() &&
+                getItem(4).isEmpty() &&
+                getItem(5).isEmpty() &&
+                getItem(6).isEmpty() &&
+                getItem(7).isEmpty() &&
+                getItem(8).isEmpty() &&
+                getItem(9).isEmpty() &&
+                getItem(10).isEmpty() &&
+                getItem(11).isEmpty() &&
+                getItem(12).isEmpty();
+    }
+
+    @Override
+    public ItemStack getItem(int index) {
+        return items.get(index);
+    }
+
+    @Override
+    public ItemStack removeItem(int index, int amount) {
+        return ItemStackHelper.removeItem(items, index, amount);
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int index) {
+        return ItemStackHelper.takeItem(items, index);
+    }
+
+    @Override
+    public void setItem(int index, ItemStack stack) {
+        items.set(index, stack);
+    }
+
+    @Override
+    public boolean stillValid(PlayerEntity player) {
+        return this.level != null && this.level.getBlockEntity(this.worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ()) <= 64;
+    }
+
+    @Override
+    public void clearContent() {
+        items.clear();
+    }
+
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT tags = this.getUpdateTag();
+        ItemStackHelper.saveAllItems(tags, this.items);
+        return new SUpdateTileEntityPacket(this.worldPosition, 1, tags);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT tags = super.getUpdateTag();
+        tags.putInt("Progress", this.progress);
+        return tags;
     }
 }

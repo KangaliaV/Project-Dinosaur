@@ -4,12 +4,9 @@ import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IRecipeHelperPopulator;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.FurnaceFuelSlot;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
@@ -46,20 +43,20 @@ public class FossilExcavatorContainer extends Container {
                 addSlot(new SlotItemHandler(h, 4, 29, 52));
                 addSlot(new SlotItemHandler(h, 5, 47, 52));
 
+                //Chisel Slot
+                addSlot(new SlotItemHandler(h, 6, 80, 16));
+
                 //Right Side, Top Row
-                addSlot(new SlotItemHandler(h, 6, 113, 16));
-                addSlot(new SlotItemHandler(h, 7, 131, 16));
+                addSlot(new SlotItemHandler(h, 7, 113, 16));
+                addSlot(new SlotItemHandler(h, 8, 131, 16));
 
                 //Right Side, Middle Row
-                addSlot(new SlotItemHandler(h, 8, 113, 34));
-                addSlot(new SlotItemHandler(h, 9, 131, 34));
+                addSlot(new SlotItemHandler(h, 9, 113, 34));
+                addSlot(new SlotItemHandler(h, 10, 131, 34));
 
                 //Right Side, Bottom Row
-                addSlot(new SlotItemHandler(h, 10, 113, 52));
-                addSlot(new SlotItemHandler(h, 11, 131, 52));
-
-                //Chisel Slot
-                addSlot(new SlotItemHandler(h, 12, 80, 16));
+                addSlot(new SlotItemHandler(h, 11, 113, 52));
+                addSlot(new SlotItemHandler(h, 12, 131, 52));
             });
         }
 

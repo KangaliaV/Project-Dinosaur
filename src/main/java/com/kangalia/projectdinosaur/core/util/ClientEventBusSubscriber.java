@@ -21,6 +21,6 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void onRegisterBlocks(final RegistryEvent.Register<Block> event) throws NoSuchFieldException, IllegalAccessException {
-        EventHandler.addStripping();
+        //EventHandler.addStripping();
     }
 }
