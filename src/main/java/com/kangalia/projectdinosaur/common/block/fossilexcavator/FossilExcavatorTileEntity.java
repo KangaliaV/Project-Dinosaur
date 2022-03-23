@@ -36,46 +36,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity, ISidedInventory {
+public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity {
 
     static final int WORK_TIME = 3 * 20;
     private int progress = 0;
     private int inputIndex;
 
     private final NonNullList<ItemStack> items;
-    private final LazyOptional<? extends IItemHandler>[] handlers;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(13, ItemStack.EMPTY);
-
-    private static final int[] SLOTS_TOP = new int[]{0,1,2,3,4,5};
-    private static final int[] SLOTS_BOTTOM = new int[]{7,8,9,10,11,12};
-    private static final int[] SLOTS_SIDES = new int[]{6};
-
-
-    /*private final IIntArray fields = new IIntArray() {
-        @Override
-        public int get(int index) {
-            switch (index) {
-                case 0:
-                    return progress;
-                default:
-                    return 0;
-            }
-        }
-
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0:
-                    progress = value;
-                    break;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    };*/
 
     private final RandomNumGen rng = new RandomNumGen();
 
@@ -88,14 +56,8 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
 
     public FossilExcavatorTileEntity() {
         super(TileEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get());
-        this.handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
         this.items = NonNullList.withSize(12, ItemStack.EMPTY);
     }
-
-    /*void encodeExtraData(PacketBuffer buffer) {
-        buffer.writeByte(fields.getCount());
-    }*/
-
 
     @Override
     public void load(BlockState state, CompoundNBT nbt) {
@@ -386,73 +348,6 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
             }
         }
     }*/
-
-    @Override
-    public int[] getSlotsForFace(Direction direction) {
-        return new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12};
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack stack, @Nullable Direction direction) {
-        return this.canPlaceItem(index, stack);
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return true;
-    }
-
-    @Override
-    public int getContainerSize() {
-        return 13;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return getItem(0).isEmpty() &&
-                getItem(1).isEmpty() &&
-                getItem(2).isEmpty() &&
-                getItem(3).isEmpty() &&
-                getItem(4).isEmpty() &&
-                getItem(5).isEmpty() &&
-                getItem(6).isEmpty() &&
-                getItem(7).isEmpty() &&
-                getItem(8).isEmpty() &&
-                getItem(9).isEmpty() &&
-                getItem(10).isEmpty() &&
-                getItem(11).isEmpty() &&
-                getItem(12).isEmpty();
-    }
-
-    @Override
-    public ItemStack getItem(int index) {
-        return items.get(index);
-    }
-
-    @Override
-    public ItemStack removeItem(int index, int amount) {
-        return ItemStackHelper.removeItem(items, index, amount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int index) {
-        return ItemStackHelper.takeItem(items, index);
-    }
-
-    @Override
-    public void setItem(int index, ItemStack stack) {
-        items.set(index, stack);
-    }
-
-    @Override
-    public boolean stillValid(PlayerEntity player) {
-        return this.level != null && this.level.getBlockEntity(this.worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ()) <= 64;
-    }
-
-    @Override
-    public void clearContent() {
-        items.clear();
-    }
 
     @Nullable
     @Override
