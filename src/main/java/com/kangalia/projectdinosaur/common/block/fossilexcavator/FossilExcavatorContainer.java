@@ -31,20 +31,21 @@ public class FossilExcavatorContainer extends Container {
 
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                //Left Side, Top Row
-                addSlot(new SlotItemHandler(h, 0, 29, 16));
-                addSlot(new SlotItemHandler(h, 1, 47, 16));
-
-                //Left Side, Middle Row
-                addSlot(new SlotItemHandler(h, 2, 29, 34));
-                addSlot(new SlotItemHandler(h, 3, 47, 34));
-
-                //Left Side, Bottom Row
-                addSlot(new SlotItemHandler(h, 4, 29, 52));
-                addSlot(new SlotItemHandler(h, 5, 47, 52));
 
                 //Chisel Slot
-                addSlot(new SlotItemHandler(h, 6, 80, 16));
+                addSlot(new SlotItemHandler(h, 0, 80, 16));
+
+                //Left Side, Top Row
+                addSlot(new SlotItemHandler(h, 1, 29, 16));
+                addSlot(new SlotItemHandler(h, 2, 47, 16));
+
+                //Left Side, Middle Row
+                addSlot(new SlotItemHandler(h, 3, 29, 34));
+                addSlot(new SlotItemHandler(h, 4, 47, 34));
+
+                //Left Side, Bottom Row
+                addSlot(new SlotItemHandler(h, 5, 29, 52));
+                addSlot(new SlotItemHandler(h, 6, 47, 52));
 
                 //Right Side, Top Row
                 addSlot(new SlotItemHandler(h, 7, 113, 16));

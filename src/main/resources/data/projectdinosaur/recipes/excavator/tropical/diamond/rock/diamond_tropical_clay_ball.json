@@ -1,6 +1,6 @@
 {
   "type": "projectdinosaur:excavating",
-  "weight": 2,
+  "weight": 3,
   "ingredients": [
     {
       "item": "projectdinosaur:encased_tropical_rock_fossil"

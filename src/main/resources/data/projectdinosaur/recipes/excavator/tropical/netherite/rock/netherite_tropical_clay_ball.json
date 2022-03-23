@@ -1,12 +1,12 @@
 {
   "type": "projectdinosaur:excavating",
-  "weight": 1,
+  "weight": 3,
   "ingredients": [
     {
-      "item": "projectdinosaur:encased_tropical_rock_fossil"
+      "item": "projectdinosaur:netherite_chisel"
     },
     {
-      "item": "projectdinosaur:netherite_chisel"
+      "item": "projectdinosaur:encased_tropical_rock_fossil"
     }
   ],
   "result": {
