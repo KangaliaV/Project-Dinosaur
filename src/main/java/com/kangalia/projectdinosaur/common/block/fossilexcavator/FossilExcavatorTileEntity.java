@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -40,15 +39,11 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
 
     static final int WORK_TIME = 3 * 20;
     private int progress = 0;
-    public int calculated = 0;
-
-    ItemStack current;
-    ItemStack output;
 
     private final NonNullList<ItemStack> items;
     private final LazyOptional<? extends IItemHandler>[] handlers;
 
-    private final IIntArray fields = new IIntArray() {
+    /*private final IIntArray fields = new IIntArray() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -72,7 +67,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         public int getCount() {
             return 1;
         }
-    };
+    };*/
 
     private final RandomNumGen rng = new RandomNumGen();
 
@@ -89,9 +84,9 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         this.items = NonNullList.withSize(12, ItemStack.EMPTY);
     }
 
-    void encodeExtraData(PacketBuffer buffer) {
+    /*void encodeExtraData(PacketBuffer buffer) {
         buffer.writeByte(fields.getCount());
-    }
+    }*/
 
 
     @Override
@@ -175,20 +170,36 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
 
     @Override
     public void tick() {
-        if (level.isClientSide) {
+        if (this.level == null || level.isClientSide) {
             return;
         }
-        craft();
+        ExcavatingRecipe selectedRecipe = craft();
+        if (selectedRecipe != null) {
+            //Potentially put the entirety of 'doExcavate' in here, like it is for AbstractFurnaceTileEntity.
+            //for (int o = 7; o < 13; o++) {
+                doExcavate(selectedRecipe);
+            //}
+        } else {
+            stopExcavate();
+        }
     }
 
-    public void craft() {
+    @Nullable
+    public ExcavatingRecipe craft() {
         Inventory inventory = new Inventory(itemHandler.getSlots());
+        //System.out.println("Before "+inventory);
         for (int i = 0; i < 7; i++) {
+            //Adds everything at once, which when there's more than a stack of fossils between all six slots, this breaks the recipe check. Either needs to be fixed, or make only one input slot.
             inventory.addItem(itemHandler.getStackInSlot(i));
+            //System.out.println("After Inputs = " + inventory);
+
 
             List<ExcavatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecipeInit.EXCAVATING_RECIPE, inventory, level);
+            //System.out.println("Get Recipes = " + recipes);
+
 
             if (!recipes.isEmpty()) {
+                //System.out.println("Recipe Start");
                 ExcavatingRecipe selectedRecipe;
 
                 if (recipes.size() == 1) {
@@ -211,59 +222,79 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                     int recipeIndex = weightArray[randomNum];
 
                     //Select random recipe from (filtered) list.
-                    selectedRecipe = recipes.get(recipeIndex);
-                    output = selectedRecipe.getResultItem();
+                    return recipes.get(recipeIndex);
+                }
 
-                    for (int o = 7; o < 13; o++) {
-                        current = itemHandler.getStackInSlot(o);
+            }
+        }
+        return null;
+    }
 
-                        if (current.isEmpty()) {
-                            while (progress < WORK_TIME) {
-                                ++progress;
+    private ItemStack getOutput(@Nullable ExcavatingRecipe selectedRecipe) {
+        if (selectedRecipe != null) {
+            return selectedRecipe.getResultItem();
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public void doExcavate(ExcavatingRecipe selectedRecipe) {
+        assert this.level != null;
+
+        ItemStack output = getOutput(selectedRecipe);
+
+        workFor:
+        for (int o = 7; o < 13; o++) {
+            System.out.println("Initial Loop Start");
+            ItemStack current = itemHandler.getStackInSlot(o);
+            System.out.println("Slot = " + o);
+
+            while (!current.isEmpty()) {
+                int newCount = current.getCount() + output.getCount();
+                //System.out.println("Output = " + output);
+
+                if (!ItemStack.isSame(current, output) || newCount >= 64) {
+                    progress = 0;
+                    //stopExcavate();
+                    System.out.println("Progress Reset. o = " + o + ". current = " + current);
+                    continue workFor;
+                } else {
+                    if (progress < WORK_TIME) {
+                        ++progress;
+                    }
+
+                    if (progress >= WORK_TIME) {
+
+
+                        current.grow(1);
+                        progress = 0;
+                        for (int r = 0; r < 6; r++) {
+                            if (!itemHandler.getStackInSlot(r).isEmpty()) {
+                                itemHandler.extractItem(r, 1, false);
+                                setChanged();
+                                System.out.println("Extract Item (Grow)");
+                                return;
+
                             }
 
-                            itemHandler.insertItem(o, output, false);
-                            calculated = 1;
-
-                            if (calculated == 1) {
-                                progress = 0;
-                                for (int r = 0; r < 6; r++) {
-                                    if (!itemHandler.getStackInSlot(r).isEmpty()) {
-                                        itemHandler.extractItem(r, 1, false);
-                                        setChanged();
-                                        //o = 7;
-                                        return;
-                                    }
-                                }
-                            }
                         }
-                        current = itemHandler.getStackInSlot(o);
+                    }
+                }
+            }
 
-                        if (!current.isEmpty()) {
-                            int newCount = current.getCount() + output.getCount();
+            while (current.isEmpty()) {
+                if (progress < WORK_TIME) {
+                    ++progress;
+                }
 
-                            if (!ItemStack.isSame(current, output) || newCount >= 64) {
-                                progress = 0;
-                            } else {
-                                while (progress < WORK_TIME) {
-                                    ++progress;
-                                }
-                                current.grow(1);
-                                calculated = 1;
-
-                                if (calculated == 1) {
-                                    progress = 0;
-                                    for (int r = 0; r < 6; r++) {
-                                        if (!itemHandler.getStackInSlot(r).isEmpty()) {
-                                            itemHandler.extractItem(r, 1, false);
-                                            setChanged();
-                                            //o = 7;
-                                            return;
-                                        }
-
-                                    }
-                                }
-                            }
+                if (progress >= WORK_TIME) {
+                    itemHandler.insertItem(o, output, false);
+                    progress = 0;
+                    for (int r = 0; r < 6; r++) {
+                        if (!itemHandler.getStackInSlot(r).isEmpty()) {
+                            itemHandler.extractItem(r, 1, false);
+                            setChanged();
+                            System.out.println("Extract Item (Insert)");
+                            return;
                         }
                     }
                 }
@@ -271,9 +302,32 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         }
     }
 
-    private void getRecipeOutput() {
 
+
+
+    private void stopExcavate() {
+        progress = 0;
     }
+
+    /*private void finishExcavate(ExcavatingRecipe selectedRecipe, ItemStack current, ItemStack output, int o) {
+        if (!current.isEmpty()) {
+            current.grow(1);
+        } else {
+            itemHandler.insertItem(o, output, false);
+        }
+        finalExcavate();
+    }
+
+    private void finalExcavate() {
+        for (int r = 0; r < 6; r++) {
+            if (!itemHandler.getStackInSlot(r).isEmpty()) {
+                itemHandler.extractItem(r, 1, false);
+                setChanged();
+                System.out.println("Extract Item (Insert)");
+                return;
+            }
+        }
+    }*/
 
     @Override
     public int[] getSlotsForFace(Direction direction) {
