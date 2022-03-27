@@ -102,7 +102,19 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == ItemInit.NETHERITE_CHISEL.get();
                 }
                 return false;
+
             }
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, ItemStack stack , boolean simulate) {
+                return(isItemValid(slot, stack)) ? super.insertItem(slot, stack, simulate) : stack;
+            }
+            @Nonnull
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                return (slot == 7 || slot == 8 || slot == 9 || slot == 10 || slot == 11 || slot == 12) ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+            }
+
             @Override
             public int getSlotLimit(int slot) {
                 return 64;
@@ -140,7 +152,6 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
     }
 
     private boolean canExcavate() {
-        System.out.println("Start canExcavate");
         int outputIndex = -1;
         this.inputIndex = -1;
         boolean flag = false;
@@ -150,21 +161,17 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
             inputSlot = itemHandler.getStackInSlot(slot);
             if(!inputSlot.isEmpty()) {
                 this.inputIndex = slot;
-                System.out.println("Input Slot Not Empty");
                 flag = true;
                 break;
             }
         }
-        System.out.println("inputIndex Check = "+inputIndex);
         if (inputIndex == -1 || !flag) {
             return false;
         } else {
             for (int slot = 7; slot < 13; slot++) {
                 outputSlot = itemHandler.getStackInSlot(slot);
-                System.out.println("inputSlot = "+inputSlot+". outputSlot = "+outputSlot);
                 if(outputSlot.isEmpty()) {
                     outputIndex = slot;
-                    System.out.println("outputSlot is Empty");
                     break;
                 }
             }
@@ -196,9 +203,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                     }
                     int randomNum = rng.nextInt(weightArray.length);
                     int recipeIndex = weightArray[randomNum];
-                    System.out.println("Craft = "+recipes.get(recipeIndex));
                     inventory.removeAllItems();
-                    System.out.println("After Craft = " + inventory);
                     return recipes.get(recipeIndex);
                 }
 
@@ -210,7 +215,6 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
     private ItemStack getOutput(@Nullable ExcavatingRecipe selectedRecipe) {
         if (selectedRecipe != null) {
             craft();
-            System.out.println("Get Output = "+selectedRecipe.getResultItem());
             return selectedRecipe.getResultItem();
         }
         return ItemStack.EMPTY;
@@ -227,16 +231,17 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                     ItemStack stack = itemHandler.getStackInSlot(slot);
                     if (stack.isEmpty()) {
                         itemHandler.insertItem(slot, output, false);
+                        input.shrink(1);
                         break;
                     } else {
                         if (ItemStack.isSame(stack, output) && stack.getCount() + 1 < 64) {
                             stack.grow(1);
+                            input.shrink(1);
                             break;
                         }
                     }
                 }
             }
-            itemHandler.extractItem(inputIndex, 1, false);
         }
     }
 
