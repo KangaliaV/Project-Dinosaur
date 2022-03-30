@@ -13,12 +13,16 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -30,7 +34,7 @@ import java.util.List;
 
 public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity {
 
-    static final int WORK_TIME = 3 * 20;
+    static final int WORK_TIME = 5 * 20;
     private int progress = 0;
     private int inputIndex;
     Inventory inventory;
@@ -47,14 +51,14 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
     @Override
     public void load(BlockState state, CompoundNBT nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
-        this.progress = nbt.getInt("Progress");
+        this.progress = nbt.getInt("progress");
         super.load(state, nbt);
     }
 
     @Override
     public CompoundNBT save(CompoundNBT compound) {
         compound.put("inv", itemHandler.serializeNBT());
-        compound.putInt("Progress", this.progress);
+        compound.putInt("progress", this.progress);
         return super.save(compound);
     }
 
@@ -122,7 +126,6 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         };
     }
 
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -132,6 +135,8 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         return super.getCapability(cap, side);
     }
 
+
+
     @Override
     public void tick() {
         if (this.level == null || level.isClientSide) {
@@ -140,6 +145,8 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         if (this.canExcavate()) {
             if (progress < WORK_TIME) {
                 ++progress;
+                level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                setChanged();
             }
             if (progress == WORK_TIME) {
                 progress = 0;
@@ -245,18 +252,30 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         }
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT tags = this.getUpdateTag();
         ItemStackHelper.saveAllItems(tags, this.items);
+        tags.putInt("progress", this.progress);
         return new SUpdateTileEntityPacket(this.worldPosition, 1, tags);
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT tags = super.getUpdateTag();
-        tags.putInt("Progress", this.progress);
-        return tags;
+        return this.save(new CompoundNBT());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getTag();
+        if (tag.contains("progress")) {
+            progress = tag.getInt("progress");
+            this.getTileData().putInt("progress", this.progress);
+        }
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -17,9 +18,10 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class FossilExcavatorContainer extends Container {
-    private final TileEntity tileEntity;
+    public TileEntity tileEntity;
     private final PlayerEntity playerEntity;
     private final IItemHandler playerInventory;
+    private IntArray fields;
 
     public FossilExcavatorContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), windowId);
@@ -92,6 +94,14 @@ public class FossilExcavatorContainer extends Container {
 
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
+    }
+
+    public int getProgressFromTile() {
+        if (tileEntity.getTileData().contains("progress")) {
+            return tileEntity.getTileData().getInt("progress");
+        } else {
+            return 0;
+        }
     }
 
     private static final int HOTBAR_SLOT_COUNT = 9;
