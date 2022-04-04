@@ -34,6 +34,10 @@ public class BlockInit {
             .harvestTool(ToolType.AXE)
             .strength(2.0f, 2.0f)
             .sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> PETRIFIED_SLAB = registerBlock("petrified_slab", () -> new SlabBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .harvestTool(ToolType.AXE)
+            .strength(2.0f, 2.0f)
+            .sound(SoundType.WOOD)));
 
     //Rock Fossil Ores
     public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
