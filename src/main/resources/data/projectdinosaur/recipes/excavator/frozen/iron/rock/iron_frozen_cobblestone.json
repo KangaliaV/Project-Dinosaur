@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 6,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    {
+      "item": "projectdinosaur:encased_frozen_rock_fossil"
+    }
+  ],
+  "result": {
+    "item": "minecraft:cobblestone"
+  }
+}

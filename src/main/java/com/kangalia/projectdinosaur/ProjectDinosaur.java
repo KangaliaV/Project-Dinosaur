@@ -1,6 +1,8 @@
 package com.kangalia.projectdinosaur;
 
+import com.kangalia.projectdinosaur.common.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.init.*;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,7 +25,8 @@ public class ProjectDinosaur {
         ItemInit.ITEMS.register(bus);
         BlockInit.BLOCKS.register(bus);
         TileEntitiesInit.TILE_ENTITIES.register(bus);
-        ContainersInit.CONTAINERS.register(bus);
+        ContainerInit.CONTAINERS.register(bus);
+        RecipeInit.register(bus);
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, FeatureInit::addOres);
         MinecraftForge.EVENT_BUS.register(this);

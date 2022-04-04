@@ -2,9 +2,12 @@ package com.kangalia.projectdinosaur.core.util;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
-import com.kangalia.projectdinosaur.core.init.ContainersInit;
+import com.kangalia.projectdinosaur.core.init.BlockInit;
+import com.kangalia.projectdinosaur.core.init.ContainerInit;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,11 +19,12 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        ScreenManager.register(ContainersInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
+        ScreenManager.register(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
+        RenderTypeLookup.setRenderLayer(BlockInit.AMBER_BLOCK.get(), RenderType.translucent());
     }
 
     @SubscribeEvent
     public static void onRegisterBlocks(final RegistryEvent.Register<Block> event) throws NoSuchFieldException, IllegalAccessException {
-        EventHandler.addStripping();
+        //EventHandler.addStripping();
     }
 }

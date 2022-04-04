@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 3,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:netherite_chisel"
+    },
+    {
+      "item": "projectdinosaur:encased_alpine_rock_fossil"
+    }
+  ],
+  "result": {
+    "item": "minecraft:coal"
+  }
+}
