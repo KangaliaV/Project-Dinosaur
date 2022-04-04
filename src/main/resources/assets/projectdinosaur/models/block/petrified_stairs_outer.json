@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "projectdinosaur:blocks/petrified_planks",
+    "top": "projectdinosaur:blocks/petrified_planks",
+    "side": "projectdinosaur:blocks/petrified_planks"
+  }
+}
