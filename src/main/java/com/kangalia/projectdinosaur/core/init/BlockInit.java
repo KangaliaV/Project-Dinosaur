@@ -281,9 +281,10 @@ public class BlockInit {
     public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)
-            .strength(4.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
 
     //Machine Blocks
     public static final RegistryObject<Block> FOSSIL_EXCAVATOR = registerBlock("fossil_excavator", () -> new FossilExcavatorBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.METAL)

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "encased_grassland_rock_fossil"
+          "name": "projectdinosaur:encased_grassland_rock_fossil"
         }
       ]
     }

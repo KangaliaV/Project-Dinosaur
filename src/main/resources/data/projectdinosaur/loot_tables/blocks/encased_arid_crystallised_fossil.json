@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "encased_arid_crystallised_fossil"
+          "name": "projectdinosaur:encased_arid_crystallised_fossil"
         }
       ]
     }

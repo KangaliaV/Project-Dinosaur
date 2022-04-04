@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "encased_temperate_rock_fossil"
+          "name": "projectdinosaur:encased_temperate_rock_fossil"
         }
       ]
     }
