@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.common.item.Plaster;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
 import net.minecraft.item.BoatItem;
 import net.minecraft.item.Item;
@@ -39,5 +40,9 @@ public class ItemInit {
 
     //Miscellaneous Items
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+
+    //Plaster
+    public static final RegistryObject<Item> PLASTER = ITEMS.register("plaster", () -> new Plaster(new Item.Properties().tab(DinoItems.DINO_ITEMS)));
+
 
 }
