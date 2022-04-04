@@ -1,8 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "projectdinosaur:blocks/grassland_planks",
-    "top": "projectdinosaur:blocks/grassland_planks",
-    "side": "projectdinosaur:blocks/grassland_planks"
-  }
-}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#~#",
+    "S@S",
+    "#S#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "~": {
+      "item": "minecraft:glass"
+    },
+    "@": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:fossil_excavator",
+    "count": 1
+  }
+}

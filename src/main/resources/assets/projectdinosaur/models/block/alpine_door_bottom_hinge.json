@@ -1,7 +1,0 @@
-{
-  "parent": "block/door_bottom_rh",
-  "textures": {
-    "top": "projectdinosaur:block/alpine_door_top",
-    "bottom": "projectdinosaur:block/alpine_door_bottom"
-  }
-}

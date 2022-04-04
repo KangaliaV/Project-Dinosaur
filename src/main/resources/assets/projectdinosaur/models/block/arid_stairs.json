@@ -1,8 +1,0 @@
-{
-  "parent": "block/stairs",
-  "textures": {
-    "bottom": "projectdinosaur:block/arid_planks",
-    "top": "projectdinosaur:block/arid_planks",
-    "side": "projectdinosaur:block/arid_planks"
-  }
-}

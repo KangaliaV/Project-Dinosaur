@@ -35,48 +35,6 @@ public class BlockInit {
             .strength(2.0f, 2.0f)
             .sound(SoundType.WOOD)));
 
-    //Alpine Wood
-    public static final RegistryObject<Block> ALPINE_LOG = registerBlock("alpine_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> STRIPPED_ALPINE_LOG = registerBlock("stripped_alpine_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> ALPINE_PLANKS = registerBlock("alpine_planks", () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-
-    //Aquatic Wood
-    public static final RegistryObject<Block> AQUATIC_LOG = registerBlock("aquatic_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> STRIPPED_AQUATIC_LOG = registerBlock("stripped_aquatic_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> AQUATIC_PLANKS = registerBlock("aquatic_planks", () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-
-    //Arid Wood
-    public static final RegistryObject<Block> ARID_LOG = registerBlock("arid_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> STRIPPED_ARID_LOG = registerBlock("stripped_arid_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> ARID_PLANKS = registerBlock("arid_planks", () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-
     //Rock Fossil Ores
     public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
@@ -177,7 +135,7 @@ public class BlockInit {
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
 
-    //Crystallised Fossil Block
+    //Crystallised Fossil Blocks
     public static final RegistryObject<Block> ALPINE_CRYSTALLISED_FOSSIL = registerBlock("alpine_crystallised_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .harvestTool(ToolType.PICKAXE)
             .harvestLevel(2)

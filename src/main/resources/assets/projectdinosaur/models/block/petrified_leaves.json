@@ -1,6 +1,0 @@
-{
-  "parent": "block/leaves",
-  "textures": {
-    "all": "projectdinosaur:block/petrified_leaves"
-  }
-}

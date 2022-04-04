@@ -1,8 +1,0 @@
-{
-  "parent": "block/inner_stairs",
-  "textures": {
-    "bottom": "projectdinosaur:block/alpine_planks",
-    "top": "projectdinosaur:block/alpine_planks",
-    "side": "projectdinosaur:block/alpine_planks"
-  }
-}
