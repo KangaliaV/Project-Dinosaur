@@ -14,11 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class FossilExcavatorContainer extends Container {
     public TileEntity tileEntity;
+    public FossilExcavatorTileEntity excavatorTileEntity;
     private final PlayerEntity playerEntity;
     private final IItemHandler playerInventory;
     private IntArray fields;

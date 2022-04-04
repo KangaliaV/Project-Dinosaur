@@ -3,10 +3,10 @@
   "weight": 5,
   "ingredients": [
     {
-      "item": "projectdinosaur:encased_tropical_rock_fossil"
+      "item": "projectdinosaur:diamond_chisel"
     },
     {
-      "item": "projectdinosaur:diamond_chisel"
+      "item": "projectdinosaur:encased_tropical_rock_fossil"
     }
   ],
   "result": {

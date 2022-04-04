@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 2,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    {
+      "item": "projectdinosaur:encased_arid_rock_fossil"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:arid_rock_specimen"
+  }
+}

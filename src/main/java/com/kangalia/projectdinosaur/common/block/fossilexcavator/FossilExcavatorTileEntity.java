@@ -78,7 +78,15 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == BlockInit.ENCASED_GRASSLAND_ROCK_FOSSIL.get().asItem() ||
                             stack.getItem() == BlockInit.ENCASED_TEMPERATE_ROCK_FOSSIL.get().asItem() ||
                             stack.getItem() == BlockInit.ENCASED_TROPICAL_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_WETLAND_ROCK_FOSSIL.get().asItem();
+                            stack.getItem() == BlockInit.ENCASED_WETLAND_ROCK_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_ALPINE_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_AQUATIC_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_ARID_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_FROZEN_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_GRASSLAND_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_TEMPERATE_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_TROPICAL_CRYSTALLISED_FOSSIL.get().asItem() ||
+                            stack.getItem() == BlockInit.ENCASED_WETLAND_CRYSTALLISED_FOSSIL.get().asItem();
                 }
                 if (slot >= 7 && slot < 13) {
                     return stack.getItem() == ItemInit.ALPINE_ROCK_SPECIMEN.get() ||
@@ -89,6 +97,15 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == ItemInit.TEMPERATE_ROCK_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.TROPICAL_ROCK_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.WETLAND_ROCK_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.ALPINE_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.AQUATIC_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.ARID_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.FROZEN_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.GRASSLAND_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.TEMPERATE_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.AMBER.get() ||
                             stack.getItem() == Items.BONE.getItem() ||
                             stack.getItem() == Items.CLAY_BALL.getItem() ||
                             stack.getItem() == Items.FLINT.getItem() ||
@@ -97,7 +114,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == Blocks.CLAY.asItem() ||
                             stack.getItem() == Blocks.COBBLESTONE.asItem() ||
                             stack.getItem() == Blocks.GRAVEL.asItem() ||
-                            stack.getItem() == Blocks.PACKED_ICE.asItem() ||
+                            stack.getItem() == Blocks.ICE.asItem() ||
                             stack.getItem() == Blocks.SAND.asItem();
                 }
                 if (slot == 0) {
@@ -113,10 +130,16 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
             public ItemStack insertItem(int slot, ItemStack stack , boolean simulate) {
                 return(isItemValid(slot, stack)) ? super.insertItem(slot, stack, simulate) : stack;
             }
+
+            //Hopper extraction code doesn't work. Needs to be worked on.
             @Nonnull
             @Override
             public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                return (slot == 7 || slot == 8 || slot == 9 || slot == 10 || slot == 11 || slot == 12) ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+                if (slot < 7) {
+                    return super.extractItem(slot, amount, simulate);
+                } else {
+                    return (slot == 7 || slot == 8 || slot == 9 || slot == 10 || slot == 11 || slot == 12) ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+                }
             }
 
             @Override
@@ -168,8 +191,11 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
             inputSlot = itemHandler.getStackInSlot(slot);
             if(!inputSlot.isEmpty()) {
                 this.inputIndex = slot;
-                flag = true;
-                break;
+                ItemStack chiselSlot = itemHandler.getStackInSlot(0);
+                if(!chiselSlot.isEmpty()) {
+                    flag = true;
+                    break;
+                }
             }
         }
         if (inputIndex == -1 || !flag) {

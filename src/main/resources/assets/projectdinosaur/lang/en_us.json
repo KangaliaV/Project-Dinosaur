@@ -45,6 +45,8 @@
   "block.projectdinosaur.alpine_rock_fossil": "Alpine Rock Fossil",
   "block.projectdinosaur.encased_alpine_rock_fossil": "Encased Alpine Rock Fossil",
   "item.projectdinosaur.alpine_boat": "Alpine Boat",
+  "block.projectdinosaur.alpine_crystallised_fossil": "Alpine Crystallised Fossil",
+  "block.projectdinosaur.encased_alpine_crystallised_fossil": "Encased Alpine Crystallised Fossil",
 
   "block.projectdinosaur.aquatic_planks": "Aquatic Planks",
   "block.projectdinosaur.aquatic_sapling": "Aquatic Sapling",
@@ -67,6 +69,8 @@
   "block.projectdinosaur.aquatic_rock_fossil": "Aquatic Rock Fossil",
   "block.projectdinosaur.encased_aquatic_rock_fossil": "Encased Aquatic Rock Fossil",
   "item.projectdinosaur.aquatic_boat": "Aquatic Boat",
+  "block.projectdinosaur.aquatic_crystallised_fossil": "Aquatic Crystallised Fossil",
+  "block.projectdinosaur.encased_aquatic_crystallised_fossil": "Encased Aquatic Crystallised Fossil",
 
   "block.projectdinosaur.arid_planks": "Arid Planks",
   "block.projectdinosaur.arid_sapling": "Arid Sapling",
@@ -89,6 +93,8 @@
   "block.projectdinosaur.arid_rock_fossil": "Arid Rock Fossil",
   "block.projectdinosaur.encased_arid_rock_fossil": "Encased Arid Rock Fossil",
   "item.projectdinosaur.arid_boat": "Arid Boat",
+  "block.projectdinosaur.arid_crystallised_fossil": "Arid Crystallised Fossil",
+  "block.projectdinosaur.encased_arid_crystallised_fossil": "Encased Arid Crystallised Fossil",
 
   "block.projectdinosaur.frozen_planks": "Frozen Planks",
   "block.projectdinosaur.frozen_sapling": "Frozen Sapling",
@@ -111,6 +117,8 @@
   "block.projectdinosaur.frozen_rock_fossil": "Frozen Rock Fossil",
   "block.projectdinosaur.encased_frozen_rock_fossil": "Encased Frozen Rock Fossil",
   "item.projectdinosaur.frozen_boat": "Frozen Boat",
+  "block.projectdinosaur.frozen_crystallised_fossil": "Frozen Crystallised Fossil",
+  "block.projectdinosaur.encased_frozen_crystallised_fossil": "Encased Frozen Crystallised Fossil",
 
   "block.projectdinosaur.grassland_planks": "Grassland Planks",
   "block.projectdinosaur.grassland_sapling": "Grassland Sapling",
@@ -133,6 +141,8 @@
   "block.projectdinosaur.grassland_rock_fossil": "Grassland Rock Fossil",
   "block.projectdinosaur.encased_grassland_rock_fossil": "Encased Grassland Rock Fossil",
   "item.projectdinosaur.grassland_boat": "Grassland Boat",
+  "block.projectdinosaur.grassland_crystallised_fossil": "Grassland Crystallised Fossil",
+  "block.projectdinosaur.encased_grassland_crystallised_fossil": "Encased Grassland Crystallised Fossil",
 
   "block.projectdinosaur.temperate_planks": "Temperate Planks",
   "block.projectdinosaur.temperate_sapling": "Temperate Sapling",
@@ -155,6 +165,8 @@
   "block.projectdinosaur.temperate_rock_fossil": "Temperate Rock Fossil",
   "block.projectdinosaur.encased_temperate_rock_fossil": "Encased Temperate Rock Fossil",
   "item.projectdinosaur.temperate_boat": "Temperate Boat",
+  "block.projectdinosaur.temperate_crystallised_fossil": "Temperate Crystallised Fossil",
+  "block.projectdinosaur.encased_temperate_crystallised_fossil": "Encased Temperate Crystallised Fossil",
 
   "block.projectdinosaur.tropical_planks": "Tropical Planks",
   "block.projectdinosaur.tropical_sapling": "Tropical Sapling",
@@ -177,6 +189,8 @@
   "block.projectdinosaur.tropical_rock_fossil": "Tropical Rock Fossil",
   "block.projectdinosaur.encased_tropical_rock_fossil": "Encased Tropical Rock Fossil",
   "item.projectdinosaur.tropical_boat": "Tropical Boat",
+  "block.projectdinosaur.tropical_crystallised_fossil": "Tropical Crystallised Fossil",
+  "block.projectdinosaur.encased_tropical_crystallised_fossil": "Encased Tropical Crystallised Fossil",
 
   "block.projectdinosaur.wetland_planks": "Wetland Planks",
   "block.projectdinosaur.wetland_sapling": "Wetland Sapling",
@@ -199,6 +213,8 @@
   "block.projectdinosaur.wetland_rock_fossil": "Wetland Rock Fossil",
   "block.projectdinosaur.encased_wetland_rock_fossil": "Encased Wetland Rock Fossil",
   "item.projectdinosaur.wetland_boat": "Wetland Boat",
+  "block.projectdinosaur.wetland_crystallised_fossil": "Wetland Crystallised Fossil",
+  "block.projectdinosaur.encased_wetland_crystallised_fossil": "Encased Wetland Crystallised Fossil",
 
   "item.projectdinosaur.iron_chisel": "Iron Chisel",
   "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
@@ -207,5 +223,24 @@
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
   "screen.projectdinosaur.fossil_excavator": "Fossil Excavator",
 
-  "item.projectdinosaur.tropical_rock_specimen": "Tropical Rock Specimen"
+  "item.projectdinosaur.alpine_rock_specimen": "Alpine Rock Specimen",
+  "item.projectdinosaur.aquatic_rock_specimen": "Aquatic Rock Specimen",
+  "item.projectdinosaur.arid_rock_specimen": "Arid Rock Specimen",
+  "item.projectdinosaur.frozen_rock_specimen": "Frozen Rock Specimen",
+  "item.projectdinosaur.grassland_rock_specimen": "Grassland Rock Specimen",
+  "item.projectdinosaur.temperate_rock_specimen": "Temperate Rock Specimen",
+  "item.projectdinosaur.tropical_rock_specimen": "Tropical Rock Specimen",
+  "item.projectdinosaur.wetland_rock_specimen": "Wetland Rock Specimen",
+
+  "item.projectdinosaur.alpine_crystallised_specimen": "Alpine Crystallised Specimen",
+  "item.projectdinosaur.aquatic_crystallised_specimen": "Aquatic Crystallised Specimen",
+  "item.projectdinosaur.arid_crystallised_specimen": "Arid Crystallised Specimen",
+  "item.projectdinosaur.frozen_crystallised_specimen": "Frozen Crystallised Specimen",
+  "item.projectdinosaur.grassland_crystallised_specimen": "Grassland Crystallised Specimen",
+  "item.projectdinosaur.temperate_crystallised_specimen": "Temperate Crystallised Specimen",
+  "item.projectdinosaur.tropical_crystallised_specimen": "Tropical Crystallised Specimen",
+  "item.projectdinosaur.wetland_crystallised_specimen": "Wetland Crystallised Specimen",
+
+  "block.projectdinosaur.amber_block": "Amber Block",
+  "item.projectdinosaur.amber": "Amber"
 }

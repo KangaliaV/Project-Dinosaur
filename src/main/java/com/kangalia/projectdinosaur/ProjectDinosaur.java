@@ -28,7 +28,6 @@ public class ProjectDinosaur {
         ContainerInit.CONTAINERS.register(bus);
         RecipeInit.register(bus);
 
-
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, FeatureInit::addOres);
         MinecraftForge.EVENT_BUS.register(this);
     }

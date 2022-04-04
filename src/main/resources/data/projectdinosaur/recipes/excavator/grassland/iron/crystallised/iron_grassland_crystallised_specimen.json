@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 2,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    {
+      "item": "projectdinosaur:encased_grassland_crystallised_fossil"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:grassland_crystallised_specimen"
+  }
+}
