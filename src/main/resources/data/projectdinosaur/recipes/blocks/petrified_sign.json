@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    " ~ "
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:petrified_planks"
+    },
+    "~": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:petrified_sign",
+    "count": 3
+  }
+}

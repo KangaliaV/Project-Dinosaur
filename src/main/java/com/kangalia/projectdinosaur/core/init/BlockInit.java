@@ -36,8 +36,8 @@ public class BlockInit {
     public static final RegistryObject<Block> PETRIFIED_PRESSURE_PLATE = registerBlock("petrified_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.copy(Blocks.OAK_PRESSURE_PLATE)));
     public static final RegistryObject<Block> PETRIFIED_DOOR = registerBlock("petrified_door", () -> new DoorBlock(AbstractBlock.Properties.copy(Blocks.OAK_DOOR)));
     public static final RegistryObject<Block> PETRIFIED_TRAPDOOR = registerBlock("petrified_trapdoor", () -> new TrapDoorBlock(AbstractBlock.Properties.copy(Blocks.OAK_TRAPDOOR)));
-    public static final RegistryObject<Block> PETRIFIED_SIGN = BLOCKS.register("petrified_sign", () -> new PetrifiedSignStandingBlock(AbstractBlock.Properties.of(Material.WOOD), WoodTypesInit.PETRIFIED));
-    public static final RegistryObject<Block> PETRIFIED_SIGN_WALL = BLOCKS.register("petrified_sign_wall", () -> new PetrifiedSignWallBlock(AbstractBlock.Properties.of(Material.WOOD), WoodTypesInit.PETRIFIED));
+    public static final RegistryObject<Block> PETRIFIED_SIGN = BLOCKS.register("petrified_sign", () -> new PetrifiedSignStandingBlock(AbstractBlock.Properties.copy(Blocks.OAK_SIGN), WoodTypesInit.PETRIFIED));
+    public static final RegistryObject<Block> PETRIFIED_SIGN_WALL = BLOCKS.register("petrified_sign_wall", () -> new PetrifiedSignWallBlock(AbstractBlock.Properties.copy(Blocks.OAK_WALL_SIGN), WoodTypesInit.PETRIFIED));
 
 
     //Rock Fossil Ores

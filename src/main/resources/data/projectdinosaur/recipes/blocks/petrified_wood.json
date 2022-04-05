@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:petrified_log"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:petrified_wood",
+    "count": 3
+  }
+}
