@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.fossilexcavator.FossilExcavatorBlock;
+import com.kangalia.projectdinosaur.common.blocktypes.StripableRotatedPillarBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -20,9 +21,9 @@ public class BlockInit {
     public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ProjectDinosaur.MODID);
 
     //Petrified Wood
-    public static final RegistryObject<Block> PETRIFIED_LOG = registerBlock("petrified_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.OAK_LOG)));
+    public static final RegistryObject<Block> PETRIFIED_LOG = registerBlock("petrified_log", () -> new StripableRotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.OAK_LOG)));
     public static final RegistryObject<Block> STRIPPED_PETRIFIED_LOG = registerBlock("stripped_petrified_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.STRIPPED_OAK_LOG)));
-    public static final RegistryObject<Block> PETRIFIED_WOOD = registerBlock("petrified_wood", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.OAK_WOOD)));
+    public static final RegistryObject<Block> PETRIFIED_WOOD = registerBlock("petrified_wood", () -> new StripableRotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.OAK_WOOD)));
     public static final RegistryObject<Block> STRIPPED_PETRIFIED_WOOD = registerBlock("stripped_petrified_wood", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.STRIPPED_OAK_WOOD)));
     public static final RegistryObject<Block> PETRIFIED_PLANKS = registerBlock("petrified_planks", () -> new Block(AbstractBlock.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistryObject<Block> PETRIFIED_SLAB = registerBlock("petrified_slab", () -> new SlabBlock(AbstractBlock.Properties.copy(Blocks.OAK_SLAB)));

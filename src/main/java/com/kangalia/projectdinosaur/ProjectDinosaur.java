@@ -1,8 +1,6 @@
 package com.kangalia.projectdinosaur;
 
-import com.kangalia.projectdinosaur.common.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.init.*;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
