@@ -1,6 +1,6 @@
 {
-  "parent": "block/fence_side",
+  "parent": "minecraft:block/fence_side",
   "textures": {
-    "texture": "projectdinosaur:block/petrified_planks"
+    "texture": "projectdinosaur:blocks/petrified_planks"
   }
 }

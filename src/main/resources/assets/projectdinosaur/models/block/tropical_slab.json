@@ -1,8 +1,0 @@
-{
-  "parent": "block/slab",
-  "textures": {
-    "bottom": "projectdinosaur:blocks/tropical_planks",
-    "top": "projectdinosaur:blocks/tropical_planks",
-    "side": "projectdinosaur:blocks/tropical_planks"
-  }
-}

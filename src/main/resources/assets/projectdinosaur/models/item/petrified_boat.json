@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:item/petrified_boat"
+    "layer0": "projectdinosaur:items/petrified_boat"
   }
 }

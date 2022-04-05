@@ -2,17 +2,13 @@
   "type": "minecraft:block",
   "pools": [
     {
+      "name": "petrified_trapdoor",
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "projectdinosaur:petrified_trapdoor"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }

@@ -1,6 +1,0 @@
-{
-  "parent": "block/button",
-  "textures": {
-    "texture": "projectdinosaur:block/tropical_planks"
-  }
-}

@@ -1,6 +1,6 @@
 {
-  "parent": "block/fence_post",
+  "parent": "minecraft:block/fence_post",
   "textures": {
-    "texture": "projectdinosaur:block/petrified_planks"
+    "texture": "projectdinosaur:blocks/petrified_planks"
   }
 }

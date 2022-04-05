@@ -1,8 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "projectdinosaur:blocks/alpine_planks",
-    "top": "projectdinosaur:blocks/alpine_planks",
-    "side": "projectdinosaur:blocks/alpine_planks"
-  }
-}

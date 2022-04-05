@@ -1,12 +1,12 @@
 package com.kangalia.projectdinosaur;
 
-import com.kangalia.projectdinosaur.common.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.init.*;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.block.WoodType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,9 +26,18 @@ public class ProjectDinosaur {
         BlockInit.BLOCKS.register(bus);
         TileEntitiesInit.TILE_ENTITIES.register(bus);
         ContainerInit.CONTAINERS.register(bus);
+        EntityInit.ENTITY_TYPES.register(bus);
         RecipeInit.register(bus);
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, FeatureInit::addOres);
         MinecraftForge.EVENT_BUS.register(this);
+
+        bus.addListener(this::setup);
+    }
+
+    private void setup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            WoodType.register(WoodTypesInit.PETRIFIED);
+        });
     }
 }

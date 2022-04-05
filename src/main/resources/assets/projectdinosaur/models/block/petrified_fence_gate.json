@@ -1,6 +1,6 @@
 {
-  "parent": "block/template_fence_gate",
+  "parent": "minecraft:block/template_fence_gate",
   "textures": {
-    "texture": "projectdinosaur:block/petrified_planks"
+    "texture": "projectdinosaur:blocks/petrified_planks"
   }
 }

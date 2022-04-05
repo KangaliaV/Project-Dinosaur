@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "projectdinosaur:petrified_planks"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:petrified_button",
+    "count": 1
+  }
+}

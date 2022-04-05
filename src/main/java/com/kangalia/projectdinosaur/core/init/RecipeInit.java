@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.data.recipes.ExcavatingRecipe;
+import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.registry.Registry;

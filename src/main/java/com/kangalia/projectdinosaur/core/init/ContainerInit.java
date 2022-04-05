@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.block.fossilexcavator.FossilExcavatorContainer;
+import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

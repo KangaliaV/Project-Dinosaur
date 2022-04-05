@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "projectdinosaur:petrified_planks"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:petrified_slab",
+    "count": 6
+  }
+}
