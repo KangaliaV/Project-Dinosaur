@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top",
+  "textures": {
+    "top": "projectdinosaur:blocks/petrified_door_top",
+    "bottom": "projectdinosaur:blocks/petrified_door_bottom"
+  }
+}

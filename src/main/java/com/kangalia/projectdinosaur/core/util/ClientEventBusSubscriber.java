@@ -21,6 +21,8 @@ public class ClientEventBusSubscriber {
     public static void clientSetup(FMLClientSetupEvent event) {
         ScreenManager.register(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
         RenderTypeLookup.setRenderLayer(BlockInit.AMBER_BLOCK.get(), RenderType.translucent());
+        RenderTypeLookup.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());
     }
 
     @SubscribeEvent

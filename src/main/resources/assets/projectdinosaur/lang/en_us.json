@@ -9,6 +9,10 @@
   "block.projectdinosaur.petrified_stairs": "Petrified Stairs",
   "block.projectdinosaur.petrified_fence": "Petrified Fence",
   "block.projectdinosaur.petrified_fence_gate": "Petrified Fence Gate",
+  "block.projectdinosaur.petrified_button": "Petrified Button",
+  "block.projectdinosaur.petrified_pressure_plate": "Petrified Pressure Plate",
+  "block.projectdinosaur.petrified_door": "Petrified Door",
+  "block.projectdinosaur.petrified_trapdoor": "Petrified Trapdoor",
 
   "block.projectdinosaur.alpine_rock_fossil": "Alpine Rock Fossil",
   "block.projectdinosaur.encased_alpine_rock_fossil": "Encased Alpine Rock Fossil",

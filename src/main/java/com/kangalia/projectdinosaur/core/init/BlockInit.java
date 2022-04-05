@@ -50,6 +50,25 @@ public class BlockInit {
             .harvestTool(ToolType.AXE)
             .strength(2.0f, 2.0f)
             .sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> PETRIFIED_BUTTON = registerBlock("petrified_button", () -> new WoodButtonBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .harvestTool(ToolType.AXE)
+            .strength(2.0f, 2.0f)
+            .sound(SoundType.WOOD)
+            .noCollission()));
+    public static final RegistryObject<Block> PETRIFIED_PRESSURE_PLATE = registerBlock("petrified_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .harvestTool(ToolType.AXE)
+            .strength(2.0f, 2.0f)
+            .sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> PETRIFIED_DOOR = registerBlock("petrified_door", () -> new DoorBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .harvestTool(ToolType.AXE)
+            .strength(2.0f, 2.0f)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> PETRIFIED_TRAPDOOR = registerBlock("petrified_trapdoor", () -> new TrapDoorBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .harvestTool(ToolType.AXE)
+            .strength(2.0f, 2.0f)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
 
     //Rock Fossil Ores
     public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
