@@ -4,13 +4,18 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
+import com.kangalia.projectdinosaur.core.init.TileEntitiesInit;
+import com.kangalia.projectdinosaur.core.init.WoodTypesInit;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -23,6 +28,8 @@ public class ClientEventBusSubscriber {
         RenderTypeLookup.setRenderLayer(BlockInit.AMBER_BLOCK.get(), RenderType.translucent());
         RenderTypeLookup.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());
+        Atlases.addWoodType(WoodTypesInit.PETRIFIED);
+        ClientRegistry.bindTileEntityRenderer(TileEntitiesInit.PETRIFIED_SIGN_ENTITY.get(), SignTileEntityRenderer::new);
     }
 
     @SubscribeEvent

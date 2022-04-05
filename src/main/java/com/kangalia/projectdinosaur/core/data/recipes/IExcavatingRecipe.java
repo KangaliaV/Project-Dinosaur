@@ -1,4 +1,4 @@
-package com.kangalia.projectdinosaur.common.data.recipes;
+package com.kangalia.projectdinosaur.core.data.recipes;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import net.minecraft.inventory.IInventory;

@@ -1,4 +1,4 @@
-package com.kangalia.projectdinosaur.common.data.capabilities;
+package com.kangalia.projectdinosaur.core.data.capabilities;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

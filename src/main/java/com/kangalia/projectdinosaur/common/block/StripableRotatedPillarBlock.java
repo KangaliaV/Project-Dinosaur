@@ -1,4 +1,4 @@
-package com.kangalia.projectdinosaur.common.blocktypes;
+package com.kangalia.projectdinosaur.common.block;
 
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.block.BlockState;

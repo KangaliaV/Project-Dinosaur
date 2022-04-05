@@ -1,8 +1,10 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.block.fossilexcavator.FossilExcavatorBlock;
-import com.kangalia.projectdinosaur.common.blocktypes.StripableRotatedPillarBlock;
+import com.kangalia.projectdinosaur.common.block.FossilExcavatorBlock;
+import com.kangalia.projectdinosaur.common.block.PetrifiedSignStandingBlock;
+import com.kangalia.projectdinosaur.common.block.PetrifiedSignWallBlock;
+import com.kangalia.projectdinosaur.common.block.StripableRotatedPillarBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -34,6 +36,9 @@ public class BlockInit {
     public static final RegistryObject<Block> PETRIFIED_PRESSURE_PLATE = registerBlock("petrified_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.copy(Blocks.OAK_PRESSURE_PLATE)));
     public static final RegistryObject<Block> PETRIFIED_DOOR = registerBlock("petrified_door", () -> new DoorBlock(AbstractBlock.Properties.copy(Blocks.OAK_DOOR)));
     public static final RegistryObject<Block> PETRIFIED_TRAPDOOR = registerBlock("petrified_trapdoor", () -> new TrapDoorBlock(AbstractBlock.Properties.copy(Blocks.OAK_TRAPDOOR)));
+    public static final RegistryObject<Block> PETRIFIED_SIGN = BLOCKS.register("petrified_sign", () -> new PetrifiedSignStandingBlock(AbstractBlock.Properties.of(Material.WOOD), WoodTypesInit.PETRIFIED));
+    public static final RegistryObject<Block> PETRIFIED_SIGN_WALL = BLOCKS.register("petrified_sign_wall", () -> new PetrifiedSignWallBlock(AbstractBlock.Properties.of(Material.WOOD), WoodTypesInit.PETRIFIED));
+
 
     //Rock Fossil Ores
     public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)

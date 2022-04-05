@@ -1,5 +1,7 @@
-package com.kangalia.projectdinosaur.common.block.fossilexcavator;
+package com.kangalia.projectdinosaur.common.block;
 
+import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
+import com.kangalia.projectdinosaur.common.tileentity.FossilExcavatorTileEntity;
 import com.kangalia.projectdinosaur.core.init.TileEntitiesInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
