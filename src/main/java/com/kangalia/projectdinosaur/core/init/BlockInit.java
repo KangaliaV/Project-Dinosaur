@@ -19,56 +19,20 @@ import java.util.function.Supplier;
 public class BlockInit {
     public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ProjectDinosaur.MODID);
 
-    //Blocks
-
     //Petrified Wood
-    public static final RegistryObject<Block> PETRIFIED_LOG = registerBlock("petrified_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> STRIPPED_PETRIFIED_LOG = registerBlock("stripped_petrified_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_PLANKS = registerBlock("petrified_planks", () -> new Block(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_SLAB = registerBlock("petrified_slab", () -> new SlabBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_STAIRS = registerBlock("petrified_stairs", () -> new StairsBlock(() -> PETRIFIED_PLANKS.get().defaultBlockState(), AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_FENCE = registerBlock("petrified_fence", () -> new FenceBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_FENCE_GATE = registerBlock("petrified_fence_gate", () -> new FenceGateBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_BUTTON = registerBlock("petrified_button", () -> new WoodButtonBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)
-            .noCollission()));
-    public static final RegistryObject<Block> PETRIFIED_PRESSURE_PLATE = registerBlock("petrified_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)));
-    public static final RegistryObject<Block> PETRIFIED_DOOR = registerBlock("petrified_door", () -> new DoorBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)
-            .noOcclusion()));
-    public static final RegistryObject<Block> PETRIFIED_TRAPDOOR = registerBlock("petrified_trapdoor", () -> new TrapDoorBlock(AbstractBlock.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .harvestTool(ToolType.AXE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.WOOD)
-            .noOcclusion()));
+    public static final RegistryObject<Block> PETRIFIED_LOG = registerBlock("petrified_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.OAK_LOG)));
+    public static final RegistryObject<Block> STRIPPED_PETRIFIED_LOG = registerBlock("stripped_petrified_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.STRIPPED_OAK_LOG)));
+    public static final RegistryObject<Block> PETRIFIED_WOOD = registerBlock("petrified_wood", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.OAK_WOOD)));
+    public static final RegistryObject<Block> STRIPPED_PETRIFIED_WOOD = registerBlock("stripped_petrified_wood", () -> new RotatedPillarBlock(AbstractBlock.Properties.copy(Blocks.STRIPPED_OAK_WOOD)));
+    public static final RegistryObject<Block> PETRIFIED_PLANKS = registerBlock("petrified_planks", () -> new Block(AbstractBlock.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistryObject<Block> PETRIFIED_SLAB = registerBlock("petrified_slab", () -> new SlabBlock(AbstractBlock.Properties.copy(Blocks.OAK_SLAB)));
+    public static final RegistryObject<Block> PETRIFIED_STAIRS = registerBlock("petrified_stairs", () -> new StairsBlock(() -> PETRIFIED_PLANKS.get().defaultBlockState(), AbstractBlock.Properties.copy(Blocks.OAK_STAIRS)));
+    public static final RegistryObject<Block> PETRIFIED_FENCE = registerBlock("petrified_fence", () -> new FenceBlock(AbstractBlock.Properties.copy(Blocks.OAK_FENCE)));
+    public static final RegistryObject<Block> PETRIFIED_FENCE_GATE = registerBlock("petrified_fence_gate", () -> new FenceGateBlock(AbstractBlock.Properties.copy(Blocks.OAK_FENCE_GATE)));
+    public static final RegistryObject<Block> PETRIFIED_BUTTON = registerBlock("petrified_button", () -> new WoodButtonBlock(AbstractBlock.Properties.copy(Blocks.OAK_BUTTON)));
+    public static final RegistryObject<Block> PETRIFIED_PRESSURE_PLATE = registerBlock("petrified_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, AbstractBlock.Properties.copy(Blocks.OAK_PRESSURE_PLATE)));
+    public static final RegistryObject<Block> PETRIFIED_DOOR = registerBlock("petrified_door", () -> new DoorBlock(AbstractBlock.Properties.copy(Blocks.OAK_DOOR)));
+    public static final RegistryObject<Block> PETRIFIED_TRAPDOOR = registerBlock("petrified_trapdoor", () -> new TrapDoorBlock(AbstractBlock.Properties.copy(Blocks.OAK_TRAPDOOR)));
 
     //Rock Fossil Ores
     public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new OreBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
