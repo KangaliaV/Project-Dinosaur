@@ -1,6 +1,7 @@
 {
   "itemGroup.dino_blocks": "Project Dinosaur: Blocks",
   "itemGroup.dino_items": "Project Dinosaur: Items",
+  "itemGroup.dino_creatures": "Project Dinosaur: Mobs",
 
   "block.projectdinosaur.petrified_planks": "Petrified Planks",
   "block.projectdinosaur.petrified_log": "Petrified Log",
@@ -88,5 +89,7 @@
   "item.projectdinosaur.wetland_crystallised_specimen": "Wetland Crystallised Specimen",
 
   "block.projectdinosaur.amber_block": "Amber Block",
-  "item.projectdinosaur.amber": "Amber"
+  "item.projectdinosaur.amber": "Amber",
+
+  "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg"
 }

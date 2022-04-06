@@ -10,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod(ProjectDinosaur.MODID)
 @Mod.EventBusSubscriber(modid = ProjectDinosaur.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -33,6 +34,7 @@ public class ProjectDinosaur {
         MinecraftForge.EVENT_BUS.register(this);
 
         bus.addListener(this::setup);
+        GeckoLib.initialize();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
