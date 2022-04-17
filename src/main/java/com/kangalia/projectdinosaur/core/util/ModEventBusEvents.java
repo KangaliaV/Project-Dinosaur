@@ -20,6 +20,6 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void onRegisterEntities(RegistryEvent.Register<EntityType<?>> event) {
-        ModSpawnEggItem.initSpawnEggs();
+        //ModSpawnEggItem.initSpawnEggs();
     }
 }

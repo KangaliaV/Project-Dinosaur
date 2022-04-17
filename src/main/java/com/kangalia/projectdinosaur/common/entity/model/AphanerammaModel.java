@@ -20,6 +20,6 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(AphanerammaEntity animatable) {
-        return new ResourceLocation(ProjectDinosaur.MODID, "animations/aphaneramma_idle.animation.json");
+        return new ResourceLocation(ProjectDinosaur.MODID, "animations/aphaneramma.animation.json");
     }
 }
