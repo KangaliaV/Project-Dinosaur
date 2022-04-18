@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.core.data.capabilities;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ExcavatorOutputItemHandler extends ItemStackHandler{

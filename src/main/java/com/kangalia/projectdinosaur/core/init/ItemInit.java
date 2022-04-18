@@ -4,10 +4,9 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.item.PetrifiedBoatItem;
 import com.kangalia.projectdinosaur.common.item.Plaster;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
-import net.minecraft.item.BoatItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.SignItem;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SignItem;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

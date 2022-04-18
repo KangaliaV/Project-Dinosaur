@@ -6,11 +6,11 @@
   ],
   "key": {
     "#": {
-      "item": "projectdinosaur:petrified_planks"
+      "item": "projectdinosaur:amber"
     }
   },
   "result": {
-    "item": "minecraft:crafting_table",
+    "item": "projectdinosaur:amber_block",
     "count": 1
   }
 }

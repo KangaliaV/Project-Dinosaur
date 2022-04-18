@@ -2,19 +2,24 @@ package com.kangalia.projectdinosaur.core.data.recipes;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.RecipeInit;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
+
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
 public class ExcavatingRecipe implements IExcavatingRecipe {
 
@@ -31,7 +36,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
     }
 
     @Override
-    public boolean matches(IInventory inventory, World world) {
+    public boolean matches(Container inventory, Level world) {
         if(inputs.get(0).test(inventory.getItem(0))) {
             return inputs.get(1).test(inventory.getItem(1));
         }
@@ -46,7 +51,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
     }
 
     @Override
-    public ItemStack assemble(IInventory inv) {
+    public ItemStack assemble(Container inv) {
         return output;
     }
 
@@ -61,28 +66,35 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
-        return RecipeInit.EXCAVATING_SERIALIZER.get();
+    public RecipeSerializer<?> getSerializer() {
+        return Serializer.INSTANCE;
+    }
+
+    @Override
+    public RecipeType<?> getType() {
+        return ExcavatingRecipeType.INSTANCE;
     }
 
     public ItemStack getIcon() {
         return new ItemStack(BlockInit.FOSSIL_EXCAVATOR.get());
     }
 
-    public static class ExcavatingRecipeType implements IRecipeType<ExcavatingRecipe> {
-        @Override
-        public String toString() {
-            return ExcavatingRecipe.TYPE_ID.toString();
-        }
+    public static class ExcavatingRecipeType implements RecipeType<ExcavatingRecipe> {
+        private ExcavatingRecipeType() {}
+        public static final ExcavatingRecipeType INSTANCE = new ExcavatingRecipeType();
+        public static final String ID = "excavating";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ExcavatingRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ExcavatingRecipe> {
+
+        public static final Serializer INSTANCE = new Serializer();
+        public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "excavating");
 
         @Override
         public ExcavatingRecipe fromJson(ResourceLocation id, JsonObject json) {
-            ItemStack output = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-            JsonArray ingredients = JSONUtils.getAsJsonArray(json, "ingredients");
-            int weight = Integer.parseInt(JSONUtils.getAsString(json, "weight"));
+            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
+            int weight = Integer.parseInt(GsonHelper.getAsString(json, "weight"));
             NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
 
             for (int i = 0; i < inputs.size(); i++) {
@@ -94,7 +106,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
 
         @Nullable
         @Override
-        public ExcavatingRecipe fromNetwork(ResourceLocation id, PacketBuffer buffer) {
+        public ExcavatingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
 
             for(int i = 0; i < inputs.size(); i++) {
@@ -106,7 +118,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, ExcavatingRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, ExcavatingRecipe recipe) {
             buffer.writeInt(recipe.getIngredients().size());
             for (Ingredient ingredient : recipe.getIngredients()) {
                 ingredient.toNetwork(buffer);
