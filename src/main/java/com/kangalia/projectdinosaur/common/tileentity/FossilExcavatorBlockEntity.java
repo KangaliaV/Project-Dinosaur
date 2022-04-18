@@ -1,26 +1,39 @@
 package com.kangalia.projectdinosaur.common.tileentity;
 
+import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
+import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.init.RecipeInit;
-import com.kangalia.projectdinosaur.core.init.TileEntitiesInit;
+import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
+import com.mojang.math.Constants;
+import net.minecraft.client.renderer.FaceInfo;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.TickingBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -30,34 +43,40 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FossilExcavatorTileEntity extends TileEntity implements ITickableTileEntity {
+public class FossilExcavatorBlockEntity extends BlockEntity {
 
     static final int WORK_TIME = 5 * 20;
     private int progress = 0;
     private int inputIndex;
-    Inventory inventory;
+    SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
     private final RandomNumGen rng = new RandomNumGen();
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    public FossilExcavatorTileEntity() {
-        super(TileEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get());
+    public FossilExcavatorBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(BlockEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get(), blockPos, blockState);
         this.items = NonNullList.withSize(13, ItemStack.EMPTY);
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
-        this.progress = nbt.getInt("progress");
-        super.load(state, nbt);
+    public void setRemoved() {
+        super.setRemoved();
+        handler.invalidate();
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        compound.put("inv", itemHandler.serializeNBT());
-        compound.putInt("progress", this.progress);
-        return super.save(compound);
+    public void load(CompoundTag nbt) {
+        itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        this.progress = nbt.getInt("progress");
+        super.load(nbt);
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag nbt) {
+        nbt.put("inv", itemHandler.serializeNBT());
+        nbt.putInt("progress", this.progress);
+        super.saveAdditional(nbt);
     }
 
     private ItemStackHandler createHandler() {
@@ -104,11 +123,11 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                             stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.AMBER.get() ||
-                            stack.getItem() == Items.BONE.getItem() ||
-                            stack.getItem() == Items.CLAY_BALL.getItem() ||
-                            stack.getItem() == Items.FLINT.getItem() ||
-                            stack.getItem() == Items.SNOWBALL.getItem() ||
-                            stack.getItem() == Items.COAL.getItem() ||
+                            stack.getItem() == Items.BONE ||
+                            stack.getItem() == Items.CLAY_BALL||
+                            stack.getItem() == Items.FLINT||
+                            stack.getItem() == Items.SNOWBALL||
+                            stack.getItem() == Items.COAL ||
                             stack.getItem() == Blocks.CLAY.asItem() ||
                             stack.getItem() == Blocks.COBBLESTONE.asItem() ||
                             stack.getItem() == Blocks.GRAVEL.asItem() ||
@@ -156,17 +175,16 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         return super.getCapability(cap, side);
     }
 
-
-
-    @Override
     public void tick() {
-        if (this.level == null || level.isClientSide) {
+        if (this.level == null) {
             return;
         }
+        BlockState blockState = level.getBlockState(worldPosition);
         if (this.canExcavate()) {
+            level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true), Block.UPDATE_ALL);
             if (progress < WORK_TIME) {
                 ++progress;
-                level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+                level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                 setChanged();
             }
             if (progress == WORK_TIME) {
@@ -174,6 +192,7 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
                 this.doExcavate();
             }
         } else {
+            level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, false), Block.UPDATE_ALL);
             progress = 0;
         }
         setChanged();
@@ -212,10 +231,10 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
 
     @Nullable
     public ExcavatingRecipe craft() {
-        inventory = new Inventory(itemHandler.getSlots());
+        inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < 7; i++) {
             inventory.addItem(itemHandler.getStackInSlot(i));
-            List<ExcavatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecipeInit.EXCAVATING_RECIPE, inventory, level);
+            List<ExcavatingRecipe> recipes = level.getRecipeManager().getRecipesFor(ExcavatingRecipe.ExcavatingRecipeType.INSTANCE, inventory, level);
             if (!recipes.isEmpty()) {
                 ExcavatingRecipe selectedRecipe;
                 if (recipes.size() == 1) {
@@ -276,27 +295,23 @@ public class FossilExcavatorTileEntity extends TileEntity implements ITickableTi
         }
     }
 
-    public int getProgress() {
-        return progress;
-    }
-
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT tags = this.getUpdateTag();
-        ItemStackHelper.saveAllItems(tags, this.items);
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag tags = this.getUpdateTag();
+        ContainerHelper.saveAllItems(tags, this.items);
         tags.putInt("progress", this.progress);
-        return new SUpdateTileEntityPacket(this.worldPosition, 1, tags);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        return this.save(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return this.saveWithFullMetadata();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        CompoundNBT tag = pkt.getTag();
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
         if (tag.contains("progress")) {
             progress = tag.getInt("progress");
             this.getTileData().putInt("progress", this.progress);

@@ -1,13 +1,16 @@
 package com.kangalia.projectdinosaur.common.block;
 
 import com.kangalia.projectdinosaur.common.tileentity.PetrifiedSignTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallSignBlock;
-import net.minecraft.block.WoodType;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.BlockGetter;
 
 import javax.annotation.Nullable;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class PetrifiedSignWallBlock extends WallSignBlock {
     public PetrifiedSignWallBlock(Properties properties, WoodType woodType) {
@@ -16,7 +19,7 @@ public class PetrifiedSignWallBlock extends WallSignBlock {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new PetrifiedSignTileEntity();
+    public BlockEntity newBlockEntity (BlockPos pos, BlockState state) {
+        return new PetrifiedSignTileEntity(pos, state);
     }
 }

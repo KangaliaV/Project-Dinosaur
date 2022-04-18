@@ -1,0 +1,42 @@
+{
+  "replace": false,
+  "values": [
+    "projectdinosaur:alpine_rock_fossil",
+    "projectdinosaur:aquatic_rock_fossil",
+    "projectdinosaur:arid_rock_fossil",
+    "projectdinosaur:frozen_rock_fossil",
+    "projectdinosaur:grassland_rock_fossil",
+    "projectdinosaur:temperate_rock_fossil",
+    "projectdinosaur:tropical_rock_fossil",
+    "projectdinosaur:wetland_rock_fossil",
+
+    "projectdinosaur:encased_alpine_rock_fossil",
+    "projectdinosaur:encased_aquatic_rock_fossil",
+    "projectdinosaur:encased_arid_rock_fossil",
+    "projectdinosaur:encased_frozen_rock_fossil",
+    "projectdinosaur:encased_grassland_rock_fossil",
+    "projectdinosaur:encased_temperate_rock_fossil",
+    "projectdinosaur:encased_tropical_rock_fossil",
+    "projectdinosaur:encased_wetland_rock_fossil",
+
+    "projectdinosaur:alpine_crystallised_fossil",
+    "projectdinosaur:aquatic_crystallised_fossil",
+    "projectdinosaur:arid_crystallised_fossil",
+    "projectdinosaur:frozen_crystallised_fossil",
+    "projectdinosaur:grassland_crystallised_fossil",
+    "projectdinosaur:temperate_crystallised_fossil",
+    "projectdinosaur:tropical_crystallised_fossil",
+    "projectdinosaur:wetland_crystallised_fossil",
+
+    "projectdinosaur:encased_alpine_crystallised_fossil",
+    "projectdinosaur:encased_aquatic_crystallised_fossil",
+    "projectdinosaur:encased_arid_crystallised_fossil",
+    "projectdinosaur:encased_frozen_crystallised_fossil",
+    "projectdinosaur:encased_grassland_crystallised_fossil",
+    "projectdinosaur:encased_temperate_crystallised_fossil",
+    "projectdinosaur:encased_tropical_crystallised_fossil",
+    "projectdinosaur:encased_wetland_crystallised_fossil",
+
+    "projectdinosaur:amber_block"
+  ]
+}

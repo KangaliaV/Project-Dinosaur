@@ -1,31 +1,31 @@
 package com.kangalia.projectdinosaur.common.container;
 
-import com.kangalia.projectdinosaur.common.tileentity.FossilExcavatorTileEntity;
+import com.kangalia.projectdinosaur.common.tileentity.FossilExcavatorBlockEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class FossilExcavatorContainer extends Container {
-    public TileEntity tileEntity;
-    public FossilExcavatorTileEntity excavatorTileEntity;
-    private final PlayerEntity playerEntity;
+public class FossilExcavatorContainer extends AbstractContainerMenu {
+    public BlockEntity tileEntity;
+    public FossilExcavatorBlockEntity excavatorTileEntity;
+    private final Player playerEntity;
     private final IItemHandler playerInventory;
-    private IntArray fields;
+    private SimpleContainerData fields;
 
-    public FossilExcavatorContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
+    public FossilExcavatorContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), windowId);
         this.tileEntity = world.getBlockEntity(pos);
         playerEntity = player;
@@ -68,8 +68,8 @@ public class FossilExcavatorContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn) {
-        return stillValid(IWorldPosCallable.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerIn, BlockInit.FOSSIL_EXCAVATOR.get());
+    public boolean stillValid(Player playerIn) {
+        return stillValid(ContainerLevelAccess.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerIn, BlockInit.FOSSIL_EXCAVATOR.get());
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
@@ -118,10 +118,10 @@ public class FossilExcavatorContainer extends Container {
     private static final int TE_INVENTORY_SLOT_COUNT = 13;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         Slot sourceSlot = slots.get(index);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem().getStack();
+        ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
         // Check if the slot clicked is one of the vanilla container slots

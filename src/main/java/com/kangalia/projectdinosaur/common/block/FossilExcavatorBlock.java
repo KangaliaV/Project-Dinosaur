@@ -1,40 +1,38 @@
 package com.kangalia.projectdinosaur.common.block;
 
 import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
-import com.kangalia.projectdinosaur.common.tileentity.FossilExcavatorTileEntity;
-import com.kangalia.projectdinosaur.core.init.TileEntitiesInit;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import com.kangalia.projectdinosaur.common.tileentity.FossilExcavatorBlockEntity;
+import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class FossilExcavatorBlock extends Block {
+public class FossilExcavatorBlock extends Block implements EntityBlock {
 
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public FossilExcavatorBlock(Properties properties) {
         super(properties);
@@ -42,45 +40,53 @@ public class FossilExcavatorBlock extends Block {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return TileEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get().create();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return BlockEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get().create(pos, state);
     }
 
+    @org.jetbrains.annotations.Nullable
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        if (pLevel.isClientSide()) {
+            return null;
+        }
+        return (lvl, pos, blockState, t) -> {
+            if (t instanceof FossilExcavatorBlockEntity blockEntity) {
+                blockEntity.tick();
+            }
+        };
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if(world.isClientSide) {
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         if(!world.isClientSide) {
-            TileEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof FossilExcavatorTileEntity && player instanceof ServerPlayerEntity) {
+            BlockEntity tileEntity = world.getBlockEntity(pos);
+            if(tileEntity instanceof FossilExcavatorBlockEntity && player instanceof ServerPlayer) {
 
-                INamedContainerProvider containerProvider = createContainerProvider(world, pos);
-                NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getBlockPos());
+                MenuProvider containerProvider = createContainerProvider(world, pos);
+                NetworkHooks.openGui(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
             }
             else {
                 throw new IllegalStateException("Container Provider is Missing!");
             }
         }
-        return ActionResultType.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
-    private INamedContainerProvider createContainerProvider(World world, BlockPos pos) {
-        return new INamedContainerProvider() {
+    private MenuProvider createContainerProvider(Level world, BlockPos pos) {
+        return new MenuProvider() {
             @Override
-            public ITextComponent getDisplayName() {
-                return new TranslationTextComponent("screen.projectdinosaur.fossil_excavator");
+            public Component getDisplayName() {
+                return new TranslatableComponent("screen.projectdinosaur.fossil_excavator");
             }
 
             @Nullable
             @Override
-            public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+            public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
                 return new FossilExcavatorContainer(i, world, pos, playerInventory, playerEntity);
             }
         };
@@ -88,8 +94,8 @@ public class FossilExcavatorBlock extends Block {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        if(state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        if(state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
             world.getBlockEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 for (int i = 0; i < h.getSlots(); i++) {
                     popResource(world, pos, h.getStackInSlot(i));
@@ -102,18 +108,19 @@ public class FossilExcavatorBlock extends Block {
 
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(BlockStateProperties.FACING, BlockStateProperties.POWERED);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return defaultBlockState().setValue(BlockStateProperties.FACING, context.getHorizontalDirection().getOpposite());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return super.getStateForPlacement(context).setValue(BlockStateProperties.FACING, context.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.POWERED, false);
     }
 
     @Override
-    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
+    public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
         return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
     }
 

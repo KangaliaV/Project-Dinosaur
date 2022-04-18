@@ -31,7 +31,7 @@ logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
 credits="Written in Java by our developers" #optional
 # A text field displayed in the mod UI
-authors="Kangalia, Paleo_Bantoo, PollyPlayz, FL_Animations, Kango_V" #optional
+authors="Kangalia, Paleo_Bantoo, PollyPlayz, FL_Animations, Kango_V, Beasty" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 A mod to bring dinosaurs, archeology and paleontology to Minecraft.
@@ -43,7 +43,7 @@ A mod to bring dinosaurs, archeology and paleontology to Minecraft.
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[36,)" #mandatory
+    versionRange="[38,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -53,6 +53,6 @@ A mod to bring dinosaurs, archeology and paleontology to Minecraft.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.16.5,1.17)"
+    versionRange="[1.18,)"
     ordering="NONE"
     side="BOTH"
