@@ -1,10 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.block.FossilExcavatorBlock;
-import com.kangalia.projectdinosaur.common.block.PetrifiedSignStandingBlock;
-import com.kangalia.projectdinosaur.common.block.PetrifiedSignWallBlock;
-import com.kangalia.projectdinosaur.common.block.StripableRotatedPillarBlock;
+import com.kangalia.projectdinosaur.common.block.*;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -198,6 +195,11 @@ public class BlockInit {
 
     //Machine Blocks
     public static final RegistryObject<Block> FOSSIL_EXCAVATOR = registerBlock("fossil_excavator", () -> new FossilExcavatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
+            .strength(5.0f, 6.0f)
+            .sound(SoundType.METAL)
+            .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> CORE_STATION = registerBlock("core_station", () -> new CoreStationBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
             .strength(5.0f, 6.0f)
             .sound(SoundType.METAL)
             .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)

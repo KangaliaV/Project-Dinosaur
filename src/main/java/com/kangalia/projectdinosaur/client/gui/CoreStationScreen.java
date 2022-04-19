@@ -1,26 +1,25 @@
 package com.kangalia.projectdinosaur.client.gui;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
+import com.kangalia.projectdinosaur.common.blockentity.CoreStationBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
+import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
-@OnlyIn(Dist.CLIENT)
-public class FossilExcavatorScreen extends AbstractContainerScreen<FossilExcavatorContainer> {
+public class CoreStationScreen extends AbstractContainerScreen<CoreStationContainer> {
 
-    FossilExcavatorBlockEntity tileEntity;
-    private final ResourceLocation GUI = new ResourceLocation(ProjectDinosaur.MODID, "textures/gui/fossil_excavator.png");
+    CoreStationBlockEntity tileEntity;
+    private final ResourceLocation GUI = new ResourceLocation(ProjectDinosaur.MODID, "textures/gui/core_station.png");
 
-    public FossilExcavatorScreen(FossilExcavatorContainer screenContainer, Inventory inv, Component titleIn) {
+    public CoreStationScreen(CoreStationContainer screenContainer, Inventory inv, Component titleIn) {
         super (screenContainer, inv, titleIn);
-        tileEntity = (FossilExcavatorBlockEntity) screenContainer.tileEntity;
+        tileEntity = (CoreStationBlockEntity) screenContainer.tileEntity;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.core.util;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.client.gui.CoreStationScreen;
 import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
 import com.kangalia.projectdinosaur.common.entity.render.AphanerammaRenderer;
 import com.kangalia.projectdinosaur.common.entity.render.PetrifiedBoatRenderer;
@@ -26,6 +27,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
+        MenuScreens.register(ContainerInit.CORE_STATION_CONTAINER.get(), CoreStationScreen::new);
         ItemBlockRenderTypes.setRenderLayer(BlockInit.AMBER_BLOCK.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());
