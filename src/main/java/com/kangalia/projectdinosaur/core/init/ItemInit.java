@@ -3,9 +3,11 @@ package com.kangalia.projectdinosaur.core.init;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.item.PetrifiedBoatItem;
 import com.kangalia.projectdinosaur.common.item.Plaster;
+import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,6 +39,10 @@ public class ItemInit {
     public static final RegistryObject<Item> TEMPERATE_CRYSTALLISED_SPECIMEN = ITEMS.register("temperate_crystallised_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> TROPICAL_CRYSTALLISED_SPECIMEN = ITEMS.register("tropical_crystallised_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> WETLAND_CRYSTALLISED_SPECIMEN = ITEMS.register("wetland_crystallised_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+
+    //Spawn Eggs
+    public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new ForgeSpawnEggItem(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+
 
     //Miscellaneous Items
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));

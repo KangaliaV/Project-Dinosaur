@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.core.util;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
+import com.kangalia.projectdinosaur.common.entity.render.AphanerammaRenderer;
 import com.kangalia.projectdinosaur.common.entity.render.PetrifiedBoatRenderer;
 import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -31,5 +32,6 @@ public class ClientSetup {
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
         BlockEntityRenderers.register(BlockEntitiesInit.PETRIFIED_SIGN_ENTITY.get(), SignRenderer::new);
         EntityRenderers.register(EntityInit.PETRIFIED_BOAT.get(), PetrifiedBoatRenderer::new);
+        EntityRenderers.register(EntityInit.APHANERAMMA.get(), AphanerammaRenderer::new);
     }
 }
