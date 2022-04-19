@@ -2,12 +2,12 @@ package com.kangalia.projectdinosaur.core.itemgroup;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
-public class DinoBlocks extends ItemGroup {
+public class DinoBlocks extends CreativeModeTab {
 
-    public static final DinoBlocks DINO_BLOCKS = new DinoBlocks(ItemGroup.TABS.length, "dino_blocks");
+    public static final DinoBlocks DINO_BLOCKS = new DinoBlocks(CreativeModeTab.TABS.length, "dino_blocks");
 
     public DinoBlocks(int index, String label) {
         super(index, label);

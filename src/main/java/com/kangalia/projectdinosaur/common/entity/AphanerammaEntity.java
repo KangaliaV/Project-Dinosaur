@@ -1,28 +1,25 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.core.init.EntityInit;
-import com.kangalia.projectdinosaur.core.init.ItemInit;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -31,24 +28,22 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class AphanerammaEntity extends TameableEntity implements IAnimatable {
+public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public AphanerammaEntity(EntityType<? extends TameableEntity> entityType, World world) {
+    public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH,6.0F)
-                .add(Attributes.MOVEMENT_SPEED,0.2F);
+                .add(Attributes.MOVEMENT_SPEED,0.1F)
+                .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F)) {
+        if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
             event.getController().setAnimation(new AnimationBuilder()
                     .addAnimation("animation.Aphaneramma.walk", true));
             event.getController().setAnimationSpeed(1.0);
@@ -78,18 +73,19 @@ public class AphanerammaEntity extends TameableEntity implements IAnimatable {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     @Override
-    protected int getExperienceReward(PlayerEntity player) {
+    protected int getExperienceReward(Player player) {
         return 1 + this.level.random.nextInt(4);
     }
 
+    @Nullable
     @Override
-    public SoundEvent getAmbientSound() {
+    protected SoundEvent getAmbientSound() {
         return SoundEvents.BAT_AMBIENT;
     }
 
@@ -108,27 +104,24 @@ public class AphanerammaEntity extends TameableEntity implements IAnimatable {
         return 0.4f;
     }
 
-
-
     @Override
-    protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
+    protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.COW_STEP, 0.15F, 1.0F);
     }
 
-    @Nonnull
     @Override
-    public Vector3d getLeashOffset() {
-        return new Vector3d(0.0D, (0.6F * this.getEyeHeight()), (this.getBbWidth() * 0.4));
+    public boolean canBeLeashed(Player pPlayer) {
+        return false;
     }
 
-    @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    /*@Override
+    public ItemStack getPickedResult(target) {
         return new ItemStack(ItemInit.APHANERAMMA_SPAWN_EGG.get());
-    }
+    }*/
 
-    @Nullable
+    @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
         return EntityInit.APHANERAMMA.get().create(serverWorld);
     }
 }

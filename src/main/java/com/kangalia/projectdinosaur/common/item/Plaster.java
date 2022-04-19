@@ -1,16 +1,15 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.core.init.BlockInit;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class Plaster extends Item {
 
@@ -19,8 +18,8 @@ public class Plaster extends Item {
     }
 
     @Override
-    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        World world = context.getLevel();
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+        Level world = context.getLevel();
 
         if (!world.isClientSide) {
             BlockState clickedBlock = world.getBlockState(context.getClickedPos());
@@ -28,15 +27,15 @@ public class Plaster extends Item {
             boolean success = rightClickBlock(clickedBlock, context, pos);
 
             if (success) {
-                world.playSound(null, pos, SoundEvents.BOOK_PAGE_TURN, SoundCategory.NEUTRAL, 2.0F, random.nextFloat() + 0.4F + 0.8F);
+                world.playSound(null, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.NEUTRAL, 2.0F, world.random.nextFloat() + 0.4F + 0.8F);
                 stack.shrink(1 );
             }
         }
-        return ActionResultType.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
-    private boolean rightClickBlock(BlockState clickedBlock, ItemUseContext context, BlockPos pos) {
-        World world = context.getLevel();
+    private boolean rightClickBlock(BlockState clickedBlock, UseOnContext context, BlockPos pos) {
+        Level world = context.getLevel();
 
         if (clickedBlock == BlockInit.ALPINE_ROCK_FOSSIL.get().defaultBlockState()) {
             world.setBlock(pos, BlockInit.ENCASED_ALPINE_ROCK_FOSSIL.get().defaultBlockState(), 1 );

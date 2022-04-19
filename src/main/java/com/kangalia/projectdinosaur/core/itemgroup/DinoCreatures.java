@@ -1,12 +1,12 @@
 package com.kangalia.projectdinosaur.core.itemgroup;
 
 import com.kangalia.projectdinosaur.core.init.ItemInit;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
-public class DinoCreatures extends ItemGroup{
+public class DinoCreatures extends CreativeModeTab {
 
-    public static final DinoCreatures DINO_CREATURES = new DinoCreatures(ItemGroup.TABS.length, "dino_creatures");
+    public static final DinoCreatures DINO_CREATURES = new DinoCreatures(CreativeModeTab.TABS.length, "dino_creatures");
 
     public DinoCreatures(int index, String label) {
         super(index, label);
