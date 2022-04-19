@@ -1,30 +1,28 @@
 package com.kangalia.projectdinosaur.common.container;
 
-import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class FossilExcavatorContainer extends AbstractContainerMenu {
+public class CoreStationContainer extends AbstractContainerMenu {
     public BlockEntity tileEntity;
     private final Player playerEntity;
     private final IItemHandler playerInventory;
 
-    public FossilExcavatorContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
-        super(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), windowId);
+    public CoreStationContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
+        super(ContainerInit.CORE_STATION_CONTAINER.get(), windowId);
         this.tileEntity = world.getBlockEntity(pos);
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
@@ -62,12 +60,11 @@ public class FossilExcavatorContainer extends AbstractContainerMenu {
                 addSlot(new SlotItemHandler(h, 12, 131, 52));
             });
         }
-
     }
 
     @Override
-    public boolean stillValid(Player playerIn) {
-        return stillValid(ContainerLevelAccess.create(tileEntity.getLevel(), tileEntity.getBlockPos()), playerIn, BlockInit.FOSSIL_EXCAVATOR.get());
+    public boolean stillValid(Player pPlayer) {
+        return stillValid(ContainerLevelAccess.create(tileEntity.getLevel(), tileEntity.getBlockPos()), pPlayer, BlockInit.CORE_STATION.get());
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {

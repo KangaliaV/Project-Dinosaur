@@ -15,10 +15,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ItemInit {
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProjectDinosaur.MODID);
 
-    //Chisels
+    //Tools
     public static final RegistryObject<Item> IRON_CHISEL = ITEMS.register("iron_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(250).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> DIAMOND_CHISEL = ITEMS.register("diamond_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(1561).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> NETHERITE_CHISEL = ITEMS.register("netherite_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(2031).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
 
     //Rock Specimens
     public static final RegistryObject<Item> ALPINE_ROCK_SPECIMEN = ITEMS.register("alpine_rock_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
@@ -40,9 +41,10 @@ public class ItemInit {
     public static final RegistryObject<Item> TROPICAL_CRYSTALLISED_SPECIMEN = ITEMS.register("tropical_crystallised_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> WETLAND_CRYSTALLISED_SPECIMEN = ITEMS.register("wetland_crystallised_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
 
+    public static final RegistryObject<Item> APHANERAMMA_DNA = ITEMS.register("aphaneramma_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+
     //Spawn Eggs
     public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new ForgeSpawnEggItem(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-
 
     //Miscellaneous Items
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));

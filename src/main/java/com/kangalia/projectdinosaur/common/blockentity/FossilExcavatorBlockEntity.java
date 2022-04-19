@@ -1,25 +1,12 @@
-package com.kangalia.projectdinosaur.common.tileentity;
+package com.kangalia.projectdinosaur.common.blockentity;
 
-import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
-import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
-import com.kangalia.projectdinosaur.core.init.RecipeInit;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
-import com.mojang.math.Constants;
-import net.minecraft.client.renderer.FaceInfo;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.SimpleContainer;

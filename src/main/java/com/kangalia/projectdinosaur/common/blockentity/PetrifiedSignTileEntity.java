@@ -1,4 +1,4 @@
-package com.kangalia.projectdinosaur.common.tileentity;
+package com.kangalia.projectdinosaur.common.blockentity;
 
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;

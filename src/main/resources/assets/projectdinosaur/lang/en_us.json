@@ -64,11 +64,15 @@
   "item.projectdinosaur.iron_chisel": "Iron Chisel",
   "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
   "item.projectdinosaur.netherite_chisel": "Netherite Chisel",
+  "item.projectdinosaur.syringe": "Empty Syringe",
 
   "item.projectdinosaur.plaster": "Plaster",
 
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
   "screen.projectdinosaur.fossil_excavator": "Fossil Excavator",
+
+  "block.projectdinosaur.core_station": "Core Station",
+  "screen.projectdinosaur.core_station": "Core Station",
 
   "item.projectdinosaur.alpine_rock_specimen": "Alpine Rock Specimen",
   "item.projectdinosaur.aquatic_rock_specimen": "Aquatic Rock Specimen",
@@ -90,6 +94,9 @@
 
   "block.projectdinosaur.amber_block": "Amber Block",
   "item.projectdinosaur.amber": "Amber",
+
+  "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
+
 
   "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg"
 }
