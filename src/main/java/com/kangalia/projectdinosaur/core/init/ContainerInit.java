@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
+import com.kangalia.projectdinosaur.common.container.DNARecombinatorContainer;
 import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,11 @@ public class ContainerInit {
         BlockPos pos = data.readBlockPos();
         Level world = inv.player.getCommandSenderWorld();
         return new CoreStationContainer(windowId, world, pos, inv, inv.player);
+    }));
+    public static final RegistryObject<MenuType<DNARecombinatorContainer>> DNA_RECOMBINATOR_CONTAINER = CONTAINERS.register("dna_recombinator_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        Level world = inv.player.getCommandSenderWorld();
+        return new DNARecombinatorContainer(windowId, world, pos, inv, inv.player);
     }));
 
 }

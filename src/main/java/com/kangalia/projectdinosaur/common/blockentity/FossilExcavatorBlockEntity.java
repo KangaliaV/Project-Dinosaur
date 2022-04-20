@@ -243,7 +243,7 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
                     inventory.removeAllItems();
                     return recipes.get(recipeIndex);
                 }
-
+                return selectedRecipe;
             }
         }
         return null;
@@ -251,7 +251,6 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
 
     private ItemStack getOutput(@Nullable ExcavatingRecipe selectedRecipe) {
         if (selectedRecipe != null) {
-            craft();
             return selectedRecipe.getResultItem();
         }
         return ItemStack.EMPTY;
