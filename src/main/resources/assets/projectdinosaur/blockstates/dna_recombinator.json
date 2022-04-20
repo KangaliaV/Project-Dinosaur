@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "projectdinosaur:block/dna_recombinator",
+      "x": 90
+    },
+    "facing=up,powered=false": {
+      "model": "projectdinosaur:block/dna_recombinator",
+      "x": -90
+    },
+    "facing=north,powered=false": {
+      "model": "projectdinosaur:block/dna_recombinator"
+    },
+    "facing=south,powered=false": {
+      "model": "projectdinosaur:block/dna_recombinator",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "projectdinosaur:block/dna_recombinator",
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "projectdinosaur:block/dna_recombinator",
+      "y": 90
+    },
+    "facing=down,powered=true": {
+      "model": "projectdinosaur:block/dna_recombinator_powered",
+      "x": 90
+    },
+    "facing=up,powered=true": {
+      "model": "projectdinosaur:block/dna_recombinator_powered",
+      "x": -90
+    },
+    "facing=north,powered=true": {
+      "model": "projectdinosaur:block/dna_recombinator_powered"
+    },
+    "facing=south,powered=true": {
+      "model": "projectdinosaur:block/dna_recombinator_powered",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "projectdinosaur:block/dna_recombinator_powered",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "projectdinosaur:block/dna_recombinator_powered",
+      "y": 90
+    }
+  }
+}
