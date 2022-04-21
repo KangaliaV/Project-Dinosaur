@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur;
 import com.kangalia.projectdinosaur.common.worldgen.ores.OreGen;
 import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.data.recipes.ExtractingRecipe;
+import com.kangalia.projectdinosaur.core.data.recipes.IncubatingRecipe;
 import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.core.Registry;
@@ -56,5 +57,6 @@ public class ProjectDinosaur {
         Registry.register(Registry.RECIPE_TYPE, ExcavatingRecipe.ExcavatingRecipeType.ID, ExcavatingRecipe.ExcavatingRecipeType.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, ExtractingRecipe.ExtractingRecipeType.ID, ExtractingRecipe.ExtractingRecipeType.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, RecombinatingRecipe.RecombinatingRecipeType.ID, RecombinatingRecipe.RecombinatingRecipeType.INSTANCE);
+        Registry.register(Registry.RECIPE_TYPE, IncubatingRecipe.IncubatingRecipeType.ID, IncubatingRecipe.IncubatingRecipeType.INSTANCE);
     }
 }

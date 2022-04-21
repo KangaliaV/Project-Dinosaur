@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "projectdinosaur:blocks/fossil_excavator_bottom",
+    "down": "projectdinosaur:blocks/fossil_excavator_bottom",
+    "up": "projectdinosaur:blocks/fossil_excavator_bottom",
+    "north": "projectdinosaur:blocks/fossil_excavator_front",
+    "south": "projectdinosaur:blocks/fossil_excavator_side",
+    "east": "projectdinosaur:blocks/fossil_excavator_side",
+    "west": "projectdinosaur:blocks/fossil_excavator_side"
+  }
+}

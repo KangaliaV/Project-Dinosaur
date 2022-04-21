@@ -209,6 +209,11 @@ public class BlockInit {
             .sound(SoundType.METAL)
             .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
             .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> INCUBATOR = registerBlock("incubator", () -> new IncubatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
+            .strength(5.0f, 6.0f)
+            .sound(SoundType.METAL)
+            .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
+            .requiresCorrectToolForDrops()));
 
 
     //Helper Methods

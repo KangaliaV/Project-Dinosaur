@@ -19,13 +19,13 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class RecombinatingRecipe implements IRecombinatingRecipe {
+public class IncubatingRecipe implements IIncubatingRecipe {
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> inputs;
     private final Integer weight;
 
-    public RecombinatingRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputs, Integer weight) {
+    public IncubatingRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> inputs, Integer weight) {
         this.id = id;
         this.output = output;
         this.inputs = inputs;
@@ -64,31 +64,31 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecombinatingRecipe.Serializer.INSTANCE;
+        return IncubatingRecipe.Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return RecombinatingRecipe.RecombinatingRecipeType.INSTANCE;
+        return IncubatingRecipe.IncubatingRecipeType.INSTANCE;
     }
 
     public ItemStack getIcon() {
         return new ItemStack(BlockInit.FOSSIL_EXCAVATOR.get());
     }
 
-    public static class RecombinatingRecipeType implements RecipeType<RecombinatingRecipe> {
-        private RecombinatingRecipeType() {}
-        public static final RecombinatingRecipe.RecombinatingRecipeType INSTANCE = new RecombinatingRecipe.RecombinatingRecipeType();
-        public static final String ID = "recombinating";
+    public static class IncubatingRecipeType implements RecipeType<IncubatingRecipe> {
+        private IncubatingRecipeType() {}
+        public static final IncubatingRecipe.IncubatingRecipeType INSTANCE = new IncubatingRecipe.IncubatingRecipeType();
+        public static final String ID = "incubating";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<RecombinatingRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<IncubatingRecipe> {
 
-        public static final RecombinatingRecipe.Serializer INSTANCE = new RecombinatingRecipe.Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "recombinating");
+        public static final IncubatingRecipe.Serializer INSTANCE = new IncubatingRecipe.Serializer();
+        public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "incubating");
 
         @Override
-        public RecombinatingRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public IncubatingRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
             int weight = Integer.parseInt(GsonHelper.getAsString(json, "weight"));
@@ -98,12 +98,12 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new RecombinatingRecipe(id, output, inputs, weight);
+            return new IncubatingRecipe(id, output, inputs, weight);
         }
 
         @Nullable
         @Override
-        public RecombinatingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
+        public IncubatingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
 
             for(int i = 0; i < inputs.size(); i++) {
@@ -111,11 +111,11 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
             }
 
             ItemStack output = buffer.readItem();
-            return new RecombinatingRecipe(id, output, inputs, 1);
+            return new IncubatingRecipe(id, output, inputs, 1);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, RecombinatingRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, IncubatingRecipe recipe) {
             buffer.writeInt(recipe.getIngredients().size());
             for (Ingredient ingredient : recipe.getIngredients()) {
                 ingredient.toNetwork(buffer);

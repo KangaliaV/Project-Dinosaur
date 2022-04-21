@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.CoreStationScreen;
 import com.kangalia.projectdinosaur.client.gui.DNARecombinatorScreen;
 import com.kangalia.projectdinosaur.client.gui.FossilExcavatorScreen;
+import com.kangalia.projectdinosaur.client.gui.IncubatorScreen;
 import com.kangalia.projectdinosaur.common.entity.render.AphanerammaRenderer;
 import com.kangalia.projectdinosaur.common.entity.render.PetrifiedBoatRenderer;
 import com.kangalia.projectdinosaur.core.init.*;
@@ -27,11 +28,16 @@ public class ClientSetup {
         MenuScreens.register(ContainerInit.FOSSIL_EXCAVATOR_CONTAINER.get(), FossilExcavatorScreen::new);
         MenuScreens.register(ContainerInit.CORE_STATION_CONTAINER.get(), CoreStationScreen::new);
         MenuScreens.register(ContainerInit.DNA_RECOMBINATOR_CONTAINER.get(), DNARecombinatorScreen::new);
+        MenuScreens.register(ContainerInit.INCUBATOR_CONTAINER.get(), IncubatorScreen::new);
+
         ItemBlockRenderTypes.setRenderLayer(BlockInit.AMBER_BLOCK.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());
+
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
+
         BlockEntityRenderers.register(BlockEntitiesInit.PETRIFIED_SIGN_ENTITY.get(), SignRenderer::new);
+
         EntityRenderers.register(EntityInit.PETRIFIED_BOAT.get(), PetrifiedBoatRenderer::new);
         EntityRenderers.register(EntityInit.APHANERAMMA.get(), AphanerammaRenderer::new);
     }

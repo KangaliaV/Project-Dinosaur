@@ -1,6 +1,6 @@
 package com.kangalia.projectdinosaur.common.blockentity;
 
-import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
+import com.kangalia.projectdinosaur.core.data.recipes.IncubatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
@@ -15,6 +15,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,9 +29,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DNARecombinatorBlockEntity extends BlockEntity {
+public class IncubatorBlockEntity extends BlockEntity {
 
-    static final int WORK_TIME = 30 * 20;
+    static final int WORK_TIME = 5 * 20;
     private int progress = 0;
     SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
@@ -38,9 +39,9 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    public DNARecombinatorBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(BlockEntitiesInit.DNA_RECOMBINATOR_ENTITY.get(), blockPos, blockState);
-        this.items = NonNullList.withSize(7, ItemStack.EMPTY);
+    public IncubatorBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(BlockEntitiesInit.INCUBATOR_ENTITY.get(), blockPos, blockState);
+        this.items = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     @Override
@@ -64,20 +65,20 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     }
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler(7) {
+        return new ItemStackHandler(2) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
             }
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot >= 1 && slot < 7) {
-                    return stack.getItem() == Items.EGG ||
-                            stack.getItem() == ItemInit.ROTTEN_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get();
-                }
                 if (slot == 0) {
-                    return stack.getItem() == ItemInit.APHANERAMMA_DNA.get();
+                    return stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
+                            stack.getItem() == ItemInit.INCUBATED_APHANERAMMA_EGG.get() ||
+                            stack.getItem() == ItemInit.ROTTEN_EGG.get();
+                }
+                if (slot == 1) {
+                    return stack.getItem() == Blocks.HAY_BLOCK.asItem();
                 }
                 return false;
 
@@ -116,9 +117,9 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
             return;
         }
         BlockState blockState = level.getBlockState(worldPosition);
-        System.out.println("Before canRecombine");
-        if (this.canRecombine()) {
-            System.out.println("After canRecombine");
+        System.out.println("Before canIncubate");
+        if (this.canIncubate()) {
+            System.out.println("After canIncubate");
             level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true), Block.UPDATE_ALL);
             if (progress < WORK_TIME) {
                 ++progress;
@@ -128,8 +129,8 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
             }
             if (progress == WORK_TIME) {
                 progress = 0;
-                System.out.println("Begin doRecombine");
-                this.doRecombine();
+                System.out.println("Begin doIncubate");
+                this.doIncubate();
             }
         } else {
             level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, false), Block.UPDATE_ALL);
@@ -138,21 +139,12 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    private boolean canRecombine() {
+    private boolean canIncubate() {
         ItemStack inputSlot = ItemStack.EMPTY;
-        int counter = 0;
-        System.out.println("Begin canRecombine");
-        for (int slot = 1; slot < 7; slot++) {
-            inputSlot = itemHandler.getStackInSlot(slot);
-            System.out.println("Item in slot = "+inputSlot.getItem());
-            if (!inputSlot.isEmpty() && inputSlot.getItem() == Items.EGG) {
-                ++counter;
-                System.out.println("canRecombine counter: "+counter);
-            }
-        }
-        if (counter == 6) {
-            ItemStack syringeSlot = itemHandler.getStackInSlot(0);
-            if (!syringeSlot.isEmpty()) {
+        inputSlot = itemHandler.getStackInSlot(0);
+        if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get()) {
+            ItemStack haySlot = itemHandler.getStackInSlot(1);
+            if (!haySlot.isEmpty()) {
                 return true;
             }
         }
@@ -160,46 +152,46 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     }
 
     @Nullable
-    public RecombinatingRecipe craft() {
+    public IncubatingRecipe craft() {
         System.out.println("Start craft method");
         inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < 7; i++) {
-            inventory.addItem(itemHandler.getStackInSlot(i));
-            List<RecombinatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecombinatingRecipe.RecombinatingRecipeType.INSTANCE, inventory, level);
-            System.out.println("Get list of recipes");
-            if (!recipes.isEmpty()) {
-                RecombinatingRecipe selectedRecipe;
-                System.out.println("Recipes is not empty");
-                if (recipes.size() == 1) {
-                    selectedRecipe = recipes.get(0);
-                } else {
-                    int totalWeight = recipes.stream().map(r -> r.getWeight()).mapToInt(Integer::intValue).sum();
-                    int[] weightArray = new int[totalWeight];
-                    int pos = 0;
-                    for (int j = 0; j < recipes.size(); j++) {
-                        RecombinatingRecipe er = recipes.get(j);
-                        int weight = er.getWeight();
-                        for (int k = 0; k < weight; k++) {
-                            weightArray[pos] = j;
-                            pos++;
-                        }
+        inventory.addItem(itemHandler.getStackInSlot(0));
+        inventory.addItem(itemHandler.getStackInSlot(1));
+        List<IncubatingRecipe> recipes = level.getRecipeManager().getRecipesFor(IncubatingRecipe.IncubatingRecipeType.INSTANCE, inventory, level);
+        System.out.println("Get list of recipes");
+        if (!recipes.isEmpty()) {
+            IncubatingRecipe selectedRecipe;
+            System.out.println("Recipes is not empty");
+            if (recipes.size() == 1) {
+                selectedRecipe = recipes.get(0);
+            } else {
+                int totalWeight = recipes.stream().map(r -> r.getWeight()).mapToInt(Integer::intValue).sum();
+                int[] weightArray = new int[totalWeight];
+                int pos = 0;
+                for (int j = 0; j < recipes.size(); j++) {
+                    IncubatingRecipe er = recipes.get(j);
+                    int weight = er.getWeight();
+                    for (int k = 0; k < weight; k++) {
+                        weightArray[pos] = j;
+                        pos++;
                     }
-                    int randomNum = rng.nextInt(weightArray.length);
-                    int recipeIndex = weightArray[randomNum];
-                    inventory.removeAllItems();
-                    System.out.println("Selected Recipe: "+recipes.get(recipeIndex));
-                    return recipes.get(recipeIndex);
                 }
-                System.out.println("Selected Recipe: "+selectedRecipe);
-                return selectedRecipe;
+                int randomNum = rng.nextInt(weightArray.length);
+                int recipeIndex = weightArray[randomNum];
+                inventory.removeAllItems();
+                System.out.println("Selected Recipe: "+recipes.get(recipeIndex));
+                return recipes.get(recipeIndex);
             }
+            System.out.println("Selected Recipe: "+selectedRecipe);
+            return selectedRecipe;
         }
         return null;
     }
 
-    private ItemStack getOutput(@Nullable RecombinatingRecipe selectedRecipe) {
+    private ItemStack getOutput(@Nullable IncubatingRecipe selectedRecipe) {
         System.out.println("getOutput selectedRecipe: "+selectedRecipe);
         if (selectedRecipe != null) {
+            //craft();
             System.out.println("getOutput: "+ selectedRecipe.getResultItem());
             return selectedRecipe.getResultItem();
         }
@@ -207,56 +199,21 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
-    public void doRecombine() {
+    public void doIncubate() {
         assert this.level != null;
-        ItemStack dna = itemHandler.getStackInSlot(0);
-        System.out.println("Begin doRecombine");
-        if (this.canRecombine()) {
-            System.out.println("canRecombine successful in doRecombine");
-            RecombinatingRecipe selectedRecipe1 = craft();
-            ItemStack output1 = getOutput(selectedRecipe1);
-            RecombinatingRecipe selectedRecipe2 = craft();
-            ItemStack output2 = getOutput(selectedRecipe2);
-            RecombinatingRecipe selectedRecipe3 = craft();
-            ItemStack output3 = getOutput(selectedRecipe3);
-            RecombinatingRecipe selectedRecipe4 = craft();
-            ItemStack output4 = getOutput(selectedRecipe4);
-            RecombinatingRecipe selectedRecipe5 = craft();
-            ItemStack output5 = getOutput(selectedRecipe5);
-            RecombinatingRecipe selectedRecipe6 = craft();
-            ItemStack output6 = getOutput(selectedRecipe6);
-            System.out.println("doRecombine Outputs: "+output1+", "+output2+", "+output3+", "+output4+", "+output5+", "+output6+".");
-            if (!output1.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(1);
+        ItemStack hay = itemHandler.getStackInSlot(1);
+        System.out.println("Begin doIncubate");
+        if (this.canIncubate()) {
+            System.out.println("canIncubate successful in doIncubate");
+            IncubatingRecipe selectedRecipe = craft();
+            ItemStack output = getOutput(selectedRecipe);
+            System.out.println("doIncubate Outputs: "+output+".");
+            if (!output.isEmpty()) {
+                ItemStack stack = itemHandler.getStackInSlot(0);
                 stack.shrink(1);
-                itemHandler.insertItem(1, output1, false);
+                itemHandler.insertItem(0, output, false);
             }
-            if (!output2.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(2);
-                stack.shrink(1);
-                itemHandler.insertItem(2, output2, false);
-            }
-            if (!output3.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(3);
-                stack.shrink(1);
-                itemHandler.insertItem(3, output3, false);
-            }
-            if (!output4.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(4);
-                stack.shrink(1);
-                itemHandler.insertItem(4, output4, false);
-            }
-            if (!output5.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(5);
-                stack.shrink(1);
-                itemHandler.insertItem(5, output5, false);
-            }
-            if (!output6.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(6);
-                stack.shrink(1);
-                itemHandler.insertItem(6, output6, false);
-            }
-            dna.shrink(1);
+            hay.shrink(1);
         }
     }
 
