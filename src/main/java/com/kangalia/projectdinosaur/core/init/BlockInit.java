@@ -2,7 +2,16 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
+import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
+import com.kangalia.projectdinosaur.common.block.machines.CoreStationBlock;
+import com.kangalia.projectdinosaur.common.block.machines.DNARecombinatorBlock;
+import com.kangalia.projectdinosaur.common.block.machines.FossilExcavatorBlock;
+import com.kangalia.projectdinosaur.common.block.machines.IncubatorBlock;
+import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
+import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
+import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.item.BlockItem;
@@ -13,19 +22,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.OreBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -186,13 +182,6 @@ public class BlockInit {
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
 
-    //Miscellaneous Blocks
-    public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
-            .strength(4.0f, 5.0f)
-            .sound(SoundType.METAL)
-            .requiresCorrectToolForDrops()
-            .noOcclusion()));
-
     //Machine Blocks
     public static final RegistryObject<Block> FOSSIL_EXCAVATOR = registerBlock("fossil_excavator", () -> new FossilExcavatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
             .strength(5.0f, 6.0f)
@@ -215,6 +204,22 @@ public class BlockInit {
             .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
             .requiresCorrectToolForDrops()));
 
+    //Miscellaneous Blocks
+    public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
+    public static final RegistryObject<Block> NEST = registerBlock("nest", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW)
+            .strength(0.5F)
+            .sound(SoundType.GRASS)));
+
+    //Eggs
+    public static final RegistryObject<Block> INCUBATED_APHANERAMMA_EGG = registerEggBlock("incubated_aphaneramma_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
+            .strength(0.5F)
+            .sound(SoundType.METAL)
+            .randomTicks()
+            .noOcclusion()));
 
     //Helper Methods
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
@@ -225,5 +230,15 @@ public class BlockInit {
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(DinoBlocks.DINO_BLOCKS)));
+    }
+
+    private static <T extends Block>RegistryObject<T> registerEggBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerEggBlockItem(name, toReturn);
+        return toReturn;
+    }
+
+    private static <T extends Block> void registerEggBlockItem(String name, RegistryObject<T> block) {
+        ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
     }
 }

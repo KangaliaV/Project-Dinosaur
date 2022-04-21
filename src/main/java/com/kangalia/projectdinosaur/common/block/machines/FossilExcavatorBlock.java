@@ -1,9 +1,7 @@
-package com.kangalia.projectdinosaur.common.block;
+package com.kangalia.projectdinosaur.common.block.machines;
 
-import com.kangalia.projectdinosaur.common.blockentity.CoreStationBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
-import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
 import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
+import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,20 +27,21 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
-public class CoreStationBlock extends Block implements EntityBlock {
+import javax.annotation.Nullable;
+
+public class FossilExcavatorBlock extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    public CoreStationBlock(Properties properties) {
+    public FossilExcavatorBlock(Properties properties) {
         super(properties);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntitiesInit.CORE_STATION_ENTITY.get().create(pos, state);
+        return BlockEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get().create(pos, state);
     }
 
     @org.jetbrains.annotations.Nullable
@@ -52,7 +51,7 @@ public class CoreStationBlock extends Block implements EntityBlock {
             return null;
         }
         return (lvl, pos, blockState, t) -> {
-            if (t instanceof CoreStationBlockEntity blockEntity) {
+            if (t instanceof FossilExcavatorBlockEntity blockEntity) {
                 blockEntity.tick();
             }
         };
@@ -66,7 +65,7 @@ public class CoreStationBlock extends Block implements EntityBlock {
         }
         if(!world.isClientSide) {
             BlockEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof CoreStationBlockEntity && player instanceof ServerPlayer) {
+            if(tileEntity instanceof FossilExcavatorBlockEntity && player instanceof ServerPlayer) {
 
                 MenuProvider containerProvider = createContainerProvider(world, pos);
                 NetworkHooks.openGui(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
@@ -82,13 +81,13 @@ public class CoreStationBlock extends Block implements EntityBlock {
         return new MenuProvider() {
             @Override
             public Component getDisplayName() {
-                return new TranslatableComponent("screen.projectdinosaur.core_station");
+                return new TranslatableComponent("screen.projectdinosaur.fossil_excavator");
             }
 
-            @javax.annotation.Nullable
+            @Nullable
             @Override
             public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                return new CoreStationContainer(i, world, pos, playerInventory, playerEntity);
+                return new FossilExcavatorContainer(i, world, pos, playerInventory, playerEntity);
             }
         };
     }
@@ -106,13 +105,15 @@ public class CoreStationBlock extends Block implements EntityBlock {
         super.onRemove(state, world, pos, newState, isMoving);
     }
 
+
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(BlockStateProperties.FACING, BlockStateProperties.POWERED);
     }
 
-    @javax.annotation.Nullable
+    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return super.getStateForPlacement(context).setValue(BlockStateProperties.FACING, context.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.POWERED, false);

@@ -47,9 +47,6 @@ public class ItemInit {
     //Fertilised Eggs
     public static final RegistryObject<Item> FERTILISED_APHANERAMMA_EGG = ITEMS.register("fertilised_aphaneramma_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
 
-    //Incubated Eggs
-    public static final RegistryObject<Item> INCUBATED_APHANERAMMA_EGG = ITEMS.register("incubated_aphaneramma_egg", () -> new Item(new Item.Properties().stacksTo(1).tab(DinoCreatures.DINO_CREATURES)));
-
     //Spawn Eggs
     public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new ForgeSpawnEggItem(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
 
