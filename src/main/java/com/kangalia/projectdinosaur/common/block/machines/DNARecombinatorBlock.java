@@ -1,4 +1,4 @@
-package com.kangalia.projectdinosaur.common.block;
+package com.kangalia.projectdinosaur.common.block.machines;
 
 import com.kangalia.projectdinosaur.common.blockentity.DNARecombinatorBlockEntity;
 import com.kangalia.projectdinosaur.common.container.DNARecombinatorContainer;

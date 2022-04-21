@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.common.blockentity;
 
 import com.kangalia.projectdinosaur.core.data.recipes.IncubatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
+import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
@@ -74,7 +75,7 @@ public class IncubatorBlockEntity extends BlockEntity {
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
-                            stack.getItem() == ItemInit.INCUBATED_APHANERAMMA_EGG.get() ||
+                            stack.getItem() == BlockInit.INCUBATED_APHANERAMMA_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {

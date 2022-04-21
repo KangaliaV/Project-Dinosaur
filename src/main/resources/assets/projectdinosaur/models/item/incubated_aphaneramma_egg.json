@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "projectdinosaur:items/incubated_aphaneramma_egg"
   }

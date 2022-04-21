@@ -1,7 +1,9 @@
-package com.kangalia.projectdinosaur.common.block;
+package com.kangalia.projectdinosaur.common.block.machines;
 
-import com.kangalia.projectdinosaur.common.blockentity.IncubatorBlockEntity;
-import com.kangalia.projectdinosaur.common.container.IncubatorContainer;
+import com.kangalia.projectdinosaur.common.blockentity.CoreStationBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
+import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
+import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,28 +31,28 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class IncubatorBlock extends Block implements EntityBlock {
+public class CoreStationBlock extends Block implements EntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    public IncubatorBlock(Properties properties) {
+    public CoreStationBlock(Properties properties) {
         super(properties);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntitiesInit.INCUBATOR_ENTITY.get().create(pos, state);
+        return BlockEntitiesInit.CORE_STATION_ENTITY.get().create(pos, state);
     }
 
-    @Nullable
+    @org.jetbrains.annotations.Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide()) {
             return null;
         }
         return (lvl, pos, blockState, t) -> {
-            if (t instanceof IncubatorBlockEntity blockEntity) {
+            if (t instanceof CoreStationBlockEntity blockEntity) {
                 blockEntity.tick();
             }
         };
@@ -64,7 +66,7 @@ public class IncubatorBlock extends Block implements EntityBlock {
         }
         if(!world.isClientSide) {
             BlockEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof IncubatorBlockEntity && player instanceof ServerPlayer) {
+            if(tileEntity instanceof CoreStationBlockEntity && player instanceof ServerPlayer) {
 
                 MenuProvider containerProvider = createContainerProvider(world, pos);
                 NetworkHooks.openGui(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
@@ -80,13 +82,13 @@ public class IncubatorBlock extends Block implements EntityBlock {
         return new MenuProvider() {
             @Override
             public Component getDisplayName() {
-                return new TranslatableComponent("screen.projectdinosaur.incubator");
+                return new TranslatableComponent("screen.projectdinosaur.core_station");
             }
 
             @javax.annotation.Nullable
             @Override
             public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                return new IncubatorContainer(i, world, pos, playerInventory, playerEntity);
+                return new CoreStationContainer(i, world, pos, playerInventory, playerEntity);
             }
         };
     }
