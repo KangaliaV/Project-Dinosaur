@@ -31,7 +31,7 @@ import java.util.List;
 
 public class IncubatorBlockEntity extends BlockEntity {
 
-    static final int WORK_TIME = 5 * 20;
+    static final int WORK_TIME = 300 * 20;
     private int progress = 0;
     SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
@@ -117,19 +117,15 @@ public class IncubatorBlockEntity extends BlockEntity {
             return;
         }
         BlockState blockState = level.getBlockState(worldPosition);
-        System.out.println("Before canIncubate");
         if (this.canIncubate()) {
-            System.out.println("After canIncubate");
             level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true), Block.UPDATE_ALL);
             if (progress < WORK_TIME) {
                 ++progress;
-                System.out.println("Progress Counter: "+progress);
                 level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                 setChanged();
             }
             if (progress == WORK_TIME) {
                 progress = 0;
-                System.out.println("Begin doIncubate");
                 this.doIncubate();
             }
         } else {
@@ -153,15 +149,12 @@ public class IncubatorBlockEntity extends BlockEntity {
 
     @Nullable
     public IncubatingRecipe craft() {
-        System.out.println("Start craft method");
         inventory = new SimpleContainer(itemHandler.getSlots());
         inventory.addItem(itemHandler.getStackInSlot(0));
         inventory.addItem(itemHandler.getStackInSlot(1));
         List<IncubatingRecipe> recipes = level.getRecipeManager().getRecipesFor(IncubatingRecipe.IncubatingRecipeType.INSTANCE, inventory, level);
-        System.out.println("Get list of recipes");
         if (!recipes.isEmpty()) {
             IncubatingRecipe selectedRecipe;
-            System.out.println("Recipes is not empty");
             if (recipes.size() == 1) {
                 selectedRecipe = recipes.get(0);
             } else {
@@ -179,35 +172,26 @@ public class IncubatorBlockEntity extends BlockEntity {
                 int randomNum = rng.nextInt(weightArray.length);
                 int recipeIndex = weightArray[randomNum];
                 inventory.removeAllItems();
-                System.out.println("Selected Recipe: "+recipes.get(recipeIndex));
                 return recipes.get(recipeIndex);
             }
-            System.out.println("Selected Recipe: "+selectedRecipe);
             return selectedRecipe;
         }
         return null;
     }
 
     private ItemStack getOutput(@Nullable IncubatingRecipe selectedRecipe) {
-        System.out.println("getOutput selectedRecipe: "+selectedRecipe);
         if (selectedRecipe != null) {
-            //craft();
-            System.out.println("getOutput: "+ selectedRecipe.getResultItem());
             return selectedRecipe.getResultItem();
         }
-        System.out.println("getOutput: "+ItemStack.EMPTY);
         return ItemStack.EMPTY;
     }
 
     public void doIncubate() {
         assert this.level != null;
         ItemStack hay = itemHandler.getStackInSlot(1);
-        System.out.println("Begin doIncubate");
         if (this.canIncubate()) {
-            System.out.println("canIncubate successful in doIncubate");
             IncubatingRecipe selectedRecipe = craft();
             ItemStack output = getOutput(selectedRecipe);
-            System.out.println("doIncubate Outputs: "+output+".");
             if (!output.isEmpty()) {
                 ItemStack stack = itemHandler.getStackInSlot(0);
                 stack.shrink(1);

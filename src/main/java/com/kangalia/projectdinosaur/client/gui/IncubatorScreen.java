@@ -35,7 +35,7 @@ public class IncubatorScreen extends AbstractContainerScreen<IncubatorContainer>
         this.blit(stack, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
         //Progress Bar
-        int maxUnitFill = 100;
+        int maxUnitFill = 6000;
         int pbLength = 15;
         int pbHeight = 45;
 
