@@ -16,13 +16,13 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class DNARecombinatorContainer extends AbstractContainerMenu {
+public class IncubatorContainer extends AbstractContainerMenu {
     public BlockEntity tileEntity;
     private final Player playerEntity;
     private final IItemHandler playerInventory;
 
-    public DNARecombinatorContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
-        super(ContainerInit.DNA_RECOMBINATOR_CONTAINER.get(), windowId);
+    public IncubatorContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
+        super(ContainerInit.INCUBATOR_CONTAINER.get(), windowId);
         this.tileEntity = world.getBlockEntity(pos);
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
@@ -32,27 +32,18 @@ public class DNARecombinatorContainer extends AbstractContainerMenu {
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 
-                //DNA Slot
-                addSlot(new SlotItemHandler(h, 0, 80, 16));
+                //Top Egg Slot
+                addSlot(new SlotItemHandler(h, 0, 96, 22));
 
-                //Top
-                addSlot(new SlotItemHandler(h, 1, 49, 16));
-                addSlot(new SlotItemHandler(h, 2, 111, 16));
-
-                //Middle
-                addSlot(new SlotItemHandler(h, 3, 29, 34));
-                addSlot(new SlotItemHandler(h, 4, 131, 34));
-
-                //Bottom
-                addSlot(new SlotItemHandler(h, 5, 49, 52));
-                addSlot(new SlotItemHandler(h, 6, 111, 52));
+                //Bottom Hay Slots
+                addSlot(new SlotItemHandler(h, 1, 96, 49));
             });
         }
     }
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(tileEntity.getLevel(), tileEntity.getBlockPos()), pPlayer, BlockInit.DNA_RECOMBINATOR.get());
+        return stillValid(ContainerLevelAccess.create(tileEntity.getLevel(), tileEntity.getBlockPos()), pPlayer, BlockInit.INCUBATOR.get());
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
@@ -98,7 +89,7 @@ public class DNARecombinatorContainer extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 7;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
+    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {

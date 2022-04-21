@@ -32,7 +32,7 @@ public class CoreStationContainer extends AbstractContainerMenu {
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
 
-                //Chisel Slot
+                //Syringe Slot
                 addSlot(new SlotItemHandler(h, 0, 80, 16));
 
                 //Left Side, Top Row

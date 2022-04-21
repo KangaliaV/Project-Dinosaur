@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
 import com.kangalia.projectdinosaur.common.container.DNARecombinatorContainer;
 import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
+import com.kangalia.projectdinosaur.common.container.IncubatorContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -30,6 +31,11 @@ public class ContainerInit {
         BlockPos pos = data.readBlockPos();
         Level world = inv.player.getCommandSenderWorld();
         return new DNARecombinatorContainer(windowId, world, pos, inv, inv.player);
+    }));
+    public static final RegistryObject<MenuType<IncubatorContainer>> INCUBATOR_CONTAINER = CONTAINERS.register("incubator_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        Level world = inv.player.getCommandSenderWorld();
+        return new IncubatorContainer(windowId, world, pos, inv, inv.player);
     }));
 
 }

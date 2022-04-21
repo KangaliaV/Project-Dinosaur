@@ -74,6 +74,9 @@
   "block.projectdinosaur.core_station": "Core Station",
   "screen.projectdinosaur.core_station": "Core Station",
 
+  "block.projectdinosaur.incubator": "Incubator",
+  "screen.projectdinosaur.incubator": "Incubator",
+
   "block.projectdinosaur.dna_recombinator": "DNA Recombinator",
   "screen.projectdinosaur.dna_recombinator": "DNA Recombinator",
 
@@ -101,8 +104,7 @@
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
 
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
-
   "item.projectdinosaur.fertilised_aphaneramma_egg": "Fertilised Aphaneramma Egg",
-
+  "item.projectdinosaur.incubated_aphaneramma_egg": "Incubated Aphaneramma Egg",
   "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg"
 }

@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "projectdinosaur:block/incubator",
+      "x": 90
+    },
+    "facing=up,powered=false": {
+      "model": "projectdinosaur:block/incubator",
+      "x": -90
+    },
+    "facing=north,powered=false": {
+      "model": "projectdinosaur:block/incubator"
+    },
+    "facing=south,powered=false": {
+      "model": "projectdinosaur:block/incubator",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "projectdinosaur:block/incubator",
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "projectdinosaur:block/incubator",
+      "y": 90
+    },
+    "facing=down,powered=true": {
+      "model": "projectdinosaur:block/incubator_powered",
+      "x": 90
+    },
+    "facing=up,powered=true": {
+      "model": "projectdinosaur:block/incubator_powered",
+      "x": -90
+    },
+    "facing=north,powered=true": {
+      "model": "projectdinosaur:block/incubator_powered"
+    },
+    "facing=south,powered=true": {
+      "model": "projectdinosaur:block/incubator_powered",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "projectdinosaur:block/incubator_powered",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "projectdinosaur:block/incubator_powered",
+      "y": 90
+    }
+  }
+}

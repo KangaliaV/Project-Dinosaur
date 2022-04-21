@@ -1,6 +1,6 @@
 package com.kangalia.projectdinosaur.common.blockentity;
 
-import com.kangalia.projectdinosaur.core.data.recipes.ExtractingRecipe;
+import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
@@ -160,15 +160,15 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     }
 
     @Nullable
-    public ExtractingRecipe craft() {
+    public RecombinatingRecipe craft() {
         System.out.println("Start craft method");
         inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < 7; i++) {
             inventory.addItem(itemHandler.getStackInSlot(i));
-            List<ExtractingRecipe> recipes = level.getRecipeManager().getRecipesFor(ExtractingRecipe.ExtractingRecipeType.INSTANCE, inventory, level);
+            List<RecombinatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecombinatingRecipe.RecombinatingRecipeType.INSTANCE, inventory, level);
             System.out.println("Get list of recipes");
             if (!recipes.isEmpty()) {
-                ExtractingRecipe selectedRecipe;
+                RecombinatingRecipe selectedRecipe;
                 System.out.println("Recipes is not empty");
                 if (recipes.size() == 1) {
                     selectedRecipe = recipes.get(0);
@@ -177,7 +177,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
                     int[] weightArray = new int[totalWeight];
                     int pos = 0;
                     for (int j = 0; j < recipes.size(); j++) {
-                        ExtractingRecipe er = recipes.get(j);
+                        RecombinatingRecipe er = recipes.get(j);
                         int weight = er.getWeight();
                         for (int k = 0; k < weight; k++) {
                             weightArray[pos] = j;
@@ -197,10 +197,9 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
         return null;
     }
 
-    private ItemStack getOutput(@Nullable ExtractingRecipe selectedRecipe) {
+    private ItemStack getOutput(@Nullable RecombinatingRecipe selectedRecipe) {
         System.out.println("getOutput selectedRecipe: "+selectedRecipe);
         if (selectedRecipe != null) {
-            //craft();
             System.out.println("getOutput: "+ selectedRecipe.getResultItem());
             return selectedRecipe.getResultItem();
         }
@@ -214,17 +213,17 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
         System.out.println("Begin doRecombine");
         if (this.canRecombine()) {
             System.out.println("canRecombine successful in doRecombine");
-            ExtractingRecipe selectedRecipe1 = craft();
+            RecombinatingRecipe selectedRecipe1 = craft();
             ItemStack output1 = getOutput(selectedRecipe1);
-            ExtractingRecipe selectedRecipe2 = craft();
+            RecombinatingRecipe selectedRecipe2 = craft();
             ItemStack output2 = getOutput(selectedRecipe2);
-            ExtractingRecipe selectedRecipe3 = craft();
+            RecombinatingRecipe selectedRecipe3 = craft();
             ItemStack output3 = getOutput(selectedRecipe3);
-            ExtractingRecipe selectedRecipe4 = craft();
+            RecombinatingRecipe selectedRecipe4 = craft();
             ItemStack output4 = getOutput(selectedRecipe4);
-            ExtractingRecipe selectedRecipe5 = craft();
+            RecombinatingRecipe selectedRecipe5 = craft();
             ItemStack output5 = getOutput(selectedRecipe5);
-            ExtractingRecipe selectedRecipe6 = craft();
+            RecombinatingRecipe selectedRecipe6 = craft();
             ItemStack output6 = getOutput(selectedRecipe6);
             System.out.println("doRecombine Outputs: "+output1+", "+output2+", "+output3+", "+output4+", "+output5+", "+output6+".");
             if (!output1.isEmpty()) {
