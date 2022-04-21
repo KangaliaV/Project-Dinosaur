@@ -9,11 +9,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,9 +78,9 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(4, new AphanerammaRandomStrollGoal(this, 1.0D, 100));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -187,22 +189,72 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         }
     }
 
-    static class AphanerammaRandomStrollGoal extends RandomSwimmingGoal {
+    static class AphanerammaRandomStrollGoal extends RandomStrollGoal {
         private final AphanerammaEntity aphaneramma;
+        private final boolean checkNoActionTime;
 
-        AphanerammaRandomStrollGoal(AphanerammaEntity p_30303_, double p_30304_, int p_30305_) {
-            super(p_30303_, p_30304_, p_30305_);
-            this.aphaneramma = p_30303_;
+        public AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval) {
+            this(entity, pSpeedModifier, pInterval, true);
         }
 
+        public AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval, boolean pCheckNoActionTime) {
+            super(entity, pSpeedModifier, pInterval);
+            this.aphaneramma = entity;
+            this.checkNoActionTime = pCheckNoActionTime;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.mob.isVehicle()) {
+                return false;
+            } else {
+                if (!this.forceTrigger) {
+                    if (this.checkNoActionTime && this.mob.getNoActionTime() >= 100) {
+                        return false;
+                    }
+
+                    if (this.mob.getRandom().nextInt(reducedTickDelay(this.interval)) != 0) {
+                        return false;
+                    }
+                }
+                Vec3 vec3;
+                if(aphaneramma.isInWater()) {
+                    vec3 = this.getSwimmablePosition();
+                } else {
+                    vec3 = this.getPosition();
+                }
+                if (vec3 == null) {
+                    return false;
+                } else {
+                    this.wantedX = vec3.x;
+                    this.wantedY = vec3.y;
+                    this.wantedZ = vec3.z;
+                    this.forceTrigger = false;
+                    return true;
+                }
+            }
+        }
+
+        @Override
         public void start() {
             if (this.aphaneramma.isInWater()) {
+                getPosition();
                 this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier * 2);
             } else {
                 this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
             }
         }
+        @Override
+        @javax.annotation.Nullable
+        protected Vec3 getPosition() {
+            return DefaultRandomPos.getPos(this.mob, 10, 7);
+        }
 
+        protected Vec3 getSwimmablePosition() {
+            return BehaviorUtils.getRandomSwimmablePos(this.mob, 10, 7);
+        }
+
+        @Override
         public void stop() {
             this.mob.getNavigation().stop();
             super.stop();
