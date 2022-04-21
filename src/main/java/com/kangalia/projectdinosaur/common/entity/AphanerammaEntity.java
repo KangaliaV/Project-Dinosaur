@@ -67,6 +67,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<AphanerammaEntity>(this, "controller", 4, this::predicate));
     }
 
