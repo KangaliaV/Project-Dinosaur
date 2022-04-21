@@ -239,6 +239,6 @@ public class BlockInit {
     }
 
     private static <T extends Block> void registerEggBlockItem(String name, RegistryObject<T> block) {
-        ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+        ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES).stacksTo(4)));
     }
 }
