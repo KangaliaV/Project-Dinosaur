@@ -32,8 +32,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
-    
+public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
+
     private AnimationFactory factory = new AnimationFactory(this);
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -42,12 +42,15 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         this.moveControl = new AphanerammaEntity.AphanerammaMoveControl(this);
         this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
         this.maxUpStep = 1.0F;
+        minSize = 0.25F;
+        maxSize = 1.0F;
     }
+
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH,6.0F)
-                .add(Attributes.MOVEMENT_SPEED,0.2F)
+                .add(Attributes.MAX_HEALTH, 6.0F)
+                .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 4.0F);
     }
@@ -154,6 +157,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         public AphanerammaLookControl(AphanerammaEntity p_149210_, int p_149211_) {
             super(p_149210_, p_149211_);
         }
+
         public void tick() {
             super.tick();
         }
@@ -176,6 +180,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         AphanerammaPathNavigation(AphanerammaEntity p_30294_, Level p_30295_) {
             super(p_30294_, p_30295_);
         }
+
         protected boolean canUpdatePath() {
             return true;
         }
@@ -219,7 +224,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
                     }
                 }
                 Vec3 vec3;
-                if(aphaneramma.isInWater()) {
+                if (aphaneramma.isInWater()) {
                     vec3 = this.getSwimmablePosition();
                 } else {
                     vec3 = this.getPosition();
@@ -245,6 +250,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
                 this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
             }
         }
+
         @Override
         @javax.annotation.Nullable
         protected Vec3 getPosition() {
@@ -260,5 +266,10 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
             this.mob.getNavigation().stop();
             super.stop();
         }
+    }
+
+    @Override
+    public int getAdultAge() {
+        return 5;
     }
 }

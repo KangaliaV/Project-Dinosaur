@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.TurtleEggBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,9 +31,6 @@ import java.util.Random;
 
 public class AphanerammaEggBlock extends Block {
 
-    public static final int MAX_HATCH_LEVEL = 2;
-    public static final int MIN_EGGS = 1;
-    public static final int MAX_EGGS = 4;
     private static final VoxelShape ONE_EGG_AABB = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
     private static final VoxelShape MULTIPLE_EGGS_AABB = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
@@ -80,9 +75,6 @@ public class AphanerammaEggBlock extends Block {
 
     }
 
-    /**
-     * Performs a random tick on a block.
-     */
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
         if (this.shouldUpdateHatchLevel(pLevel) && onNest(pLevel, pPos)) {
             int i = pState.getValue(HATCH);
@@ -96,7 +88,7 @@ public class AphanerammaEggBlock extends Block {
                 for(int j = 0; j < pState.getValue(EGGS); ++j) {
                     pLevel.levelEvent(2001, pPos, Block.getId(pState));
                     AphanerammaEntity aphaneramma = EntityInit.APHANERAMMA.get().create(pLevel);
-                    aphaneramma.setAge(-24000);
+                    aphaneramma.setAgeInTicks(0);
                     aphaneramma.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
                     pLevel.addFreshEntity(aphaneramma);
                 }
