@@ -21,7 +21,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<AphanerammaEntity>> APHANERAMMA = ENTITY_TYPES.register("aphaneramma",
             () -> EntityType.Builder.of(AphanerammaEntity::new, MobCategory.CREATURE)
-                    .sized(0.7f, 0.2f)
+                    .sized(0.9f, 0.2f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "aphaneramma").toString()));
 }

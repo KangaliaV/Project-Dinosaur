@@ -76,6 +76,7 @@ public class AphanerammaEggBlock extends Block {
     }
 
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
+        Random random = new Random();
         if (this.shouldUpdateHatchLevel(pLevel) && onNest(pLevel, pPos)) {
             int i = pState.getValue(HATCH);
             if (i < 2) {
@@ -88,6 +89,7 @@ public class AphanerammaEggBlock extends Block {
                 for(int j = 0; j < pState.getValue(EGGS); ++j) {
                     pLevel.levelEvent(2001, pPos, Block.getId(pState));
                     AphanerammaEntity aphaneramma = EntityInit.APHANERAMMA.get().create(pLevel);
+                    aphaneramma.setGender(random.nextInt(2));
                     aphaneramma.setAgeInTicks(0);
                     aphaneramma.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
                     pLevel.addFreshEntity(aphaneramma);

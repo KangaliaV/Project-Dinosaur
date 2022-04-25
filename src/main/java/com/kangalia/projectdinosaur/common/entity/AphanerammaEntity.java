@@ -43,7 +43,8 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
         this.maxUpStep = 1.0F;
         minSize = 0.25F;
-        maxSize = 1.0F;
+        maxMaleSize = 0.8F;
+        maxFemaleSize = 1.0F;
     }
 
 
