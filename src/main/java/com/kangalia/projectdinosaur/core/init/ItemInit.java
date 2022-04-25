@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.common.item.PrehistoricSpawnEgg;
 import com.kangalia.projectdinosaur.common.item.PetrifiedBoatItem;
 import com.kangalia.projectdinosaur.common.item.Plaster;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
@@ -48,7 +49,7 @@ public class ItemInit {
     public static final RegistryObject<Item> FERTILISED_APHANERAMMA_EGG = ITEMS.register("fertilised_aphaneramma_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
 
     //Spawn Eggs
-    public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new ForgeSpawnEggItem(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
 
     //Miscellaneous Items
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));

@@ -9,11 +9,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,8 +32,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
-    
+public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
+
     private AnimationFactory factory = new AnimationFactory(this);
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -40,12 +42,16 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         this.moveControl = new AphanerammaEntity.AphanerammaMoveControl(this);
         this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
         this.maxUpStep = 1.0F;
+        minSize = 0.25F;
+        maxMaleSize = 0.8F;
+        maxFemaleSize = 1.0F;
     }
+
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH,6.0F)
-                .add(Attributes.MOVEMENT_SPEED,0.2F)
+                .add(Attributes.MAX_HEALTH, 6.0F)
+                .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 4.0F);
     }
@@ -65,6 +71,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.setResetSpeedInTicks(10);
         data.addAnimationController(new AnimationController<AphanerammaEntity>(this, "controller", 4, this::predicate));
     }
 
@@ -76,9 +83,9 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(4, new AphanerammaRandomStrollGoal(this, 1.0D, 100));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -151,6 +158,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         public AphanerammaLookControl(AphanerammaEntity p_149210_, int p_149211_) {
             super(p_149210_, p_149211_);
         }
+
         public void tick() {
             super.tick();
         }
@@ -173,6 +181,7 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         AphanerammaPathNavigation(AphanerammaEntity p_30294_, Level p_30295_) {
             super(p_30294_, p_30295_);
         }
+
         protected boolean canUpdatePath() {
             return true;
         }
@@ -187,25 +196,81 @@ public class AphanerammaEntity extends TamableAnimal implements IAnimatable {
         }
     }
 
-    static class AphanerammaRandomStrollGoal extends RandomSwimmingGoal {
+    static class AphanerammaRandomStrollGoal extends RandomStrollGoal {
         private final AphanerammaEntity aphaneramma;
+        private final boolean checkNoActionTime;
 
-        AphanerammaRandomStrollGoal(AphanerammaEntity p_30303_, double p_30304_, int p_30305_) {
-            super(p_30303_, p_30304_, p_30305_);
-            this.aphaneramma = p_30303_;
+        public AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval) {
+            this(entity, pSpeedModifier, pInterval, true);
         }
 
+        public AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval, boolean pCheckNoActionTime) {
+            super(entity, pSpeedModifier, pInterval);
+            this.aphaneramma = entity;
+            this.checkNoActionTime = pCheckNoActionTime;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.mob.isVehicle()) {
+                return false;
+            } else {
+                if (!this.forceTrigger) {
+                    if (this.checkNoActionTime && this.mob.getNoActionTime() >= 100) {
+                        return false;
+                    }
+
+                    if (this.mob.getRandom().nextInt(reducedTickDelay(this.interval)) != 0) {
+                        return false;
+                    }
+                }
+                Vec3 vec3;
+                if (aphaneramma.isInWater()) {
+                    vec3 = this.getSwimmablePosition();
+                } else {
+                    vec3 = this.getPosition();
+                }
+                if (vec3 == null) {
+                    return false;
+                } else {
+                    this.wantedX = vec3.x;
+                    this.wantedY = vec3.y;
+                    this.wantedZ = vec3.z;
+                    this.forceTrigger = false;
+                    return true;
+                }
+            }
+        }
+
+        @Override
         public void start() {
             if (this.aphaneramma.isInWater()) {
+                getPosition();
                 this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier * 2);
             } else {
                 this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
             }
         }
 
+        @Override
+        @javax.annotation.Nullable
+        protected Vec3 getPosition() {
+            return DefaultRandomPos.getPos(this.mob, 10, 7);
+        }
+
+        protected Vec3 getSwimmablePosition() {
+            return BehaviorUtils.getRandomSwimmablePos(this.mob, 10, 7);
+        }
+
+        @Override
         public void stop() {
             this.mob.getNavigation().stop();
             super.stop();
         }
+    }
+
+    @Override
+    public int getAdultAge() {
+        return 5;
     }
 }
