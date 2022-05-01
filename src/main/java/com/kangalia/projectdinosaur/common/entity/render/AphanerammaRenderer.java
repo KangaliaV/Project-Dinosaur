@@ -22,7 +22,6 @@ public class AphanerammaRenderer extends GeoEntityRenderer<AphanerammaEntity> {
         float scale = animatable.getAgeScaleData();
         matrixStackIn.scale(scale, scale, scale);
         this.shadowRadius = scale * 0.45F;
-        System.out.println("Render scale for babies. Scale: "+scale);
         super.render(model, animatable, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }
