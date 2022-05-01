@@ -13,15 +13,20 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -31,6 +36,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.List;
 
 public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
 
@@ -81,11 +88,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(3, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -142,6 +147,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
         return EntityInit.APHANERAMMA.get().create(serverWorld);
+    }
+
+    @Override
+    public int getAdultAge() {
+        return 5;
     }
 
     public void travel(Vec3 p_149181_) {
@@ -267,10 +277,5 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
             this.mob.getNavigation().stop();
             super.stop();
         }
-    }
-
-    @Override
-    public int getAdultAge() {
-        return 5;
     }
 }
