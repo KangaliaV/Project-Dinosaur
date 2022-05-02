@@ -11,8 +11,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
@@ -27,12 +32,16 @@ public class PrehistoricEntity extends TamableAnimal {
     private static final EntityDataAccessor<Float> AGE_SCALE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MATING_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HUNGER = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HUNGER_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
 
     private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
     public float minSize;
     public float maxMaleSize;
     public float maxFemaleSize;
+    public int maxFood;
+    public int diet;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -50,6 +59,8 @@ public class PrehistoricEntity extends TamableAnimal {
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
         this.setMatingTicks(12000);
+        this.setHunger(maxFood);
+        this.setHungerTicks(3000);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -58,6 +69,17 @@ public class PrehistoricEntity extends TamableAnimal {
         super.tick();
         this.setAgeInTicks(this.getAgeInTicks() + 1);
         setAgeScale(getAgeScale());
+        if (this.getHungerTicks() > 0) {
+            this.setHungerTicks(this.getHungerTicks()-1);
+        } else if (this.getHungerTicks() <= 0) {
+            if (this.getHunger() > 0) {
+                this.setHunger(this.getHunger()-1);
+            } else if (this.getHunger() <= 0) {
+                this.hurt(DamageSource.STARVE, 1);
+                this.playHurtSound(DamageSource.STARVE);
+            }
+            this.setHungerTicks(this.random.nextInt(500) + 2500);
+        }
         if (!level.isClientSide && this.isAdult()) {
             if (this.getMatingTicks() > 0) {
                 this.setMatingTicks(this.getMatingTicks()-1);
@@ -69,24 +91,17 @@ public class PrehistoricEntity extends TamableAnimal {
 
     public void breed() {
         if (this.getGender() == 0) {
-            System.out.println("Male starts breeding.");
             double d0 = 64;
             List<Entity> list = level.getEntities(this, this.getBoundingBox().inflate(d0, 4.0D, d0), PREHISTORIC_PREDICATE);
             List<PrehistoricEntity> listOfFemales = new ArrayList<>();
             if (!list.isEmpty()) {
-                System.out.println("List is not empty in breed.");
                 for (Entity e : list) {
                     PrehistoricEntity mob = (PrehistoricEntity) e;
                     if (!mob.equals(this)) {
-                        System.out.println("Mob does not equal exact entity.");
                         if (mob.getType() == this.getType()) {
-                            System.out.println("Mob type matches.");
                             if (mob.isAdult()) {
-                                System.out.println("Mob is adult.");
                                 if (mob.getGender() == 1) {
-                                    System.out.println("Mob is female.");
                                     if (mob.getMatingTicks() == 0) {
-                                        System.out.println("Add female to list in mate.");
                                         listOfFemales.add(mob);
                                     }
                                 }
@@ -122,6 +137,62 @@ public class PrehistoricEntity extends TamableAnimal {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             }
         }
+    }
+
+    //Something here doesn't work.
+    @Override
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack item = pPlayer.getItemInHand(pHand);
+        if (this.getHunger() < getMaxFood()) {
+            if (diet == 0) {
+                if (item.getItem().equals(Items.BEEF.asItem()) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
+                    eatFromHand(item);
+                    return InteractionResult.SUCCESS;
+                }
+            } else if (diet == 1) {
+                if (item.getItem().equals(Items.WHEAT) || item.getItem().equals(Items.CARROT) || item.getItem().equals(Items.POTATO) || item.getItem().equals(Items.BEETROOT) || item.getItem().equals(Items.BEETROOT_SEEDS) || item.getItem().equals(Items.APPLE) || item.getItem().equals(Items.MELON_SLICE) || item.getItem().equals(Items.GLOW_BERRIES)) {
+                    eatFromHand(item);
+                    return InteractionResult.SUCCESS;
+                }
+            } else if (diet == 2) {
+                if (item.getItem().equals(Items.SALMON) || item.getItem().equals(Items.COD) || item.getItem().equals(Items.TROPICAL_FISH)) {
+                    eatFromHand(item);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+        return InteractionResult.FAIL;
+    }
+
+    public void eatFromHand(ItemStack item) {
+        if (item != null) {
+            this.setHunger(this.getHunger() + this.random.nextInt(8) + 3);
+            if (this.getHunger() > maxFood) {
+                this.setHunger(maxFood);
+            }
+            item.shrink(1);
+            this.level.playSound(null, this.getOnPos(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
+        }
+    }
+
+    public int getHungerTicks() {
+        return this.entityData.get(HUNGER_TICKS);
+    }
+
+    public void setHungerTicks(int hungerTicks) {
+        this.entityData.set(HUNGER_TICKS, hungerTicks);
+    }
+
+    public int getMaxFood() {
+        return maxFood;
+    }
+
+    public int getHunger() {
+        return this.entityData.get(HUNGER);
+    }
+
+    public void setHunger(int hunger) {
+        this.entityData.set(HUNGER, hunger);
     }
 
     public int getMatingTicks() {
@@ -201,6 +272,8 @@ public class PrehistoricEntity extends TamableAnimal {
         this.entityData.define(AGE_SCALE, 0.0F);
         this.entityData.define(GENDER, 0);
         this.entityData.define(MATING_TICKS, 240);
+        this.entityData.define(HUNGER, 0);
+        this.entityData.define(HUNGER_TICKS, 0);
     }
 
     @Override
@@ -210,6 +283,8 @@ public class PrehistoricEntity extends TamableAnimal {
         pCompound.putFloat("AgeScale", this.getAgeScaleData());
         pCompound.putInt("Gender", this.getGender());
         pCompound.putInt("MatingTicks", this.getMatingTicks());
+        pCompound.putInt("Hunger", this.getHunger());
+        pCompound.putInt("HungerTicks", this.getHungerTicks());
     }
 
     @Override
@@ -219,5 +294,7 @@ public class PrehistoricEntity extends TamableAnimal {
         this.setAgeScale(pCompound.getFloat("AgeScale"));
         this.setGender(pCompound.getInt("Gender"));
         this.setMatingTicks(pCompound.getInt("MatingTicks"));
+        this.setHunger(pCompound.getInt("Hunger"));
+        this.setHungerTicks(pCompound.getInt("HungerTicks"));
     }
 }
