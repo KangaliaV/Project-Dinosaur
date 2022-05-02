@@ -139,7 +139,6 @@ public class PrehistoricEntity extends TamableAnimal {
         }
     }
 
-    //Something here doesn't work.
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);

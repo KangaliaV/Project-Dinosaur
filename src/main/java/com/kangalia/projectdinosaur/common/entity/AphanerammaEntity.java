@@ -13,11 +13,16 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,10 +59,12 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 6.0F)
+                .add(Attributes.MAX_HEALTH, 12.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0F);
+                .add(Attributes.ATTACK_DAMAGE, 4.0F)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
+                .add(Attributes.ATTACK_SPEED, 1.0F);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -86,8 +93,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
 
     @Override
