@@ -5,6 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -93,7 +95,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(2, new AphanerammaMeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
@@ -283,6 +285,31 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         public void stop() {
             this.mob.getNavigation().stop();
             super.stop();
+        }
+    }
+
+    static class AphanerammaMeleeAttackGoal extends MeleeAttackGoal {
+        private final AphanerammaEntity aphaneramma;
+
+        public AphanerammaMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
+            this.aphaneramma = (AphanerammaEntity) pMob;
+        }
+
+        @Override
+        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
+            double d0 = this.getAttackReachSqr(pEnemy);
+            if (pDistToEnemySqr <= d0 && this.getTicksUntilNextAttack() <= 0 && this.aphaneramma.isHungry()) {
+                this.resetAttackCooldown();
+                this.mob.swing(InteractionHand.MAIN_HAND);
+                this.mob.doHurtTarget(pEnemy);
+                this.aphaneramma.setHunger(this.aphaneramma.getHunger() + this.aphaneramma.random.nextInt(8) + 3);
+                if (this.aphaneramma.getHunger() > aphaneramma.maxFood) {
+                    this.aphaneramma.setHunger(aphaneramma.maxFood);
+                }
+                this.aphaneramma.level.playSound(null, this.aphaneramma.getOnPos(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.aphaneramma.getSoundVolume(), this.aphaneramma.getVoicePitch());
+            }
+
         }
     }
 }

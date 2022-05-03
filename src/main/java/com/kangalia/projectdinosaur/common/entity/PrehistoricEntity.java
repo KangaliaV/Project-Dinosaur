@@ -142,7 +142,7 @@ public class PrehistoricEntity extends TamableAnimal {
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);
-        if (this.getHunger() < getMaxFood()) {
+        if (this.isHungry()) {
             if (diet == 0) {
                 if (item.getItem().equals(Items.BEEF.asItem()) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
@@ -172,6 +172,10 @@ public class PrehistoricEntity extends TamableAnimal {
             item.shrink(1);
             this.level.playSound(null, this.getOnPos(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
         }
+    }
+
+    public boolean isHungry() {
+        return this.getHunger() < maxFood * 0.8F;
     }
 
     public int getHungerTicks() {
