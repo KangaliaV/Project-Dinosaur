@@ -38,6 +38,11 @@
     "projectdinosaur:encased_wetland_crystallised_fossil",
 
     "projectdinosaur:amber_block",
-    "projectdinosaur:fossil_excavator"
+    "projectdinosaur:fossil_excavator",
+    "projectdinosaur:core_station",
+    "projectdinosaur:dna_recombinator",
+    "projectdinosaur:incubator",
+
+    "projectdinosaur:ground_feeder"
   ]
 }

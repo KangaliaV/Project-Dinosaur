@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "projectdinosaur:block/ground_feeder" },
+    "facing=east": { "model": "projectdinosaur:block/ground_feeder", "y": 90 },
+    "facing=south": { "model": "projectdinosaur:block/ground_feeder", "y": 180 },
+    "facing=west": { "model": "projectdinosaur:block/ground_feeder", "y": 270 }
+  }
+}
