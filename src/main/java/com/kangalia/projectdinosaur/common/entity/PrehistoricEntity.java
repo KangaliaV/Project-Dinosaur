@@ -59,8 +59,8 @@ public class PrehistoricEntity extends TamableAnimal {
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
         this.setMatingTicks(12000);
-        this.setHunger(maxFood);
-        this.setHungerTicks(3000);
+        this.setHunger(maxFood / 2);
+        this.setHungerTicks(1600);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -78,7 +78,7 @@ public class PrehistoricEntity extends TamableAnimal {
                 this.hurt(DamageSource.STARVE, 1);
                 this.playHurtSound(DamageSource.STARVE);
             }
-            this.setHungerTicks(this.random.nextInt(500) + 2500);
+            this.setHungerTicks(this.random.nextInt(600) + 1000);
         }
         if (!level.isClientSide && this.isAdult()) {
             if (this.getMatingTicks() > 0) {
@@ -170,7 +170,7 @@ public class PrehistoricEntity extends TamableAnimal {
                 this.setHunger(maxFood);
             }
             item.shrink(1);
-            this.level.playSound(null, this.getOnPos(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
+            this.level.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
         }
     }
 
