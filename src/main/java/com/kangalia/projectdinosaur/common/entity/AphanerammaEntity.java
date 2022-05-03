@@ -5,6 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -12,17 +14,20 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +38,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.EnumSet;
 
 public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
 
@@ -54,10 +61,12 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 6.0F)
+                .add(Attributes.MAX_HEALTH, 12.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0F);
+                .add(Attributes.ATTACK_DAMAGE, 4.0F)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
+                .add(Attributes.ATTACK_SPEED, 1.0F);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -86,8 +95,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+        this.goalSelector.addGoal(2, new AphanerammaMeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
 
     @Override
@@ -273,6 +285,88 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         public void stop() {
             this.mob.getNavigation().stop();
             super.stop();
+        }
+    }
+
+    static class AphanerammaMeleeAttackGoal extends MeleeAttackGoal {
+        private final AphanerammaEntity aphaneramma;
+
+        protected final PathfinderMob mob;
+        private final double speedModifier;
+        private final boolean followingTargetEvenIfNotSeen;
+        private double pathedTargetX;
+        private double pathedTargetY;
+        private double pathedTargetZ;
+        private int ticksUntilNextPathRecalculation;
+        private int ticksUntilNextAttack;
+        private int failedPathFindingPenalty = 0;
+        private boolean canPenalize = false;
+
+        public AphanerammaMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
+            this.mob = pMob;
+            this.speedModifier = pSpeedModifier;
+            this.followingTargetEvenIfNotSeen = pFollowingTargetEvenIfNotSeen;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.aphaneramma = (AphanerammaEntity) pMob;
+        }
+
+        @Override
+        public void tick() {
+            LivingEntity livingentity = this.mob.getTarget();
+            if (livingentity != null & this.aphaneramma.isHungry()) {
+                this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
+                double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
+                this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
+                if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
+                    this.pathedTargetX = livingentity.getX();
+                    this.pathedTargetY = livingentity.getY();
+                    this.pathedTargetZ = livingentity.getZ();
+                    this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
+                    if (this.canPenalize) {
+                        this.ticksUntilNextPathRecalculation += failedPathFindingPenalty;
+                        if (this.mob.getNavigation().getPath() != null) {
+                            net.minecraft.world.level.pathfinder.Node finalPathPoint = this.mob.getNavigation().getPath().getEndNode();
+                            if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
+                                failedPathFindingPenalty = 0;
+                            else
+                                failedPathFindingPenalty += 10;
+                        } else {
+                            failedPathFindingPenalty += 10;
+                        }
+                    }
+                    if (d0 > 1024.0D) {
+                        this.ticksUntilNextPathRecalculation += 10;
+                    } else if (d0 > 256.0D) {
+                        this.ticksUntilNextPathRecalculation += 5;
+                    }
+
+                    if (!this.mob.getNavigation().moveTo(livingentity, this.speedModifier)) {
+                        this.ticksUntilNextPathRecalculation += 15;
+                    }
+
+                    this.ticksUntilNextPathRecalculation = this.adjustedTickDelay(this.ticksUntilNextPathRecalculation);
+                }
+
+                this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
+                this.checkAndPerformAttack(livingentity, d0);
+            }
+        }
+
+        @Override
+        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
+            double d0 = this.getAttackReachSqr(pEnemy);
+            if (pDistToEnemySqr <= d0 && this.getTicksUntilNextAttack() <= 0) {
+                this.resetAttackCooldown();
+                this.mob.swing(InteractionHand.MAIN_HAND);
+                this.mob.doHurtTarget(pEnemy);
+                this.aphaneramma.setHunger(this.aphaneramma.getHunger() + this.aphaneramma.random.nextInt(8) + 3);
+                this.aphaneramma.level.playSound(null, this.aphaneramma.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.aphaneramma.getSoundVolume(), this.aphaneramma.getVoicePitch());
+                if (this.aphaneramma.getHunger() > aphaneramma.maxFood) {
+                    this.aphaneramma.setHunger(aphaneramma.maxFood);
+                }
+            }
+
         }
     }
 }

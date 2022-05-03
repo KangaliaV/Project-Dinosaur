@@ -93,7 +93,7 @@ public class AphanerammaEggBlock extends Block {
                     aphaneramma.setAgeInTicks(0);
                     aphaneramma.setMatingTicks(240);
                     aphaneramma.setHunger(aphaneramma.getMaxFood() / 2);
-                    aphaneramma.setHungerTicks(3000);
+                    aphaneramma.setHungerTicks(1600);
                     aphaneramma.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
                     pLevel.addFreshEntity(aphaneramma);
                 }

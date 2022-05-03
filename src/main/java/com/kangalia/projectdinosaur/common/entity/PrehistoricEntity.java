@@ -59,8 +59,8 @@ public class PrehistoricEntity extends TamableAnimal {
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
         this.setMatingTicks(12000);
-        this.setHunger(maxFood);
-        this.setHungerTicks(3000);
+        this.setHunger(maxFood / 2);
+        this.setHungerTicks(1600);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -78,7 +78,7 @@ public class PrehistoricEntity extends TamableAnimal {
                 this.hurt(DamageSource.STARVE, 1);
                 this.playHurtSound(DamageSource.STARVE);
             }
-            this.setHungerTicks(this.random.nextInt(500) + 2500);
+            this.setHungerTicks(this.random.nextInt(600) + 1000);
         }
         if (!level.isClientSide && this.isAdult()) {
             if (this.getMatingTicks() > 0) {
@@ -139,11 +139,10 @@ public class PrehistoricEntity extends TamableAnimal {
         }
     }
 
-    //Something here doesn't work.
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);
-        if (this.getHunger() < getMaxFood()) {
+        if (this.isHungry()) {
             if (diet == 0) {
                 if (item.getItem().equals(Items.BEEF.asItem()) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
@@ -171,8 +170,12 @@ public class PrehistoricEntity extends TamableAnimal {
                 this.setHunger(maxFood);
             }
             item.shrink(1);
-            this.level.playSound(null, this.getOnPos(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
+            this.level.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
         }
+    }
+
+    public boolean isHungry() {
+        return this.getHunger() < maxFood * 0.8F;
     }
 
     public int getHungerTicks() {
