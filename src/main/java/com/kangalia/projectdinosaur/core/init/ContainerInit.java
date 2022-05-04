@@ -1,10 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
-import com.kangalia.projectdinosaur.common.container.DNARecombinatorContainer;
-import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
-import com.kangalia.projectdinosaur.common.container.IncubatorContainer;
+import com.kangalia.projectdinosaur.common.container.*;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -17,6 +14,7 @@ public class ContainerInit {
 
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, ProjectDinosaur.MODID);
 
+    //Machines
     public static final RegistryObject<MenuType<FossilExcavatorContainer>> FOSSIL_EXCAVATOR_CONTAINER = CONTAINERS.register("fossil_excavator", () -> IForgeMenuType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         Level world = inv.player.getCommandSenderWorld();
@@ -36,6 +34,13 @@ public class ContainerInit {
         BlockPos pos = data.readBlockPos();
         Level world = inv.player.getCommandSenderWorld();
         return new IncubatorContainer(windowId, world, pos, inv, inv.player);
+    }));
+
+    //Dino Care
+    public static final RegistryObject<MenuType<GroundFeederContainer>> GROUND_FEEDER_CONTAINER = CONTAINERS.register("ground_feeder_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        Level world = inv.player.getCommandSenderWorld();
+        return new GroundFeederContainer(windowId, world, pos, inv, inv.player);
     }));
 
 }
