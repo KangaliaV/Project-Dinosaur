@@ -1,9 +1,6 @@
 package com.kangalia.projectdinosaur.common.blockentity;
 
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
-import com.kangalia.projectdinosaur.core.init.BlockInit;
-import com.kangalia.projectdinosaur.core.init.ItemInit;
-import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -11,32 +8,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class GroundFeederBlockEntity extends BlockEntity {
     private int herbi = 0;
     private int carni = 0;
     private int pisci = 0;
-    Random random = new Random();
-    SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
-    private final RandomNumGen rng = new RandomNumGen();
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 

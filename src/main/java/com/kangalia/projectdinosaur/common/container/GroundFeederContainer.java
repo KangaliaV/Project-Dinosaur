@@ -66,7 +66,6 @@ public class GroundFeederContainer extends AbstractContainerMenu {
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 
-    //Something about these methods isn't working - they always return 0.
     public int getHerbiFromTile() {
         if (tileEntity.getTileData().contains("herbi")) {
             return tileEntity.getTileData().getInt("herbi");
