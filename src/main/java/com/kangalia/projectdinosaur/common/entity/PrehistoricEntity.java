@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
+import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,15 +20,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class PrehistoricEntity extends TamableAnimal {
+public abstract class PrehistoricEntity extends TamableAnimal {
 
     private static final EntityDataAccessor<Integer> AGE_IN_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> AGE_SCALE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.FLOAT);
@@ -43,6 +45,9 @@ public class PrehistoricEntity extends TamableAnimal {
     public float maxFemaleSize;
     public int maxFood;
     public int diet;
+    protected GroundFeederBlockEntity groundFeeder;
+    protected BlockPos blockPos = BlockPos.ZERO;
+    public boolean canHunt;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -80,6 +85,9 @@ public class PrehistoricEntity extends TamableAnimal {
                 this.playHurtSound(DamageSource.STARVE);
             }
             this.setHungerTicks(this.random.nextInt(600) + 1000);
+        }
+        if (this.isHungry()) {
+            eatFromNearestFeeder();
         }
         if (!level.isClientSide && this.isAdult()) {
             if (this.getMatingTicks() > 0) {
@@ -175,8 +183,47 @@ public class PrehistoricEntity extends TamableAnimal {
         }
     }
 
+    protected void eatFromNearestFeeder() {
+        int i = 16;
+        int j = 8;
+        BlockPos blockpos = this.blockPosition();
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+        for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
+            for(int l = 0; l < i; ++l) {
+                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
+                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
+                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
+                        if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTarget(this.level, blockpos$mutableblockpos)) {
+                            this.blockPos = blockpos$mutableblockpos;
+                            if (!groundFeeder.isEmpty(this)) {
+                                this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (double) (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                                BlockPos blockPosAbove = this.blockPos.above();
+                                if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
+                                    this.getNavigation().stop();
+                                    groundFeeder.feedEntity(this);
+                                    this.setHungerTicks(1600);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
+        groundFeeder = (GroundFeederBlockEntity) pLevel.getBlockEntity(pPos);
+        return groundFeeder != null;
+    }
+
+    public int getDiet() {
+        return this.diet;
+    }
+
     public boolean isHungry() {
-        return this.getHunger() < maxFood * 0.8F;
+        return this.getHunger() < maxFood * 0.75F;
     }
 
     public int getHungerTicks() {
@@ -197,6 +244,9 @@ public class PrehistoricEntity extends TamableAnimal {
 
     public void setHunger(int hunger) {
         this.entityData.set(HUNGER, hunger);
+        if (this.entityData.get(HUNGER) > maxFood) {
+            this.entityData.set(HUNGER, maxFood);
+        }
     }
 
     public int getMatingTicks() {

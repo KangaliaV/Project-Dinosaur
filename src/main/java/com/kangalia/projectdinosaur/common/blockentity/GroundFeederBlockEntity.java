@@ -1,5 +1,6 @@
 package com.kangalia.projectdinosaur.common.blockentity;
 
+import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -7,6 +8,8 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,9 +26,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class GroundFeederBlockEntity extends BlockEntity {
-    private int herbi = 0;
-    private int carni = 0;
-    private int pisci = 0;
+    public int herbi = 0;
+    public int carni = 0;
+    public int pisci = 0;
     private final NonNullList<ItemStack> items;
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
@@ -135,6 +138,42 @@ public class GroundFeederBlockEntity extends BlockEntity {
             return 1;
         } else {
             return 0;
+        }
+    }
+
+    public boolean isEmpty(PrehistoricEntity entity) {
+        if (entity.getDiet() == 0) {
+            return herbi == 0;
+        } else if (entity.getDiet() == 1) {
+            return carni == 0;
+        } else if (entity.getDiet() == 2) {
+            return pisci == 0;
+        }
+        return false;
+    }
+
+    public void feedEntity(PrehistoricEntity entity) {
+        boolean flag = false;
+        if (!this.isEmpty(entity)) {
+            if (entity.getDiet() == 0) {
+                this.herbi = this.herbi - 1;
+                entity.setHunger(entity.getHunger() + 1);
+                flag = true;
+            } else if (entity.getDiet() == 1) {
+                this.carni = this.carni - 1;
+                entity.setHunger(entity.getHunger() + 1);
+                flag = true;
+            } else if (entity.getDiet() == 2) {
+                this.pisci = this.pisci - 1;
+                entity.setHunger(entity.getHunger() + 1);
+                flag = true;
+            }
+            if (flag) {
+                entity.level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, entity.getVoicePitch());
+                assert level != null;
+                level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+                setChanged();
+            }
         }
     }
 
