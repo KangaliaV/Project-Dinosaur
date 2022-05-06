@@ -1,5 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity;
 
+import com.kangalia.projectdinosaur.common.entity.ai.EatFromGroundFeederGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.MoveToGroundFeederGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -56,6 +57,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         maxFemaleSize = 1.0F;
         maxFood = 50;
         diet = 2;
+        canHunt = false;
     }
 
 
@@ -94,8 +96,8 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(2, new AphanerammaMeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(1, new AphanerammaMeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(2, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
@@ -315,6 +317,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         public void tick() {
             LivingEntity livingentity = this.mob.getTarget();
             if (livingentity != null & this.aphaneramma.isHungry()) {
+                this.aphaneramma.canHunt = true;
                 this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
                 double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
                 this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
@@ -365,6 +368,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
                 if (this.aphaneramma.getHunger() > aphaneramma.maxFood) {
                     this.aphaneramma.setHunger(aphaneramma.maxFood);
                 }
+                this.aphaneramma.canHunt = false;
             }
 
         }

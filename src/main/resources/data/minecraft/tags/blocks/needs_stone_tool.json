@@ -1,6 +1,11 @@
 {
   "replace": false,
   "values": [
-    "projectdinosaur:fossil_excavator"
+    "projectdinosaur:fossil_excavator",
+    "projectdinosaur:core_station",
+    "projectdinosaur:dna_recombinator",
+    "projectdinosaur:incubator",
+
+    "projectdinosaur:ground_feeder"
   ]
 }

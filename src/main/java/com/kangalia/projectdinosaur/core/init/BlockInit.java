@@ -2,11 +2,9 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
+import com.kangalia.projectdinosaur.common.block.dinocare.GroundFeederBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
-import com.kangalia.projectdinosaur.common.block.machines.CoreStationBlock;
-import com.kangalia.projectdinosaur.common.block.machines.DNARecombinatorBlock;
-import com.kangalia.projectdinosaur.common.block.machines.FossilExcavatorBlock;
-import com.kangalia.projectdinosaur.common.block.machines.IncubatorBlock;
+import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
@@ -203,6 +201,13 @@ public class BlockInit {
             .sound(SoundType.METAL)
             .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
             .requiresCorrectToolForDrops()));
+
+    //Dino Care Blocks
+    public static final RegistryObject<Block> GROUND_FEEDER = registerBlock("ground_feeder", () -> new GroundFeederBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
+            .strength(5.0f, 6.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
 
     //Miscellaneous Blocks
     public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)

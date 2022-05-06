@@ -21,6 +21,10 @@ public class BlockEntitiesInit {
     public static final RegistryObject<BlockEntityType<IncubatorBlockEntity>> INCUBATOR_ENTITY = TILE_ENTITIES.register("incubator",
             () -> BlockEntityType.Builder.of(IncubatorBlockEntity::new, BlockInit.INCUBATOR.get()).build(null));
 
+    //Dino Care
+    public static final RegistryObject<BlockEntityType<GroundFeederBlockEntity>> GROUND_FEEDER_ENTITY = TILE_ENTITIES.register("ground_feeder",
+            () -> BlockEntityType.Builder.of(GroundFeederBlockEntity::new, BlockInit.GROUND_FEEDER.get()).build(null));
+
     //Other
     public static final RegistryObject<BlockEntityType<PetrifiedSignTileEntity>> PETRIFIED_SIGN_ENTITY = TILE_ENTITIES.register("petrified_sign",
             () -> BlockEntityType.Builder.of(PetrifiedSignTileEntity::new, BlockInit.PETRIFIED_SIGN.get(), BlockInit.PETRIFIED_SIGN_WALL.get()).build(null));
