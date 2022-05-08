@@ -1,6 +1,6 @@
 package com.kangalia.projectdinosaur.common.block.eggs;
 
-import com.kangalia.projectdinosaur.common.entity.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;

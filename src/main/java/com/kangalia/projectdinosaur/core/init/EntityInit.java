@@ -1,9 +1,9 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.entity.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.PetrifiedBoatEntity;
-import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +19,16 @@ public class EntityInit {
             () -> EntityType.Builder.<PetrifiedBoatEntity>of(PetrifiedBoatEntity::new, MobCategory.MISC).sized(0.5f, 0.5f)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "petrified_boat").toString()));
 
+    //Dinos
     public static final RegistryObject<EntityType<AphanerammaEntity>> APHANERAMMA = ENTITY_TYPES.register("aphaneramma",
             () -> EntityType.Builder.of(AphanerammaEntity::new, MobCategory.CREATURE)
-                    .sized(0.9f, 0.2f)
+                    .sized(0.7f, 0.3f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "aphaneramma").toString()));
+
+    public static final RegistryObject<EntityType<CompsognathusEntity>> COMPSOGNATHUS = ENTITY_TYPES.register("compsognathus",
+            () -> EntityType.Builder.of(CompsognathusEntity::new, MobCategory.CREATURE)
+                    .sized(0.4f, 0.6f)
+                    .setTrackingRange(8)
+                    .build(new ResourceLocation(ProjectDinosaur.MODID, "compsognathus").toString()));
 }

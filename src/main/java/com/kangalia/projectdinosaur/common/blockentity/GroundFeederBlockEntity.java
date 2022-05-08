@@ -154,25 +154,36 @@ public class GroundFeederBlockEntity extends BlockEntity {
 
     public void feedEntity(PrehistoricEntity entity) {
         boolean flag = false;
-        if (!this.isEmpty(entity)) {
-            if (entity.getDiet() == 0) {
-                this.herbi = this.herbi - 1;
-                entity.setHunger(entity.getHunger() + 1);
-                flag = true;
-            } else if (entity.getDiet() == 1) {
-                this.carni = this.carni - 1;
-                entity.setHunger(entity.getHunger() + 1);
-                flag = true;
-            } else if (entity.getDiet() == 2) {
-                this.pisci = this.pisci - 1;
-                entity.setHunger(entity.getHunger() + 1);
-                flag = true;
-            }
-            if (flag) {
-                entity.level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, entity.getVoicePitch());
-                assert level != null;
-                level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-                setChanged();
+        boolean flag2 = true;
+        while (flag2) {
+            if (!this.isEmpty(entity)) {
+                if (entity.getHunger() < entity.maxFood) {
+                    if (entity.getDiet() == 0) {
+                        this.herbi = this.herbi - 1;
+                        entity.setHunger(entity.getHunger() + 1);
+                        flag = true;
+                    } else if (entity.getDiet() == 1) {
+                        this.carni = this.carni - 1;
+                        entity.setHunger(entity.getHunger() + 1);
+                        flag = true;
+                    } else if (entity.getDiet() == 2) {
+                        this.pisci = this.pisci - 1;
+                        entity.setHunger(entity.getHunger() + 1);
+                        flag = true;
+                    }
+                    if (flag) {
+                        entity.level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, entity.getVoicePitch());
+                        assert level != null;
+                        level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+                        setChanged();
+                    } else {
+                        flag2 = false;
+                    }
+                } else {
+                    flag2 = false;
+                }
+            } else {
+                flag2 = false;
             }
         }
     }

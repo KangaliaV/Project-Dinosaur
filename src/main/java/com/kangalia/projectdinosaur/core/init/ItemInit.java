@@ -50,6 +50,7 @@ public class ItemInit {
 
     //Spawn Eggs
     public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<ForgeSpawnEggItem> COMPSOGNATHUS_SPAWN_EGG = ITEMS.register("compsognathus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.COMPSOGNATHUS, 0x143226, 0x80886f, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
 
     //Miscellaneous Items
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));

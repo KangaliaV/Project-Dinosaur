@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -48,6 +49,7 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     protected GroundFeederBlockEntity groundFeeder;
     protected BlockPos blockPos = BlockPos.ZERO;
     public boolean canHunt;
+    public float soundVolume;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -75,6 +77,7 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         super.tick();
         this.setAgeInTicks(this.getAgeInTicks() + 1);
         setAgeScale(getAgeScale());
+        System.out.println("Hunger: "+this.getHunger());
         if (this.getHungerTicks() > 0) {
             this.setHungerTicks(this.getHungerTicks()-1);
         } else if (this.getHungerTicks() <= 0) {
@@ -317,6 +320,11 @@ public abstract class PrehistoricEntity extends TamableAnimal {
             return minSize + ((step) * this.getAdultAge() * 24000);
         }
         return minSize + ((step * this.getAgeInTicks()));
+    }
+
+    @Override
+    public float getSoundVolume() {
+        return this.soundVolume;
     }
 
     @Override
