@@ -141,7 +141,15 @@ public class IncubatorBlockEntity extends BlockEntity {
     private boolean canIncubate() {
         ItemStack inputSlot = ItemStack.EMPTY;
         inputSlot = itemHandler.getStackInSlot(0);
+        boolean flag;
         if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get()) {
+            flag = true;
+        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get()) {
+            flag = true;
+        } else {
+            flag = false;
+        }
+        if (flag) {
             ItemStack haySlot = itemHandler.getStackInSlot(1);
             if (!haySlot.isEmpty()) {
                 return true;
