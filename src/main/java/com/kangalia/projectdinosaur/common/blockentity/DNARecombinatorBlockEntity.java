@@ -74,10 +74,12 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
                 if (slot >= 1 && slot < 7) {
                     return stack.getItem() == Items.EGG ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get();
+                            stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
+                            stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get();
                 }
                 if (slot == 0) {
-                    return stack.getItem() == ItemInit.APHANERAMMA_DNA.get();
+                    return stack.getItem() == ItemInit.APHANERAMMA_DNA.get() ||
+                            stack.getItem() == ItemInit.COMPSOGNATHUS_DNA.get();
                 }
                 return false;
 
@@ -116,19 +118,15 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
             return;
         }
         BlockState blockState = level.getBlockState(worldPosition);
-        System.out.println("Before canRecombine");
         if (this.canRecombine()) {
-            System.out.println("After canRecombine");
             level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true), Block.UPDATE_ALL);
             if (progress < WORK_TIME) {
                 ++progress;
-                System.out.println("Progress Counter: "+progress);
                 level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                 setChanged();
             }
             if (progress == WORK_TIME) {
                 progress = 0;
-                System.out.println("Begin doRecombine");
                 this.doRecombine();
             }
         } else {
@@ -141,13 +139,10 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     private boolean canRecombine() {
         ItemStack inputSlot = ItemStack.EMPTY;
         int counter = 0;
-        System.out.println("Begin canRecombine");
         for (int slot = 1; slot < 7; slot++) {
             inputSlot = itemHandler.getStackInSlot(slot);
-            System.out.println("Item in slot = "+inputSlot.getItem());
             if (!inputSlot.isEmpty() && inputSlot.getItem() == Items.EGG) {
                 ++counter;
-                System.out.println("canRecombine counter: "+counter);
             }
         }
         if (counter == 6) {
@@ -161,15 +156,12 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
 
     @Nullable
     public RecombinatingRecipe craft() {
-        System.out.println("Start craft method");
         inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < 7; i++) {
             inventory.addItem(itemHandler.getStackInSlot(i));
             List<RecombinatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecombinatingRecipe.RecombinatingRecipeType.INSTANCE, inventory, level);
-            System.out.println("Get list of recipes");
             if (!recipes.isEmpty()) {
                 RecombinatingRecipe selectedRecipe;
-                System.out.println("Recipes is not empty");
                 if (recipes.size() == 1) {
                     selectedRecipe = recipes.get(0);
                 } else {
@@ -187,10 +179,8 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
                     int randomNum = rng.nextInt(weightArray.length);
                     int recipeIndex = weightArray[randomNum];
                     inventory.removeAllItems();
-                    System.out.println("Selected Recipe: "+recipes.get(recipeIndex));
                     return recipes.get(recipeIndex);
                 }
-                System.out.println("Selected Recipe: "+selectedRecipe);
                 return selectedRecipe;
             }
         }
@@ -198,21 +188,16 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     }
 
     private ItemStack getOutput(@Nullable RecombinatingRecipe selectedRecipe) {
-        System.out.println("getOutput selectedRecipe: "+selectedRecipe);
         if (selectedRecipe != null) {
-            System.out.println("getOutput: "+ selectedRecipe.getResultItem());
             return selectedRecipe.getResultItem();
         }
-        System.out.println("getOutput: "+ItemStack.EMPTY);
         return ItemStack.EMPTY;
     }
 
     public void doRecombine() {
         assert this.level != null;
         ItemStack dna = itemHandler.getStackInSlot(0);
-        System.out.println("Begin doRecombine");
         if (this.canRecombine()) {
-            System.out.println("canRecombine successful in doRecombine");
             RecombinatingRecipe selectedRecipe1 = craft();
             ItemStack output1 = getOutput(selectedRecipe1);
             RecombinatingRecipe selectedRecipe2 = craft();
@@ -225,7 +210,6 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
             ItemStack output5 = getOutput(selectedRecipe5);
             RecombinatingRecipe selectedRecipe6 = craft();
             ItemStack output6 = getOutput(selectedRecipe6);
-            System.out.println("doRecombine Outputs: "+output1+", "+output2+", "+output3+", "+output4+", "+output5+", "+output6+".");
             if (!output1.isEmpty()) {
                 ItemStack stack = itemHandler.getStackInSlot(1);
                 stack.shrink(1);

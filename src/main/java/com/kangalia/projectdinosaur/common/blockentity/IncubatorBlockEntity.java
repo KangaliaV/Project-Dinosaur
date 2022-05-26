@@ -76,6 +76,8 @@ public class IncubatorBlockEntity extends BlockEntity {
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
                             stack.getItem() == BlockInit.INCUBATED_APHANERAMMA_EGG.get().asItem() ||
+                            stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
+                            stack.getItem() == BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {

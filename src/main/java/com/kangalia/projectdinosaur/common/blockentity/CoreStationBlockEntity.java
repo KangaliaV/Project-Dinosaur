@@ -90,7 +90,8 @@ public class CoreStationBlockEntity extends BlockEntity {
                             stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_SPECIMEN.get();
                 }
                 if (slot >= 7 && slot < 13) {
-                    return stack.getItem() == ItemInit.APHANERAMMA_DNA.get();
+                    return stack.getItem() == ItemInit.APHANERAMMA_DNA.get() ||
+                            stack.getItem() == ItemInit.COMPSOGNATHUS_DNA.get();
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.SYRINGE.get();

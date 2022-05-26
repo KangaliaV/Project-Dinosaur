@@ -225,6 +225,11 @@ public class BlockInit {
             .sound(SoundType.METAL)
             .randomTicks()
             .noOcclusion()));
+    public static final RegistryObject<Block> INCUBATED_COMPSOGNATHUS_EGG = registerEggBlock("incubated_compsognathus_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
+            .strength(0.5F)
+            .sound(SoundType.METAL)
+            .randomTicks()
+            .noOcclusion()));
 
     //Helper Methods
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {

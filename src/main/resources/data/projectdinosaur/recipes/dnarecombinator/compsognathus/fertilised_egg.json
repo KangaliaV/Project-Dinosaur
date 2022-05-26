@@ -1,9 +1,9 @@
 {
   "type": "projectdinosaur:recombinating",
-  "weight": 2,
+  "weight": 1,
   "ingredients": [
     {
-      "item": "projectdinosaur:aphaneramma_dna"
+      "item": "projectdinosaur:compsognathus_dna"
     },
     {
       "item": "minecraft:egg"
@@ -25,6 +25,6 @@
     }
   ],
   "result": {
-    "item": "projectdinosaur:rotten_egg"
+    "item": "projectdinosaur:fertilised_compsognathus_egg"
   }
 }

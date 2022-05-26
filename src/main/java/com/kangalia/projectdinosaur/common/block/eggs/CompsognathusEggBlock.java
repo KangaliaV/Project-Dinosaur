@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.block.eggs;
 
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
@@ -29,14 +30,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class AphanerammaEggBlock extends Block {
+public class CompsognathusEggBlock extends Block {
 
     private static final VoxelShape ONE_EGG_AABB = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
     private static final VoxelShape MULTIPLE_EGGS_AABB = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
 
-    public AphanerammaEggBlock(BlockBehaviour.Properties p_57759_) {
+    public CompsognathusEggBlock(BlockBehaviour.Properties p_57759_) {
         super(p_57759_);
         this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)).setValue(EGGS, Integer.valueOf(1)));
     }
@@ -56,7 +57,7 @@ public class AphanerammaEggBlock extends Block {
 
     private void destroyEgg(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, int pChance) {
         if (this.canDestroyEgg(pLevel, pEntity)) {
-            if (!pLevel.isClientSide && pLevel.random.nextInt(pChance) == 0 && pState.is(BlockInit.INCUBATED_APHANERAMMA_EGG.get())) {
+            if (!pLevel.isClientSide && pLevel.random.nextInt(pChance) == 0 && pState.is(BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get())) {
                 this.decreaseEggs(pLevel, pPos, pState);
             }
 
@@ -88,14 +89,14 @@ public class AphanerammaEggBlock extends Block {
 
                 for(int j = 0; j < pState.getValue(EGGS); ++j) {
                     pLevel.levelEvent(2001, pPos, Block.getId(pState));
-                    AphanerammaEntity aphaneramma = EntityInit.APHANERAMMA.get().create(pLevel);
-                    aphaneramma.setGender(random.nextInt(2));
-                    aphaneramma.setAgeInTicks(0);
-                    aphaneramma.setMatingTicks(12000);
-                    aphaneramma.setHunger(aphaneramma.getMaxFood() / 2);
-                    aphaneramma.setHungerTicks(1600);
-                    aphaneramma.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
-                    pLevel.addFreshEntity(aphaneramma);
+                    CompsognathusEntity compsognathus = EntityInit.COMPSOGNATHUS.get().create(pLevel);
+                    compsognathus.setGender(random.nextInt(2));
+                    compsognathus.setAgeInTicks(0);
+                    compsognathus.setMatingTicks(12000);
+                    compsognathus.setHunger(compsognathus.getMaxFood() / 2);
+                    compsognathus.setHungerTicks(1600);
+                    compsognathus.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
+                    pLevel.addFreshEntity(compsognathus);
                 }
             }
         }

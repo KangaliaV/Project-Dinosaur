@@ -77,7 +77,6 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         super.tick();
         this.setAgeInTicks(this.getAgeInTicks() + 1);
         setAgeScale(getAgeScale());
-        System.out.println("Hunger: "+this.getHunger());
         if (this.getHungerTicks() > 0) {
             this.setHungerTicks(this.getHungerTicks()-1);
         } else if (this.getHungerTicks() <= 0) {
@@ -219,6 +218,10 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
         groundFeeder = (GroundFeederBlockEntity) pLevel.getBlockEntity(pPos);
         return groundFeeder != null;
+    }
+
+    public boolean isSleeping() {
+        return this.level.isDay();
     }
 
     public int getDiet() {
