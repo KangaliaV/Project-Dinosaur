@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
 import com.kangalia.projectdinosaur.common.block.dinocare.GroundFeederBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.CompsognathusEggBlock;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
@@ -209,6 +210,18 @@ public class BlockInit {
             .requiresCorrectToolForDrops()
             .noOcclusion()));
 
+    //Eggs
+    public static final RegistryObject<Block> INCUBATED_APHANERAMMA_EGG = registerEggBlock("incubated_aphaneramma_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
+            .strength(0.5F)
+            .sound(SoundType.METAL)
+            .randomTicks()
+            .noOcclusion()));
+    public static final RegistryObject<Block> INCUBATED_COMPSOGNATHUS_EGG = registerEggBlock("incubated_compsognathus_egg", () -> new CompsognathusEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
+            .strength(0.5F)
+            .sound(SoundType.METAL)
+            .randomTicks()
+            .noOcclusion()));
+
     //Miscellaneous Blocks
     public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
@@ -218,18 +231,6 @@ public class BlockInit {
     public static final RegistryObject<Block> NEST = registerBlock("nest", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW)
             .strength(0.5F)
             .sound(SoundType.GRASS)));
-
-    //Eggs
-    public static final RegistryObject<Block> INCUBATED_APHANERAMMA_EGG = registerEggBlock("incubated_aphaneramma_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
-            .strength(0.5F)
-            .sound(SoundType.METAL)
-            .randomTicks()
-            .noOcclusion()));
-    public static final RegistryObject<Block> INCUBATED_COMPSOGNATHUS_EGG = registerEggBlock("incubated_compsognathus_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
-            .strength(0.5F)
-            .sound(SoundType.METAL)
-            .randomTicks()
-            .noOcclusion()));
 
     //Helper Methods
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {

@@ -216,8 +216,10 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     }
 
     protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-        groundFeeder = (GroundFeederBlockEntity) pLevel.getBlockEntity(pPos);
-        return groundFeeder != null;
+        if (pLevel.getBlockEntity(pPos) instanceof GroundFeederBlockEntity) {
+            return pLevel.getBlockEntity(pPos) != null;
+        }
+        return false;
     }
 
     public boolean isSleeping() {

@@ -36,10 +36,8 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     public CompsognathusEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
-        //this.moveControl = new AphanerammaEntity.AphanerammaMoveControl(this);
-        //this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
         this.maxUpStep = 1.0F;
-        minSize = 0.75F;
+        minSize = 0.50F;
         maxMaleSize = 2.0F;
         maxFemaleSize = 1.8F;
         maxFood = 50;
