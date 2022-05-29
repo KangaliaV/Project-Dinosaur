@@ -73,8 +73,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
+        if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.walk", true));
+            event.getController().setAnimationSpeed(1.0);
+        } else if (this.isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.swim", true));
             event.getController().setAnimationSpeed(1.0);
         } else if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.sleep", true));
