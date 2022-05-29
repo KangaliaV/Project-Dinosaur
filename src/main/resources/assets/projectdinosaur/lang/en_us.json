@@ -111,5 +111,10 @@
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
   "item.projectdinosaur.fertilised_aphaneramma_egg": "Fertilised Aphaneramma Egg",
   "block.projectdinosaur.incubated_aphaneramma_egg": "Incubated Aphaneramma Egg",
-  "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg"
+  "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
+
+  "item.projectdinosaur.compsognathus_dna": "Compsognathus DNA",
+  "item.projectdinosaur.fertilised_compsognathus_egg": "Fertilised Compsognathus Egg",
+  "block.projectdinosaur.incubated_compsognathus_egg": "Incubated Compsognathus Egg",
+  "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg"
 }

@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.model;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.entity.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,6 +24,9 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AphanerammaEntity object) {
+        if (object.isSleeping()) {
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_sleeping.png");
+        }
         return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma.png");
     }
 

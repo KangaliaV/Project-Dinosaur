@@ -21,17 +21,14 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
 
     @Override
     public Optional<Mob> spawnOffspringFromSpawnEgg(Player pPlayer, Mob pMob, EntityType<? extends Mob> pEntityType, ServerLevel pServerLevel, Vec3 pPos, ItemStack pStack) {
-        System.out.println("Entity Type: "+pEntityType);
         if (!this.spawnsEntity(pStack.getTag(), pEntityType)) {
             return Optional.empty();
         } else {
             PrehistoricEntity mob;
             if (pMob instanceof AgeableMob) {
                 mob = (PrehistoricEntity) ((PrehistoricEntity)pMob).getBreedOffspring(pServerLevel, (PrehistoricEntity)pMob);
-                System.out.println("Mob Instance of DinosaurEntity: "+mob);
             } else {
                 mob = (PrehistoricEntity) pEntityType.create(pServerLevel);
-                System.out.println("Mob not an Instance of DinosaurEntity: "+mob);
             }
 
             if (mob == null) {

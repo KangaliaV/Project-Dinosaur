@@ -86,7 +86,7 @@ public class ExtractingRecipe implements IExtractingRecipe {
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ExtractingRecipe> {
 
         public static final ExtractingRecipe.Serializer INSTANCE = new ExtractingRecipe.Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "excavating");
+        public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "extracting");
 
         @Override
         public ExtractingRecipe fromJson(ResourceLocation id, JsonObject json) {

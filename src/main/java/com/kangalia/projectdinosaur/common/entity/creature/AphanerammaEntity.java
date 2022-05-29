@@ -1,7 +1,7 @@
-package com.kangalia.projectdinosaur.common.entity;
+package com.kangalia.projectdinosaur.common.entity.creature;
 
-import com.kangalia.projectdinosaur.common.entity.ai.EatFromGroundFeederGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.MoveToGroundFeederGoal;
+import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -58,8 +58,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         maxFood = 50;
         diet = 2;
         canHunt = false;
+        soundVolume = 0.4F;
+        sleepSchedule = 0;
     }
-
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
@@ -73,12 +74,16 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.Aphaneramma.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.walk", true));
+            event.getController().setAnimationSpeed(1.0);
+        } else if (this.isSleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.sleep", true));
+            event.getController().setAnimationSpeed(0.5);
+        } else if (this.isScrem()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.screm", true));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.Aphaneramma.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.idle", true));
             event.getController().setAnimationSpeed(1.0);
         }
         return PlayState.CONTINUE;
@@ -96,12 +101,12 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new AphanerammaMeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(2, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
+            this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+            this.goalSelector.addGoal(2, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
+            this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+            this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
 
     @Override
@@ -123,11 +128,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.BAT_DEATH;
-    }
-
-    @Override
-    protected float getSoundVolume() {
-        return 0.4f;
     }
 
     @Override
@@ -181,7 +181,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
 
         public void tick() {
-            super.tick();
+            if (!AphanerammaEntity.this.isSleeping()) {
+                super.tick();
+            }
         }
     }
 
@@ -194,7 +196,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
 
         public void tick() {
-            super.tick();
+            if (!this.aphaneramma.isSleeping()) {
+                super.tick();
+            }
         }
     }
 
@@ -287,90 +291,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         public void stop() {
             this.mob.getNavigation().stop();
             super.stop();
-        }
-    }
-
-    static class AphanerammaMeleeAttackGoal extends MeleeAttackGoal {
-        private final AphanerammaEntity aphaneramma;
-
-        protected final PathfinderMob mob;
-        private final double speedModifier;
-        private final boolean followingTargetEvenIfNotSeen;
-        private double pathedTargetX;
-        private double pathedTargetY;
-        private double pathedTargetZ;
-        private int ticksUntilNextPathRecalculation;
-        private int ticksUntilNextAttack;
-        private int failedPathFindingPenalty = 0;
-        private boolean canPenalize = false;
-
-        public AphanerammaMeleeAttackGoal(PathfinderMob pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-            this.mob = pMob;
-            this.speedModifier = pSpeedModifier;
-            this.followingTargetEvenIfNotSeen = pFollowingTargetEvenIfNotSeen;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-            this.aphaneramma = (AphanerammaEntity) pMob;
-        }
-
-        @Override
-        public void tick() {
-            LivingEntity livingentity = this.mob.getTarget();
-            if (livingentity != null & this.aphaneramma.isHungry()) {
-                this.aphaneramma.canHunt = true;
-                this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
-                double d0 = this.mob.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
-                this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
-                if ((this.followingTargetEvenIfNotSeen || this.mob.getSensing().hasLineOfSight(livingentity)) && this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || livingentity.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
-                    this.pathedTargetX = livingentity.getX();
-                    this.pathedTargetY = livingentity.getY();
-                    this.pathedTargetZ = livingentity.getZ();
-                    this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
-                    if (this.canPenalize) {
-                        this.ticksUntilNextPathRecalculation += failedPathFindingPenalty;
-                        if (this.mob.getNavigation().getPath() != null) {
-                            net.minecraft.world.level.pathfinder.Node finalPathPoint = this.mob.getNavigation().getPath().getEndNode();
-                            if (finalPathPoint != null && livingentity.distanceToSqr(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
-                                failedPathFindingPenalty = 0;
-                            else
-                                failedPathFindingPenalty += 10;
-                        } else {
-                            failedPathFindingPenalty += 10;
-                        }
-                    }
-                    if (d0 > 1024.0D) {
-                        this.ticksUntilNextPathRecalculation += 10;
-                    } else if (d0 > 256.0D) {
-                        this.ticksUntilNextPathRecalculation += 5;
-                    }
-
-                    if (!this.mob.getNavigation().moveTo(livingentity, this.speedModifier)) {
-                        this.ticksUntilNextPathRecalculation += 15;
-                    }
-
-                    this.ticksUntilNextPathRecalculation = this.adjustedTickDelay(this.ticksUntilNextPathRecalculation);
-                }
-
-                this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
-                this.checkAndPerformAttack(livingentity, d0);
-            }
-        }
-
-        @Override
-        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-            double d0 = this.getAttackReachSqr(pEnemy);
-            if (pDistToEnemySqr <= d0 && this.getTicksUntilNextAttack() <= 0) {
-                this.resetAttackCooldown();
-                this.mob.swing(InteractionHand.MAIN_HAND);
-                this.mob.doHurtTarget(pEnemy);
-                this.aphaneramma.setHunger(this.aphaneramma.getHunger() + this.aphaneramma.random.nextInt(8) + 3);
-                this.aphaneramma.level.playSound(null, this.aphaneramma.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.aphaneramma.getSoundVolume(), this.aphaneramma.getVoicePitch());
-                if (this.aphaneramma.getHunger() > aphaneramma.maxFood) {
-                    this.aphaneramma.setHunger(aphaneramma.maxFood);
-                }
-                this.aphaneramma.canHunt = false;
-            }
-
         }
     }
 }

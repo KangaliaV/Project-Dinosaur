@@ -40,10 +40,9 @@ public class IncubatorScreen extends AbstractContainerScreen<IncubatorContainer>
         int pbHeight = 45;
 
         int progress = menu.getProgressFromTile();
-        int onePixelAmount = Math.round(maxUnitFill / pbHeight);
-        int fillHeight = Math.round(progress / onePixelAmount);
+        int fillHeight = Math.round(progress * pbHeight / maxUnitFill);
 
-        this.blit(stack,i+64, j+21, 176, 0, pbLength, fillHeight);
+        this.blit(stack,i+64, j+65-fillHeight, 176, 44-fillHeight, pbLength, fillHeight);
 
     }
 }

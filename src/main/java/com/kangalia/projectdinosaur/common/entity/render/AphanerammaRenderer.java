@@ -1,6 +1,6 @@
 package com.kangalia.projectdinosaur.common.entity.render;
 
-import com.kangalia.projectdinosaur.common.entity.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.model.AphanerammaModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,6 +1,6 @@
 package com.kangalia.projectdinosaur.common.block.eggs;
 
-import com.kangalia.projectdinosaur.common.entity.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
@@ -31,8 +31,8 @@ import java.util.Random;
 
 public class AphanerammaEggBlock extends Block {
 
-    private static final VoxelShape ONE_EGG_AABB = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
-    private static final VoxelShape MULTIPLE_EGGS_AABB = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
+    private static final VoxelShape ONE_EGG_AABB = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 5.0D, 12.0D);
+    private static final VoxelShape MULTIPLE_EGGS_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 5.0D, 14.0D);
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
 
@@ -91,7 +91,7 @@ public class AphanerammaEggBlock extends Block {
                     AphanerammaEntity aphaneramma = EntityInit.APHANERAMMA.get().create(pLevel);
                     aphaneramma.setGender(random.nextInt(2));
                     aphaneramma.setAgeInTicks(0);
-                    aphaneramma.setMatingTicks(240);
+                    aphaneramma.setMatingTicks(12000);
                     aphaneramma.setHunger(aphaneramma.getMaxFood() / 2);
                     aphaneramma.setHungerTicks(1600);
                     aphaneramma.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
