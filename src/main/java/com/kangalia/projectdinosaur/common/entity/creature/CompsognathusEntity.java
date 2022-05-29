@@ -11,12 +11,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -36,6 +37,8 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     public CompsognathusEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
+        this.moveControl = new CompsognathusEntity.CompsognathusMoveControl();
+        this.lookControl = new CompsognathusEntity.CompsognathusLookControl();
         this.maxUpStep = 1.0F;
         minSize = 0.50F;
         maxMaleSize = 2.0F;
@@ -44,6 +47,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         diet = 1;
         canHunt = false;
         soundVolume = 0.5F;
+        sleepSchedule = 1;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -58,12 +62,16 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.compy.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.run", true));
+            event.getController().setAnimationSpeed(8.0);
+        } else if (this.isSleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.sleep", true));
+            event.getController().setAnimationSpeed(0.35);
+        } else if (this.isScrem()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.screm", true));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.compy.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.idle", true));
             event.getController().setAnimationSpeed(1.0);
         }
         return PlayState.CONTINUE;
@@ -71,7 +79,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
+        data.setResetSpeedInTicks(20);
         data.addAnimationController(new AnimationController<CompsognathusEntity>(this, "controller", 4, this::predicate));
     }
 
@@ -81,13 +89,13 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
+            this.goalSelector.addGoal(0, new FloatGoal(this));
+            this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 3.0D, true));
+            this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 2.0D, 200));
+            this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+            this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
     }
 
     @Override
@@ -130,6 +138,32 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     @Override
     public int getAdultAge() {
-            return 4;
+        return 4;
+    }
+
+    class CompsognathusMoveControl extends MoveControl {
+        public CompsognathusMoveControl() {
+            super(CompsognathusEntity.this);
         }
+
+        public void tick() {
+            if (!CompsognathusEntity.this.isSleeping()) {
+                super.tick();
+            }
+
+        }
+    }
+
+    public class CompsognathusLookControl extends LookControl {
+        public CompsognathusLookControl() {
+            super(CompsognathusEntity.this);
+        }
+
+        public void tick() {
+            if (!CompsognathusEntity.this.isSleeping()) {
+                super.tick();
+            }
+
+        }
+    }
 }

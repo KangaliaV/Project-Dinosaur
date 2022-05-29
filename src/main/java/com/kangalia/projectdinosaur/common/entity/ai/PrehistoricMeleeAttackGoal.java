@@ -76,7 +76,9 @@ public class PrehistoricMeleeAttackGoal extends MeleeAttackGoal {
     @Override
     public boolean canContinueToUse() {
         LivingEntity livingentity = this.mob.getTarget();
-        if (!this.prehistoric.isHungry()) {
+        if (this.prehistoric.isSleeping()) {
+            return false;
+        } else if (!this.prehistoric.isHungry()) {
             return false;
         } else if (livingentity == null) {
             return false;

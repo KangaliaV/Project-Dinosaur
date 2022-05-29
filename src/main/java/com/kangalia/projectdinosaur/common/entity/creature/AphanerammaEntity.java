@@ -59,6 +59,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         diet = 2;
         canHunt = false;
         soundVolume = 0.4F;
+        sleepSchedule = 0;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -73,12 +74,16 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.Aphaneramma.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.walk", true));
+            event.getController().setAnimationSpeed(1.0);
+        } else if (this.isSleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.sleep", true));
+            event.getController().setAnimationSpeed(0.5);
+        } else if (this.isScrem()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.screm", true));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.Aphaneramma.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.idle", true));
             event.getController().setAnimationSpeed(1.0);
         }
         return PlayState.CONTINUE;
@@ -96,12 +101,12 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(2, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
+            this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+            this.goalSelector.addGoal(2, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
+            this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+            this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
 
     @Override
@@ -176,7 +181,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
 
         public void tick() {
-            super.tick();
+            if (!AphanerammaEntity.this.isSleeping()) {
+                super.tick();
+            }
         }
     }
 
@@ -189,7 +196,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
 
         public void tick() {
-            super.tick();
+            if (!this.aphaneramma.isSleeping()) {
+                super.tick();
+            }
         }
     }
 

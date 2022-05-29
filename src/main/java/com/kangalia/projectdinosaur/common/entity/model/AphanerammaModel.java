@@ -24,6 +24,9 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AphanerammaEntity object) {
+        if (object.isSleeping()) {
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_sleeping.png");
+        }
         return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma.png");
     }
 

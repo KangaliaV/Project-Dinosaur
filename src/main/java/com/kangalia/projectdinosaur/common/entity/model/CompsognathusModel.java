@@ -22,11 +22,17 @@ public class CompsognathusModel extends AnimatedGeoModel<CompsognathusEntity> {
     @Override
     public ResourceLocation getTextureLocation(CompsognathusEntity object) {
         if (object.isAdult()) {
-            if (object.getGender() == 0) {
+            if (object.getGender() == 0 && !object.isSleeping()) {
                 return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_male.png");
-            } else {
+            } else if (object.getGender() == 1 && !object.isSleeping()) {
                 return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_female.png");
+            } else if (object.getGender() == 0 && object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_male_sleeping.png");
+            } else {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_female_sleeping.png");
             }
+        } else if (object.isSleeping()) {
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_baby_sleeping.png");
         } else {
             return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_baby.png");
         }
@@ -46,7 +52,9 @@ public class CompsognathusModel extends AnimatedGeoModel<CompsognathusEntity> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
 
         IBone head = this.getAnimationProcessor().getBone("skull");
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 2);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 2);
+        if (!entity.isSleeping()) {
+            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 2);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 2);
+        }
     }
 }
