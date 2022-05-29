@@ -24,10 +24,21 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AphanerammaEntity object) {
-        if (object.isSleeping()) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_sleeping.png");
+        if (object.isAdult()) {
+            if (object.getGender() == 0 && !object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_male.png");
+            } else if (object.getGender() == 1 && !object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_female.png");
+            } else if (object.getGender() == 0 && object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_male_sleeping.png");
+            } else {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_female_sleeping.png");
+            }
+        } else if (object.isSleeping()) {
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_baby_sleeping.png");
+        } else {
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_baby.png");
         }
-        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma.png");
     }
 
     @Override
@@ -44,7 +55,9 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
 
         IBone head = this.getAnimationProcessor().getBone("bone10");
-        head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 2);
-        head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 2);
+        if (!entity.isSleeping()) {
+            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 2);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 2);
+        }
     }
 }
