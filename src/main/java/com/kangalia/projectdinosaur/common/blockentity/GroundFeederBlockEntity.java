@@ -16,6 +16,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -125,22 +127,6 @@ public class GroundFeederBlockEntity extends BlockEntity {
         return super.getCapability(cap, side);
     }
 
-    public int getFoodType() {
-        if (herbi > carni && herbi > pisci) {
-            return 1;
-        } else if (carni > herbi && carni > pisci) {
-            return 2;
-        } else if (pisci > herbi && pisci > carni) {
-            return 3;
-        } else if (herbi == 0 && carni == 0 && pisci == 0) {
-            return 0;
-        } else if (herbi == carni && carni == pisci) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     public boolean isEmpty(PrehistoricEntity entity) {
         if (entity.getDiet() == 0) {
             return herbi == 0;
@@ -150,6 +136,19 @@ public class GroundFeederBlockEntity extends BlockEntity {
             return pisci == 0;
         }
         return false;
+    }
+
+    public boolean isCompletelyEmpty() {
+        return herbi + carni + pisci == 0;
+    }
+
+    public void updateBlock() {
+        BlockState blockState = level.getBlockState(worldPosition);
+        if (this.isCompletelyEmpty()) {
+            level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, false), Block.UPDATE_ALL);
+        } else {
+            level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true), Block.UPDATE_ALL);
+        }
     }
 
     public void feedEntity(PrehistoricEntity entity) {
@@ -174,6 +173,7 @@ public class GroundFeederBlockEntity extends BlockEntity {
                     if (flag) {
                         entity.level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, entity.getVoicePitch());
                         assert level != null;
+                        updateBlock();
                         level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                         setChanged();
                     } else {
@@ -223,6 +223,7 @@ public class GroundFeederBlockEntity extends BlockEntity {
                 }
             }
         }
+        updateBlock();
         level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
         setChanged();
     }
