@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "projectdinosaur:items/growth_accelerating_hormone"
+  }
+}
