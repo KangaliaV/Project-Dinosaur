@@ -201,7 +201,8 @@ public class BlockInit {
             .strength(5.0f, 6.0f)
             .sound(SoundType.METAL)
             .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
-            .requiresCorrectToolForDrops()));
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
 
     //Dino Care Blocks
     public static final RegistryObject<Block> GROUND_FEEDER = registerBlock("ground_feeder", () -> new GroundFeederBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)

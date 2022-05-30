@@ -1,26 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#~#",
+    "#S#",
     "S@S",
     "#S#"
   ],
   "key": {
     "#": {
-      "item": "minecraft:iron_ingot"
-    },
-    "~": {
-      "item": "minecraft:glass"
+      "item": "minecraft:diamond"
     },
     "@": {
-      "item": "minecraft:lapis_lazuli"
+      "item": "projectdinosaur:syringe"
     },
     "S": {
       "item": "minecraft:smooth_stone"
     }
   },
   "result": {
-    "item": "projectdinosaur:fossil_excavator",
+    "item": "projectdinosaur:dna_recombinator",
     "count": 1
   }
 }

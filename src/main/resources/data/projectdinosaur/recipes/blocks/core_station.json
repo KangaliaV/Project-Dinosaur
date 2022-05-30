@@ -7,20 +7,20 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:gold_ingot"
     },
     "~": {
-      "item": "minecraft:glass"
+      "item": "minecraft:charcoal"
     },
     "@": {
-      "item": "minecraft:lapis_lazuli"
+      "item": "minecraft:redstone"
     },
     "S": {
       "item": "minecraft:smooth_stone"
     }
   },
   "result": {
-    "item": "projectdinosaur:fossil_excavator",
+    "item": "projectdinosaur:core_station",
     "count": 1
   }
 }

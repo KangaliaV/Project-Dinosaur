@@ -33,6 +33,7 @@ public class ClientSetup {
         ItemBlockRenderTypes.setRenderLayer(BlockInit.AMBER_BLOCK.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(BlockInit.INCUBATOR.get(), RenderType.translucent());
 
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
 

@@ -1,26 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#~#",
-    "S@S",
-    "#S#"
+    "###",
+    "~@~",
+    "SSS"
   ],
   "key": {
     "#": {
-      "item": "minecraft:iron_ingot"
-    },
-    "~": {
       "item": "minecraft:glass"
     },
+    "~": {
+      "item": "minecraft:glowstone_dust"
+    },
     "@": {
-      "item": "minecraft:lapis_lazuli"
+      "item": "projectdinosaur:nest"
     },
     "S": {
       "item": "minecraft:smooth_stone"
     }
   },
   "result": {
-    "item": "projectdinosaur:fossil_excavator",
+    "item": "projectdinosaur:incubator",
     "count": 1
   }
 }
