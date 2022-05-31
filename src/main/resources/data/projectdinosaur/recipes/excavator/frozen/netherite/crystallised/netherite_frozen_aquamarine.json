@@ -6,10 +6,10 @@
       "item": "projectdinosaur:netherite_chisel"
     },
     {
-      "item": "projectdinosaur:encased_aquatic_crystallised_fossil"
+      "item": "projectdinosaur:encased_frozen_crystallised_fossil"
     }
   ],
   "result": {
-    "item": "projectdinosaur:amber"
+    "item": "projectdinosaur:aquamarine"
   }
 }

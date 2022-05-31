@@ -3,13 +3,13 @@
   "weight": 4,
   "ingredients": [
     {
-      "item": "projectdinosaur:diamond_chisel"
+      "item": "projectdinosaur:netherite_chisel"
     },
     {
       "item": "projectdinosaur:encased_temperate_crystallised_fossil"
     }
   ],
   "result": {
-    "item": "projectdinosaur:amber"
+    "item": "projectdinosaur:malachite"
   }
 }

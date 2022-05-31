@@ -6,10 +6,10 @@
       "item": "projectdinosaur:diamond_chisel"
     },
     {
-      "item": "projectdinosaur:encased_grassland_crystallised_fossil"
+      "item": "projectdinosaur:encased_tropical_crystallised_fossil"
     }
   ],
   "result": {
-    "item": "projectdinosaur:amber"
+    "item": "projectdinosaur:sphene"
   }
 }
