@@ -201,14 +201,18 @@ public class BlockInit {
             .strength(5.0f, 6.0f)
             .sound(SoundType.METAL)
             .lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0)
-            .requiresCorrectToolForDrops()));
+            .requiresCorrectToolForDrops()
+            .noOcclusion()));
 
-    //Dino Care Blocks
+    //Dino Husbandry Blocks
     public static final RegistryObject<Block> GROUND_FEEDER = registerBlock("ground_feeder", () -> new GroundFeederBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
             .strength(5.0f, 6.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()
             .noOcclusion()));
+    public static final RegistryObject<Block> NEST = registerBlock("nest", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW)
+            .strength(0.5F)
+            .sound(SoundType.GRASS)));
 
     //Eggs
     public static final RegistryObject<Block> INCUBATED_APHANERAMMA_EGG = registerEggBlock("incubated_aphaneramma_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
@@ -222,15 +226,39 @@ public class BlockInit {
             .randomTicks()
             .noOcclusion()));
 
-    //Miscellaneous Blocks
+    //Gem Blocks
+    public static final RegistryObject<Block> HEMATINE_BLOCK = registerBlock("hematine_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> AZURITE_BLOCK = registerBlock("azurite_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
-            .requiresCorrectToolForDrops()
-            .noOcclusion()));
-    public static final RegistryObject<Block> NEST = registerBlock("nest", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW)
-            .strength(0.5F)
-            .sound(SoundType.GRASS)));
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> AQUAMARINE_BLOCK = registerBlock("aquamarine_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> URAVORITE_BLOCK = registerBlock("uravorite_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MALACHITE_BLOCK = registerBlock("malachite_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SPHENE_BLOCK = registerBlock("sphene_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ALMANDINE_BLOCK = registerBlock("almandine_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+            .strength(4.0f, 5.0f)
+            .sound(SoundType.METAL)
+            .requiresCorrectToolForDrops()));
 
     //Helper Methods
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {

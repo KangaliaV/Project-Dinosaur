@@ -109,7 +109,14 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
                             stack.getItem() == ItemInit.TEMPERATE_CRYSTALLISED_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_SPECIMEN.get() ||
                             stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.HEMATINE.get() ||
+                            stack.getItem() == ItemInit.AZURITE.get() ||
                             stack.getItem() == ItemInit.AMBER.get() ||
+                            stack.getItem() == ItemInit.AQUAMARINE.get() ||
+                            stack.getItem() == ItemInit.URAVORITE.get() ||
+                            stack.getItem() == ItemInit.MALACHITE.get() ||
+                            stack.getItem() == ItemInit.SPHENE.get() ||
+                            stack.getItem() == ItemInit.ALMANDINE.get() ||
                             stack.getItem() == Items.BONE ||
                             stack.getItem() == Items.CLAY_BALL||
                             stack.getItem() == Items.FLINT||

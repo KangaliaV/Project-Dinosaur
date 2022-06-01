@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "~@~",
+    "SSS"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glass"
+    },
+    "~": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "@": {
+      "item": "projectdinosaur:nest"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:incubator",
+    "count": 1
+  }
+}

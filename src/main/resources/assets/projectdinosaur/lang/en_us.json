@@ -103,8 +103,23 @@
   "item.projectdinosaur.tropical_crystallised_specimen": "Tropical Crystallised Specimen",
   "item.projectdinosaur.wetland_crystallised_specimen": "Wetland Crystallised Specimen",
 
-  "block.projectdinosaur.amber_block": "Amber Block",
+  "item.projectdinosaur.hematine": "Hematine",
+  "item.projectdinosaur.azurite": "Azurite",
   "item.projectdinosaur.amber": "Amber",
+  "item.projectdinosaur.aquamarine": "Aquamarine",
+  "item.projectdinosaur.uravorite": "Uravorite",
+  "item.projectdinosaur.malachite": "Malachite",
+  "item.projectdinosaur.sphene": "Sphene",
+  "item.projectdinosaur.almandine": "Almandine",
+
+  "block.projectdinosaur.hematine_block": "Hematine Block",
+  "block.projectdinosaur.azurite_block": "Azurite Block",
+  "block.projectdinosaur.amber_block": "Amber Block",
+  "block.projectdinosaur.aquamarine_block": "Aquamarine Block",
+  "block.projectdinosaur.uravorite_block": "Uravorite Block",
+  "block.projectdinosaur.malachite_block": "Malachite Block",
+  "block.projectdinosaur.sphene_block": "Sphene Block",
+  "block.projectdinosaur.almandine_block": "Almandine Block",
 
   "block.projectdinosaur.nest": "Nest",
 

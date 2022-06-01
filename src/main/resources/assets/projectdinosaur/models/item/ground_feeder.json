@@ -1,3 +1,6 @@
 {
-  "parent": "projectdinosaur:block/ground_feeder"
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "projectdinosaur:items/ground_feeder_item"
+  }
 }

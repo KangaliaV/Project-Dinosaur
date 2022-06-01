@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -37,7 +38,7 @@ public class CoreStationBlockEntity extends BlockEntity {
     private final RandomNumGen rng = new RandomNumGen();
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-    
+
     public CoreStationBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntitiesInit.CORE_STATION_ENTITY.get(), blockPos, blockState);
         this.items = NonNullList.withSize(13, ItemStack.EMPTY);
@@ -141,13 +142,11 @@ public class CoreStationBlockEntity extends BlockEntity {
             level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true), Block.UPDATE_ALL);
             if (progress < WORK_TIME) {
                 ++progress;
-                System.out.println("Progress counter: "+progress);
                 level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
                 setChanged();
             }
             if (progress == WORK_TIME) {
                 progress = 0;
-                System.out.println("Progress = Work time.");
                 this.doExtract();
             }
         } else {

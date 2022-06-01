@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#~#",
+    "S@S",
+    "#S#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "~": {
+      "item": "minecraft:charcoal"
+    },
+    "@": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:core_station",
+    "count": 1
+  }
+}
