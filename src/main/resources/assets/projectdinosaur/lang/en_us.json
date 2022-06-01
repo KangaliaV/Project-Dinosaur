@@ -112,7 +112,14 @@
   "item.projectdinosaur.sphene": "Sphene",
   "item.projectdinosaur.almandine": "Almandine",
 
+  "block.projectdinosaur.hematine_block": "Hematine Block",
+  "block.projectdinosaur.azurite_block": "Azurite Block",
   "block.projectdinosaur.amber_block": "Amber Block",
+  "block.projectdinosaur.aquamarine_block": "Aquamarine Block",
+  "block.projectdinosaur.uravorite_block": "Uravorite Block",
+  "block.projectdinosaur.malachite_block": "Malachite Block",
+  "block.projectdinosaur.sphene_block": "Sphene Block",
+  "block.projectdinosaur.almandine_block": "Almandine Block",
 
   "block.projectdinosaur.nest": "Nest",
 
