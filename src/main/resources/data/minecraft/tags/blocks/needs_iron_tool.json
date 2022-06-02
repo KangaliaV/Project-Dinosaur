@@ -37,6 +37,13 @@
     "projectdinosaur:encased_tropical_crystallised_fossil",
     "projectdinosaur:encased_wetland_crystallised_fossil",
 
-    "projectdinosaur:amber_block"
+    "projectdinosaur:hematine_block",
+    "projectdinosaur:azurite_block",
+    "projectdinosaur:amber_block",
+    "projectdinosaur:aquamarine_block",
+    "projectdinosaur:uravorite_block",
+    "projectdinosaur:malachite_block",
+    "projectdinosaur:sphene_block",
+    "projectdinosaur:almandine_block"
   ]
 }

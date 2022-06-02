@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "item": "projectdinosaur:amber"
+      "item": "projectdinosaur:hematine"
     }
   },
   "result": {
-    "item": "projectdinosaur:amber_block",
+    "item": "projectdinosaur:hematine_block",
     "count": 1
   }
 }

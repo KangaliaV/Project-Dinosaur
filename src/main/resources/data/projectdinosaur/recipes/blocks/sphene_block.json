@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "item": "projectdinosaur:amber"
+      "item": "projectdinosaur:sphene"
     }
   },
   "result": {
-    "item": "projectdinosaur:amber_block",
+    "item": "projectdinosaur:sphene_block",
     "count": 1
   }
 }
