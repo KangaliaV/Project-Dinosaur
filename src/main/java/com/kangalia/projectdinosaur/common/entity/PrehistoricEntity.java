@@ -327,7 +327,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean shouldSleep() {
-        if (this.isAngry() || this.isStarving()) {
+        if (this.isAngry() || this.isStarving() || this.isInWater()) {
             return false;
         } else if (this.level.isDay() && getSleepSchedule() == 1) {
             return true;
