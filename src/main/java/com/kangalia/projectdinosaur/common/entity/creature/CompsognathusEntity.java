@@ -1,12 +1,20 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -17,9 +25,12 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +41,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.UUID;
 
 public class CompsognathusEntity extends PrehistoricEntity implements IAnimatable {
 
@@ -43,19 +56,19 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         minSize = 0.50F;
         maxMaleSize = 2.0F;
         maxFemaleSize = 1.8F;
-        maxFood = 50;
+        maxFood = 40;
         diet = 1;
-        canHunt = false;
         soundVolume = 0.5F;
         sleepSchedule = 1;
+        adultHealth = 12.0F;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0F)
+                .add(Attributes.MAX_HEALTH, 3.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0F)
+                .add(Attributes.ATTACK_DAMAGE, 2.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.5F);
     }
@@ -89,13 +102,19 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
     }
 
     protected void registerGoals() {
-            this.goalSelector.addGoal(0, new FloatGoal(this));
-            this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 3.0D, true));
-            this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 2.0D, 200));
-            this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-            this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
-            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 1.5D, true));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 2.0D, 200));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Pig.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
+        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
     @Override

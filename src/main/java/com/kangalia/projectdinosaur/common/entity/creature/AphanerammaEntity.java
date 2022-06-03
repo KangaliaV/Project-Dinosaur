@@ -1,6 +1,8 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
@@ -57,17 +60,17 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         maxFemaleSize = 1.0F;
         maxFood = 50;
         diet = 2;
-        canHunt = false;
         soundVolume = 0.4F;
         sleepSchedule = 0;
+        adultHealth = 16.0F;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 12.0F)
+                .add(Attributes.MAX_HEALTH, 4.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0F)
+                .add(Attributes.ATTACK_DAMAGE, 1.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
     }
@@ -104,12 +107,16 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     protected void registerGoals() {
-            this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-            this.goalSelector.addGoal(2, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
-            this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-            this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
+        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
+        this.goalSelector.addGoal(2, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
 
     @Override

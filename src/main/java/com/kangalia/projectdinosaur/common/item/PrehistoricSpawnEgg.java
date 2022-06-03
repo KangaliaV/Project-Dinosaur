@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
@@ -21,6 +22,7 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
 
     @Override
     public Optional<Mob> spawnOffspringFromSpawnEgg(Player pPlayer, Mob pMob, EntityType<? extends Mob> pEntityType, ServerLevel pServerLevel, Vec3 pPos, ItemStack pStack) {
+        Random random = new Random();
         if (!this.spawnsEntity(pStack.getTag(), pEntityType)) {
             return Optional.empty();
         } else {
@@ -35,6 +37,10 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
                 return Optional.empty();
             } else {
                 mob.setAgeInDays(0);
+                mob.setGender(random.nextInt(2));
+                mob.setHunger(mob.getMaxFood());
+                mob.setHungerTicks(1600);
+                mob.setMatingTicks(12000);
                 if (!mob.isBaby()) {
                     return Optional.empty();
                 } else {

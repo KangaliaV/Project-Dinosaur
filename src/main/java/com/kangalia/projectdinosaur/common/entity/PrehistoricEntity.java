@@ -1,8 +1,10 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.CompsognathusEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -14,11 +16,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,12 +33,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 
-public abstract class PrehistoricEntity extends TamableAnimal {
+public abstract class PrehistoricEntity extends TamableAnimal implements NeutralMob {
 
     private static final EntityDataAccessor<Integer> AGE_IN_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> AGE_SCALE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.FLOAT);
@@ -44,7 +47,8 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SCREM = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STUNTED = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
-
+    private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(CompsognathusEntity.class, EntityDataSerializers.INT);
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
     public float minSize;
@@ -55,9 +59,10 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     protected GroundFeederBlockEntity groundFeeder;
     protected Block nest;
     protected BlockPos blockPos = BlockPos.ZERO;
-    public boolean canHunt;
     public float soundVolume;
     public int sleepSchedule;
+    private UUID persistentAngerTarget;
+    public float adultHealth;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -75,15 +80,27 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
         this.setMatingTicks(12000);
-        this.setHunger(maxFood / 2);
+        this.setHunger(maxFood);
         this.setHungerTicks(1600);
+        this.setAdultAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
+            this.updatePersistentAnger((ServerLevel)this.level, true);
+        }
     }
 
     @Override
     public void tick() {
         super.tick();
         if (!level.isClientSide) {
+            if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
+                this.setAdultAttributes();
+            }
             if (!this.isStunted()) {
                 this.setAgeInTicks(this.getAgeInTicks() + 1);
                 setAgeScale(getAgeScale());
@@ -165,6 +182,8 @@ public abstract class PrehistoricEntity extends TamableAnimal {
             level.playSound((Player) null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
             if (prehistoric instanceof AphanerammaEntity) {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+            } else if (prehistoric instanceof CompsognathusEntity) {
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().defaultBlockState().setValue(CompsognathusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             }
@@ -174,7 +193,7 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);
-        if (this.isHungry()) {
+        if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
                 if (item.getItem().equals(Items.BEEF.asItem()) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
@@ -214,9 +233,13 @@ public abstract class PrehistoricEntity extends TamableAnimal {
 
     public void eatFromHand(ItemStack item) {
         if (item != null) {
-            this.setHunger(this.getHunger() + this.random.nextInt(8) + 3);
-            if (this.getHunger() > maxFood) {
-                this.setHunger(maxFood);
+            if (this.isHungry()) {
+                this.setHunger(this.getHunger() + Objects.requireNonNull(item.getFoodProperties(this)).getNutrition());
+                if (this.getHunger() > maxFood) {
+                    this.setHunger(maxFood);
+                }
+            } else {
+                this.heal((float) Objects.requireNonNull(item.getFoodProperties(this)).getNutrition());
             }
             item.shrink(1);
             this.level.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
@@ -297,10 +320,6 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         return false;
     }
 
-    public void playHormoneSound(Player player) {
-        player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
-    }
-
     public void setSleeping(boolean sleeping) {
         this.entityData.set(SLEEPING, sleeping);
     }
@@ -310,7 +329,9 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     }
 
     public boolean shouldSleep() {
-        if (this.level.isDay() && getSleepSchedule() == 1) {
+        if (this.isAngry() || this.isStarving() || this.isInWater()) {
+            return false;
+        } else if (this.level.isDay() && getSleepSchedule() == 1) {
             return true;
         } else if (!this.level.isDay() && getSleepSchedule() == 0) {
             return true;
@@ -321,12 +342,29 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         return this.entityData.get(SLEEPING);
     }
 
+    public void playHormoneSound(Player player) {
+        player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
+    }
+
+    public void setAdultAttributes() {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.getAdultHealth());
+        this.setHealth(this.getAdultHealth());
+    }
+
+    public float getAdultHealth() {
+        return adultHealth;
+    }
+
     public int getDiet() {
         return this.diet;
     }
 
     public boolean isHungry() {
         return this.getHunger() < maxFood * 0.75F;
+    }
+
+    public boolean isStarving() {
+        return this.getHunger() < maxFood * 0.1F;
     }
 
     public int getHungerTicks() {
@@ -454,6 +492,32 @@ public abstract class PrehistoricEntity extends TamableAnimal {
     }
 
     @Override
+    public int getRemainingPersistentAngerTime() {
+        return this.entityData.get(REMAINING_ANGER_TIME);
+    }
+
+    @Override
+    public void setRemainingPersistentAngerTime(int pTime) {
+        this.entityData.set(REMAINING_ANGER_TIME, pTime);
+    }
+
+    @Override
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    @Override
+    @javax.annotation.Nullable
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
+    }
+
+    @Override
+    public void setPersistentAngerTarget(@javax.annotation.Nullable UUID pTarget) {
+        this.persistentAngerTarget = pTarget;
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(AGE_IN_TICKS, 0);
@@ -465,6 +529,7 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         this.entityData.define(SLEEPING, false);
         this.entityData.define(SCREM, false);
         this.entityData.define(STUNTED, false);
+        this.entityData.define(REMAINING_ANGER_TIME, 0);
     }
 
     @Override
@@ -479,6 +544,7 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         pCompound.putBoolean("Sleeping", this.isSleeping());
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
+        this.addPersistentAngerSaveData(pCompound);
     }
 
     @Override
@@ -493,5 +559,6 @@ public abstract class PrehistoricEntity extends TamableAnimal {
         this.setSleeping(pCompound.getBoolean("Sleeping"));
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
+        this.readPersistentAngerSaveData(this.level, pCompound);
     }
 }
