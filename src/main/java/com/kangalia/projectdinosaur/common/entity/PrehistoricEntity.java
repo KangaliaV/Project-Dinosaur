@@ -23,6 +23,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -61,6 +62,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float soundVolume;
     public int sleepSchedule;
     private UUID persistentAngerTarget;
+    public float adultHealth;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -80,6 +82,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setMatingTicks(12000);
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
+        this.setAdultAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -95,6 +98,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public void tick() {
         super.tick();
         if (!level.isClientSide) {
+            if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
+                this.setAdultAttributes();
+            }
             if (!this.isStunted()) {
                 this.setAgeInTicks(this.getAgeInTicks() + 1);
                 setAgeScale(getAgeScale());
@@ -314,10 +320,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return false;
     }
 
-    public void playHormoneSound(Player player) {
-        player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
-    }
-
     public void setSleeping(boolean sleeping) {
         this.entityData.set(SLEEPING, sleeping);
     }
@@ -338,6 +340,19 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public boolean isSleeping() {
         return this.entityData.get(SLEEPING);
+    }
+
+    public void playHormoneSound(Player player) {
+        player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
+    }
+
+    public void setAdultAttributes() {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.getAdultHealth());
+        this.setHealth(this.getAdultHealth());
+    }
+
+    public float getAdultHealth() {
+        return adultHealth;
     }
 
     public int getDiet() {

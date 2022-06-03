@@ -62,14 +62,15 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         diet = 2;
         soundVolume = 0.4F;
         sleepSchedule = 0;
+        adultHealth = 16.0F;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 12.0F)
+                .add(Attributes.MAX_HEALTH, 4.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0F)
+                .add(Attributes.ATTACK_DAMAGE, 1.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
     }

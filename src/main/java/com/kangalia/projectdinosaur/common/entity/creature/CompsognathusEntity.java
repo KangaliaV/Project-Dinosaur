@@ -56,18 +56,19 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         minSize = 0.50F;
         maxMaleSize = 2.0F;
         maxFemaleSize = 1.8F;
-        maxFood = 50;
+        maxFood = 40;
         diet = 1;
         soundVolume = 0.5F;
         sleepSchedule = 1;
+        adultHealth = 12.0F;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0F)
+                .add(Attributes.MAX_HEALTH, 3.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0F)
+                .add(Attributes.ATTACK_DAMAGE, 2.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.5F);
     }
