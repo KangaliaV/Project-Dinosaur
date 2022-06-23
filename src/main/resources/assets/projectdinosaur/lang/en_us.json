@@ -134,5 +134,14 @@
   "item.projectdinosaur.compsognathus_dna": "Compsognathus DNA",
   "item.projectdinosaur.fertilised_compsognathus_egg": "Fertilised Compsognathus Egg",
   "block.projectdinosaur.incubated_compsognathus_egg": "Incubated Compsognathus Egg",
-  "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg"
+  "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg",
+
+  "screen.projectdinosaur.dino_name": "Temp Dino Name",
+  "screen.projectdinosaur.dino_age": "Age:",
+  "screen.projectdinosaur.dino_sex": "Sex:",
+  "screen.projectdinosaur.dino_health": "Health:",
+  "screen.projectdinosaur.dino_food": "Food:",
+  "screen.projectdinosaur.dino_diurnal": "Diurnal",
+  "screen.projectdinosaur.dino_nocturnal": "Nocturnal",
+  "screen.projectdinosaur.dino_cathemeral": "Cathemeral"
 }
