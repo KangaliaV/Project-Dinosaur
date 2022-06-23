@@ -43,4 +43,6 @@ public class ContainerInit {
         return new GroundFeederContainer(windowId, world, pos, inv, inv.player);
     }));
 
+    //Item Containers
+    public static final RegistryObject<MenuType<DinoScannerContainer>> DINO_SCANNER_CONTAINER = CONTAINERS.register("dino_scanner_container", () -> IForgeMenuType.create((windowId, inv, data) -> new DinoScannerContainer(windowId, inv, inv.player)));
 }

@@ -31,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -195,7 +196,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         ItemStack item = pPlayer.getItemInHand(pHand);
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
-                if (item.getItem().equals(Items.BEEF.asItem()) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
+                if (item.getItem().equals(Items.BEEF) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
                     return InteractionResult.SUCCESS;
                 }
