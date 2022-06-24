@@ -6,6 +6,8 @@ import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -63,6 +65,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         soundVolume = 0.4F;
         sleepSchedule = 0;
         adultHealth = 16.0F;
+        name = new TranslatableComponent("dino.projectdinosaur.aphaneramma");
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

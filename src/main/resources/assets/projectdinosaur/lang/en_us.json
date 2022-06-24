@@ -136,12 +136,26 @@
   "block.projectdinosaur.incubated_compsognathus_egg": "Incubated Compsognathus Egg",
   "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg",
 
-  "screen.projectdinosaur.dino_name": "Temp Dino Name",
-  "screen.projectdinosaur.dino_age": "Age:",
-  "screen.projectdinosaur.dino_sex": "Sex:",
-  "screen.projectdinosaur.dino_health": "Health:",
-  "screen.projectdinosaur.dino_food": "Food:",
-  "screen.projectdinosaur.dino_diurnal": "Diurnal",
-  "screen.projectdinosaur.dino_nocturnal": "Nocturnal",
-  "screen.projectdinosaur.dino_cathemeral": "Cathemeral"
+  "data.projectdinosaur.dino_species": "Species: %1$s",
+  "data.projectdinosaur.dino_nickname": "Nickname: %1$s",
+  "data.projectdinosaur.dino_age": "Age: %1$s days",
+  "data.projectdinosaur.dino_sex": "Sex: %1$s",
+  "data.projectdinosaur.dino_health": "HP: %1$s/%2$s",
+  "data.projectdinosaur.dino_food": "FP: %1$s/%2$s",
+  "data.projectdinosaur.dino_diet": "%1$s",
+  "data.projectdinosaur.dino_schedule": "%1$s",
+
+  "attribute.projectdinosaur.herbivore": "Herbivore",
+  "attribute.projectdinosaur.carnivore": "Carnivore",
+  "attribute.projectdinosaur.piscivore": "Piscivore",
+
+  "attribute.projectdinosaur.diurnal": "Diurnal",
+  "attribute.projectdinosaur.nocturnal": "Nocturnal",
+  "attribute.projectdinosaur.cathemeral": "Cathemeral",
+
+  "attribute.projectdinosaur.male": "Male",
+  "attribute.projectdinosaur.female": "Female",
+
+  "dino.projectdinosaur.aphaneramma": "Aphaneramma",
+  "dino.projectdinosaur.compsognathus": "Compsognathus"
 }

@@ -7,6 +7,7 @@ import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -61,6 +62,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         soundVolume = 0.5F;
         sleepSchedule = 1;
         adultHealth = 12.0F;
+        name = new TranslatableComponent("dino.projectdinosaur.compsognathus");
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

@@ -9,6 +9,7 @@ import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,7 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -64,6 +64,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int sleepSchedule;
     private UUID persistentAngerTarget;
     public float adultHealth;
+    public Component name;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -475,6 +476,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             return minSize + ((step) * this.getAdultAge() * 24000);
         }
         return minSize + ((step * this.getAgeInTicks()));
+    }
+
+    public Component getSpecies() {
+        return name;
     }
 
     @Override
