@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.common.item.DinoScanner;
 import com.kangalia.projectdinosaur.common.item.PrehistoricSpawnEgg;
 import com.kangalia.projectdinosaur.common.item.PetrifiedBoatItem;
 import com.kangalia.projectdinosaur.common.item.Plaster;
@@ -73,5 +74,6 @@ public class ItemInit {
     public static final RegistryObject<Item> PLASTER = ITEMS.register("plaster", () -> new Plaster(new Item.Properties().tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> GROWTH_ACCELERATING_HORMONE = ITEMS.register("growth_accelerating_hormone", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> GROWTH_STUNTING_HORMONE = ITEMS.register("growth_stunting_hormone", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> DINO_SCANNER = ITEMS.register("dino_scanner", () -> new DinoScanner(new Item.Properties().stacksTo(1).tab(DinoItems.DINO_ITEMS)));
 
 }

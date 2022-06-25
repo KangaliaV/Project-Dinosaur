@@ -29,6 +29,7 @@ public class ClientSetup {
         MenuScreens.register(ContainerInit.DNA_RECOMBINATOR_CONTAINER.get(), DNARecombinatorScreen::new);
         MenuScreens.register(ContainerInit.INCUBATOR_CONTAINER.get(), IncubatorScreen::new);
         MenuScreens.register(ContainerInit.GROUND_FEEDER_CONTAINER.get(), GroundFeederScreen::new);
+        MenuScreens.register(ContainerInit.DINO_SCANNER_CONTAINER.get(), DinoScannerScreen::new);
 
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());

@@ -69,6 +69,7 @@
   "item.projectdinosaur.plaster": "Plaster",
   "item.projectdinosaur.growth_accelerating_hormone": "Growth Accelerating Hormone",
   "item.projectdinosaur.growth_stunting_hormone": "Growth Stunting Hormone",
+  "item.projectdinosaur.dino_scanner": "Dino Scanner",
 
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
   "screen.projectdinosaur.fossil_excavator": "Fossil Excavator",
@@ -133,5 +134,28 @@
   "item.projectdinosaur.compsognathus_dna": "Compsognathus DNA",
   "item.projectdinosaur.fertilised_compsognathus_egg": "Fertilised Compsognathus Egg",
   "block.projectdinosaur.incubated_compsognathus_egg": "Incubated Compsognathus Egg",
-  "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg"
+  "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg",
+
+  "data.projectdinosaur.dino_species": "Species: %1$s",
+  "data.projectdinosaur.dino_nickname": "Nickname: %1$s",
+  "data.projectdinosaur.dino_age": "Age: %1$s days",
+  "data.projectdinosaur.dino_sex": "Sex: %1$s",
+  "data.projectdinosaur.dino_health": "HP: %1$s/%2$s",
+  "data.projectdinosaur.dino_food": "FP: %1$s/%2$s",
+  "data.projectdinosaur.dino_diet": "%1$s",
+  "data.projectdinosaur.dino_schedule": "%1$s",
+
+  "attribute.projectdinosaur.herbivore": "Herbivore",
+  "attribute.projectdinosaur.carnivore": "Carnivore",
+  "attribute.projectdinosaur.piscivore": "Piscivore",
+
+  "attribute.projectdinosaur.diurnal": "Diurnal",
+  "attribute.projectdinosaur.nocturnal": "Nocturnal",
+  "attribute.projectdinosaur.cathemeral": "Cathemeral",
+
+  "attribute.projectdinosaur.male": "Male",
+  "attribute.projectdinosaur.female": "Female",
+
+  "dino.projectdinosaur.aphaneramma": "Aphaneramma",
+  "dino.projectdinosaur.compsognathus": "Compsognathus"
 }

@@ -9,6 +9,7 @@ import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -63,6 +64,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int sleepSchedule;
     private UUID persistentAngerTarget;
     public float adultHealth;
+    public Component name;
+    public int renderScale;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -195,7 +198,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         ItemStack item = pPlayer.getItemInHand(pHand);
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
-                if (item.getItem().equals(Items.BEEF.asItem()) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
+                if (item.getItem().equals(Items.BEEF) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
                     return InteractionResult.SUCCESS;
                 }
@@ -474,6 +477,14 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             return minSize + ((step) * this.getAdultAge() * 24000);
         }
         return minSize + ((step * this.getAgeInTicks()));
+    }
+
+    public Component getSpecies() {
+        return name;
+    }
+
+    public int getRenderScale() {
+        return renderScale;
     }
 
     @Override
