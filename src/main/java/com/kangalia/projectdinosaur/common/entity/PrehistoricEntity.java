@@ -8,6 +8,7 @@ import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -45,6 +46,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Integer> MATING_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> HUNGER = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> HUNGER_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HEALING_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SCREM = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STUNTED = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
@@ -100,6 +102,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     @Override
     public void tick() {
         super.tick();
+        boolean flag = false;
         if (!level.isClientSide) {
             if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
                 this.setAdultAttributes();
@@ -137,6 +140,17 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             }
             if (!this.shouldSleep() && this.isSleeping()) {
                 this.setSleeping(false);
+            }
+            if (this.getHealth() < this.getMaxHealth() && !this.isStarving()) {
+                this.setHealingTicks(this.getHealingTicks() + 1);
+                if (this.getHealingTicks() == 100) {
+                    this.setHealth(this.getHealth() + 1);
+                    this.setHunger(this.getHunger() - 1);
+                    if (this.getHealth() > this.getMaxHealth()) {
+                        this.setHealth(this.getMaxHealth());
+                    }
+                    this.setHealingTicks(0);
+                }
             }
         }
     }
@@ -393,6 +407,14 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
+    public void setHealingTicks(int ticks) {
+        this.entityData.set(HEALING_TICKS, ticks);
+    }
+
+    public int getHealingTicks() {
+        return this.entityData.get(HEALING_TICKS);
+    }
+
     public int getMatingTicks() {
         return this.entityData.get(MATING_TICKS);
     }
@@ -537,6 +559,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(MATING_TICKS, 240);
         this.entityData.define(HUNGER, 0);
         this.entityData.define(HUNGER_TICKS, 0);
+        this.entityData.define(HEALING_TICKS, 0);
         this.entityData.define(SLEEPING, false);
         this.entityData.define(SCREM, false);
         this.entityData.define(STUNTED, false);
@@ -552,6 +575,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putInt("MatingTicks", this.getMatingTicks());
         pCompound.putInt("Hunger", this.getHunger());
         pCompound.putInt("HungerTicks", this.getHungerTicks());
+        pCompound.putInt("HealingTicks", this.getHealingTicks());
         pCompound.putBoolean("Sleeping", this.isSleeping());
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
@@ -567,6 +591,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setMatingTicks(pCompound.getInt("MatingTicks"));
         this.setHunger(pCompound.getInt("Hunger"));
         this.setHungerTicks(pCompound.getInt("HungerTicks"));
+        this.setHealingTicks(pCompound.getInt("HealingTicks"));
         this.setSleeping(pCompound.getBoolean("Sleeping"));
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
