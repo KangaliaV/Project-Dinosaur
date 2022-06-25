@@ -66,6 +66,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         sleepSchedule = 0;
         adultHealth = 16.0F;
         name = new TranslatableComponent("dino.projectdinosaur.aphaneramma");
+        renderScale = 60;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

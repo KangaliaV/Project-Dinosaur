@@ -79,6 +79,7 @@ public class DinoScanner extends Item {
         nbt.putInt("dino.maxfood", prehistoric.getMaxFood());
         nbt.putInt("dino.diet", prehistoric.getDiet());
         nbt.putInt("dino.schedule", prehistoric.getSleepSchedule());
+        nbt.putInt("dino.scale", prehistoric.getRenderScale());
         stack.setTag(nbt);
     }
 }

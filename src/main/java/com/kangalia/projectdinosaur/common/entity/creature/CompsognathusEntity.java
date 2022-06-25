@@ -63,6 +63,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         sleepSchedule = 1;
         adultHealth = 12.0F;
         name = new TranslatableComponent("dino.projectdinosaur.compsognathus");
+        renderScale = 75;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {

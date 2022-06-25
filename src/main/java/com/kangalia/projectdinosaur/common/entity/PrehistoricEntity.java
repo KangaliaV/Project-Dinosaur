@@ -65,6 +65,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private UUID persistentAngerTarget;
     public float adultHealth;
     public Component name;
+    public int renderScale;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -480,6 +481,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public Component getSpecies() {
         return name;
+    }
+
+    public int getRenderScale() {
+        return renderScale;
     }
 
     @Override
