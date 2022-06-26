@@ -131,6 +131,11 @@
   "block.projectdinosaur.incubated_aphaneramma_egg": "Incubated Aphaneramma Egg",
   "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
 
+  "item.projectdinosaur.australovenator_dna": "Australovenator DNA",
+  "item.projectdinosaur.fertilised_australovenator_egg": "Fertilised Australovenator Egg",
+  "block.projectdinosaur.incubated_australovenator_egg": "Incubated Australovenator Egg",
+  "item.projectdinosaur.australovenator_spawn_egg": "Aphaneramma Spawn Egg",
+
   "item.projectdinosaur.compsognathus_dna": "Compsognathus DNA",
   "item.projectdinosaur.fertilised_compsognathus_egg": "Fertilised Compsognathus Egg",
   "block.projectdinosaur.incubated_compsognathus_egg": "Incubated Compsognathus Egg",
@@ -157,5 +162,6 @@
   "attribute.projectdinosaur.female": "Female",
 
   "dino.projectdinosaur.aphaneramma": "Aphaneramma",
+  "dino.projectdinosaur.australovenator": "Australovenator",
   "dino.projectdinosaur.compsognathus": "Compsognathus"
 }

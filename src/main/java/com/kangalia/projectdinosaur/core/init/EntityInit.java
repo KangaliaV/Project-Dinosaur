@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.core.init;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.PetrifiedBoatEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
@@ -25,6 +26,12 @@ public class EntityInit {
                     .sized(0.7f, 0.3f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "aphaneramma").toString()));
+
+    public static final RegistryObject<EntityType<AustralovenatorEntity>> AUSTRALOVENATOR = ENTITY_TYPES.register("australovenator",
+            () -> EntityType.Builder.of(AustralovenatorEntity::new, MobCategory.CREATURE)
+                    .sized(1.1f, 1.6f)
+                    .setTrackingRange(8)
+                    .build(new ResourceLocation(ProjectDinosaur.MODID, "australovenator").toString()));
 
     public static final RegistryObject<EntityType<CompsognathusEntity>> COMPSOGNATHUS = ENTITY_TYPES.register("compsognathus",
             () -> EntityType.Builder.of(CompsognathusEntity::new, MobCategory.CREATURE)

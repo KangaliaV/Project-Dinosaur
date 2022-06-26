@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.*;
 import com.kangalia.projectdinosaur.common.container.GroundFeederContainer;
 import com.kangalia.projectdinosaur.common.entity.render.AphanerammaRenderer;
+import com.kangalia.projectdinosaur.common.entity.render.AustralovenatorRenderer;
 import com.kangalia.projectdinosaur.common.entity.render.CompsognathusRenderer;
 import com.kangalia.projectdinosaur.common.entity.render.PetrifiedBoatRenderer;
 import com.kangalia.projectdinosaur.core.init.*;
@@ -41,6 +42,7 @@ public class ClientSetup {
 
         EntityRenderers.register(EntityInit.PETRIFIED_BOAT.get(), PetrifiedBoatRenderer::new);
         EntityRenderers.register(EntityInit.APHANERAMMA.get(), AphanerammaRenderer::new);
+        EntityRenderers.register(EntityInit.AUSTRALOVENATOR.get(), AustralovenatorRenderer::new);
         EntityRenderers.register(EntityInit.COMPSOGNATHUS.get(), CompsognathusRenderer::new);
     }
 }
