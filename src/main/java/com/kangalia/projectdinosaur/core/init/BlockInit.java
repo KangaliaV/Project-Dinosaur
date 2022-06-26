@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
 import com.kangalia.projectdinosaur.common.block.dinocare.GroundFeederBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.CompsognathusEggBlock;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
@@ -216,6 +217,11 @@ public class BlockInit {
 
     //Eggs
     public static final RegistryObject<Block> INCUBATED_APHANERAMMA_EGG = registerEggBlock("incubated_aphaneramma_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
+            .strength(0.5F)
+            .sound(SoundType.METAL)
+            .randomTicks()
+            .noOcclusion()));
+    public static final RegistryObject<Block> INCUBATED_AUSTRALOVENATOR_EGG = registerEggBlock("incubated_australovenator_egg", () -> new AustralovenatorEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE)
             .strength(0.5F)
             .sound(SoundType.METAL)
             .randomTicks()

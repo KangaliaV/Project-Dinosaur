@@ -13,6 +13,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -78,6 +79,8 @@ public class IncubatorBlockEntity extends BlockEntity {
                             stack.getItem() == BlockInit.INCUBATED_APHANERAMMA_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
                             stack.getItem() == BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().asItem() ||
+                            stack.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get() ||
+                            stack.getItem() == BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {

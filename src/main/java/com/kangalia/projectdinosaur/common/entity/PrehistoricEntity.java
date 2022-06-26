@@ -1,9 +1,11 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.CompsognathusEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
@@ -201,6 +203,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else if (prehistoric instanceof CompsognathusEntity) {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().defaultBlockState().setValue(CompsognathusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+            } else if (prehistoric instanceof AustralovenatorEntity) {
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().defaultBlockState().setValue(AustralovenatorEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             }

@@ -21,7 +21,6 @@ public class ItemInit {
     public static final RegistryObject<Item> IRON_CHISEL = ITEMS.register("iron_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(250).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> DIAMOND_CHISEL = ITEMS.register("diamond_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(1561).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> NETHERITE_CHISEL = ITEMS.register("netherite_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(2031).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
 
     //Rock Specimens
     public static final RegistryObject<Item> ALPINE_ROCK_SPECIMEN = ITEMS.register("alpine_rock_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
@@ -45,14 +44,17 @@ public class ItemInit {
 
     //DNA
     public static final RegistryObject<Item> APHANERAMMA_DNA = ITEMS.register("aphaneramma_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> AUSTRALOVENATOR_DNA = ITEMS.register("australovenator_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> COMPSOGNATHUS_DNA = ITEMS.register("compsognathus_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
 
     //Fertilised Eggs
     public static final RegistryObject<Item> FERTILISED_APHANERAMMA_EGG = ITEMS.register("fertilised_aphaneramma_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> FERTILISED_AUSTRALOVENATOR_EGG = ITEMS.register("fertilised_australovenator_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> FERTILISED_COMPSOGNATHUS_EGG = ITEMS.register("fertilised_compsognathus_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
 
     //Spawn Eggs
     public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<ForgeSpawnEggItem> AUSTRALOVENATOR_SPAWN_EGG = ITEMS.register("australovenator_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.AUSTRALOVENATOR, 0x805e2d, 0x4d4943, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<ForgeSpawnEggItem> COMPSOGNATHUS_SPAWN_EGG = ITEMS.register("compsognathus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.COMPSOGNATHUS, 0x143226, 0x80886f, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
 
     //Gems
@@ -69,6 +71,7 @@ public class ItemInit {
     public static final RegistryObject<Item> PETRIFIED_SIGN = ITEMS.register("petrified_sign", () -> new SignItem(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS), BlockInit.PETRIFIED_SIGN.get(), BlockInit.PETRIFIED_SIGN_WALL.get()));
     public static final RegistryObject<Item> PETRIFIED_BOAT = ITEMS.register("petrified_boat", () -> new PetrifiedBoatItem(new Item.Properties().tab(DinoItems.DINO_ITEMS), "petrified"));
     public static final RegistryObject<Item> ROTTEN_EGG = ITEMS.register("rotten_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
 
     //Interactive Items
     public static final RegistryObject<Item> PLASTER = ITEMS.register("plaster", () -> new Plaster(new Item.Properties().tab(DinoItems.DINO_ITEMS)));

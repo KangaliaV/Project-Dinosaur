@@ -52,9 +52,14 @@ public class CompsognathusModel extends AnimatedGeoModel<CompsognathusEntity> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
 
         IBone head = this.getAnimationProcessor().getBone("skull");
+        IBone neck = this.getAnimationProcessor().getBone("n1");
         if (!entity.isSleeping()) {
-            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 2);
-            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 2);
+            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
+            neck.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
+            if(!customPredicate.isMoving()) {
+                head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 3);
+                neck.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 3);
+            }
         }
     }
 }
