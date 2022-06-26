@@ -149,6 +149,8 @@ public class IncubatorBlockEntity extends BlockEntity {
             flag = true;
         } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get()) {
             flag = true;
+        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get()) {
+            flag = true;
         } else {
             flag = false;
         }

@@ -29,7 +29,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<AustralovenatorEntity>> AUSTRALOVENATOR = ENTITY_TYPES.register("australovenator",
             () -> EntityType.Builder.of(AustralovenatorEntity::new, MobCategory.CREATURE)
-                    .sized(0.7f, 0.3f)
+                    .sized(1.1f, 1.6f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "australovenator").toString()));
 

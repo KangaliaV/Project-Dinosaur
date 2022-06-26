@@ -78,7 +78,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
             event.getController().setAnimationSpeed(3.5);
         } else if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.sleep", true));
-            event.getController().setAnimationSpeed(0.5);
+            event.getController().setAnimationSpeed(0.35);
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.idle", true));
             event.getController().setAnimationSpeed(1.5);
