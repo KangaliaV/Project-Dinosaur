@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "projectdinosaur:blocks/incubated_aphaneramma_egg",
+		"1": "projectdinosaur:blocks/incubated_australovenator_egg",
 		"particle": "projectdinosaur:blocks/incubated_australovenator_egg"
 	},
 	"elements": [
