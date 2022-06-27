@@ -14,10 +14,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class RecipeInit {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ProjectDinosaur.MODID);
 
-    public static final RegistryObject<RecipeSerializer<ExcavatingRecipe>> EXCAVATING_SERIALIZER = RECIPE_SERIALIZER.register("excavating", ExcavatingRecipe.Serializer::new);
-    public static final RegistryObject<RecipeSerializer<ExtractingRecipe>> EXTRACTING_SERIALIZER = RECIPE_SERIALIZER.register("extracting", ExtractingRecipe.Serializer::new);
-    public static final RegistryObject<RecipeSerializer<RecombinatingRecipe>> RECOMBINATING_SERIALIZER = RECIPE_SERIALIZER.register("recombinating", RecombinatingRecipe.Serializer::new);
-    public static final RegistryObject<RecipeSerializer<IncubatingRecipe>> INCUBATING_SERIALIZER = RECIPE_SERIALIZER.register("incubating", IncubatingRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<ExcavatingRecipe>> EXCAVATING_SERIALIZER = RECIPE_SERIALIZER.register("excavating", () -> ExcavatingRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<ExtractingRecipe>> EXTRACTING_SERIALIZER = RECIPE_SERIALIZER.register("extracting", () -> ExtractingRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<RecombinatingRecipe>> RECOMBINATING_SERIALIZER = RECIPE_SERIALIZER.register("recombinating", () -> RecombinatingRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<IncubatingRecipe>> INCUBATING_SERIALIZER = RECIPE_SERIALIZER.register("incubating", () -> IncubatingRecipe.Serializer.INSTANCE);
 
     public static void register(IEventBus bus) {
         RECIPE_SERIALIZER.register(bus);

@@ -10,16 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class IncubatingRecipe implements IIncubatingRecipe {
+public class IncubatingRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> inputs;
@@ -63,13 +60,23 @@ public class IncubatingRecipe implements IIncubatingRecipe {
     }
 
     @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public RecipeSerializer<?> getSerializer() {
-        return IncubatingRecipe.Serializer.INSTANCE;
+        return Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return IncubatingRecipe.IncubatingRecipeType.INSTANCE;
+        return IncubatingRecipeType.INSTANCE;
     }
 
     public ItemStack getIcon() {
@@ -78,13 +85,13 @@ public class IncubatingRecipe implements IIncubatingRecipe {
 
     public static class IncubatingRecipeType implements RecipeType<IncubatingRecipe> {
         private IncubatingRecipeType() {}
-        public static final IncubatingRecipe.IncubatingRecipeType INSTANCE = new IncubatingRecipe.IncubatingRecipeType();
+        public static final IncubatingRecipeType INSTANCE = new IncubatingRecipeType();
         public static final String ID = "incubating";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<IncubatingRecipe> {
+    public static class Serializer implements RecipeSerializer<IncubatingRecipe> {
 
-        public static final IncubatingRecipe.Serializer INSTANCE = new IncubatingRecipe.Serializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "incubating");
 
         @Override
@@ -121,6 +128,27 @@ public class IncubatingRecipe implements IIncubatingRecipe {
                 ingredient.toNetwork(buffer);
             }
             buffer.writeItemStack(recipe.getResultItem(), false);
+        }
+
+        @Override
+        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
+            return INSTANCE;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return ID;
+        }
+
+        @Override
+        public Class<RecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(RecipeSerializer.class);
+        }
+
+        @SuppressWarnings("unchecked") // Need this wrapper, because generics
+        private static <G> Class<G> castClass(Class<?> cls) {
+            return (Class<G>)cls;
         }
     }
 }

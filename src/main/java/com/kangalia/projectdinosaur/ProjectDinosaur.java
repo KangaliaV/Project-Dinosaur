@@ -51,12 +51,4 @@ public class ProjectDinosaur {
             OreGen.registerConfiguredFeatures();
         });
     }
-
-    @SubscribeEvent
-    public static void registerRecipeTypes(final RegistryEvent.Register<RecipeSerializer<?>> event) {
-        Registry.register(Registry.RECIPE_TYPE, ExcavatingRecipe.ExcavatingRecipeType.ID, ExcavatingRecipe.ExcavatingRecipeType.INSTANCE);
-        Registry.register(Registry.RECIPE_TYPE, ExtractingRecipe.ExtractingRecipeType.ID, ExtractingRecipe.ExtractingRecipeType.INSTANCE);
-        Registry.register(Registry.RECIPE_TYPE, RecombinatingRecipe.RecombinatingRecipeType.ID, RecombinatingRecipe.RecombinatingRecipeType.INSTANCE);
-        Registry.register(Registry.RECIPE_TYPE, IncubatingRecipe.IncubatingRecipeType.ID, IncubatingRecipe.IncubatingRecipeType.INSTANCE);
-    }
 }
