@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "projectdinosaur:petrified_log",
+    "projectdinosaur:petrified_wood",
+    "projectdinosaur:stripped_petrified_log",
+    "projectdinosaur:stripped_petrified_wood"
+  ]
+}
