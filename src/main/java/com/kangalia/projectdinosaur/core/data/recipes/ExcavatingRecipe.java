@@ -67,7 +67,7 @@ public class ExcavatingRecipe implements IExcavatingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return ExcavatingRecipe.Serializer.INSTANCE;
     }
 
     @Override
