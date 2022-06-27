@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:dino_scanner"
+      "projectdinosaur:items/dino_scanner"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:dino_scanner"
+        "recipe": "projectdinosaur:items/dino_scanner"
       }
     }
   },

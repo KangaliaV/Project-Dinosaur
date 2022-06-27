@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_wood"
+      "projectdinosaur:items/growth_stunting_hormone"
     ]
   },
   "criteria": {
-    "has_log": {
+    "glass_bottle": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:petrified_log"
+              "minecraft:glass_bottle"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_wood"
+        "recipe": "projectdinosaur:items/growth_stunting_hormone"
       }
     }
   },
   "requirements": [
     [
-      "has_log",
+      "glass_bottle",
       "has_the_recipe"
     ]
   ]

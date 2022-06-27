@@ -2,16 +2,18 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_planks"
+      "projectdinosaur:blocks/fossil_excavator"
     ]
   },
   "criteria": {
-    "has_log": {
+    "iron_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "projectdinosaur:petrified_logs"
+            "items": [
+              "minecraft:iron_ingot"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_planks"
+        "recipe": "projectdinosaur:blocks/fossil_excavator"
       }
     }
   },
   "requirements": [
     [
-      "has_log",
+      "iron_ingot",
       "has_the_recipe"
     ]
   ]

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:items/diamond_chisel"
+      "projectdinosaur:blocks/aquamarine_block"
     ]
   },
   "criteria": {
-    "diamond": {
+    "aquamarine": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:diamond"
+              "projectdinosaur:aquamarine"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:items/diamond_chisel"
+        "recipe": "projectdinosaur:blocks/aquamarine_block"
       }
     }
   },
   "requirements": [
     [
-      "diamond",
+      "aquamarine",
       "has_the_recipe"
     ]
   ]

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_door"
+      "projectdinosaur:blocks/hematine_block"
     ]
   },
   "criteria": {
-    "has_planks": {
+    "hematine": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:petrified_planks"
+              "projectdinosaur:hematine"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_door"
+        "recipe": "projectdinosaur:blocks/hematine_block"
       }
     }
   },
   "requirements": [
     [
-      "has_planks",
+      "hematine",
       "has_the_recipe"
     ]
   ]

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_button"
+      "projectdinosaur:blocks/amber_block"
     ]
   },
   "criteria": {
-    "has_planks": {
+    "amber": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:petrified_planks"
+              "projectdinosaur:amber"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_button"
+        "recipe": "projectdinosaur:blocks/amber_block"
       }
     }
   },
   "requirements": [
     [
-      "has_planks",
+      "amber",
       "has_the_recipe"
     ]
   ]

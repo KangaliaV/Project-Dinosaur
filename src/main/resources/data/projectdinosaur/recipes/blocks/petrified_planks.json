@@ -3,7 +3,7 @@
   "group": "planks",
   "ingredients": [
     {
-      "item": "projectdinosaur:petrified_log"
+      "tag": "projectdinosaur:petrified_logs"
     }
   ],
   "result": {

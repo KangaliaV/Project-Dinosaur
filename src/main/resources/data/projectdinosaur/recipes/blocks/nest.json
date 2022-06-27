@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#l",
+    "l#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:hay_block"
+    },
+    "l": {
+      "tag": "minecraft:leaves"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:nest",
+    "count": 2
+  }
+}
