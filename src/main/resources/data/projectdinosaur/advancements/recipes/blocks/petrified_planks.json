@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:items/diamond_chisel"
+      "projectdinosaur:blocks/petrified_planks"
     ]
   },
   "criteria": {
-    "diamond": {
+    "has_log": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:diamond"
-            ]
+            "tag": "projectdinosaur:petrified_logs"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:items/diamond_chisel"
+        "recipe": "projectdinosaur:blocks/petrified_planks"
       }
     }
   },
   "requirements": [
     [
-      "diamond",
+      "has_log",
       "has_the_recipe"
     ]
   ]

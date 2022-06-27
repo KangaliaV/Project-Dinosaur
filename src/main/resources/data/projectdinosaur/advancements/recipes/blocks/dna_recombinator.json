@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_stairs"
+      "projectdinosaur:blocks/dna_recombinator"
     ]
   },
   "criteria": {
-    "has_planks": {
+    "diamond": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:petrified_planks"
+              "minecraft:diamond"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_stairs"
+        "recipe": "projectdinosaur:blocks/dna_recombinator"
       }
     }
   },
   "requirements": [
     [
-      "has_planks",
+      "diamond",
       "has_the_recipe"
     ]
   ]

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:items/diamond_chisel"
+      "projectdinosaur:blocks/azurite_block"
     ]
   },
   "criteria": {
-    "diamond": {
+    "azurite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:diamond"
+              "projectdinosaur:azurite"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:items/diamond_chisel"
+        "recipe": "projectdinosaur:blocks/azurite_block"
       }
     }
   },
   "requirements": [
     [
-      "diamond",
+      "azurite",
       "has_the_recipe"
     ]
   ]

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_sign"
+      "projectdinosaur:blocks/uravorite_block"
     ]
   },
   "criteria": {
-    "has_planks": {
+    "uravorite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:petrified_planks"
+              "projectdinosaur:uravorite"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_sign"
+        "recipe": "projectdinosaur:blocks/uravorite_block"
       }
     }
   },
   "requirements": [
     [
-      "has_planks",
+      "uravorite",
       "has_the_recipe"
     ]
   ]

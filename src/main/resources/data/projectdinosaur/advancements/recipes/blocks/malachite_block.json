@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:petrified_fence"
+      "projectdinosaur:blocks/malachite_block"
     ]
   },
   "criteria": {
-    "has_planks": {
+    "malachite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:petrified_planks"
+              "projectdinosaur:malachite"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:petrified_fence"
+        "recipe": "projectdinosaur:blocks/malachite_block"
       }
     }
   },
   "requirements": [
     [
-      "has_planks",
+      "malachite",
       "has_the_recipe"
     ]
   ]

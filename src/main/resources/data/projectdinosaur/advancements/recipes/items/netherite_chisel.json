@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:netherite_chisel"
+      "projectdinosaur:items/netherite_chisel"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:netherite_chisel"
+        "recipe": "projectdinosaur:items/netherite_chisel"
       }
     }
   },

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "projectdinosaur:items/diamond_chisel"
+      "projectdinosaur:blocks/nest"
     ]
   },
   "criteria": {
-    "diamond": {
+    "hay_block": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:diamond"
+              "minecraft:hay_block"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "projectdinosaur:items/diamond_chisel"
+        "recipe": "projectdinosaur:blocks/nest"
       }
     }
   },
   "requirements": [
     [
-      "diamond",
+      "hay_block",
       "has_the_recipe"
     ]
   ]
