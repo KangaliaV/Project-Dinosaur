@@ -183,7 +183,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 PrehistoricEntity prehistoric = listOfFemales.get(0);
                 if (prehistoric.getMatingTicks() == 0) {
                     this.getNavigation().moveTo(prehistoric, 1);
-                    double distance = this.getBbWidth() * 8.0F * this.getBbWidth() * 8.0F + prehistoric.getBbWidth();
+                    double distance = this.getBbWidth() * 4.0F * this.getBbWidth() * 4.0F + prehistoric.getBbWidth();
                     if (this.distanceToSqr(prehistoric.getX(), prehistoric.getBoundingBox().minY, prehistoric.getZ()) <= distance && prehistoric.onGround && this.onGround && this.isAdult() && prehistoric.isAdult()) {
                         this.setMatingTicks(this.random.nextInt(6000) + 6000);
                         prehistoric.setMatingTicks(this.random.nextInt(12000) + 12000);
