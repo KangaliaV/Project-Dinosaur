@@ -589,7 +589,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putBoolean("Sleeping", this.isSleeping());
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
-        pCompound.putInt("RemainingAngerTime", getRemainingPersistentAngerTime());
         this.addPersistentAngerSaveData(pCompound);
     }
 
@@ -606,7 +605,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setSleeping(pCompound.getBoolean("Sleeping"));
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
-        this.setRemainingPersistentAngerTime(pCompound.getInt("RemainingAngerTime"));
         this.readPersistentAngerSaveData(this.level, pCompound);
     }
 }
