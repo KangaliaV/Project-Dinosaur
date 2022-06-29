@@ -555,6 +555,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        this.setHealingTicks(0);
+        return super.hurt(pSource, pAmount);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(AGE_IN_TICKS, 0);
