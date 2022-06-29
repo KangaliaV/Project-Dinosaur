@@ -10,16 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class RecombinatingRecipe implements IRecombinatingRecipe {
+public class RecombinatingRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> inputs;
@@ -63,13 +60,23 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
     }
 
     @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecombinatingRecipe.Serializer.INSTANCE;
+        return Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return RecombinatingRecipe.RecombinatingRecipeType.INSTANCE;
+        return RecombinatingRecipeType.INSTANCE;
     }
 
     public ItemStack getIcon() {
@@ -78,13 +85,13 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
 
     public static class RecombinatingRecipeType implements RecipeType<RecombinatingRecipe> {
         private RecombinatingRecipeType() {}
-        public static final RecombinatingRecipe.RecombinatingRecipeType INSTANCE = new RecombinatingRecipe.RecombinatingRecipeType();
+        public static final RecombinatingRecipeType INSTANCE = new RecombinatingRecipeType();
         public static final String ID = "recombinating";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<RecombinatingRecipe> {
+    public static class Serializer implements RecipeSerializer<RecombinatingRecipe> {
 
-        public static final RecombinatingRecipe.Serializer INSTANCE = new RecombinatingRecipe.Serializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "recombinating");
 
         @Override
@@ -104,14 +111,14 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
         @Nullable
         @Override
         public RecombinatingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             for(int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buffer));
             }
 
             ItemStack output = buffer.readItem();
-            return new RecombinatingRecipe(id, output, inputs, 1);
+            return new RecombinatingRecipe(id, output, inputs, null);
         }
 
         @Override
@@ -121,6 +128,27 @@ public class RecombinatingRecipe implements IRecombinatingRecipe {
                 ingredient.toNetwork(buffer);
             }
             buffer.writeItemStack(recipe.getResultItem(), false);
+        }
+
+        @Override
+        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
+            return INSTANCE;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return ID;
+        }
+
+        @Override
+        public Class<RecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(RecipeSerializer.class);
+        }
+
+        @SuppressWarnings("unchecked") // Need this wrapper, because generics
+        private static <G> Class<G> castClass(Class<?> cls) {
+            return (Class<G>)cls;
         }
     }
 }

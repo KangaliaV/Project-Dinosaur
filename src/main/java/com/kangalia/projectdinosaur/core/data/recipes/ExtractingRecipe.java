@@ -10,16 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ExtractingRecipe implements IExtractingRecipe {
+public class ExtractingRecipe implements Recipe<Container> {
 
     private final ResourceLocation id;
     private final ItemStack output;
@@ -64,13 +61,23 @@ public class ExtractingRecipe implements IExtractingRecipe {
     }
 
     @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public RecipeSerializer<?> getSerializer() {
-        return ExtractingRecipe.Serializer.INSTANCE;
+        return Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ExtractingRecipe.ExtractingRecipeType.INSTANCE;
+        return ExtractingRecipeType.INSTANCE;
     }
 
     public ItemStack getIcon() {
@@ -79,13 +86,13 @@ public class ExtractingRecipe implements IExtractingRecipe {
 
     public static class ExtractingRecipeType implements RecipeType<ExtractingRecipe> {
         private ExtractingRecipeType() {}
-        public static final ExtractingRecipe.ExtractingRecipeType INSTANCE = new ExtractingRecipe.ExtractingRecipeType();
+        public static final ExtractingRecipeType INSTANCE = new ExtractingRecipeType();
         public static final String ID = "extracting";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ExtractingRecipe> {
+    public static class Serializer implements RecipeSerializer<ExtractingRecipe> {
 
-        public static final ExtractingRecipe.Serializer INSTANCE = new ExtractingRecipe.Serializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ProjectDinosaur.MODID, "extracting");
 
         @Override
@@ -105,14 +112,14 @@ public class ExtractingRecipe implements IExtractingRecipe {
         @Nullable
         @Override
         public ExtractingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             for(int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buffer));
             }
 
             ItemStack output = buffer.readItem();
-            return new ExtractingRecipe(id, output, inputs, 1);
+            return new ExtractingRecipe(id, output, inputs, null);
         }
 
         @Override
@@ -122,6 +129,27 @@ public class ExtractingRecipe implements IExtractingRecipe {
                 ingredient.toNetwork(buffer);
             }
             buffer.writeItemStack(recipe.getResultItem(), false);
+        }
+
+        @Override
+        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
+            return INSTANCE;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return ID;
+        }
+
+        @Override
+        public Class<RecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(RecipeSerializer.class);
+        }
+
+        @SuppressWarnings("unchecked") // Need this wrapper, because generics
+        private static <G> Class<G> castClass(Class<?> cls) {
+            return (Class<G>)cls;
         }
     }
 }
