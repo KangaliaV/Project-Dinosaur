@@ -111,14 +111,14 @@ public class RecombinatingRecipe implements Recipe<Container> {
         @Nullable
         @Override
         public RecombinatingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             for(int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromNetwork(buffer));
             }
 
             ItemStack output = buffer.readItem();
-            return new RecombinatingRecipe(id, output, inputs, 1);
+            return new RecombinatingRecipe(id, output, inputs, null);
         }
 
         @Override
