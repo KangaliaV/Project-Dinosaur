@@ -193,14 +193,14 @@ public class OreGen {
         //Underground Biomes
         // Alpine
         OreConfiguration alpineRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.ALPINE_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        ALPINE_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("alpine_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (alpineRockConfigUnderground)),
+        ALPINE_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("alpine_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (alpineRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration alpineCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.ALPINE_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        ALPINE_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("alpine_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (alpineCrystallisedConfigUnderground)),
+        ALPINE_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("alpine_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (alpineCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -208,14 +208,14 @@ public class OreGen {
 
         // Aquatic
         OreConfiguration aquaticRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.AQUATIC_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        AQUATIC_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("aquatic_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (aquaticRockConfigUnderground)),
+        AQUATIC_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("aquatic_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (aquaticRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration aquaticCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.AQUATIC_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        AQUATIC_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("aquatic_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (aquaticCrystallisedConfigUnderground)),
+        AQUATIC_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("aquatic_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (aquaticCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -223,14 +223,14 @@ public class OreGen {
 
         // Arid
         OreConfiguration aridRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.ARID_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        ARID_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("arid_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (aridRockConfigUnderground)),
+        ARID_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("arid_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (aridRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration aridCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.ARID_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        ARID_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("arid_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (aridCrystallisedConfigUnderground)),
+        ARID_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("arid_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (aridCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -238,14 +238,14 @@ public class OreGen {
 
         // Frozen
         OreConfiguration frozenRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.FROZEN_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        FROZEN_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("frozen_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (frozenRockConfigUnderground)),
+        FROZEN_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("frozen_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (frozenRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration frozenCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.FROZEN_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        FROZEN_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("frozen_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (frozenCrystallisedConfigUnderground)),
+        FROZEN_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("frozen_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (frozenCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -253,14 +253,14 @@ public class OreGen {
 
         // Grassland
         OreConfiguration grasslandRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.GRASSLAND_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        GRASSLAND_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("grassland_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (grasslandRockConfigUnderground)),
+        GRASSLAND_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("grassland_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (grasslandRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration grasslandCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.GRASSLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        GRASSLAND_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("grassland_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (grasslandCrystallisedConfigUnderground)),
+        GRASSLAND_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("grassland_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (grasslandCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -268,14 +268,14 @@ public class OreGen {
 
         // Temperate
         OreConfiguration temperateRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.TEMPERATE_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        TEMPERATE_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("temperate_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (temperateRockConfigUnderground)),
+        TEMPERATE_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("temperate_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (temperateRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration temperateCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.TEMPERATE_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        TEMPERATE_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("temperate_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (temperateCrystallisedConfigUnderground)),
+        TEMPERATE_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("temperate_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (temperateCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -283,14 +283,14 @@ public class OreGen {
 
         // Tropical
         OreConfiguration tropicalRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.TROPICAL_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        TROPICAL_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("tropical_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (tropicalRockConfigUnderground)),
+        TROPICAL_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("tropical_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (tropicalRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration tropicalCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.TROPICAL_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        TROPICAL_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("tropical_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (tropicalCrystallisedConfigUnderground)),
+        TROPICAL_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("tropical_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (tropicalCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -298,14 +298,14 @@ public class OreGen {
 
         // Wetland
         OreConfiguration wetlandRockConfigUnderground = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.WETLAND_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
-        WETLAND_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("wetland_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (wetlandRockConfigUnderground)),
+        WETLAND_ROCK_OREGEN_UNDERGROUND = registerPlacedFeature("wetland_rock_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (wetlandRockConfigUnderground)),
                 CountPlacement.of(ROCK_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(90)));
 
         OreConfiguration wetlandCrystallisedConfigUnderground = new OreConfiguration(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.WETLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState(), CRYSTALLISED_VEINSIZE);
-        WETLAND_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("wetland_crystallised_fossil", new ConfiguredFeature<>(Feature.ORE, (wetlandCrystallisedConfigUnderground)),
+        WETLAND_CRYSTALLISED_OREGEN_UNDERGROUND = registerPlacedFeature("wetland_crystallised_fossil_underground", new ConfiguredFeature<>(Feature.ORE, (wetlandCrystallisedConfigUnderground)),
                 CountPlacement.of(CRYSTALLISED_AMOUNT_UNDERGROUND),
                 InSquarePlacement.spread(),
                 BiomeFilter.biome(),
@@ -319,26 +319,6 @@ public class OreGen {
     public static void onBiomeLoadingEvent(BiomeLoadingEvent event) {
         //Petrified Wood
         event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PETRIFIED_OREGEN);
-        //Underground Biome Fossil Check
-        if (event.getCategory() == Biome.BiomeCategory.UNDERGROUND) {
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ALPINE_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ALPINE_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AQUATIC_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AQUATIC_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ARID_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ARID_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FROZEN_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FROZEN_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GRASSLAND_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GRASSLAND_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TEMPERATE_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TEMPERATE_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TROPICAL_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TROPICAL_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_ROCK_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_CRYSTALLISED_OREGEN_UNDERGROUND);
-            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PETRIFIED_OREGEN);
-        }
         //Alpine Check
         if (event.getCategory() == Biome.BiomeCategory.EXTREME_HILLS || event.getCategory() == Biome.BiomeCategory.TAIGA || event.getCategory() == Biome.BiomeCategory.MOUNTAIN) {
             event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ALPINE_ROCK_OREGEN);
@@ -378,6 +358,25 @@ public class OreGen {
         if (event.getCategory() == Biome.BiomeCategory.SWAMP) {
             event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_ROCK_OREGEN);
             event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_CRYSTALLISED_OREGEN);
+        }
+        //Underground Biome Fossil Check
+        if (event.getCategory() == Biome.BiomeCategory.UNDERGROUND) {
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ALPINE_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ALPINE_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AQUATIC_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AQUATIC_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ARID_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ARID_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FROZEN_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FROZEN_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GRASSLAND_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GRASSLAND_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TEMPERATE_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TEMPERATE_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TROPICAL_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TROPICAL_CRYSTALLISED_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_ROCK_OREGEN_UNDERGROUND);
+            event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_CRYSTALLISED_OREGEN_UNDERGROUND);
         }
     }
 }
