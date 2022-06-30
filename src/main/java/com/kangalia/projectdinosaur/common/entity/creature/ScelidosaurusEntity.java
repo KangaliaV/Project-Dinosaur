@@ -74,7 +74,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.idle", true));
             event.getController().setAnimationSpeed(0.75);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.sleep", true));
             event.getController().setAnimationSpeed(0.75);
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.idle", true));
