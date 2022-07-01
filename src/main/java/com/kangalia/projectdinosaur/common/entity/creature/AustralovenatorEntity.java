@@ -100,10 +100,10 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 3.0D, 1.5D));
-        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 3.0D));
-        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 3.0D, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.5D, 200));
+        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.25D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
