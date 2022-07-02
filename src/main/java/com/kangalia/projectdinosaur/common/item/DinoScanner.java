@@ -31,11 +31,13 @@ public class DinoScanner extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
         Level level = pPlayer.getLevel();
-        if (pInteractionTarget instanceof PrehistoricEntity && !level.isClientSide) {
+        if (pInteractionTarget instanceof PrehistoricEntity) {
             setClickedEntity((PrehistoricEntity) pInteractionTarget);
-            MenuProvider containerProvider = createContainerProvider((PrehistoricEntity) pInteractionTarget, pPlayer.getItemInHand(pUsedHand));
-            NetworkHooks.openGui((ServerPlayer) pPlayer, containerProvider);
-            return InteractionResult.SUCCESS;
+            if (!level.isClientSide) {
+                MenuProvider containerProvider = createContainerProvider((PrehistoricEntity) pInteractionTarget, pPlayer.getItemInHand(pUsedHand));
+                NetworkHooks.openGui((ServerPlayer) pPlayer, containerProvider);
+                return InteractionResult.SUCCESS;
+            }
         }
         return InteractionResult.PASS;
     }

@@ -20,9 +20,11 @@ public class DinoScannerContainer extends AbstractContainerMenu {
     }
 
     public ItemStack getItem() {
-        scanner = (DinoScanner) player.getItemInHand(player.getUsedItemHand()).getItem();
         scannerStack = player.getItemInHand(player.getUsedItemHand());
-        scanner.saveNBT(scannerStack, scanner.getClickedEntity());
+        if (scannerStack.getItem() instanceof DinoScanner) {
+            scanner = (DinoScanner) scannerStack.getItem();
+            scanner.saveNBT(scannerStack, scanner.getClickedEntity());
+        }
         return scannerStack;
     }
 
