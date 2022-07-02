@@ -104,10 +104,12 @@ public class PrehistoricMeleeAttackGoal extends MeleeAttackGoal {
             this.resetAttackCooldown();
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(pEnemy);
-            this.prehistoric.setHunger(this.prehistoric.getHunger() + this.random.nextInt(8) + 3);
-            this.prehistoric.level.playSound(null, this.prehistoric.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.prehistoric.getSoundVolume(), this.prehistoric.getVoicePitch());
-            if (this.prehistoric.getHunger() > prehistoric.maxFood) {
-                this.prehistoric.setHunger(prehistoric.maxFood);
+            if (pEnemy.isDeadOrDying()) {
+                this.prehistoric.setHunger(this.prehistoric.getHunger() + this.random.nextInt(8) + 3);
+                this.prehistoric.level.playSound(null, this.prehistoric.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.prehistoric.getSoundVolume(), this.prehistoric.getVoicePitch());
+                if (this.prehistoric.getHunger() > prehistoric.maxFood) {
+                    this.prehistoric.setHunger(prehistoric.maxFood);
+                }
             }
         }
 

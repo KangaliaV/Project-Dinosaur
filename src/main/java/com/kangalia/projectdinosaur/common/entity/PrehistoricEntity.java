@@ -97,6 +97,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide) {
+            if (this.isAngry()) {
+                this.setLastHurtByMob(this.getLastHurtByMob());
+            }
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
     }
@@ -104,7 +107,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     @Override
     public void tick() {
         super.tick();
-        boolean flag = false;
         if (!level.isClientSide) {
             if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
                 this.setAdultAttributes();
@@ -381,11 +383,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean isHungry() {
-        return this.getHunger() < maxFood * 0.75F;
+        return this.getHunger() < maxFood * 0.8F;
     }
 
     public boolean isStarving() {
-        return this.getHunger() < maxFood * 0.1F;
+        return this.getHunger() < maxFood * 0.2F;
     }
 
     public int getHungerTicks() {
@@ -561,6 +563,18 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
+    public boolean isAngry() {
+        if (this.getPersistentAngerTarget() != null && this.getLastHurtByMob() != null) {
+            if (this.getPersistentAngerTarget().equals(this.getLastHurtByMob().getUUID())) {
+                return this.getRemainingPersistentAngerTime() > 0;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(AGE_IN_TICKS, 0);
@@ -589,7 +603,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putBoolean("Sleeping", this.isSleeping());
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
-        pCompound.putInt("RemainingAngerTime", getRemainingPersistentAngerTime());
         this.addPersistentAngerSaveData(pCompound);
     }
 
@@ -606,7 +619,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setSleeping(pCompound.getBoolean("Sleeping"));
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
-        this.setRemainingPersistentAngerTime(pCompound.getInt("RemainingAngerTime"));
         this.readPersistentAngerSaveData(this.level, pCompound);
     }
 }

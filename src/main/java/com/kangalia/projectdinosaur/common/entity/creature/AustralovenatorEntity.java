@@ -46,7 +46,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new AustralovenatorEntity.AustralovenatorMoveControl();
         this.lookControl = new AustralovenatorEntity.AustralovenatorLookControl();
         this.maxUpStep = 1.0F;
@@ -90,7 +89,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<AustralovenatorEntity>(this, "controller", 4, this::predicate));
+        data.addAnimationController(new AnimationController<AustralovenatorEntity>(this, "controller", 10, this::predicate));
     }
 
     @Override
@@ -113,7 +112,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Pig));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Sheep.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Sheep));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
-        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
+        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
     @Override
