@@ -5,6 +5,7 @@ import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.PetrifiedBoatEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.ScelidosaurusEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.resources.ResourceLocation;
@@ -38,4 +39,10 @@ public class EntityInit {
                     .sized(0.4f, 0.6f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "compsognathus").toString()));
+
+    public static final RegistryObject<EntityType<ScelidosaurusEntity>> SCELIDOSAURUS = ENTITY_TYPES.register("scelidosaurus",
+            () -> EntityType.Builder.of(ScelidosaurusEntity::new, MobCategory.CREATURE)
+                    .sized(0.6f, 1.0f)
+                    .setTrackingRange(8)
+                    .build(new ResourceLocation(ProjectDinosaur.MODID, "scelidosaurus").toString()));
 }

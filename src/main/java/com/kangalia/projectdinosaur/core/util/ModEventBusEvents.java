@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.ScelidosaurusEntity;
 import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.data.recipes.ExtractingRecipe;
 import com.kangalia.projectdinosaur.core.data.recipes.IncubatingRecipe;
@@ -24,6 +25,7 @@ public class ModEventBusEvents {
         event.put(EntityInit.APHANERAMMA.get(), AphanerammaEntity.setCustomAttributes().build());
         event.put(EntityInit.AUSTRALOVENATOR.get(), AustralovenatorEntity.setCustomAttributes().build());
         event.put(EntityInit.COMPSOGNATHUS.get(), CompsognathusEntity.setCustomAttributes().build());
+        event.put(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusEntity.setCustomAttributes().build());
     }
 
     @SubscribeEvent

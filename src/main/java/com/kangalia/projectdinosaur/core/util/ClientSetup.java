@@ -3,10 +3,7 @@ package com.kangalia.projectdinosaur.core.util;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.*;
 import com.kangalia.projectdinosaur.common.container.GroundFeederContainer;
-import com.kangalia.projectdinosaur.common.entity.render.AphanerammaRenderer;
-import com.kangalia.projectdinosaur.common.entity.render.AustralovenatorRenderer;
-import com.kangalia.projectdinosaur.common.entity.render.CompsognathusRenderer;
-import com.kangalia.projectdinosaur.common.entity.render.PetrifiedBoatRenderer;
+import com.kangalia.projectdinosaur.common.entity.render.*;
 import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -39,10 +36,11 @@ public class ClientSetup {
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
 
         BlockEntityRenderers.register(BlockEntitiesInit.PETRIFIED_SIGN_ENTITY.get(), SignRenderer::new);
-
         EntityRenderers.register(EntityInit.PETRIFIED_BOAT.get(), PetrifiedBoatRenderer::new);
+
         EntityRenderers.register(EntityInit.APHANERAMMA.get(), AphanerammaRenderer::new);
         EntityRenderers.register(EntityInit.AUSTRALOVENATOR.get(), AustralovenatorRenderer::new);
         EntityRenderers.register(EntityInit.COMPSOGNATHUS.get(), CompsognathusRenderer::new);
+        EntityRenderers.register(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusRenderer::new);
     }
 }
