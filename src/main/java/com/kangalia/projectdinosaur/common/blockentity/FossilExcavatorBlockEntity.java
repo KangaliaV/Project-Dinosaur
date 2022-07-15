@@ -1,7 +1,6 @@
 package com.kangalia.projectdinosaur.common.blockentity;
 
 import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
-import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
@@ -75,22 +74,22 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot >= 1 && slot < 7) {
-                    return stack.getItem() == BlockInit.ENCASED_ALPINE_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_AQUATIC_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_ARID_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_FROZEN_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_GRASSLAND_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_TEMPERATE_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_TROPICAL_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_WETLAND_ROCK_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_ALPINE_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_AQUATIC_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_ARID_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_FROZEN_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_GRASSLAND_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_TEMPERATE_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_TROPICAL_CRYSTALLISED_FOSSIL.get().asItem() ||
-                            stack.getItem() == BlockInit.ENCASED_WETLAND_CRYSTALLISED_FOSSIL.get().asItem();
+                    return stack.getItem() == ItemInit.ALPINE_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.AQUATIC_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.ARID_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.FROZEN_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.GRASSLAND_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.TEMPERATE_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.TROPICAL_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.WETLAND_ROCK_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.ALPINE_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.AQUATIC_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.ARID_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.FROZEN_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.GRASSLAND_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.TEMPERATE_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_FRAGMENT.get().asItem();
                 }
                 if (slot >= 7 && slot < 13) {
                     return stack.getItem() == ItemInit.ALPINE_ROCK_SPECIMEN.get() ||
