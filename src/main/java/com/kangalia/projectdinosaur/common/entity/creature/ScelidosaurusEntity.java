@@ -71,8 +71,8 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.idle", true));
-            event.getController().setAnimationSpeed(0.75);
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.run", true));
+            event.getController().setAnimationSpeed(1.35);
         } else if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.sleep", true));
             event.getController().setAnimationSpeed(0.75);
