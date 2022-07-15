@@ -96,7 +96,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(20);
-        data.addAnimationController(new AnimationController<CompsognathusEntity>(this, "controller", 4, this::predicate));
+        data.addAnimationController(new AnimationController<CompsognathusEntity>(this, "controller", 10, this::predicate));
     }
 
     @Override
@@ -106,18 +106,18 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
-        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
-        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 1.5D, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 2.0D, 200));
+        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.75D, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.75D));
+        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 1.75D, true));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.25D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Pig.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
-        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Pig.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Pig));
+        this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
     @Override

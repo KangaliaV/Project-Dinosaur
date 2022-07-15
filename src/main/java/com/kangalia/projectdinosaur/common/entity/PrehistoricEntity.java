@@ -97,6 +97,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public void aiStep() {
         super.aiStep();
         if (!this.level.isClientSide) {
+            if (this.isAngry()) {
+                this.setLastHurtByMob(this.getLastHurtByMob());
+            }
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
     }
@@ -104,7 +107,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     @Override
     public void tick() {
         super.tick();
-        boolean flag = false;
         if (!level.isClientSide) {
             if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
                 this.setAdultAttributes();
@@ -381,11 +383,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean isHungry() {
-        return this.getHunger() < maxFood * 0.75F;
+        return this.getHunger() < maxFood * 0.8F;
     }
 
     public boolean isStarving() {
-        return this.getHunger() < maxFood * 0.1F;
+        return this.getHunger() < maxFood * 0.2F;
     }
 
     public int getHungerTicks() {
@@ -558,6 +560,18 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public boolean hurt(DamageSource pSource, float pAmount) {
         this.setHealingTicks(0);
         return super.hurt(pSource, pAmount);
+    }
+
+    @Override
+    public boolean isAngry() {
+        if (this.getPersistentAngerTarget() != null && this.getLastHurtByMob() != null) {
+            if (this.getPersistentAngerTarget().equals(this.getLastHurtByMob().getUUID())) {
+                return this.getRemainingPersistentAngerTime() > 0;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
