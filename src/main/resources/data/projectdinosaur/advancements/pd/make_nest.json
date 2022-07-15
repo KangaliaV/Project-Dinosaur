@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:nest"
+    },
+    "title": {
+      "translate": "advancements.pd.make_nest.title"
+    },
+    "description": {
+      "translate": "advancements.pd.make_nest.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "syringe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:nest"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "syringe"
+    ]
+  ]
+}

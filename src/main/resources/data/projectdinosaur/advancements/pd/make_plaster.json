@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:plaster"
+    },
+    "title": {
+      "translate": "advancements.pd.make_plaster.title"
+    },
+    "description": {
+      "translate": "advancements.pd.make_plaster.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "plaster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:plaster"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "plaster"
+    ]
+  ]
+}

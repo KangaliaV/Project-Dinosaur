@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/fertilised_egg",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:incubated_scelidosaurus_egg"
+    },
+    "title": {
+      "translate": "advancements.pd.scelidosaurus.title"
+    },
+    "description": {
+      "translate": "advancements.pd.scelidosaurus.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "egg": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:incubated_scelidosaurus_egg"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "egg"
+    ]
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/dna",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:rotten_egg"
+    },
+    "title": {
+      "translate": "advancements.pd.rotten_egg.title"
+    },
+    "description": {
+      "translate": "advancements.pd.rotten_egg.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "syringe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:rotten_egg"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "syringe"
+    ]
+  ]
+}

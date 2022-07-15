@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/make_nest",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:ground_feeder"
+    },
+    "title": {
+      "translate": "advancements.pd.make_feeder.title"
+    },
+    "description": {
+      "translate": "advancements.pd.make_feeder.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "syringe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:ground_feeder"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "syringe"
+    ]
+  ]
+}
