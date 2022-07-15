@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:dino_scanner"
+    },
+    "title": {
+      "translate": "advancements.pd.make_scanner.title"
+    },
+    "description": {
+      "translate": "advancements.pd.make_scanner.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "syringe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:dino_scanner"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "syringe"
+    ]
+  ]
+}

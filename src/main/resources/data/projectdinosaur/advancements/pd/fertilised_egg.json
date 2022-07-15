@@ -1,0 +1,35 @@
+{
+  "parent": "projectdinosaur:pd/dna",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:fertilised_aphaneramma_egg"
+    },
+    "title": {
+      "translate": "advancements.pd.fertilised_egg.title"
+    },
+    "description": {
+      "translate": "advancements.pd.fertilised_egg.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "rock_specimen": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "projectdinosaur:fertilised_eggs"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "rock_specimen"
+    ]
+  ]
+}

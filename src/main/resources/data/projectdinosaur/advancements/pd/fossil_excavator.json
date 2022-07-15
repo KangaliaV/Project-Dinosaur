@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:fossil_excavator"
+    },
+    "title": {
+      "translate": "advancements.pd.fossil_excavator.title"
+    },
+    "description": {
+      "translate": "advancements.pd.fossil_excavator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "plaster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:fossil_excavator"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "plaster"
+    ]
+  ]
+}

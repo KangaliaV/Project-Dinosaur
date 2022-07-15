@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "projectdinosaur:alpine_rock_specimen",
+    "projectdinosaur:arid_rock_specimen",
+    "projectdinosaur:aquatic_rock_specimen",
+    "projectdinosaur:frozen_rock_specimen",
+    "projectdinosaur:grassland_rock_specimen",
+    "projectdinosaur:temperate_rock_specimen",
+    "projectdinosaur:tropical_rock_specimen",
+    "projectdinosaur:wetland_rock_specimen",
+    "projectdinosaur:alpine_crystallised_specimen",
+    "projectdinosaur:arid_crystallised_specimen",
+    "projectdinosaur:aquatic_crystallised_specimen",
+    "projectdinosaur:frozen_crystallised_specimen",
+    "projectdinosaur:grassland_crystallised_specimen",
+    "projectdinosaur:temperate_crystallised_specimen",
+    "projectdinosaur:tropical_crystallised_specimen",
+    "projectdinosaur:wetland_crystallised_specimen"
+  ]
+}

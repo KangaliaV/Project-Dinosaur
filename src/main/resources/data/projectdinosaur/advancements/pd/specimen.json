@@ -1,0 +1,35 @@
+{
+  "parent": "projectdinosaur:pd/make_chisel",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:arid_rock_specimen"
+    },
+    "title": {
+      "translate": "advancements.pd.specimen.title"
+    },
+    "description": {
+      "translate": "advancements.pd.specimen.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "specimens": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "projectdinosaur:specimens"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "specimens"
+    ]
+  ]
+}

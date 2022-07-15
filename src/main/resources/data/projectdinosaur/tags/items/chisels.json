@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "projectdinosaur:iron_chisel",
+    "projectdinosaur:diamond_chisel",
+    "projectdinosaur:netherite_chisel"
+  ]
+}

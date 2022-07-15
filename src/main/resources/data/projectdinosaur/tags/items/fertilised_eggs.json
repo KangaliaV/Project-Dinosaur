@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "projectdinosaur:fertilised_aphaneramma_egg",
+    "projectdinosaur:fertilised_australovenator_egg",
+    "projectdinosaur:fertilised_compsognathus_egg",
+    "projectdinosaur:fertilised_scelidosaurus_egg"
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "parent": "projectdinosaur:challenges/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:amber_block"
+    },
+    "title": {
+      "translate": "advancements.challenges.crystals.title"
+    },
+    "description": {
+      "translate": "advancements.challenges.crystals.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 500
+  },
+  "criteria": {
+    "alpine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:hematine_block"
+            ]
+          }
+        ]
+      }
+    },
+    "arid": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:amber_block"
+            ]
+          }
+        ]
+      }
+    },
+    "aquatic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:azurite_block"
+            ]
+          }
+        ]
+      }
+    },
+    "frozen": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:aquamarine_block"
+            ]
+          }
+        ]
+      }
+    },
+    "grassland": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:uravorite_block"
+            ]
+          }
+        ]
+      }
+    },
+    "temperate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:malachite_block"
+            ]
+          }
+        ]
+      }
+    },
+    "tropical": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:sphene_block"
+            ]
+          }
+        ]
+      }
+    },
+    "wetland": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:almandine_block"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "alpine"
+    ],
+    [
+      "arid"
+    ],
+    [
+      "aquatic"
+    ],
+    [
+      "frozen"
+    ],
+    [
+      "grassland"
+    ],
+    [
+      "temperate"
+    ],
+    [
+      "tropical"
+    ],
+    [
+      "wetland"
+    ]
+  ]
+}
