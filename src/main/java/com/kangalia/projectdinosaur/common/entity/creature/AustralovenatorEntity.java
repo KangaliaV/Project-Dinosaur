@@ -155,7 +155,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     @Override
     public int getAdultAge() {
-        return 8;
+        return 10;
     }
 
     class AustralovenatorMoveControl extends MoveControl {

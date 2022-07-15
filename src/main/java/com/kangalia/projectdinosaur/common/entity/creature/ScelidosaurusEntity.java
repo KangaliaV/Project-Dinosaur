@@ -47,7 +47,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         this.moveControl = new ScelidosaurusEntity.ScelidosaurusMoveControl();
         this.lookControl = new ScelidosaurusEntity.ScelidosaurusLookControl();
         this.maxUpStep = 1.0F;
-        minSize = 0.50F;
+        minSize = 0.35F;
         maxMaleSize = 2.0F;
         maxFemaleSize = 1.75F;
         maxFood = 60;
@@ -72,7 +72,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.run", true));
-            event.getController().setAnimationSpeed(1.35);
+            event.getController().setAnimationSpeed(1.65);
         } else if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.sleep", true));
             event.getController().setAnimationSpeed(0.75);
@@ -147,7 +147,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
 
     @Override
     public int getAdultAge() {
-        return 4;
+        return 8;
     }
 
     class ScelidosaurusMoveControl extends MoveControl {
