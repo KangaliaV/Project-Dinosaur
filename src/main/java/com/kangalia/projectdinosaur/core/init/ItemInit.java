@@ -22,6 +22,26 @@ public class ItemInit {
     public static final RegistryObject<Item> DIAMOND_CHISEL = ITEMS.register("diamond_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(1561).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> NETHERITE_CHISEL = ITEMS.register("netherite_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(2031).tab(DinoItems.DINO_ITEMS)));
 
+    //Rock Fragments
+    public static final RegistryObject<Item> ALPINE_ROCK_FRAGMENT = ITEMS.register("alpine_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> AQUATIC_ROCK_FRAGMENT = ITEMS.register("aquatic_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> ARID_ROCK_FRAGMENT = ITEMS.register("arid_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> FROZEN_ROCK_FRAGMENT = ITEMS.register("frozen_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> GRASSLAND_ROCK_FRAGMENT = ITEMS.register("grassland_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> TEMPERATE_ROCK_FRAGMENT = ITEMS.register("temperate_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> TROPICAL_ROCK_FRAGMENT = ITEMS.register("tropical_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> WETLAND_ROCK_FRAGMENT = ITEMS.register("wetland_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+
+    //Crystallised Fragments
+    public static final RegistryObject<Item> ALPINE_CRYSTALLISED_FRAGMENT = ITEMS.register("alpine_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> AQUATIC_CRYSTALLISED_FRAGMENT = ITEMS.register("aquatic_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> ARID_CRYSTALLISED_FRAGMENT = ITEMS.register("arid_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> FROZEN_CRYSTALLISED_FRAGMENT = ITEMS.register("frozen_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> GRASSLAND_CRYSTALLISED_FRAGMENT = ITEMS.register("grassland_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> TEMPERATE_CRYSTALLISED_FRAGMENT = ITEMS.register("temperate_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> TROPICAL_CRYSTALLISED_FRAGMENT = ITEMS.register("tropical_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> WETLAND_CRYSTALLISED_FRAGMENT = ITEMS.register("wetland_crystallised_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+
     //Rock Specimens
     public static final RegistryObject<Item> ALPINE_ROCK_SPECIMEN = ITEMS.register("alpine_rock_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> AQUATIC_ROCK_SPECIMEN = ITEMS.register("aquatic_rock_specimen", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
