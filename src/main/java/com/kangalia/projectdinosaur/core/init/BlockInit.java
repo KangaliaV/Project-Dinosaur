@@ -3,10 +3,7 @@ package com.kangalia.projectdinosaur.core.init;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
 import com.kangalia.projectdinosaur.common.block.dinocare.GroundFeederBlock;
-import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
-import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
-import com.kangalia.projectdinosaur.common.block.eggs.CompsognathusEggBlock;
-import com.kangalia.projectdinosaur.common.block.eggs.ScelidosaurusEggBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.*;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
@@ -237,7 +234,11 @@ public class BlockInit {
             .sound(SoundType.METAL)
             .randomTicks()
             .noOcclusion()));
-
+    public static final RegistryObject<Block> INCUBATED_TARBOSAURUS_EGG = registerEggBlock("incubated_tarbosaurus_egg", () -> new TarbosaurusEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_RED)
+            .strength(0.5F)
+            .sound(SoundType.METAL)
+            .randomTicks()
+            .noOcclusion()));
 
 
     //Gem Blocks

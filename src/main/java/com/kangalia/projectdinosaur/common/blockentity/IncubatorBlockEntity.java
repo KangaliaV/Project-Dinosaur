@@ -83,6 +83,8 @@ public class IncubatorBlockEntity extends BlockEntity {
                             stack.getItem() == BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get() ||
                             stack.getItem() == BlockInit.INCUBATED_SCELIDOSAURUS_EGG.get().asItem() ||
+                            stack.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get() ||
+                            stack.getItem() == BlockInit.INCUBATED_TARBOSAURUS_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {
@@ -154,6 +156,8 @@ public class IncubatorBlockEntity extends BlockEntity {
         } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get()) {
             flag = true;
         } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get()) {
+            flag = true;
+        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get()) {
             flag = true;
         } else {
             flag = false;

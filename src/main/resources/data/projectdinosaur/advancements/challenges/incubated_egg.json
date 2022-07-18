@@ -66,6 +66,18 @@
           }
         ]
       }
+    },
+    "tarbosaurus_egg": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:incubated_tarbosaurus_egg"
+            ]
+          }
+        ]
+      }
     }
   },
   "requirements": [
@@ -80,6 +92,9 @@
     ],
     [
       "scelidosaurus_egg"
+    ],
+    [
+      "tarbosaurus_egg"
     ]
   ]
 }
