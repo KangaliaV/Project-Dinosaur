@@ -27,10 +27,11 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.horse.Donkey;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -40,47 +41,47 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class AustralovenatorEntity extends PrehistoricEntity implements IAnimatable {
+public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable {
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
+    public TarbosaurusEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
-        this.moveControl = new AustralovenatorEntity.AustralovenatorMoveControl();
-        this.lookControl = new AustralovenatorEntity.AustralovenatorLookControl();
+        this.moveControl = new TarbosaurusEntity.TarbosaurusMoveControl();
+        this.lookControl = new TarbosaurusEntity.TarbosaurusLookControl();
         this.maxUpStep = 1.0F;
-        minSize = 0.25F;
-        maxMaleSize = 1.1F;
-        maxFemaleSize = 1.0F;
-        maxFood = 80;
+        minSize = 0.30F;
+        maxMaleSize = 1.8F;
+        maxFemaleSize = 1.6F;
+        maxFood = 150;
         diet = 1;
         soundVolume = 0.4F;
         sleepSchedule = 0;
-        adultHealth = 40.0F;
-        name = new TranslatableComponent("dino.projectdinosaur.australovenator");
-        renderScale = 35;
+        adultHealth = 70.0F;
+        name = new TranslatableComponent("dino.projectdinosaur.tarbosaurus");
+        renderScale = 15;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.MAX_HEALTH, 18.0F)
+                .add(Attributes.MOVEMENT_SPEED, 0.45F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0F)
+                .add(Attributes.ATTACK_DAMAGE, 16.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.run", true));
-            event.getController().setAnimationSpeed(3.5);
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.run", true));
+            event.getController().setAnimationSpeed(3);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.sleep", true));
-            event.getController().setAnimationSpeed(0.35);
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.sleep", true));
+            event.getController().setAnimationSpeed(0.25);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.idle", true));
-            event.getController().setAnimationSpeed(1.5);
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.idle", true));
+            event.getController().setAnimationSpeed(0.5);
         }
         return PlayState.CONTINUE;
     }
@@ -89,7 +90,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<AustralovenatorEntity>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<TarbosaurusEntity>(this, "controller", 10, this::predicate));
     }
 
     @Override
@@ -99,20 +100,20 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
-        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.25D, 200));
+        this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 1.5D, true));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Pig));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Sheep.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Sheep));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
-        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Sheep.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Sheep));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Horse.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Horse));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Donkey.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Donkey));
     }
 
     @Override
@@ -147,37 +148,37 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     }
 
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
-        return EntityInit.AUSTRALOVENATOR.get().create(serverWorld);
+        return EntityInit.TARBOSAURUS.get().create(serverWorld);
     }
 
     @Override
     public int getAdultAge() {
-        return 10;
+        return 14;
     }
 
-    class AustralovenatorMoveControl extends MoveControl {
-        public AustralovenatorMoveControl() {
-            super(AustralovenatorEntity.this);
+    class TarbosaurusMoveControl extends MoveControl {
+        public TarbosaurusMoveControl() {
+            super(TarbosaurusEntity.this);
         }
 
         public void tick() {
-            if (!AustralovenatorEntity.this.isSleeping()) {
+            if (!TarbosaurusEntity.this.isSleeping()) {
                 super.tick();
             }
 
         }
     }
 
-    public class AustralovenatorLookControl extends LookControl {
-        public AustralovenatorLookControl() {
-            super(AustralovenatorEntity.this);
+    public class TarbosaurusLookControl extends LookControl {
+        public TarbosaurusLookControl() {
+            super(TarbosaurusEntity.this);
         }
 
         public void tick() {
-            if (!AustralovenatorEntity.this.isSleeping()) {
+            if (!TarbosaurusEntity.this.isSleeping()) {
                 super.tick();
             }
 

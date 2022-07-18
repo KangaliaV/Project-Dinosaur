@@ -42,5 +42,6 @@ public class ClientSetup {
         EntityRenderers.register(EntityInit.AUSTRALOVENATOR.get(), AustralovenatorRenderer::new);
         EntityRenderers.register(EntityInit.COMPSOGNATHUS.get(), CompsognathusRenderer::new);
         EntityRenderers.register(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusRenderer::new);
+        EntityRenderers.register(EntityInit.TARBOSAURUS.get(), TarbosaurusRenderer::new);
     }
 }

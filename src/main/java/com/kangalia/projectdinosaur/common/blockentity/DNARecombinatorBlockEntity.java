@@ -77,13 +77,16 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
                             stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
                             stack.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get() ||
                             stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get();
+                            stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get() ||
+                            stack.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get();
+
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.APHANERAMMA_DNA.get() ||
                             stack.getItem() == ItemInit.AUSTRALOVENATOR_DNA.get() ||
                             stack.getItem() == ItemInit.COMPSOGNATHUS_DNA.get() ||
-                            stack.getItem() == ItemInit.SCELIDOSAURUS_DNA.get();
+                            stack.getItem() == ItemInit.SCELIDOSAURUS_DNA.get() ||
+                            stack.getItem() == ItemInit.TARBOSAURUS_DNA.get();
                 }
                 return false;
 

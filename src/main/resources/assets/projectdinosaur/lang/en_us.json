@@ -164,6 +164,11 @@
   "block.projectdinosaur.incubated_scelidosaurus_egg": "Incubated Scelidosaurus Egg",
   "item.projectdinosaur.scelidosaurus_spawn_egg": "Scelidosaurus Spawn Egg",
 
+  "item.projectdinosaur.tarbosaurus_dna": "Tarbosaurus DNA",
+  "item.projectdinosaur.fertilised_tarbosaurus_egg": "Fertilised Tarbosaurus Egg",
+  "block.projectdinosaur.incubated_tarbosaurus_egg": "Incubated Tarbosaurus Egg",
+  "item.projectdinosaur.tarbosaurus_spawn_egg": "Tarbosaurus Spawn Egg",
+
   "data.projectdinosaur.dino_species": "Species: %1$s",
   "data.projectdinosaur.dino_nickname": "Nickname: %1$s",
   "data.projectdinosaur.dino_age": "Age: %1$s days",
@@ -188,6 +193,7 @@
   "dino.projectdinosaur.australovenator": "Australovenator",
   "dino.projectdinosaur.compsognathus": "Compsognathus",
   "dino.projectdinosaur.scelidosaurus": "Scelidosaurus",
+  "dino.projectdinosaur.tarbosaurus": "Tarbosaurus",
 
   "advancements.pd.root.title": "Project Dinosaur",
   "advancements.pd.root.description": "Get your goggles and gloves on; time to bring dinosaurs to life!",
@@ -229,6 +235,8 @@
   "advancements.pd.compsognathus.description": "Incubate a Compsognathus Egg for the first time.",
   "advancements.pd.scelidosaurus.title": "The overgrown prehistoric cow.",
   "advancements.pd.scelidosaurus.description": "Incubate a Scelidosaurus Egg for the first time.",
+  "advancements.pd.tarbosaurus.title": "Chomp Chomp.",
+  "advancements.pd.tarbosaurus.description": "Incubate a Tarbosaurus Egg for the first time.",
 
   "advancements.challenges.root.title": "Dino Challenges",
   "advancements.challenges.root.description": "For the hardcore completionists & the casuals looking for an extra challenge.",

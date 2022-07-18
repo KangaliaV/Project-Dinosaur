@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/fertilised_egg",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:incubated_tarbosaurus_egg"
+    },
+    "title": {
+      "translate": "advancements.pd.tarbosaurus.title"
+    },
+    "description": {
+      "translate": "advancements.pd.tarbosaurus.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "egg": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:incubated_tarbosaurus_egg"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "egg"
+    ]
+  ]
+}
