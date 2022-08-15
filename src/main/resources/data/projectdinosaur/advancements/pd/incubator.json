@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/dna_recombinator",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:incubator"
+    },
+    "title": {
+      "translate": "advancements.pd.incubator.title"
+    },
+    "description": {
+      "translate": "advancements.pd.incubator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "plaster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:incubator"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "plaster"
+    ]
+  ]
+}

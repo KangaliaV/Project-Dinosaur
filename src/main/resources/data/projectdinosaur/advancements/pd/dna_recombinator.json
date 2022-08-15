@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/core_station",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:dna_recombinator"
+    },
+    "title": {
+      "translate": "advancements.pd.dna_recombinator.title"
+    },
+    "description": {
+      "translate": "advancements.pd.dna_recombinator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "plaster": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:dna_recombinator"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "plaster"
+    ]
+  ]
+}

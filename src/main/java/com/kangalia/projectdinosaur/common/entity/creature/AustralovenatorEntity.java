@@ -52,7 +52,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         minSize = 0.25F;
         maxMaleSize = 1.1F;
         maxFemaleSize = 1.0F;
-        maxFood = 100;
+        maxFood = 80;
         diet = 1;
         soundVolume = 0.4F;
         sleepSchedule = 0;
@@ -155,7 +155,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     @Override
     public int getAdultAge() {
-        return 8;
+        return 10;
     }
 
     class AustralovenatorMoveControl extends MoveControl {

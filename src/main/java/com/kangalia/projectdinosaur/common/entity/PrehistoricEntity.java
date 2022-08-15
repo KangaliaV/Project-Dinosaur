@@ -1,12 +1,8 @@
 package com.kangalia.projectdinosaur.common.entity;
 
-import com.kangalia.projectdinosaur.common.block.eggs.AphanerammaEggBlock;
-import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
-import com.kangalia.projectdinosaur.common.block.eggs.CompsognathusEggBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.*;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -207,6 +203,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().defaultBlockState().setValue(CompsognathusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else if (prehistoric instanceof AustralovenatorEntity) {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().defaultBlockState().setValue(AustralovenatorEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+            } else if (prehistoric instanceof ScelidosaurusEntity) {
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_SCELIDOSAURUS_EGG.get().defaultBlockState().setValue(ScelidosaurusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+            } else if (prehistoric instanceof TarbosaurusEntity) {
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_TARBOSAURUS_EGG.get().defaultBlockState().setValue(TarbosaurusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             }
@@ -257,12 +257,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public void eatFromHand(ItemStack item) {
         if (item != null) {
             if (this.isHungry()) {
-                this.setHunger(this.getHunger() + Objects.requireNonNull(item.getFoodProperties(this)).getNutrition());
+                this.setHunger(this.getHunger() + (this.random.nextInt(6) + 8));
                 if (this.getHunger() > maxFood) {
                     this.setHunger(maxFood);
                 }
             } else {
-                this.heal((float) Objects.requireNonNull(item.getFoodProperties(this)).getNutrition());
+                this.heal(this.random.nextInt(3) + 1);
             }
             item.shrink(1);
             this.level.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());

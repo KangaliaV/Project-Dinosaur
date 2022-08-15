@@ -1,0 +1,35 @@
+{
+  "parent": "projectdinosaur:pd/make_plaster",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    "title": {
+      "translate": "advancements.pd.make_chisel.title"
+    },
+    "description": {
+      "translate": "advancements.pd.make_chisel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "chisels": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "projectdinosaur:chisels"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "chisels"
+    ]
+  ]
+}
