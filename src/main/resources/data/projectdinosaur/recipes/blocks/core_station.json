@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "#~#",
-    "S@S",
-    "#S#"
+    "#@#",
+    "SSS"
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_ingot"
+      "item": "minecraft:copper_ingot"
     },
     "~": {
       "item": "minecraft:charcoal"
