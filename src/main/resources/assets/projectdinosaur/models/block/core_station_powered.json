@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "projectdinosaur:blocks/core_station_bottom",
-    "down": "projectdinosaur:blocks/core_station_bottom",
-    "up": "projectdinosaur:blocks/core_station_bottom",
+    "particle": "projectdinosaur:blocks/machine_bottom",
+    "down": "projectdinosaur:blocks/machine_bottom",
+    "up": "projectdinosaur:blocks/machine_bottom",
     "north": "projectdinosaur:blocks/core_station_front_powered",
-    "south": "projectdinosaur:blocks/core_station_side",
-    "east": "projectdinosaur:blocks/core_station_side",
-    "west": "projectdinosaur:blocks/core_station_side"
+    "south": "projectdinosaur:blocks/machine_side",
+    "east": "projectdinosaur:blocks/machine_side",
+    "west": "projectdinosaur:blocks/machine_side"
   }
 }
