@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.common.blockentity;
 import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
+import com.kangalia.projectdinosaur.core.util.OutputStackHandler;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -71,7 +73,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
             }
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot >= 1 && slot < 7) {
+                if (slot > 0 & slot < 7) {
                     return stack.getItem() == Items.EGG ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get() ||
                             stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
@@ -79,7 +81,6 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
                             stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
                             stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get() ||
                             stack.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get();
-
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.APHANERAMMA_DNA.get() ||
@@ -114,7 +115,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side != Direction.DOWN) {
             return handler.cast();
         }
         return super.getCapability(cap, side);
