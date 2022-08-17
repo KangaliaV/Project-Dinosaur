@@ -53,13 +53,13 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         super(entityType, world);
         this.moveControl = new CompsognathusEntity.CompsognathusMoveControl();
         this.lookControl = new CompsognathusEntity.CompsognathusLookControl();
-        this.maxUpStep = 1.0F;
+        this.maxUpStep = 0.5F;
         minSize = 0.50F;
         maxMaleSize = 2.0F;
         maxFemaleSize = 1.8F;
         maxFood = 40;
         diet = 1;
-        soundVolume = 0.5F;
+        soundVolume = 0.2F;
         sleepSchedule = 1;
         adultHealth = 12.0F;
         name = new TranslatableComponent("dino.projectdinosaur.compsognathus");

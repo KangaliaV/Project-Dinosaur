@@ -56,13 +56,13 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new AphanerammaEntity.AphanerammaMoveControl(this);
         this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
-        this.maxUpStep = 1.0F;
+        this.maxUpStep = 0.5F;
         minSize = 0.25F;
         maxMaleSize = 0.8F;
         maxFemaleSize = 1.0F;
         maxFood = 50;
         diet = 2;
-        soundVolume = 0.4F;
+        soundVolume = 0.2F;
         sleepSchedule = 0;
         adultHealth = 16.0F;
         name = new TranslatableComponent("dino.projectdinosaur.aphaneramma");
@@ -128,6 +128,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         return 1 + this.level.random.nextInt(4);
     }
 
+    @Override
+    public int getAmbientSoundInterval() {
+        return 100;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
@@ -143,6 +148,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     protected SoundEvent getDeathSound() {
         return SoundEvents.BAT_DEATH;
     }
+
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {

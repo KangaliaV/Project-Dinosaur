@@ -50,12 +50,12 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
         this.moveControl = new TarbosaurusEntity.TarbosaurusMoveControl();
         this.lookControl = new TarbosaurusEntity.TarbosaurusLookControl();
         this.maxUpStep = 1.0F;
-        minSize = 0.30F;
-        maxMaleSize = 1.8F;
-        maxFemaleSize = 1.6F;
+        minSize = 0.25F;
+        maxMaleSize = 1.65F;
+        maxFemaleSize = 1.45F;
         maxFood = 150;
         diet = 1;
-        soundVolume = 0.4F;
+        soundVolume = 0.5F;
         sleepSchedule = 0;
         adultHealth = 70.0F;
         name = new TranslatableComponent("dino.projectdinosaur.tarbosaurus");
@@ -121,6 +121,11 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
         return 1 + this.level.random.nextInt(4);
     }
 
+    @Override
+    public int getAmbientSoundInterval() {
+        return 160;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
@@ -139,7 +144,7 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.HOGLIN_STEP, 0.1F, 0.75F);
     }
 
     @Override

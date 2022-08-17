@@ -48,13 +48,13 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         super(entityType, world);
         this.moveControl = new AustralovenatorEntity.AustralovenatorMoveControl();
         this.lookControl = new AustralovenatorEntity.AustralovenatorLookControl();
-        this.maxUpStep = 1.0F;
+        this.maxUpStep = 0.5F;
         minSize = 0.25F;
         maxMaleSize = 1.1F;
         maxFemaleSize = 1.0F;
         maxFood = 80;
         diet = 1;
-        soundVolume = 0.4F;
+        soundVolume = 0.3F;
         sleepSchedule = 0;
         adultHealth = 40.0F;
         name = new TranslatableComponent("dino.projectdinosaur.australovenator");
@@ -120,6 +120,11 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         return 1 + this.level.random.nextInt(4);
     }
 
+    @Override
+    public int getAmbientSoundInterval() {
+        return 120;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
@@ -138,7 +143,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.SHEEP_STEP, 0.15F, 1.0F);
     }
 
     @Override

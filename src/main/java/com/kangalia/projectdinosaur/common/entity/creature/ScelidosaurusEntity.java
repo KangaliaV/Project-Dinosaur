@@ -46,13 +46,13 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         super(entityType, world);
         this.moveControl = new ScelidosaurusEntity.ScelidosaurusMoveControl();
         this.lookControl = new ScelidosaurusEntity.ScelidosaurusLookControl();
-        this.maxUpStep = 1.0F;
+        this.maxUpStep = 0.5F;
         minSize = 0.35F;
         maxMaleSize = 2.0F;
         maxFemaleSize = 1.75F;
         maxFood = 60;
         diet = 0;
-        soundVolume = 0.5F;
+        soundVolume = 0.3F;
         sleepSchedule = 0;
         adultHealth = 20.0F;
         name = new TranslatableComponent("dino.projectdinosaur.scelidosaurus");
@@ -112,6 +112,11 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         return 1 + this.level.random.nextInt(4);
     }
 
+    @Override
+    public int getAmbientSoundInterval() {
+        return 120;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
@@ -130,7 +135,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.SHEEP_STEP, 0.15F, 1.0F);
     }
 
     @Override
