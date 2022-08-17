@@ -1,16 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#S#",
-    "S@S",
-    "#S#"
+    "#~#",
+    "#@#",
+    "SSS"
   ],
   "key": {
     "#": {
-      "item": "minecraft:diamond"
+      "item": "minecraft:copper_ingot"
+    },
+    "~": {
+      "item": "projectdinosaur:syringe"
     },
     "@": {
-      "item": "projectdinosaur:syringe"
+      "item": "minecraft:redstone"
     },
     "S": {
       "item": "minecraft:smooth_stone"

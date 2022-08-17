@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "projectdinosaur:blocks/fossil_excavator_bottom",
-    "down": "projectdinosaur:blocks/fossil_excavator_bottom",
-    "up": "projectdinosaur:blocks/fossil_excavator_bottom",
+    "particle": "projectdinosaur:blocks/machine_bottom",
+    "down": "projectdinosaur:blocks/machine_bottom",
+    "up": "projectdinosaur:blocks/machine_bottom",
     "north": "projectdinosaur:blocks/fossil_excavator_front_powered",
-    "south": "projectdinosaur:blocks/fossil_excavator_side",
-    "east": "projectdinosaur:blocks/fossil_excavator_side",
-    "west": "projectdinosaur:blocks/fossil_excavator_side"
+    "south": "projectdinosaur:blocks/machine_side",
+    "east": "projectdinosaur:blocks/machine_side",
+    "west": "projectdinosaur:blocks/machine_side"
   }
 }
