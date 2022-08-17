@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.container;
 
 import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.slots.OutputSlot;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
 import net.minecraft.world.entity.player.Player;
@@ -50,16 +51,16 @@ public class FossilExcavatorContainer extends AbstractContainerMenu {
                 addSlot(new SlotItemHandler(h, 6, 47, 52));
 
                 //Right Side, Top Row
-                addSlot(new SlotItemHandler(h, 7, 113, 16));
-                addSlot(new SlotItemHandler(h, 8, 131, 16));
+                addSlot(new OutputSlot(h, 7, 113, 16));
+                addSlot(new OutputSlot(h, 8, 131, 16));
 
                 //Right Side, Middle Row
-                addSlot(new SlotItemHandler(h, 9, 113, 34));
-                addSlot(new SlotItemHandler(h, 10, 131, 34));
+                addSlot(new OutputSlot(h, 9, 113, 34));
+                addSlot(new OutputSlot(h, 10, 131, 34));
 
                 //Right Side, Bottom Row
-                addSlot(new SlotItemHandler(h, 11, 113, 52));
-                addSlot(new SlotItemHandler(h, 12, 131, 52));
+                addSlot(new OutputSlot(h, 11, 113, 52));
+                addSlot(new OutputSlot(h, 12, 131, 52));
             });
         }
 

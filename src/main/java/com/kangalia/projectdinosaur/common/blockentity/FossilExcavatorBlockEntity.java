@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.common.blockentity;
 import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
+import com.kangalia.projectdinosaur.core.util.OutputStackHandler;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +25,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,12 +39,20 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
     SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
     private final RandomNumGen rng = new RandomNumGen();
-    private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+
+    protected ItemStackHandler inputs = createInputHandler();
+    protected ItemStackHandler outputs;
+    protected ItemStackHandler outputWrapper;
+
+    private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> inputs);
+    private final LazyOptional<IItemHandler> outputWrapperHandler = LazyOptional.of(() -> outputWrapper);
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new CombinedInvWrapper(inputs, outputWrapper));
 
     public FossilExcavatorBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntitiesInit.FOSSIL_EXCAVATOR_ENTITY.get(), blockPos, blockState);
         this.items = NonNullList.withSize(13, ItemStack.EMPTY);
+        outputs = new ItemStackHandler(6);
+        outputWrapper = new OutputStackHandler(outputs);
     }
 
     @Override
@@ -53,20 +63,22 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
 
     @Override
     public void load(CompoundTag nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        inputs.deserializeNBT(nbt.getCompound("inputs"));
+        outputs.deserializeNBT(nbt.getCompound("outputs"));
         this.progress = nbt.getInt("progress");
         super.load(nbt);
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt) {
-        nbt.put("inv", itemHandler.serializeNBT());
+        nbt.put("inputs", inputs.serializeNBT());
+        nbt.put("outputs", outputs.serializeNBT());
         nbt.putInt("progress", this.progress);
         super.saveAdditional(nbt);
     }
 
-    private ItemStackHandler createHandler() {
-        return new ItemStackHandler(13) {
+    private ItemStackHandler createInputHandler() {
+        return new ItemStackHandler(7) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
@@ -91,42 +103,6 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
                             stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_FRAGMENT.get().asItem() ||
                             stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_FRAGMENT.get().asItem();
                 }
-                if (slot >= 7 && slot < 13) {
-                    return stack.getItem() == ItemInit.ALPINE_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.AQUATIC_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.ARID_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.FROZEN_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.GRASSLAND_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TEMPERATE_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TROPICAL_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.WETLAND_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.ALPINE_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.AQUATIC_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.ARID_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.FROZEN_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.GRASSLAND_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TEMPERATE_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.HEMATINE.get() ||
-                            stack.getItem() == ItemInit.AZURITE.get() ||
-                            stack.getItem() == ItemInit.AMBER.get() ||
-                            stack.getItem() == ItemInit.AQUAMARINE.get() ||
-                            stack.getItem() == ItemInit.URAVORITE.get() ||
-                            stack.getItem() == ItemInit.MALACHITE.get() ||
-                            stack.getItem() == ItemInit.SPHENE.get() ||
-                            stack.getItem() == ItemInit.ALMANDINE.get() ||
-                            stack.getItem() == Items.BONE ||
-                            stack.getItem() == Items.CLAY_BALL||
-                            stack.getItem() == Items.FLINT||
-                            stack.getItem() == Items.SNOWBALL||
-                            stack.getItem() == Items.COAL ||
-                            stack.getItem() == Blocks.CLAY.asItem() ||
-                            stack.getItem() == Blocks.COBBLESTONE.asItem() ||
-                            stack.getItem() == Blocks.GRAVEL.asItem() ||
-                            stack.getItem() == Blocks.ICE.asItem() ||
-                            stack.getItem() == Blocks.SAND.asItem();
-                }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.IRON_CHISEL.get() ||
                             stack.getItem() == ItemInit.DIAMOND_CHISEL.get() ||
@@ -135,26 +111,15 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
                 return false;
 
             }
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, ItemStack stack , boolean simulate) {
-                return(isItemValid(slot, stack)) ? super.insertItem(slot, stack, simulate) : stack;
-            }
-
-            //Hopper extraction code doesn't work. Needs to be worked on.
-            @Nonnull
-            @Override
-            public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                if (slot < 7) {
-                    return super.extractItem(slot, amount, simulate);
-                } else {
-                    return (slot == 7 || slot == 8 || slot == 9 || slot == 10 || slot == 11 || slot == 12) ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
-                }
-            }
 
             @Override
             public int getSlotLimit(int slot) {
                 return 64;
+            }
+
+            @Override
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+                return super.insertItem(slot, stack, simulate);
             }
         };
     }
@@ -163,7 +128,27 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
+            this.setChanged();
+            if(level != null && level.getBlockState(getBlockPos()).getBlock() != this.getBlockState().getBlock()) {
+                return handler.cast();
+            }
+            if (side == null) {
+                return handler.cast();
+            }
+            if (level == null) {
+                if (side == Direction.UP) {
+                    return inputHandler.cast();
+                }
+                if (side == Direction.DOWN) {
+                    return outputWrapperHandler.cast();
+                }
+            }
+            if (side == Direction.UP) {
+                return inputHandler.cast();
+            }
+            if (side == Direction.DOWN) {
+                return outputWrapperHandler.cast();
+            }
         }
         return super.getCapability(cap, side);
     }
@@ -198,10 +183,10 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
         ItemStack inputSlot = ItemStack.EMPTY;
         ItemStack outputSlot = ItemStack.EMPTY;
         for (int slot = 1; slot < 7; slot++) {
-            inputSlot = itemHandler.getStackInSlot(slot);
+            inputSlot = inputs.getStackInSlot(slot);
             if(!inputSlot.isEmpty()) {
                 this.inputIndex = slot;
-                ItemStack chiselSlot = itemHandler.getStackInSlot(0);
+                ItemStack chiselSlot = inputs.getStackInSlot(0);
                 if(!chiselSlot.isEmpty()) {
                     flag = true;
                     break;
@@ -211,8 +196,8 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
         if (inputIndex == -1 || !flag) {
             return false;
         } else {
-            for (int slot = 7; slot < 13; slot++) {
-                outputSlot = itemHandler.getStackInSlot(slot);
+            for (int slot = 0; slot < 6; slot++) {
+                outputSlot = outputs.getStackInSlot(slot);
                 if(outputSlot.isEmpty()) {
                     outputIndex = slot;
                     break;
@@ -224,9 +209,9 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
 
     @Nullable
     public ExcavatingRecipe craft() {
-        inventory = new SimpleContainer(itemHandler.getSlots());
+        inventory = new SimpleContainer(inputs.getSlots());
         for (int i = 0; i < 7; i++) {
-            inventory.addItem(itemHandler.getStackInSlot(i));
+            inventory.addItem(inputs.getStackInSlot(i));
             List<ExcavatingRecipe> recipes = level.getRecipeManager().getRecipesFor(ExcavatingRecipe.ExcavatingRecipeType.INSTANCE, inventory, level);
             if (!recipes.isEmpty()) {
                 ExcavatingRecipe selectedRecipe;
@@ -266,13 +251,13 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
         assert this.level != null;
         if (this.canExcavate()) {
             ExcavatingRecipe selectedRecipe = craft();
-            ItemStack input = itemHandler.getStackInSlot(inputIndex);
+            ItemStack input = inputs.getStackInSlot(inputIndex);
             ItemStack output = getOutput(selectedRecipe);
             if (!output.isEmpty()) {
-                for (int slot = 7; slot < 13; slot++) {
-                    ItemStack stack = itemHandler.getStackInSlot(slot);
+                for (int slot = 0; slot < 6; slot++) {
+                    ItemStack stack = outputs.getStackInSlot(slot);
                     if (stack.isEmpty()) {
-                        itemHandler.insertItem(slot, output, false);
+                        outputs.insertItem(slot, output, false);
                         input.shrink(1);
                         break;
                     } else {
