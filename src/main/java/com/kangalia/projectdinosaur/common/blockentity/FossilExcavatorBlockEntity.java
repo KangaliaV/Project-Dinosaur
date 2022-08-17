@@ -252,17 +252,20 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
         if (this.canExcavate()) {
             ExcavatingRecipe selectedRecipe = craft();
             ItemStack input = inputs.getStackInSlot(inputIndex);
+            ItemStack chisel = inputs.getStackInSlot(0);
             ItemStack output = getOutput(selectedRecipe);
             if (!output.isEmpty()) {
                 for (int slot = 0; slot < 6; slot++) {
                     ItemStack stack = outputs.getStackInSlot(slot);
                     if (stack.isEmpty()) {
                         outputs.insertItem(slot, output, false);
+                        chisel.setDamageValue(chisel.getDamageValue()+1);
                         input.shrink(1);
                         break;
                     } else {
                         if (ItemStack.isSame(stack, output) && stack.getCount() + 1 < 64) {
                             stack.grow(1);
+                            chisel.setDamageValue(chisel.getDamageValue()+1);
                             input.shrink(1);
                             break;
                         }
