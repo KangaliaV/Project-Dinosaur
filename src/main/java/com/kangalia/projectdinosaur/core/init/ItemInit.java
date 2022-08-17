@@ -1,10 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import com.kangalia.projectdinosaur.common.item.DinoScanner;
-import com.kangalia.projectdinosaur.common.item.PrehistoricSpawnEgg;
-import com.kangalia.projectdinosaur.common.item.PetrifiedBoatItem;
-import com.kangalia.projectdinosaur.common.item.Plaster;
+import com.kangalia.projectdinosaur.common.item.*;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
 import net.minecraft.world.item.Item;
@@ -18,9 +15,9 @@ public class ItemInit {
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProjectDinosaur.MODID);
 
     //Tools
-    public static final RegistryObject<Item> IRON_CHISEL = ITEMS.register("iron_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(250).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> DIAMOND_CHISEL = ITEMS.register("diamond_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(1561).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> NETHERITE_CHISEL = ITEMS.register("netherite_chisel", () -> new Item(new Item.Properties().stacksTo(1).durability(2031).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> IRON_CHISEL = ITEMS.register("iron_chisel", () -> new ChiselItem(new Item.Properties().stacksTo(1).durability(250).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> DIAMOND_CHISEL = ITEMS.register("diamond_chisel", () -> new ChiselItem(new Item.Properties().stacksTo(1).durability(1561).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> NETHERITE_CHISEL = ITEMS.register("netherite_chisel", () -> new ChiselItem(new Item.Properties().stacksTo(1).durability(2031).tab(DinoItems.DINO_ITEMS)));
 
     //Rock Fragments
     public static final RegistryObject<Item> ALPINE_ROCK_FRAGMENT = ITEMS.register("alpine_rock_fragment", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));

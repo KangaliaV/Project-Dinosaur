@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.container.GroundFeederContainer;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,17 +17,18 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -34,12 +36,16 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class GroundFeederBlock extends Block implements EntityBlock {
+import javax.annotation.Nonnull;
+
+public class GroundFeederBlock extends Block implements EntityBlock, SimpleWaterloggedBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SHAPE =  Block.box(0, 0, 0, 16, 3, 16);
 
     public GroundFeederBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
     }
 
     @Nullable
@@ -116,7 +122,24 @@ public class GroundFeederBlock extends Block implements EntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.POWERED, false);
+        FluidState fluidState = pContext.getLevel().getFluidState(pContext.getClickedPos());
+        boolean flag = fluidState.getType() != Fluids.EMPTY;
+        return super.getStateForPlacement(pContext).setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.POWERED, false).setValue(WATERLOGGED, flag);
+    }
+
+    @Nonnull
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        }
+        return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
+    }
+
+    @Nonnull
+    @Override
+    public FluidState getFluidState(BlockState pState) {
+        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
     @Override
@@ -131,6 +154,6 @@ public class GroundFeederBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, BlockStateProperties.POWERED);
+        pBuilder.add(FACING, BlockStateProperties.POWERED).add(BlockStateProperties.WATERLOGGED);
     }
 }
