@@ -6,7 +6,6 @@ import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -433,9 +432,17 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return this.getAgeInDays() >= getAdultAge();
     }
 
+    public boolean isJuvenile() {
+        int adultTicks = this.getAdultAge() * 24000;
+        boolean isJuvi = this.getAgeInTicks() >= adultTicks * 0.6;
+        boolean isNotAdult = this.getAgeInDays() < this.getAdultAge();
+        return !isJuvi || !isNotAdult;
+    }
+
     @Override
     public boolean isBaby() {
-        return this.getAgeInDays() < this.getAdultAge();
+        boolean isNotAdult = this.getAgeInDays() < this.getAdultAge();
+        return isNotAdult && this.isJuvenile();
     }
 
     public int getAgeInDays() {
