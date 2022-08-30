@@ -49,6 +49,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Boolean> SCREM = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STUNTED = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRICHMENT = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRICHMENT_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
@@ -66,6 +68,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float adultHealth;
     public Component name;
     public int renderScale;
+    public int maxEnrichment = 100;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -85,6 +88,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setMatingTicks(12000);
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
+        this.setEnrichment(maxEnrichment / 2);
+        this.setEnrichmentTicks(2000);
         this.setAdultAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
@@ -125,11 +130,26 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             if (this.isHungry() && !isSleeping()) {
                 eatFromNearestFeeder();
             }
+            if (this.getEnrichmentTicks() > 0) {
+                this.setEnrichmentTicks(this.getEnrichmentTicks() - 1);
+            } else if (this.getEnrichmentTicks() <= 0) {
+                if (this.getEnrichment() > 0) {
+                    this.setEnrichment(this.getEnrichment() - 1);
+                } else if (this.getEnrichment() <= 0) {
+                    this.hurt(DamageSource.GENERIC, 1);
+                    this.playHurtSound(DamageSource.GENERIC);
+                }
+                this.setEnrichmentTicks(this.random.nextInt(500) + 1500);
+            }
             if (this.isAdult()) {
                 if (this.getMatingTicks() > 0) {
                     this.setMatingTicks(this.getMatingTicks() - 1);
                 } else if (!isSleeping()) {
-                    this.breed();
+                    if (!this.isMoody()) {
+                        this.breed();
+                    } else {
+                        this.setMatingTicks(this.random.nextInt(6000) + 6000);
+                    }
                 }
             }
             if (this.shouldSleep() && !this.isSleeping()) {
@@ -507,6 +527,32 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return minSize + ((step * this.getAgeInTicks()));
     }
 
+    public int getEnrichment() {
+        return this.entityData.get(ENRICHMENT);
+    }
+
+    public void setEnrichment(int enrichment) {
+        this.entityData.set(ENRICHMENT, enrichment);
+    }
+    public int getEnrichmentTicks() {
+        return this.entityData.get(ENRICHMENT_TICKS);
+    }
+
+    public void setEnrichmentTicks(int ticks) {
+        this.entityData.set(ENRICHMENT_TICKS, ticks);
+    }
+
+    public boolean isMoody() {
+        return this.getEnrichment() < (maxEnrichment / 2);
+    }
+
+    public boolean isMoodyAt(LivingEntity livingEntity) {
+        if (this.isAngry()) {
+            return false;
+        }
+        return livingEntity.getType() == EntityType.PLAYER;
+    }
+
     public Component getSpecies() {
         return name;
     }
@@ -588,6 +634,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(SCREM, false);
         this.entityData.define(STUNTED, false);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
+        this.entityData.define(ENRICHMENT, 0);
+        this.entityData.define(ENRICHMENT_TICKS, 0);
     }
 
     @Override
@@ -604,6 +652,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
         this.addPersistentAngerSaveData(pCompound);
+        pCompound.putInt("Enrichment", this.getEnrichment());
+        pCompound.putInt("EnrichmentTicks", this.getEnrichmentTicks());
     }
 
     @Override
@@ -620,5 +670,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
         this.readPersistentAngerSaveData(this.level, pCompound);
+        this.setEnrichment(pCompound.getInt("Enrichment"));
+        this.setEnrichmentTicks(pCompound.getInt("EnrichmentTicks"));
     }
 }

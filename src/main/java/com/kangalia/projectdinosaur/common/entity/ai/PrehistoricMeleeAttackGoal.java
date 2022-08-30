@@ -41,7 +41,13 @@ public class PrehistoricMeleeAttackGoal extends MeleeAttackGoal {
         LivingEntity livingentity = this.mob.getTarget();
         if (!this.prehistoric.isAngry()) {
             if (!this.prehistoric.isHungry()) {
-                return false;
+                if (this.prehistoric.isMoody() && livingentity instanceof Player) {
+                    if (!(this.random.nextInt(5) == 0)) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
         }
         if (this.prehistoric.isBaby()) {
