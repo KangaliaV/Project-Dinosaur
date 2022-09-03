@@ -213,6 +213,24 @@ public class BlockInit {
             .strength(0.5F)
             .sound(SoundType.GRASS)));
 
+    //Enrichment Blocks
+    public static final RegistryObject<Block> PUZZLE_FEEDER = registerBlock("puzzle_feeder", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .strength(1.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> GNAWING_ROCK = registerBlock("gnawing_rock", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .strength(2.0F)
+            .sound(SoundType.STONE)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG = registerBlock("scratching_log", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCENT_DIFFUSER = registerBlock("scent_diffuser", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .strength(2.0F)
+            .sound(SoundType.STONE)
+            .noOcclusion()));
+
     //Eggs
     public static final RegistryObject<Block> INCUBATED_APHANERAMMA_EGG = registerEggBlock("incubated_aphaneramma_egg", () -> new AphanerammaEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN)
             .strength(0.5F)
