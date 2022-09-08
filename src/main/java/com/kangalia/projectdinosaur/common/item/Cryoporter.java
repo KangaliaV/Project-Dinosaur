@@ -26,9 +26,9 @@ public class Cryoporter extends Item {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
         if (pInteractionTarget instanceof PrehistoricEntity) {
             if (!level.isClientSide) {
-                //saveEntity(stack, pInteractionTarget, pPlayer, pUsedHand);
-                CompoundTag compoundtag = stack.getOrCreateTag();
-                pInteractionTarget.save(compoundtag);
+                saveEntity(stack, pInteractionTarget, pPlayer, pUsedHand);
+                //CompoundTag compoundtag = stack.getOrCreateTag();
+                //pInteractionTarget.save(compoundtag);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -58,8 +58,8 @@ public class Cryoporter extends Item {
             return;
         }
         CompoundTag compoundtag = stack.getOrCreateTag();
-        compoundtag.put("projectdinosaur.entity", entity.saveWithoutId(compoundtag));
-        stack.setTag(compoundtag);
+        entity.save(compoundtag);
+        stack.addTagElement("projectdinosaur.entity", compoundtag);
         player.setItemInHand(hand, stack);
         entity.remove(Entity.RemovalReason.DISCARDED);
     }
@@ -68,7 +68,7 @@ public class Cryoporter extends Item {
         if (stack == null)
             return;
         CompoundTag compoundtag = stack.getOrCreateTag();
-        if (!compoundtag.contains("projectdinosaur.entity"))
+        if (stack.getTagElement("projectdinosaur.entity") == null)
             return;
         Entity entity = EntityType.loadEntityRecursive(compoundtag, level, (e) -> {
             e.teleportTo(pos.getX(), pos.getY(), pos.getZ());
@@ -77,7 +77,7 @@ public class Cryoporter extends Item {
         if (entity != null) {
             level.addFreshEntity(entity);
         }
-        compoundtag.put("projectdinosaur.entities", new CompoundTag());
+        compoundtag.put("projectdinosaur.entity", new CompoundTag());
         stack.setTag(compoundtag);
         player.setItemInHand(hand, stack);
     }
