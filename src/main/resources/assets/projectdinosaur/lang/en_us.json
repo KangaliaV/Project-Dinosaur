@@ -65,11 +65,11 @@
   "item.projectdinosaur.diamond_chisel": "Diamond Chisel",
   "item.projectdinosaur.netherite_chisel": "Netherite Chisel",
   "item.projectdinosaur.syringe": "Empty Syringe",
-
   "item.projectdinosaur.plaster": "Plaster",
   "item.projectdinosaur.growth_accelerating_hormone": "Growth Accelerating Hormone",
   "item.projectdinosaur.growth_stunting_hormone": "Growth Stunting Hormone",
   "item.projectdinosaur.dino_scanner": "Dino Scanner",
+  "item.projectdinosaur.cryoporter": "Cryoporter",
 
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
   "screen.projectdinosaur.fossil_excavator": "Fossil Excavator",
@@ -248,5 +248,12 @@
   "advancements.challenges.crystallised_specimen.title": "Oooh, shiny Kinder Eggs!",
   "advancements.challenges.crystallised_specimen.description": "Successfully excavate all Encased Crystallised Fossil Fragments",
   "advancements.challenges.crystals.title": "Dripping in Gems",
-  "advancements.challenges.crystals.description": "Collect all different gemstone blocks."
+  "advancements.challenges.crystals.description": "Collect all different gemstone blocks.",
+
+  "cryoporter.projectdinosaur:aphaneramma": "Aphaneramma",
+  "cryoporter.projectdinosaur:australovenator": "Australovenator",
+  "cryoporter.projectdinosaur:compsognathus": "Compsognathus",
+  "cryoporter.projectdinosaur:scelidosaurus": "Scelidosaurus",
+  "cryoporter.projectdinosaur:tarbosaurus": "Tarbosaurus",
+  "cryoporter.projectdinosaur.empty": "Empty"
 }

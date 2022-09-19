@@ -1,8 +1,10 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -11,8 +13,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Objects;
 
 public class Cryoporter extends Item {
 
@@ -69,6 +76,7 @@ public class Cryoporter extends Item {
         stack.setTag(compoundtag);
         //player.setItemInHand(hand, stack);
         entity.remove(Entity.RemovalReason.DISCARDED);
+
     }
 
 
@@ -94,6 +102,22 @@ public class Cryoporter extends Item {
 
         compoundtag.remove("id");
         stack.setTag(compoundtag);
-        //player.setItemInHand(hand, stack);
+        stack.hurt(1, level.random, null);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        CompoundTag tag = pStack.getOrCreateTag();
+        if (tag.contains("id")) {
+            String entityName = tag.getString("id");
+            MutableComponent translatableFull = new TranslatableComponent("cryoporter."+entityName);
+            System.out.println("EntityName: "+entityName);
+            System.out.println(translatableFull);
+            pTooltipComponents.add((new TranslatableComponent("cryoporter."+entityName)).setStyle(Style.EMPTY.withItalic(true).withColor(ChatFormatting.AQUA)));
+        } else {
+            pTooltipComponents.add((new TranslatableComponent("cryoporter.projectdinosaur.empty")).setStyle(Style.EMPTY.withItalic(true).withColor(ChatFormatting.GRAY)));
+        }
+
+
     }
 }
