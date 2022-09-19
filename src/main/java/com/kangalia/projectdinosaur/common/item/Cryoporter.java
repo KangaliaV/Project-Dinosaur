@@ -27,8 +27,6 @@ public class Cryoporter extends Item {
         if (pInteractionTarget instanceof PrehistoricEntity) {
             if (!level.isClientSide) {
                 saveEntity(stack, pInteractionTarget, pPlayer, pUsedHand);
-                //CompoundTag compoundtag = stack.getOrCreateTag();
-                //pInteractionTarget.save(compoundtag);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -42,7 +40,9 @@ public class Cryoporter extends Item {
         ItemStack stack = player.getItemInHand(hand);
         Level level = player.getLevel();
         BlockPos clickedPos = pContext.getClickedPos().above();
+        System.out.println("useOn");
         if (!level.isClientSide) {
+            System.out.println("Is not clientside");
             releaseEntity(stack, clickedPos, level, player, hand);
         }
         return super.useOn(pContext);
@@ -57,28 +57,43 @@ public class Cryoporter extends Item {
         if (prehistoric.isBaby()) {
             return;
         }
+        System.out.println("Completed saveEntity checks");
         CompoundTag compoundtag = stack.getOrCreateTag();
+        if (compoundtag.contains("id")) {
+            System.out.println("Already contains a dino");
+            return;
+        }
+        System.out.println("getOrCreateTag: "+compoundtag);
         entity.save(compoundtag);
-        stack.addTagElement("projectdinosaur.entity", compoundtag);
-        player.setItemInHand(hand, stack);
+        System.out.println("save: "+compoundtag);
+        stack.setTag(compoundtag);
+        //player.setItemInHand(hand, stack);
         entity.remove(Entity.RemovalReason.DISCARDED);
     }
 
+
     public static void releaseEntity(ItemStack stack, BlockPos pos, Level level, Player player, InteractionHand hand) {
-        if (stack == null)
+        System.out.println("releaseEntity");
+        if (stack == null) {
+            System.out.println("stack is null");
             return;
+        }
         CompoundTag compoundtag = stack.getOrCreateTag();
-        if (stack.getTagElement("projectdinosaur.entity") == null)
+        if (!compoundtag.contains("id")) {
+            System.out.println("is is null");
             return;
+        }
         Entity entity = EntityType.loadEntityRecursive(compoundtag, level, (e) -> {
             e.teleportTo(pos.getX(), pos.getY(), pos.getZ());
             return e;
         });
         if (entity != null) {
+            System.out.println("Entity is not null");
             level.addFreshEntity(entity);
         }
-        compoundtag.put("projectdinosaur.entity", new CompoundTag());
+
+        compoundtag.remove("id");
         stack.setTag(compoundtag);
-        player.setItemInHand(hand, stack);
+        //player.setItemInHand(hand, stack);
     }
 }
