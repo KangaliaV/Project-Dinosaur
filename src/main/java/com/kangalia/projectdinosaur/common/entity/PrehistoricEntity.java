@@ -6,7 +6,6 @@ import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,6 +23,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -49,6 +49,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Boolean> SCREM = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STUNTED = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> REMAINING_CRYOSICKNESS_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
@@ -85,6 +86,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setMatingTicks(12000);
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
+        this.setRemainingCryosicknessTime(0);
         this.setAdultAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
@@ -132,11 +134,13 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                     this.breed();
                 }
             }
+            if (this.getRemainingCryosicknessTime() > 0) {
+                this.setRemainingCryosicknessTime(this.getRemainingCryosicknessTime() - 1);
+            }
             if (this.shouldSleep() && !this.isSleeping()) {
                 if (this.findNestToSleep() == 1) {
                     this.setSleeping(true);
                 }
-
             }
             if (!this.shouldSleep() && this.isSleeping()) {
                 this.setSleeping(false);
@@ -352,7 +356,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean shouldSleep() {
-        if (this.isAngry() || this.isStarving() || this.isInWater()) {
+        if (this.isCryosick()) {
+            return true;
+        } else if (this.isAngry() || this.isStarving() || this.isInWater()) {
             return false;
         } else if (this.level.isDay() && getSleepSchedule() == 1) {
             return true;
@@ -363,6 +369,18 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public boolean isSleeping() {
         return this.entityData.get(SLEEPING);
+    }
+
+    public boolean isCryosick() {
+        return this.getRemainingCryosicknessTime() > 0;
+    }
+
+    public int getRemainingCryosicknessTime() {
+        return this.entityData.get(REMAINING_CRYOSICKNESS_TIME);
+    }
+
+    public void setRemainingCryosicknessTime(int time) {
+        this.entityData.set(REMAINING_CRYOSICKNESS_TIME, time);
     }
 
     public void playHormoneSound(Player player) {
@@ -433,9 +451,17 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return this.getAgeInDays() >= getAdultAge();
     }
 
+    public boolean isJuvenile() {
+        int adultTicks = this.getAdultAge() * 24000;
+        boolean isJuvi = this.getAgeInTicks() >= adultTicks * 0.6;
+        boolean isNotAdult = this.getAgeInDays() < this.getAdultAge();
+        return !isJuvi || !isNotAdult;
+    }
+
     @Override
     public boolean isBaby() {
-        return this.getAgeInDays() < this.getAdultAge();
+        boolean isNotAdult = this.getAgeInDays() < this.getAdultAge();
+        return isNotAdult && this.isJuvenile();
     }
 
     public int getAgeInDays() {
@@ -587,6 +613,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(SLEEPING, false);
         this.entityData.define(SCREM, false);
         this.entityData.define(STUNTED, false);
+        this.entityData.define(REMAINING_CRYOSICKNESS_TIME, 0);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
     }
 
@@ -603,6 +630,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putBoolean("Sleeping", this.isSleeping());
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
+        pCompound.putInt("RemainingCryosicknessTime", this.getRemainingCryosicknessTime());
         this.addPersistentAngerSaveData(pCompound);
     }
 
@@ -619,6 +647,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setSleeping(pCompound.getBoolean("Sleeping"));
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
+        this.setRemainingCryosicknessTime(pCompound.getInt("RemainingCryosicknessTime"));
         this.readPersistentAngerSaveData(this.level, pCompound);
     }
 }
