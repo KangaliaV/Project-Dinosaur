@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " r ",
+    "nin",
+    " n "
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:ice"
+    },
+    "n": {
+      "item": "minecraft:iron_nugget"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:cryoporter"
+  }
+}
