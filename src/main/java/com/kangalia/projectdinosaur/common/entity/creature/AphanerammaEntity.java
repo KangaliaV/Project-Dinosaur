@@ -45,6 +45,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
 import java.util.EnumSet;
 
 public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
@@ -177,7 +178,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverWorld, @Nonnull AgeableMob ageableMob) {
         return EntityInit.APHANERAMMA.get().create(serverWorld);
     }
 

@@ -40,6 +40,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
+
 public class AustralovenatorEntity extends PrehistoricEntity implements IAnimatable {
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -155,7 +157,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverWorld, @Nonnull AgeableMob ageableMob) {
         return EntityInit.AUSTRALOVENATOR.get().create(serverWorld);
     }
 

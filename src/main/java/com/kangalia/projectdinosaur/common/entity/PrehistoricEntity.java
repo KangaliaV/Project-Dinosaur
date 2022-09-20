@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.*;
+import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -60,6 +62,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int maxFood;
     public int diet;
     protected GroundFeederBlockEntity groundFeeder;
+    protected EnrichmentBlock enrichment;
     protected Block nest;
     protected BlockPos blockPos = BlockPos.ZERO;
     public float soundVolume;
@@ -76,12 +79,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverLevel, @Nonnull AgeableMob ageableMob) {
         return null;
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@Nonnull ServerLevelAccessor serverLevelAccessor, @Nonnull DifficultyInstance difficultyInstance, @Nonnull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         Random random = new Random();
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
@@ -141,6 +144,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                     this.playHurtSound(DamageSource.GENERIC);
                 }
                 this.setEnrichmentTicks(this.random.nextInt(500) + 1500);
+            }
+            if (this.isMoody() && !isSleeping()) {
+                playWithNearestEnrichment();
             }
             if (this.isAdult()) {
                 if (this.getMatingTicks() > 0) {
@@ -219,7 +225,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         BlockPos blockpos = prehistoric.blockPosition();
         if (!prehistoric.isInWater()) {
             Level level = prehistoric.level;
-            level.playSound((Player) null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
+            level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
             if (prehistoric instanceof AphanerammaEntity) {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else if (prehistoric instanceof CompsognathusEntity) {
@@ -236,8 +242,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
+    @Nonnull
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+    public InteractionResult mobInteract(Player pPlayer, @Nonnull InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
@@ -306,7 +313,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                         if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTarget(this.level, blockpos$mutableblockpos)) {
                             this.blockPos = blockpos$mutableblockpos;
                             if (!groundFeeder.isEmpty(this)) {
-                                this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (double) (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                                this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
                                 BlockPos blockPosAbove = this.blockPos.above();
                                 if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
                                     this.getNavigation().stop();
@@ -343,7 +350,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                         blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
                         if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTargetSleeping(this.level, blockpos$mutableblockpos)) {
                             this.blockPos = blockpos$mutableblockpos;
-                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (double) (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
                             BlockPos blockPosAbove = this.blockPos.above();
                             if (blockPosAbove.closerToCenterThan(this.position(), 1.0D)) {
                                 this.getNavigation().stop();
@@ -356,6 +363,41 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             }
         }
         return 1;
+    }
+
+    protected void playWithNearestEnrichment() {
+        int i = 16;
+        int j = 8;
+        BlockPos blockpos = this.blockPosition();
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+        for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
+            for(int l = 0; l < i; ++l) {
+                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
+                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
+                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
+                        if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTargetEnrichment(this.level, blockpos$mutableblockpos)) {
+                            this.blockPos = blockpos$mutableblockpos;
+                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, this.blockPos.getY() + 1, (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                            BlockPos blockPosAbove = this.blockPos.above();
+                            if (blockPosAbove.closerToCenterThan(this.position(), 1.0D)) {
+                                this.getNavigation().stop();
+                                this.setEnrichment(this.getEnrichment() + 10);
+                                this.setEnrichmentTicks(random.nextInt(400) + 2000);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean isValidTargetEnrichment(LevelReader pLevel, BlockPos pPos) {
+        if (pLevel.getBlockState(pPos).getBlock() instanceof EnrichmentBlock) {
+            enrichment = (EnrichmentBlock) pLevel.getBlockState(pPos).getBlock();
+            return true;
+        }
+        return false;
     }
 
     protected boolean isValidTargetSleeping(LevelReader pLevel, BlockPos pPos) {
@@ -407,7 +449,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public void setAdultAttributes() {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.getAdultHealth());
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(this.getAdultHealth());
         this.setHealth(this.getAdultHealth());
     }
 
@@ -558,13 +600,31 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public void setEnrichment(int enrichment) {
         this.entityData.set(ENRICHMENT, enrichment);
+        if (this.entityData.get(ENRICHMENT) > maxEnrichment) {
+            this.entityData.set(ENRICHMENT, maxEnrichment);
+        }
     }
+
     public int getEnrichmentTicks() {
         return this.entityData.get(ENRICHMENT_TICKS);
     }
 
     public void setEnrichmentTicks(int ticks) {
         this.entityData.set(ENRICHMENT_TICKS, ticks);
+    }
+
+    public int getMaxEnrichment() {
+        return maxEnrichment;
+    }
+
+    public int getMood() {
+        if (this.isMoody()) {
+            return 1;
+        } else if (this.isAngry()) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public boolean isMoody() {
@@ -628,7 +688,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean hurt(@Nonnull DamageSource pSource, float pAmount) {
         this.setHealingTicks(0);
         return super.hurt(pSource, pAmount);
     }
@@ -665,7 +725,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("AgeInTicks", this.getAgeInTicks());
         pCompound.putFloat("AgeScale", this.getAgeScaleData());
@@ -684,7 +744,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setAgeInTicks(pCompound.getInt("AgeInTicks"));
         this.setAgeScale(pCompound.getFloat("AgeScale"));

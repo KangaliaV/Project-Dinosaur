@@ -4,6 +4,8 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
 import com.kangalia.projectdinosaur.common.block.dinocare.GroundFeederBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.*;
+import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
+import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
@@ -214,19 +216,19 @@ public class BlockInit {
             .sound(SoundType.GRASS)));
 
     //Enrichment Blocks
-    public static final RegistryObject<Block> PUZZLE_FEEDER = registerBlock("puzzle_feeder", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
-            .strength(1.0F)
-            .sound(SoundType.WOOD)
+    public static final RegistryObject<Block> BUBBLE_BLOWER = registerBlock("bubble_blower", () -> new BubbleBlowerBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY)
+            .strength(2.0F)
+            .sound(SoundType.METAL)
             .noOcclusion()));
-    public static final RegistryObject<Block> GNAWING_ROCK = registerBlock("gnawing_rock", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> GNAWING_ROCK = registerBlock("gnawing_rock", () -> new EnrichmentBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(2.0F)
             .sound(SoundType.STONE)
             .noOcclusion()));
-    public static final RegistryObject<Block> SCRATCHING_LOG = registerBlock("scratching_log", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+    public static final RegistryObject<Block> SCRATCHING_LOG = registerBlock("scratching_log", () -> new EnrichmentBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
             .strength(2.0F)
             .sound(SoundType.WOOD)
             .noOcclusion()));
-    public static final RegistryObject<Block> SCENT_DIFFUSER = registerBlock("scent_diffuser", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> SCENT_DIFFUSER = registerBlock("scent_diffuser", () -> new EnrichmentBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(2.0F)
             .sound(SoundType.STONE)
             .noOcclusion()));

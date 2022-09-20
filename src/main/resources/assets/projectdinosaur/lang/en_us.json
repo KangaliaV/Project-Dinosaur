@@ -142,6 +142,8 @@
 
   "block.projectdinosaur.nest": "Nest",
 
+  "block.projectdinosaur.bubble_blower": "Bubble Blower",
+
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
 
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
@@ -175,8 +177,15 @@
   "data.projectdinosaur.dino_sex": "Sex: %1$s",
   "data.projectdinosaur.dino_health": "HP: %1$s/%2$s",
   "data.projectdinosaur.dino_food": "FP: %1$s/%2$s",
+  "data.projectdinosaur.dino_enrichment": "EP: %1$s/%2$s",
+  "data.projectdinosaur.dino_mood": "%1$s",
   "data.projectdinosaur.dino_diet": "%1$s",
   "data.projectdinosaur.dino_schedule": "%1$s",
+  "data.projectdinosaur.dino_cryosick": "Cryosick",
+
+  "attribute.projectdinosaur.happy": "Happy",
+  "attribute.projectdinosaur.moody": "Moody",
+  "attribute.projectdinosaur.angry": "Angry",
 
   "attribute.projectdinosaur.herbivore": "Herbivore",
   "attribute.projectdinosaur.carnivore": "Carnivore",

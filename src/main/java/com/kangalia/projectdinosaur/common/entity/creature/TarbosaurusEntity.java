@@ -39,6 +39,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
+
 public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable {
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -154,7 +156,7 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverWorld, @Nonnull AgeableMob ageableMob) {
         return EntityInit.TARBOSAURUS.get().create(serverWorld);
     }
 
