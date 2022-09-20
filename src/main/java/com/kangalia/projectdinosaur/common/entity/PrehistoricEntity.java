@@ -145,7 +145,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 }
                 this.setEnrichmentTicks(this.random.nextInt(500) + 1500);
             }
-            if (this.isMoody() && !isSleeping()) {
+            if (this.getEnrichment() < (maxEnrichment * 0.8f) && !isSleeping()) {
                 playWithNearestEnrichment();
             }
             if (this.isAdult()) {
@@ -380,9 +380,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                             this.blockPos = blockpos$mutableblockpos;
                             this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, this.blockPos.getY() + 1, (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
                             BlockPos blockPosAbove = this.blockPos.above();
-                            if (blockPosAbove.closerToCenterThan(this.position(), 1.0D)) {
+                            if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
                                 this.getNavigation().stop();
-                                this.setEnrichment(this.getEnrichment() + 10);
+                                this.setEnrichment(this.getEnrichment() + 20);
                                 this.setEnrichmentTicks(random.nextInt(400) + 2000);
                             }
                         }

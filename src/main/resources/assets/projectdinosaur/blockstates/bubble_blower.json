@@ -1,8 +1,8 @@
 {
   "variants": {
-    "facing=north,powered=false": { "model": "projectdinosaur:block/bubble_blower" },
-    "facing=east,powered=false": { "model": "projectdinosaur:block/bubble_blower", "y": 90 },
-    "facing=south,powered=false": { "model": "projectdinosaur:block/bubble_blower", "y": 180 },
-    "facing=west,powered=false": { "model": "projectdinosaur:block/bubble_blower", "y": 270 }
+    "facing=north": { "model": "projectdinosaur:block/bubble_blower" },
+    "facing=east": { "model": "projectdinosaur:block/bubble_blower", "y": 90 },
+    "facing=south": { "model": "projectdinosaur:block/bubble_blower", "y": 180 },
+    "facing=west": { "model": "projectdinosaur:block/bubble_blower", "y": 270 }
   }
 }
