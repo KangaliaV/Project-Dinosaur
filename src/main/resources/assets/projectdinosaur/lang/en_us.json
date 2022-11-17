@@ -144,6 +144,24 @@
 
   "block.projectdinosaur.bubble_blower": "Bubble Blower",
 
+  "block.projectdinosaur.gnawing_rock_stone": "Stone Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_granite": "Granite Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_andesite": "Andesite Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_diorite": "Diorite Gnawing Rock",
+
+  "block.projectdinosaur.scent_diffuser_herbivore": "Herbivore Scent Diffuser",
+  "block.projectdinosaur.scent_diffuser_carnivore": "Carnivore Scent Diffuser",
+  "block.projectdinosaur.scent_diffuser_piscivore": "Piscivore Scent Diffuser",
+
+  "block.projectdinosaur.scratching_log_oak": "Oak Scratching Log",
+  "block.projectdinosaur.scratching_log_spruce": "Spruce Scratching Log",
+  "block.projectdinosaur.scratching_log_birch": "Birch Scratching Log",
+  "block.projectdinosaur.scratching_log_jungle": "Jungle Scratching Log",
+  "block.projectdinosaur.scratching_log_acacia": "Acacia Scratching Log",
+  "block.projectdinosaur.scratching_log_darkoak": "Dark Oak Scratching Log",
+  "block.projectdinosaur.scratching_log_crimson": "Crimson Scratching Log",
+  "block.projectdinosaur.scratching_log_warped": "Warped Scratching Log",
+
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
 
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",

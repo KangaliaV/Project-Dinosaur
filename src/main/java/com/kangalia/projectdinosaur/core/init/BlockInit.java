@@ -4,8 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.*;
 import com.kangalia.projectdinosaur.common.block.dinocare.GroundFeederBlock;
 import com.kangalia.projectdinosaur.common.block.eggs.*;
-import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
-import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
+import com.kangalia.projectdinosaur.common.block.enrichment.*;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
@@ -220,17 +219,65 @@ public class BlockInit {
             .strength(2.0F)
             .sound(SoundType.METAL)
             .noOcclusion()));
-    public static final RegistryObject<Block> GNAWING_ROCK = registerBlock("gnawing_rock", () -> new EnrichmentBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> GNAWING_ROCK_STONE = registerBlock("gnawing_rock_stone", () -> new GnawingRockBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(2.0F)
             .sound(SoundType.STONE)
             .noOcclusion()));
-    public static final RegistryObject<Block> SCRATCHING_LOG = registerBlock("scratching_log", () -> new EnrichmentBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+    public static final RegistryObject<Block> GNAWING_ROCK_GRANITE = registerBlock("gnawing_rock_granite", () -> new GnawingRockBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .strength(2.0F)
+            .sound(SoundType.STONE)
+            .noOcclusion()));
+    public static final RegistryObject<Block> GNAWING_ROCK_ANDESITE = registerBlock("gnawing_rock_andesite", () -> new GnawingRockBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .strength(2.0F)
+            .sound(SoundType.STONE)
+            .noOcclusion()));
+    public static final RegistryObject<Block> GNAWING_ROCK_DIORITE = registerBlock("gnawing_rock_diorite", () -> new GnawingRockBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .strength(2.0F)
+            .sound(SoundType.STONE)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCENT_DIFFUSER_HERBIVORE = registerBlock("scent_diffuser_herbivore", () -> new ScentDiffuserBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GREEN)
+            .strength(2.0F)
+            .sound(SoundType.METAL)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCENT_DIFFUSER_CARNIVORE = registerBlock("scent_diffuser_carnivore", () -> new ScentDiffuserBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_RED)
+            .strength(2.0F)
+            .sound(SoundType.METAL)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCENT_DIFFUSER_PISCIVORE = registerBlock("scent_diffuser_piscivore", () -> new ScentDiffuserBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE)
+            .strength(2.0F)
+            .sound(SoundType.METAL)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_OAK = registerBlock("scratching_log_oak", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
             .strength(2.0F)
             .sound(SoundType.WOOD)
             .noOcclusion()));
-    public static final RegistryObject<Block> SCENT_DIFFUSER = registerBlock("scent_diffuser", () -> new EnrichmentBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> SCRATCHING_LOG_SPRUCE = registerBlock("scratching_log_spruce", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
             .strength(2.0F)
-            .sound(SoundType.STONE)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_BIRCH = registerBlock("scratching_log_birch", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_YELLOW)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_JUNGLE = registerBlock("scratching_log_jungle", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_ACACIA = registerBlock("scratching_log_acacia", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_ORANGE)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_DARKOAK = registerBlock("scratching_log_darkoak", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BROWN)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_CRIMSON = registerBlock("scratching_log_crimson", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()));
+    public static final RegistryObject<Block> SCRATCHING_LOG_WARPED = registerBlock("scratching_log_warped", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_BLUE)
+            .strength(2.0F)
+            .sound(SoundType.WOOD)
             .noOcclusion()));
 
     //Eggs

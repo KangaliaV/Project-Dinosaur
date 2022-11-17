@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "projectdinosaur:block/scent_diffuser_piscivore" },
+    "facing=east": { "model": "projectdinosaur:block/scent_diffuser_piscivore", "y": 90 },
+    "facing=south": { "model": "projectdinosaur:block/scent_diffuser_piscivore", "y": 180 },
+    "facing=west": { "model": "projectdinosaur:block/scent_diffuser_piscivore", "y": 270 }
+  }
+}

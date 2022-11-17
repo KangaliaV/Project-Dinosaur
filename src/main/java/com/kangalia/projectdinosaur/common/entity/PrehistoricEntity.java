@@ -53,6 +53,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Integer> REMAINING_CRYOSICKNESS_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ENRICHMENT = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ENRICHMENT_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRICHMENT_COOLDOWN = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
@@ -136,18 +137,28 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             }
             if (this.getEnrichmentTicks() > 0) {
                 this.setEnrichmentTicks(this.getEnrichmentTicks() - 1);
+                System.out.println("Enrich Tick "+this.getEnrichmentTicks());
             } else if (this.getEnrichmentTicks() <= 0) {
                 if (this.getEnrichment() > 0) {
                     this.setEnrichment(this.getEnrichment() - 1);
+                    System.out.println("Enrich "+this.getEnrichment());
                 } else if (this.getEnrichment() <= 0) {
                     this.hurt(DamageSource.GENERIC, 1);
                     this.playHurtSound(DamageSource.GENERIC);
                 }
                 this.setEnrichmentTicks(this.random.nextInt(500) + 1500);
             }
-            if (this.getEnrichment() < (maxEnrichment * 0.8f) && !isSleeping()) {
-                playWithNearestEnrichment();
+            if (this.getEnrichmentCooldown() > 0) {
+                this.setEnrichmentCooldown(this.getEnrichmentCooldown() - 1);
+                System.out.println("Enrich Cooldown "+this.getEnrichmentCooldown());
+            } else if (this.getEnrichmentCooldown() <= 0) {
+                if (isGrumpy() && !isSleeping()) {
+                    System.out.println("Play");
+                    playWithNearestEnrichment();
+                }
             }
+            //System.out.println("Enrichment: "+this.getEnrichment());
+            //System.out.println("Enrichment Cooldown: "+this.getEnrichmentCooldown());
             if (this.isAdult()) {
                 if (this.getMatingTicks() > 0) {
                     this.setMatingTicks(this.getMatingTicks() - 1);
@@ -384,6 +395,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                                 this.getNavigation().stop();
                                 this.setEnrichment(this.getEnrichment() + 20);
                                 this.setEnrichmentTicks(random.nextInt(400) + 2000);
+                                this.setEnrichmentCooldown(2400);
                             }
                         }
                     }
@@ -613,6 +625,14 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.set(ENRICHMENT_TICKS, ticks);
     }
 
+    public int getEnrichmentCooldown() {
+        return this.entityData.get(ENRICHMENT_COOLDOWN);
+    }
+
+    public void setEnrichmentCooldown(int cooldown) {
+        this.entityData.set(ENRICHMENT_COOLDOWN, cooldown);
+    }
+
     public int getMaxEnrichment() {
         return maxEnrichment;
     }
@@ -636,6 +656,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             return false;
         }
         return livingEntity.getType() == EntityType.PLAYER;
+    }
+
+    public boolean isGrumpy() {
+        return this.getEnrichment() < (maxEnrichment * 0.8f);
     }
 
     public Component getSpecies() {
@@ -722,6 +746,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(REMAINING_ANGER_TIME, 0);
         this.entityData.define(ENRICHMENT, 0);
         this.entityData.define(ENRICHMENT_TICKS, 0);
+        this.entityData.define(ENRICHMENT_COOLDOWN, 0);
     }
 
     @Override
@@ -741,6 +766,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.addPersistentAngerSaveData(pCompound);
         pCompound.putInt("Enrichment", this.getEnrichment());
         pCompound.putInt("EnrichmentTicks", this.getEnrichmentTicks());
+        pCompound.putInt("EnrichmentCooldown", this.getEnrichmentCooldown());
     }
 
     @Override
@@ -760,5 +786,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.readPersistentAngerSaveData(this.level, pCompound);
         this.setEnrichment(pCompound.getInt("Enrichment"));
         this.setEnrichmentTicks(pCompound.getInt("EnrichmentTicks"));
+        this.setEnrichmentCooldown(pCompound.getInt("EnrichmentCooldown"));
     }
 }
