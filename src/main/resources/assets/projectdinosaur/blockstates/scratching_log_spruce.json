@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "projectdinosaur:block/scratching_log_spruce" },
+    "facing=east": { "model": "projectdinosaur:block/scratching_log_spruce", "y": 90 },
+    "facing=south": { "model": "projectdinosaur:block/scratching_log_spruce", "y": 180 },
+    "facing=west": { "model": "projectdinosaur:block/scratching_log_spruce", "y": 270 }
+  }
+}

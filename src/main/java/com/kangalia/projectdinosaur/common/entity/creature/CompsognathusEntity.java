@@ -43,6 +43,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class CompsognathusEntity extends PrehistoricEntity implements IAnimatable {
@@ -113,6 +114,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
@@ -154,7 +156,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverWorld, @Nonnull AgeableMob ageableMob) {
         return EntityInit.COMPSOGNATHUS.get().create(serverWorld);
     }
 

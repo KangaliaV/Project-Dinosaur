@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class DinoScanner extends Item {
@@ -28,8 +29,9 @@ public class DinoScanner extends Item {
         super(pProperties);
     }
 
+    @Nonnull
     @Override
-    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
+    public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
         Level level = pPlayer.getLevel();
         if (pInteractionTarget instanceof PrehistoricEntity) {
             setClickedEntity((PrehistoricEntity) pInteractionTarget);
@@ -44,14 +46,15 @@ public class DinoScanner extends Item {
 
     private MenuProvider createContainerProvider(PrehistoricEntity entity, ItemStack stack) {
         return new MenuProvider() {
+            @Nonnull
             @Override
             public Component getDisplayName() {
                 return new TranslatableComponent("data.projectdinosaur.dino_species", entity.getSpecies());
             }
 
-            @javax.annotation.Nullable
+            @Nonnull
             @Override
-            public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
+            public AbstractContainerMenu createMenu(int i, @Nonnull Inventory playerInventory, @Nonnull Player playerEntity) {
                 return new DinoScannerContainer(i, stack, playerInventory, playerEntity);
             }
         };
@@ -73,6 +76,7 @@ public class DinoScanner extends Item {
         } else {
             nbt.putString("dino.nickname", "null");
         }
+        nbt.putBoolean("dino.iscryosick", prehistoric.isCryosick());
         nbt.putInt("dino.age", prehistoric.getAgeInDays());
         nbt.putInt("dino.sex", prehistoric.getGender());
         nbt.putInt("dino.health", Math.round((int)prehistoric.getHealth()));
@@ -82,6 +86,9 @@ public class DinoScanner extends Item {
         nbt.putInt("dino.diet", prehistoric.getDiet());
         nbt.putInt("dino.schedule", prehistoric.getSleepSchedule());
         nbt.putInt("dino.scale", prehistoric.getRenderScale());
+        nbt.putInt("dino.enrichment", prehistoric.getEnrichment());
+        nbt.putInt("dino.maxenrichment", prehistoric.getMaxEnrichment());
+        nbt.putInt("dino.mood", prehistoric.getMood());
         stack.setTag(nbt);
     }
 }

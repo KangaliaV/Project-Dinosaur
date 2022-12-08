@@ -38,6 +38,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
+
 public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatable {
 
     private AnimationFactory factory = new AnimationFactory(this);
@@ -103,6 +105,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new ResetUniversalAngerTargetGoal<>(this, true));
     }
@@ -146,7 +149,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
 
     @org.jetbrains.annotations.Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverWorld, @Nonnull AgeableMob ageableMob) {
         return EntityInit.SCELIDOSAURUS.get().create(serverWorld);
     }
 

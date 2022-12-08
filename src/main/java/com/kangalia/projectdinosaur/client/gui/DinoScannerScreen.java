@@ -2,7 +2,6 @@ package com.kangalia.projectdinosaur.client.gui;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.container.DinoScannerContainer;
-import com.kangalia.projectdinosaur.common.item.DinoScanner;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -43,7 +42,7 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, SCANNER);
         int i = this.getGuiLeft();
         int j = this.getGuiTop();
@@ -56,7 +55,7 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
     }
 
     @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+    protected void renderLabels(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY) {
         this.font.draw(pPoseStack, this.title, (float)this.titleLabelX, (float)this.titleLabelY, 9544081);
         if (scanner.hasTag()) {
             if (scanner.getTag() != null) {
@@ -65,36 +64,49 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
                 } else {
                     this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_nickname", "-----"), 55, 126, 9544081);
                 }
-            }
-            this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_age", scanner.getTag().getInt("dino.age")), -26, 12, 9544081);
-            if (scanner.getTag().getInt("dino.sex") == 0) {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_sex", new TranslatableComponent("attribute.projectdinosaur.male")), -26, 28, 9544081);
-            } else {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_sex", new TranslatableComponent("attribute.projectdinosaur.female")), -26, 28, 9544081);
-            }
-            this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_health", scanner.getTag().getInt("dino.health"), scanner.getTag().getInt("dino.maxhealth")), -26, 44, 9544081);
-            this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_food", scanner.getTag().getInt("dino.food"), scanner.getTag().getInt("dino.maxfood")), -26, 60, 9544081);
-            if (scanner.getTag().getInt("dino.diet") == 0) {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.herbivore")), -26, 76, 9544081);
-            } else if (scanner.getTag().getInt("dino.diet") == 1) {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.carnivore")), -26, 76, 9544081);
-            } else {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.piscivore")), -26, 76, 9544081);
-            }
-            if (scanner.getTag().getInt("dino.schedule") == 0) {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.diurnal")), -26, 92, 9544081);
-            } else if (scanner.getTag().getInt("dino.schedule") == 1) {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.nocturnal")), -26, 92, 9544081);
-            } else {
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.cathemeral")), -26, 92, 9544081);
+                pPoseStack.scale(0.8f, 0.8f, 0.8f);
+                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_age", scanner.getTag().getInt("dino.age")), -30, 12, 9544081);
+                if (scanner.getTag().getInt("dino.sex") == 0) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_sex", new TranslatableComponent("attribute.projectdinosaur.male")), -30, 28, 9544081);
+                } else {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_sex", new TranslatableComponent("attribute.projectdinosaur.female")), -30, 28, 9544081);
+                }
+                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_health", scanner.getTag().getInt("dino.health"), scanner.getTag().getInt("dino.maxhealth")), -30, 44, 9544081);
+                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_food", scanner.getTag().getInt("dino.food"), scanner.getTag().getInt("dino.maxfood")), -30, 60, 9544081);
+                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_enrichment", scanner.getTag().getInt("dino.enrichment"), scanner.getTag().getInt("dino.maxenrichment")), -30, 76, 9544081);
+                if (scanner.getTag().getInt("dino.mood") == 0) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_mood", new TranslatableComponent("attribute.projectdinosaur.happy")), -30, 92, 9544081);
+                } else if (scanner.getTag().getInt("dino.mood") == 1) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_mood", new TranslatableComponent("attribute.projectdinosaur.moody")), -30, 92, 9544081);
+                } else {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_mood", new TranslatableComponent("attribute.projectdinosaur.angry")), -30, 92, 9544081);
+                }
+                if (scanner.getTag().getInt("dino.diet") == 0) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.herbivore")), -30, 108, 9544081);
+                } else if (scanner.getTag().getInt("dino.diet") == 1) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.carnivore")), -30, 108, 9544081);
+                } else {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.piscivore")), -30, 108, 9544081);
+                }
+                if (scanner.getTag().getInt("dino.schedule") == 0) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.diurnal")), -30, 124, 9544081);
+                } else if (scanner.getTag().getInt("dino.schedule") == 1) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.nocturnal")), -30, 124, 9544081);
+                } else {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.cathemeral")), -30, 124, 9544081);
+                }
+                if (scanner.getTag().getBoolean("dino.iscryosick")) {
+                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_cryosick"), -30, 140, 9544081);
+                }
             }
         }
     }
 
+    @SuppressWarnings( "deprecation" )
     public static void renderEntity(int pPosX, int pPosY, int pScale, LivingEntity pLivingEntity) {
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
-        posestack.translate((double)pPosX, (double)pPosY, 1050.0D);
+        posestack.translate(pPosX, pPosY, 1050.0D);
         posestack.scale(1.0F, 1.0F, -1.0F);
         RenderSystem.applyModelViewMatrix();
         PoseStack posestack1 = new PoseStack();
@@ -120,9 +132,7 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         entityrenderdispatcher.overrideCameraOrientation(quaternion1);
         entityrenderdispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> {
-            entityrenderdispatcher.render(pLivingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
-        });
+        RenderSystem.runAsFancy(() -> entityrenderdispatcher.render(pLivingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
         multibuffersource$buffersource.endBatch();
         entityrenderdispatcher.setRenderShadow(true);
         pLivingEntity.yBodyRot = f2;

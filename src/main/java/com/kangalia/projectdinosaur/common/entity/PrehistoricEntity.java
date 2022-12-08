@@ -1,6 +1,9 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.*;
+import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
+import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
+import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
@@ -23,7 +26,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -50,6 +53,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Boolean> STUNTED = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> REMAINING_CRYOSICKNESS_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRICHMENT = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRICHMENT_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRICHMENT_COOLDOWN = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
@@ -59,6 +65,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int maxFood;
     public int diet;
     protected GroundFeederBlockEntity groundFeeder;
+    protected EnrichmentBlock enrichment;
     protected Block nest;
     protected BlockPos blockPos = BlockPos.ZERO;
     public float soundVolume;
@@ -67,6 +74,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float adultHealth;
     public Component name;
     public int renderScale;
+    public int maxEnrichment = 100;
+    private boolean validTarget;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -74,12 +83,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
+    public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverLevel, @Nonnull AgeableMob ageableMob) {
         return null;
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+    public SpawnGroupData finalizeSpawn(@Nonnull ServerLevelAccessor serverLevelAccessor, @Nonnull DifficultyInstance difficultyInstance, @Nonnull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         Random random = new Random();
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
@@ -87,6 +96,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
         this.setRemainingCryosicknessTime(0);
+        this.setEnrichment(maxEnrichment / 2);
+        this.setEnrichmentTicks(2000);
         this.setAdultAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
@@ -127,11 +138,33 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             if (this.isHungry() && !isSleeping()) {
                 eatFromNearestFeeder();
             }
+            if (this.getEnrichmentTicks() > 0) {
+                this.setEnrichmentTicks(this.getEnrichmentTicks() - 1);
+            } else if (this.getEnrichmentTicks() <= 0) {
+                if (this.getEnrichment() > 0) {
+                    this.setEnrichment(this.getEnrichment() - 1);
+                } else if (this.getEnrichment() <= 0) {
+                    this.hurt(DamageSource.GENERIC, 1);
+                    this.playHurtSound(DamageSource.GENERIC);
+                }
+                this.setEnrichmentTicks(this.random.nextInt(500) + 1500);
+            }
+            if (this.getEnrichmentCooldown() > 0) {
+                this.setEnrichmentCooldown(this.getEnrichmentCooldown() - 1);
+            } else if (this.getEnrichmentCooldown() <= 0) {
+                if (isGrumpy() && !isSleeping()) {
+                    playWithNearestEnrichment();
+                }
+            }
             if (this.isAdult()) {
                 if (this.getMatingTicks() > 0) {
                     this.setMatingTicks(this.getMatingTicks() - 1);
                 } else if (!isSleeping()) {
-                    this.breed();
+                    if (!this.isMoody()) {
+                        this.breed();
+                    } else {
+                        this.setMatingTicks(this.random.nextInt(6000) + 6000);
+                    }
                 }
             }
             if (this.getRemainingCryosicknessTime() > 0) {
@@ -200,7 +233,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         BlockPos blockpos = prehistoric.blockPosition();
         if (!prehistoric.isInWater()) {
             Level level = prehistoric.level;
-            level.playSound((Player) null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
+            level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
             if (prehistoric instanceof AphanerammaEntity) {
                 level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else if (prehistoric instanceof CompsognathusEntity) {
@@ -217,17 +250,18 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
+    @Nonnull
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+    public InteractionResult mobInteract(Player pPlayer, @Nonnull InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
-                if (item.getItem().equals(Items.BEEF) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
+                if (item.getItem().equals(Items.WHEAT) || item.getItem().equals(Items.CARROT) || item.getItem().equals(Items.POTATO) || item.getItem().equals(Items.BEETROOT) || item.getItem().equals(Items.WHEAT_SEEDS) || item.getItem().equals(Items.BEETROOT_SEEDS) || item.getItem().equals(Items.APPLE) || item.getItem().equals(Items.MELON_SLICE) || item.getItem().equals(Items.MELON) || item.getItem().equals(Items.PUMPKIN) || item.getItem().equals(Items.MELON_SEEDS) || item.getItem().equals(Items.PUMPKIN_SEEDS) || item.getItem().equals(Items.GLOW_BERRIES)) {
                     eatFromHand(item);
                     return InteractionResult.SUCCESS;
                 }
             } else if (diet == 1) {
-                if (item.getItem().equals(Items.WHEAT) || item.getItem().equals(Items.CARROT) || item.getItem().equals(Items.POTATO) || item.getItem().equals(Items.BEETROOT) || item.getItem().equals(Items.WHEAT_SEEDS) || item.getItem().equals(Items.BEETROOT_SEEDS) || item.getItem().equals(Items.APPLE) || item.getItem().equals(Items.MELON_SLICE) || item.getItem().equals(Items.MELON) || item.getItem().equals(Items.PUMPKIN) || item.getItem().equals(Items.MELON_SEEDS) || item.getItem().equals(Items.PUMPKIN_SEEDS) || item.getItem().equals(Items.GLOW_BERRIES)) {
+                if (item.getItem().equals(Items.BEEF) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
                     return InteractionResult.SUCCESS;
                 }
@@ -287,7 +321,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                         if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTarget(this.level, blockpos$mutableblockpos)) {
                             this.blockPos = blockpos$mutableblockpos;
                             if (!groundFeeder.isEmpty(this)) {
-                                this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (double) (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                                this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
                                 BlockPos blockPosAbove = this.blockPos.above();
                                 if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
                                     this.getNavigation().stop();
@@ -324,7 +358,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                         blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
                         if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTargetSleeping(this.level, blockpos$mutableblockpos)) {
                             this.blockPos = blockpos$mutableblockpos;
-                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (double) (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
                             BlockPos blockPosAbove = this.blockPos.above();
                             if (blockPosAbove.closerToCenterThan(this.position(), 1.0D)) {
                                 this.getNavigation().stop();
@@ -337,6 +371,50 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             }
         }
         return 1;
+    }
+
+    protected void playWithNearestEnrichment() {
+        int i = 16;
+        int j = 8;
+        BlockPos blockpos = this.blockPosition();
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+        for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
+            for(int l = 0; l < i; ++l) {
+                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
+                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
+                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
+                        validTarget = this.isValidTargetEnrichment(this.level, blockpos$mutableblockpos, this);
+                        if (this.isWithinRestriction(blockpos$mutableblockpos) && validTarget) {
+                            this.blockPos = blockpos$mutableblockpos;
+                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, this.blockPos.getY() + 1, (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
+                            BlockPos blockPosAbove = this.blockPos.above();
+                            if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
+                                this.getNavigation().stop();
+                                this.setEnrichment(this.getEnrichment() + 20);
+                                this.setEnrichmentTicks(random.nextInt(400) + 2000);
+                                this.setEnrichmentCooldown(2400);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean isValidTargetEnrichment(LevelReader pLevel, BlockPos pPos, PrehistoricEntity entity) {
+        if (pLevel.getBlockState(pPos).getBlock() instanceof EnrichmentBlock) {
+            if (pLevel.getBlockState(pPos).getBlock() instanceof BubbleBlowerBlock && !(entity instanceof AphanerammaEntity)) {
+                return false;
+            }
+            if (pLevel.getBlockState(pPos).getBlock() instanceof ScentDiffuserBlock && !(entity.getDiet() == 1)) {
+                return false;
+            } else {
+                enrichment = (EnrichmentBlock) pLevel.getBlockState(pPos).getBlock();
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean isValidTargetSleeping(LevelReader pLevel, BlockPos pPos) {
@@ -388,7 +466,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public void setAdultAttributes() {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.getAdultHealth());
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(this.getAdultHealth());
         this.setHealth(this.getAdultHealth());
     }
 
@@ -533,6 +611,62 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return minSize + ((step * this.getAgeInTicks()));
     }
 
+    public int getEnrichment() {
+        return this.entityData.get(ENRICHMENT);
+    }
+
+    public void setEnrichment(int enrichment) {
+        this.entityData.set(ENRICHMENT, enrichment);
+        if (this.entityData.get(ENRICHMENT) > maxEnrichment) {
+            this.entityData.set(ENRICHMENT, maxEnrichment);
+        }
+    }
+
+    public int getEnrichmentTicks() {
+        return this.entityData.get(ENRICHMENT_TICKS);
+    }
+
+    public void setEnrichmentTicks(int ticks) {
+        this.entityData.set(ENRICHMENT_TICKS, ticks);
+    }
+
+    public int getEnrichmentCooldown() {
+        return this.entityData.get(ENRICHMENT_COOLDOWN);
+    }
+
+    public void setEnrichmentCooldown(int cooldown) {
+        this.entityData.set(ENRICHMENT_COOLDOWN, cooldown);
+    }
+
+    public int getMaxEnrichment() {
+        return maxEnrichment;
+    }
+
+    public int getMood() {
+        if (this.isMoody()) {
+            return 1;
+        } else if (this.isAngry()) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean isMoody() {
+        return this.getEnrichment() < (maxEnrichment / 2);
+    }
+
+    public boolean isMoodyAt(LivingEntity livingEntity) {
+        if (this.isAngry()) {
+            return false;
+        }
+        return livingEntity.getType() == EntityType.PLAYER;
+    }
+
+    public boolean isGrumpy() {
+        return this.getEnrichment() < (maxEnrichment * 0.8f);
+    }
+
     public Component getSpecies() {
         return name;
     }
@@ -583,7 +717,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean hurt(@Nonnull DamageSource pSource, float pAmount) {
         this.setHealingTicks(0);
         return super.hurt(pSource, pAmount);
     }
@@ -615,10 +749,13 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(STUNTED, false);
         this.entityData.define(REMAINING_CRYOSICKNESS_TIME, 0);
         this.entityData.define(REMAINING_ANGER_TIME, 0);
+        this.entityData.define(ENRICHMENT, 0);
+        this.entityData.define(ENRICHMENT_TICKS, 0);
+        this.entityData.define(ENRICHMENT_COOLDOWN, 0);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("AgeInTicks", this.getAgeInTicks());
         pCompound.putFloat("AgeScale", this.getAgeScaleData());
@@ -632,10 +769,13 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putBoolean("Stunted", this.isStunted());
         pCompound.putInt("RemainingCryosicknessTime", this.getRemainingCryosicknessTime());
         this.addPersistentAngerSaveData(pCompound);
+        pCompound.putInt("Enrichment", this.getEnrichment());
+        pCompound.putInt("EnrichmentTicks", this.getEnrichmentTicks());
+        pCompound.putInt("EnrichmentCooldown", this.getEnrichmentCooldown());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setAgeInTicks(pCompound.getInt("AgeInTicks"));
         this.setAgeScale(pCompound.getFloat("AgeScale"));
@@ -649,5 +789,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setStunted(pCompound.getBoolean("Stunted"));
         this.setRemainingCryosicknessTime(pCompound.getInt("RemainingCryosicknessTime"));
         this.readPersistentAngerSaveData(this.level, pCompound);
+        this.setEnrichment(pCompound.getInt("Enrichment"));
+        this.setEnrichmentTicks(pCompound.getInt("EnrichmentTicks"));
+        this.setEnrichmentCooldown(pCompound.getInt("EnrichmentCooldown"));
     }
 }
