@@ -1,7 +1,9 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.eggs.*;
+import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
+import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
@@ -73,6 +75,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public Component name;
     public int renderScale;
     public int maxEnrichment = 100;
+    private boolean validTarget;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -137,11 +140,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             }
             if (this.getEnrichmentTicks() > 0) {
                 this.setEnrichmentTicks(this.getEnrichmentTicks() - 1);
-                System.out.println("Enrich Tick "+this.getEnrichmentTicks());
             } else if (this.getEnrichmentTicks() <= 0) {
                 if (this.getEnrichment() > 0) {
                     this.setEnrichment(this.getEnrichment() - 1);
-                    System.out.println("Enrich "+this.getEnrichment());
                 } else if (this.getEnrichment() <= 0) {
                     this.hurt(DamageSource.GENERIC, 1);
                     this.playHurtSound(DamageSource.GENERIC);
@@ -150,15 +151,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             }
             if (this.getEnrichmentCooldown() > 0) {
                 this.setEnrichmentCooldown(this.getEnrichmentCooldown() - 1);
-                System.out.println("Enrich Cooldown "+this.getEnrichmentCooldown());
             } else if (this.getEnrichmentCooldown() <= 0) {
                 if (isGrumpy() && !isSleeping()) {
-                    System.out.println("Play");
                     playWithNearestEnrichment();
                 }
             }
-            //System.out.println("Enrichment: "+this.getEnrichment());
-            //System.out.println("Enrichment Cooldown: "+this.getEnrichmentCooldown());
             if (this.isAdult()) {
                 if (this.getMatingTicks() > 0) {
                     this.setMatingTicks(this.getMatingTicks() - 1);
@@ -259,12 +256,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         ItemStack item = pPlayer.getItemInHand(pHand);
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
-                if (item.getItem().equals(Items.BEEF) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
+                if (item.getItem().equals(Items.WHEAT) || item.getItem().equals(Items.CARROT) || item.getItem().equals(Items.POTATO) || item.getItem().equals(Items.BEETROOT) || item.getItem().equals(Items.WHEAT_SEEDS) || item.getItem().equals(Items.BEETROOT_SEEDS) || item.getItem().equals(Items.APPLE) || item.getItem().equals(Items.MELON_SLICE) || item.getItem().equals(Items.MELON) || item.getItem().equals(Items.PUMPKIN) || item.getItem().equals(Items.MELON_SEEDS) || item.getItem().equals(Items.PUMPKIN_SEEDS) || item.getItem().equals(Items.GLOW_BERRIES)) {
                     eatFromHand(item);
                     return InteractionResult.SUCCESS;
                 }
             } else if (diet == 1) {
-                if (item.getItem().equals(Items.WHEAT) || item.getItem().equals(Items.CARROT) || item.getItem().equals(Items.POTATO) || item.getItem().equals(Items.BEETROOT) || item.getItem().equals(Items.WHEAT_SEEDS) || item.getItem().equals(Items.BEETROOT_SEEDS) || item.getItem().equals(Items.APPLE) || item.getItem().equals(Items.MELON_SLICE) || item.getItem().equals(Items.MELON) || item.getItem().equals(Items.PUMPKIN) || item.getItem().equals(Items.MELON_SEEDS) || item.getItem().equals(Items.PUMPKIN_SEEDS) || item.getItem().equals(Items.GLOW_BERRIES)) {
+                if (item.getItem().equals(Items.BEEF) || item.getItem().equals(Items.PORKCHOP) || item.getItem().equals(Items.CHICKEN) || item.getItem().equals(Items.MUTTON) || item.getItem().equals(Items.RABBIT) || item.getItem().equals(Items.EGG)) {
                     eatFromHand(item);
                     return InteractionResult.SUCCESS;
                 }
@@ -387,7 +384,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
                     for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
                         blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
-                        if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTargetEnrichment(this.level, blockpos$mutableblockpos)) {
+                        validTarget = this.isValidTargetEnrichment(this.level, blockpos$mutableblockpos, this);
+                        if (this.isWithinRestriction(blockpos$mutableblockpos) && validTarget) {
                             this.blockPos = blockpos$mutableblockpos;
                             this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, this.blockPos.getY() + 1, (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
                             BlockPos blockPosAbove = this.blockPos.above();
@@ -404,10 +402,17 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
-    protected boolean isValidTargetEnrichment(LevelReader pLevel, BlockPos pPos) {
+    protected boolean isValidTargetEnrichment(LevelReader pLevel, BlockPos pPos, PrehistoricEntity entity) {
         if (pLevel.getBlockState(pPos).getBlock() instanceof EnrichmentBlock) {
-            enrichment = (EnrichmentBlock) pLevel.getBlockState(pPos).getBlock();
-            return true;
+            if (pLevel.getBlockState(pPos).getBlock() instanceof BubbleBlowerBlock && !(entity instanceof AphanerammaEntity)) {
+                return false;
+            }
+            if (pLevel.getBlockState(pPos).getBlock() instanceof ScentDiffuserBlock && !(entity.getDiet() == 1)) {
+                return false;
+            } else {
+                enrichment = (EnrichmentBlock) pLevel.getBlockState(pPos).getBlock();
+                return true;
+            }
         }
         return false;
     }

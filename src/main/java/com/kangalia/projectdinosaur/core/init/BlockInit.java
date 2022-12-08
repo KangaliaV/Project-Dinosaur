@@ -235,15 +235,7 @@ public class BlockInit {
             .strength(2.0F)
             .sound(SoundType.STONE)
             .noOcclusion()));
-    public static final RegistryObject<Block> SCENT_DIFFUSER_HERBIVORE = registerBlock("scent_diffuser_herbivore", () -> new ScentDiffuserBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GREEN)
-            .strength(2.0F)
-            .sound(SoundType.METAL)
-            .noOcclusion()));
     public static final RegistryObject<Block> SCENT_DIFFUSER_CARNIVORE = registerBlock("scent_diffuser_carnivore", () -> new ScentDiffuserBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_RED)
-            .strength(2.0F)
-            .sound(SoundType.METAL)
-            .noOcclusion()));
-    public static final RegistryObject<Block> SCENT_DIFFUSER_PISCIVORE = registerBlock("scent_diffuser_piscivore", () -> new ScentDiffuserBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE)
             .strength(2.0F)
             .sound(SoundType.METAL)
             .noOcclusion()));
