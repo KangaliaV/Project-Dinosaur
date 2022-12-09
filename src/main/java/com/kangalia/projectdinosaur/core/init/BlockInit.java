@@ -10,6 +10,7 @@ import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBloc
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -46,140 +47,140 @@ public class BlockInit {
 
 
     //Rock Fossil Ores
-    public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ALPINE_ROCK_FOSSIL = registerBlock("alpine_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AQUATIC_ROCK_FOSSIL = registerBlock("aquatic_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> AQUATIC_ROCK_FOSSIL = registerBlock("aquatic_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ARID_ROCK_FOSSIL = registerBlock("arid_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ARID_ROCK_FOSSIL = registerBlock("arid_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> FROZEN_ROCK_FOSSIL = registerBlock("frozen_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> FROZEN_ROCK_FOSSIL = registerBlock("frozen_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> GRASSLAND_ROCK_FOSSIL = registerBlock("grassland_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> GRASSLAND_ROCK_FOSSIL = registerBlock("grassland_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> TEMPERATE_ROCK_FOSSIL = registerBlock("temperate_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> TEMPERATE_ROCK_FOSSIL = registerBlock("temperate_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> TROPICAL_ROCK_FOSSIL = registerBlock("tropical_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> TROPICAL_ROCK_FOSSIL = registerBlock("tropical_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> WETLAND_ROCK_FOSSIL = registerBlock("wetland_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> WETLAND_ROCK_FOSSIL = registerBlock("wetland_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
 
     //Encased Rock Fossil Ores
-    public static final RegistryObject<Block> ENCASED_ALPINE_ROCK_FOSSIL = registerBlock("encased_alpine_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ENCASED_ALPINE_ROCK_FOSSIL = registerBlock("encased_alpine_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_AQUATIC_ROCK_FOSSIL = registerBlock("encased_aquatic_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_AQUATIC_ROCK_FOSSIL = registerBlock("encased_aquatic_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_ARID_ROCK_FOSSIL = registerBlock("encased_arid_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_ARID_ROCK_FOSSIL = registerBlock("encased_arid_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_FROZEN_ROCK_FOSSIL = registerBlock("encased_frozen_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_FROZEN_ROCK_FOSSIL = registerBlock("encased_frozen_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_GRASSLAND_ROCK_FOSSIL = registerBlock("encased_grassland_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_GRASSLAND_ROCK_FOSSIL = registerBlock("encased_grassland_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_TEMPERATE_ROCK_FOSSIL = registerBlock("encased_temperate_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_TEMPERATE_ROCK_FOSSIL = registerBlock("encased_temperate_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_TROPICAL_ROCK_FOSSIL = registerBlock("encased_tropical_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_TROPICAL_ROCK_FOSSIL = registerBlock("encased_tropical_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_WETLAND_ROCK_FOSSIL = registerBlock("encased_wetland_rock_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_WETLAND_ROCK_FOSSIL = registerBlock("encased_wetland_rock_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
 
     //Crystallised Fossil Blocks
-    public static final RegistryObject<Block> ALPINE_CRYSTALLISED_FOSSIL = registerBlock("alpine_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ALPINE_CRYSTALLISED_FOSSIL = registerBlock("alpine_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AQUATIC_CRYSTALLISED_FOSSIL = registerBlock("aquatic_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> AQUATIC_CRYSTALLISED_FOSSIL = registerBlock("aquatic_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ARID_CRYSTALLISED_FOSSIL = registerBlock("arid_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ARID_CRYSTALLISED_FOSSIL = registerBlock("arid_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> FROZEN_CRYSTALLISED_FOSSIL = registerBlock("frozen_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> FROZEN_CRYSTALLISED_FOSSIL = registerBlock("frozen_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> GRASSLAND_CRYSTALLISED_FOSSIL = registerBlock("grassland_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> GRASSLAND_CRYSTALLISED_FOSSIL = registerBlock("grassland_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> TEMPERATE_CRYSTALLISED_FOSSIL = registerBlock("temperate_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> TEMPERATE_CRYSTALLISED_FOSSIL = registerBlock("temperate_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> TROPICAL_CRYSTALLISED_FOSSIL = registerBlock("tropical_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> TROPICAL_CRYSTALLISED_FOSSIL = registerBlock("tropical_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> WETLAND_CRYSTALLISED_FOSSIL = registerBlock("wetland_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> WETLAND_CRYSTALLISED_FOSSIL = registerBlock("wetland_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
 
     //Encased Crystallised Fossil Blocks
-    public static final RegistryObject<Block> ENCASED_ALPINE_CRYSTALLISED_FOSSIL = registerBlock("encased_alpine_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+    public static final RegistryObject<Block> ENCASED_ALPINE_CRYSTALLISED_FOSSIL = registerBlock("encased_alpine_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_AQUATIC_CRYSTALLISED_FOSSIL = registerBlock("encased_aquatic_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_AQUATIC_CRYSTALLISED_FOSSIL = registerBlock("encased_aquatic_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_ARID_CRYSTALLISED_FOSSIL = registerBlock("encased_arid_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_ARID_CRYSTALLISED_FOSSIL = registerBlock("encased_arid_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_FROZEN_CRYSTALLISED_FOSSIL = registerBlock("encased_frozen_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_FROZEN_CRYSTALLISED_FOSSIL = registerBlock("encased_frozen_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_GRASSLAND_CRYSTALLISED_FOSSIL = registerBlock("encased_grassland_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_GRASSLAND_CRYSTALLISED_FOSSIL = registerBlock("encased_grassland_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_TEMPERATE_CRYSTALLISED_FOSSIL = registerBlock("encased_temperate_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_TEMPERATE_CRYSTALLISED_FOSSIL = registerBlock("encased_temperate_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_TROPICAL_CRYSTALLISED_FOSSIL = registerBlock("encased_tropical_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_TROPICAL_CRYSTALLISED_FOSSIL = registerBlock("encased_tropical_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ENCASED_WETLAND_CRYSTALLISED_FOSSIL = registerBlock("encased_wetland_crystallised_fossil", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
+    public static final RegistryObject<Block> ENCASED_WETLAND_CRYSTALLISED_FOSSIL = registerBlock("encased_wetland_crystallised_fossil", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY)
             .strength(3.0f, 3.0f)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+            .requiresCorrectToolForDrops(), UniformInt.of(3, 7)));
 
     //Machine Blocks
     public static final RegistryObject<Block> FOSSIL_EXCAVATOR = registerBlock("fossil_excavator", () -> new FossilExcavatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL)
@@ -301,35 +302,35 @@ public class BlockInit {
 
 
     //Gem Blocks
-    public static final RegistryObject<Block> HEMATINE_BLOCK = registerBlock("hematine_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> HEMATINE_BLOCK = registerBlock("hematine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AZURITE_BLOCK = registerBlock("azurite_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> AZURITE_BLOCK = registerBlock("azurite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AQUAMARINE_BLOCK = registerBlock("aquamarine_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> AQUAMARINE_BLOCK = registerBlock("aquamarine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> URAVORITE_BLOCK = registerBlock("uravorite_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> URAVORITE_BLOCK = registerBlock("uravorite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> MALACHITE_BLOCK = registerBlock("malachite_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> MALACHITE_BLOCK = registerBlock("malachite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SPHENE_BLOCK = registerBlock("sphene_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> SPHENE_BLOCK = registerBlock("sphene_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ALMANDINE_BLOCK = registerBlock("almandine_block", () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
+    public static final RegistryObject<Block> ALMANDINE_BLOCK = registerBlock("almandine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE)
             .strength(4.0f, 5.0f)
             .sound(SoundType.METAL)
             .requiresCorrectToolForDrops()));

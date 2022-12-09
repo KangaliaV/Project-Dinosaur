@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,7 +30,7 @@ public class BubbleBlowerBlock extends EnrichmentBlock {
     }
 
     @Override
-    public void animateTick(@Nonnull BlockState pState, @Nonnull Level pLevel, BlockPos pPos, @Nonnull Random pRandom) {
+    public void animateTick(@Nonnull BlockState pState, @Nonnull Level pLevel, BlockPos pPos, @Nonnull RandomSource pRandom) {
         double d0 = pPos.getX();
         double d1 = pPos.getY();
         double d2 = pPos.getZ();

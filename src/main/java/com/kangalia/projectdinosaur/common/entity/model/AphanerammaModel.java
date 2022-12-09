@@ -18,12 +18,12 @@ import java.util.List;
 public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(AphanerammaEntity object) {
+    public ResourceLocation getModelResource(AphanerammaEntity object) {
         return new ResourceLocation(ProjectDinosaur.MODID, "geo/aphaneramma_model.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AphanerammaEntity object) {
+    public ResourceLocation getTextureResource(AphanerammaEntity object) {
         if (object.isAdult()) {
             if (object.getGender() == 0 && !object.isSleeping()) {
                 return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_male.png");
@@ -42,13 +42,13 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(AphanerammaEntity animatable) {
+    public ResourceLocation getAnimationResource(AphanerammaEntity animatable) {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/aphaneramma.animation.json");
     }
 
     @Override
-    public void setLivingAnimations(AphanerammaEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(AphanerammaEntity entity, int uniqueID, @Nullable AnimationEvent customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         if (customPredicate == null) return;
 

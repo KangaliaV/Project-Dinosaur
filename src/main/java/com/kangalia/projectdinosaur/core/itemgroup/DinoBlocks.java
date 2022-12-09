@@ -1,6 +1,5 @@
 package com.kangalia.projectdinosaur.core.itemgroup;
 
-import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

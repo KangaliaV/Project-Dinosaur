@@ -2,5 +2,6 @@
   "parent": "minecraft:block/template_orientable_trapdoor_bottom",
   "textures": {
     "texture": "projectdinosaur:blocks/petrified_trapdoor"
-  }
+  },
+  "render_type": "cutout"
 }

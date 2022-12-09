@@ -8,5 +8,6 @@
     "south": "projectdinosaur:blocks/incubator_side",
     "east": "projectdinosaur:blocks/incubator_side",
     "west": "projectdinosaur:blocks/incubator_side"
-  }
+  },
+  "render_type": "translucent"
 }

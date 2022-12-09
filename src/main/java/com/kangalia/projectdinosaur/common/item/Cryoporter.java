@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -108,9 +107,9 @@ public class Cryoporter extends Item {
         CompoundTag tag = pStack.getOrCreateTag();
         if (tag.contains("id")) {
             String entityName = tag.getString("id");
-            pTooltipComponents.add((new TranslatableComponent("cryoporter."+entityName)).setStyle(Style.EMPTY.withItalic(true).withColor(ChatFormatting.AQUA)));
+            pTooltipComponents.add((Component.translatable("cryoporter."+entityName)).setStyle(Style.EMPTY.withItalic(true).withColor(ChatFormatting.AQUA)));
         } else {
-            pTooltipComponents.add((new TranslatableComponent("cryoporter.projectdinosaur.empty")).setStyle(Style.EMPTY.withItalic(true).withColor(ChatFormatting.GRAY)));
+            pTooltipComponents.add((Component.translatable("cryoporter.projectdinosaur.empty")).setStyle(Style.EMPTY.withItalic(true).withColor(ChatFormatting.GRAY)));
         }
 
 

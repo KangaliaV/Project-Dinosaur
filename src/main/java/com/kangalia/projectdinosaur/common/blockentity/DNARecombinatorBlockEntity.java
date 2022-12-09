@@ -3,7 +3,6 @@ package com.kangalia.projectdinosaur.common.blockentity;
 import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
-import com.kangalia.projectdinosaur.core.util.OutputStackHandler;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,11 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -115,7 +113,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side != Direction.DOWN) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER && side != Direction.DOWN) {
             return handler.cast();
         }
         return super.getCapability(cap, side);
@@ -271,7 +269,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
         CompoundTag tag = pkt.getTag();
         if (tag.contains("progress")) {
             progress = tag.getInt("progress");
-            this.getTileData().putInt("progress", this.progress);
+            this.getPersistentData().putInt("progress", this.progress);
         }
     }
 }

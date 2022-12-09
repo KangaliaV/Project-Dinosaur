@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import software.bernie.geckolib3.core.IAnimatableModel;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -15,12 +16,12 @@ import java.util.List;
 public class AustralovenatorModel extends AnimatedGeoModel<AustralovenatorEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(AustralovenatorEntity object) {
+    public ResourceLocation getModelResource(AustralovenatorEntity object) {
         return new ResourceLocation(ProjectDinosaur.MODID, "geo/australovenator_model.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AustralovenatorEntity object) {
+    public ResourceLocation getTextureResource(AustralovenatorEntity object) {
         if (object.isAdult()) {
             if (object.getGender() == 0 && !object.isSleeping()) {
                 return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_male.png");
@@ -39,13 +40,13 @@ public class AustralovenatorModel extends AnimatedGeoModel<AustralovenatorEntity
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(AustralovenatorEntity animatable) {
+    public ResourceLocation getAnimationResource(AustralovenatorEntity animatable) {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/australovenator.animation.json");
     }
 
     @Override
-    public void setLivingAnimations(AustralovenatorEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(AustralovenatorEntity entity, int uniqueID, @Nullable AnimationEvent customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         if (customPredicate == null) return;
 

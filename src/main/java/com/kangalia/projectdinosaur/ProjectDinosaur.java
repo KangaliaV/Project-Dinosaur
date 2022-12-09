@@ -1,18 +1,10 @@
 package com.kangalia.projectdinosaur;
 
 import com.kangalia.projectdinosaur.common.worldgen.ores.OreGen;
-import com.kangalia.projectdinosaur.core.data.recipes.ExcavatingRecipe;
-import com.kangalia.projectdinosaur.core.data.recipes.ExtractingRecipe;
-import com.kangalia.projectdinosaur.core.data.recipes.IncubatingRecipe;
-import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.*;
-import net.minecraft.core.Registry;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -38,7 +30,7 @@ public class ProjectDinosaur {
         EntityInit.ENTITY_TYPES.register(bus);
         RecipeInit.register(bus);
 
-        MinecraftForge.EVENT_BUS.addListener(OreGen::onBiomeLoadingEvent);
+        //MinecraftForge.EVENT_BUS.addListener(OreGen::onBiomeLoadingEvent);
         MinecraftForge.EVENT_BUS.register(this);
 
         bus.addListener(this::init);

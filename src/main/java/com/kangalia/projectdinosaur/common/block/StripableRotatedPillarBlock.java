@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.block;
 
 import com.kangalia.projectdinosaur.core.init.BlockInit;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.entity.player.Player;
@@ -20,8 +21,8 @@ public class StripableRotatedPillarBlock extends RotatedPillarBlock {
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction toolType) {
-        if (stack.getItem() instanceof AxeItem) {
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
+        if (context.getItemInHand().getItem() instanceof AxeItem) {
             if (state.is(BlockInit.PETRIFIED_LOG.get())) {
                 return BlockInit.STRIPPED_PETRIFIED_LOG.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
             }
@@ -30,6 +31,6 @@ public class StripableRotatedPillarBlock extends RotatedPillarBlock {
 
             }
         }
-        return super.getToolModifiedState(state, world, pos, player, stack, toolType);
+        return super.getToolModifiedState(state, context, toolAction, simulate);
     }
 }

@@ -3,7 +3,9 @@ package com.kangalia.projectdinosaur.common.item;
 import com.kangalia.projectdinosaur.common.entity.PetrifiedBoatEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BoatItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,11 +21,13 @@ import java.util.function.Predicate;
 
 public class PetrifiedBoatItem extends BoatItem {
     private static final Predicate<Entity> field_219989_a = EntitySelector.NO_SPECTATORS.and(Entity::canBeCollidedWith);
-    private final String woodType;
+    private final Boat.Type woodType;
+    private final boolean hasChest;
 
-    public PetrifiedBoatItem( Properties properties, String woodType) {
-        super(null, properties);
+    public PetrifiedBoatItem(boolean hasChest, Item.Properties properties, Boat.Type woodType) {
+        super(hasChest, woodType, properties);
         this.woodType = woodType;
+        this.hasChest = hasChest;
     }
 
     public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
@@ -48,7 +52,7 @@ public class PetrifiedBoatItem extends BoatItem {
 
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
                 PetrifiedBoatEntity boatentity = new PetrifiedBoatEntity(p_77659_1_, raytraceresult.getLocation().x, raytraceresult.getLocation().y, raytraceresult.getLocation().z);
-                boatentity.setWoodType(woodType);
+                //boatentity.setWoodType(woodType);
                 boatentity.yRotO = p_77659_2_.yRotO;
                 if (!p_77659_1_.noCollision(boatentity, boatentity.getBoundingBox().inflate(-0.1D))) {
                     return InteractionResultHolder.fail(itemstack);

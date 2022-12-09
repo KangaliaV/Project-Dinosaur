@@ -33,6 +33,11 @@ public class DinoScannerContainer extends AbstractContainerMenu {
     }
 
     @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        return null;
+    }
+
+    @Override
     public boolean stillValid(Player pPlayer) {
         return true;
     }

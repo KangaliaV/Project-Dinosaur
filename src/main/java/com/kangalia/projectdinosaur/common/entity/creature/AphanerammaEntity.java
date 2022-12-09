@@ -7,12 +7,9 @@ import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,7 +17,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -38,19 +37,21 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimatableModel;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
-import java.util.EnumSet;
 
 public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -66,7 +67,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         soundVolume = 0.2F;
         sleepSchedule = 0;
         adultHealth = 16.0F;
-        name = new TranslatableComponent("dino.projectdinosaur.aphaneramma");
+        name = Component.translatable("dino.projectdinosaur.aphaneramma");
         renderScale = 60;
     }
 
@@ -82,19 +83,19 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.walk", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else if (this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.swim", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.swim", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.sleep", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(0.5);
         } else if (this.isScrem()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.screm", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.screm", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.idle", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0);
         }
         return PlayState.CONTINUE;
@@ -125,10 +126,10 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
 
-    @Override
+    /*@Override
     protected int getExperienceReward(Player player) {
         return 1 + this.level.random.nextInt(4);
-    }
+    }*/
 
     @Override
     public int getAmbientSoundInterval() {

@@ -1,7 +1,5 @@
 package com.kangalia.projectdinosaur.common.blockentity;
 
-import com.kangalia.projectdinosaur.common.blockentity.slots.InputSlotHandler;
-import com.kangalia.projectdinosaur.common.blockentity.slots.ResultSlotHandler;
 import com.kangalia.projectdinosaur.core.data.recipes.ExtractingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
@@ -20,10 +18,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -125,7 +122,7 @@ public class CoreStationBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             this.setChanged();
             if(level != null && level.getBlockState(getBlockPos()).getBlock() != this.getBlockState().getBlock()) {
                 return handler.cast();
@@ -293,7 +290,7 @@ public class CoreStationBlockEntity extends BlockEntity {
         CompoundTag tag = pkt.getTag();
         if (tag.contains("progress")) {
             progress = tag.getInt("progress");
-            this.getTileData().putInt("progress", this.progress);
+            this.getPersistentData().putInt("progress", this.progress);
         }
     }
 }

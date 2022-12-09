@@ -11,7 +11,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -30,7 +30,7 @@ public class GroundFeederContainer extends AbstractContainerMenu {
         layoutPlayerInventorySlots(8, 84);
 
         if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, 80, 16)));
+            tileEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> addSlot(new SlotItemHandler(h, 0, 80, 16)));
         }
 
     }
@@ -67,24 +67,24 @@ public class GroundFeederContainer extends AbstractContainerMenu {
     }
 
     public int getHerbiFromTile() {
-        if (tileEntity.getTileData().contains("herbi")) {
-            return tileEntity.getTileData().getInt("herbi");
+        if (tileEntity.getPersistentData().contains("herbi")) {
+            return tileEntity.getPersistentData().getInt("herbi");
         } else {
             return 0;
         }
     }
 
     public int getCarniFromTile() {
-        if (tileEntity.getTileData().contains("carni")) {
-            return tileEntity.getTileData().getInt("carni");
+        if (tileEntity.getPersistentData().contains("carni")) {
+            return tileEntity.getPersistentData().getInt("carni");
         } else {
             return 0;
         }
     }
 
     public int getPisciFromTile() {
-        if (tileEntity.getTileData().contains("pisci")) {
-            return tileEntity.getTileData().getInt("pisci");
+        if (tileEntity.getPersistentData().contains("pisci")) {
+            return tileEntity.getPersistentData().getInt("pisci");
         } else {
             return 0;
         }
