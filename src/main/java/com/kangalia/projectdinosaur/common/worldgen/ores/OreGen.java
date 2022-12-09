@@ -4,15 +4,12 @@ import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 
 public class OreGen {
     public static final int ROCK_VEINSIZE = 8;
@@ -316,7 +313,7 @@ public class OreGen {
         return PlacementUtils.register(registryName, Holder.direct(feature), placementModifiers);
     }
 
-    public static void onBiomeLoadingEvent(BiomeLoadingEvent event) {
+    /*public static void onBiomeLoadingEvent(BiomeLoadingEvent event) {
         //Petrified Wood
         event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PETRIFIED_OREGEN);
         //Alpine Check
@@ -378,5 +375,5 @@ public class OreGen {
             event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_ROCK_OREGEN_UNDERGROUND);
             event.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, WETLAND_CRYSTALLISED_OREGEN_UNDERGROUND);
         }
-    }
+    }*/
 }

@@ -4,7 +4,6 @@ import com.kangalia.projectdinosaur.common.container.DinoScannerContainer;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +36,7 @@ public class DinoScanner extends Item {
             setClickedEntity((PrehistoricEntity) pInteractionTarget);
             if (!level.isClientSide) {
                 MenuProvider containerProvider = createContainerProvider((PrehistoricEntity) pInteractionTarget, pPlayer.getItemInHand(pUsedHand));
-                NetworkHooks.openGui((ServerPlayer) pPlayer, containerProvider);
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, containerProvider);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -49,7 +48,7 @@ public class DinoScanner extends Item {
             @Nonnull
             @Override
             public Component getDisplayName() {
-                return new TranslatableComponent("data.projectdinosaur.dino_species", entity.getSpecies());
+                return Component.translatable("data.projectdinosaur.dino_species", entity.getSpecies());
             }
 
             @Nonnull

@@ -6,7 +6,7 @@ import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -34,16 +34,18 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 
 public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public TarbosaurusEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -58,7 +60,7 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
         soundVolume = 0.5F;
         sleepSchedule = 0;
         adultHealth = 70.0F;
-        name = new TranslatableComponent("dino.projectdinosaur.tarbosaurus");
+        name = Component.translatable("dino.projectdinosaur.tarbosaurus");
         renderScale = 15;
     }
 
@@ -74,13 +76,13 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.run", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.run", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(3);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.sleep", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(0.25);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Tarbosaurus.idle", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(0.5);
         }
         return PlayState.CONTINUE;
@@ -117,10 +119,9 @@ public class TarbosaurusEntity extends PrehistoricEntity implements IAnimatable 
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Donkey.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Donkey));
     }
 
-    @Override
-    protected int getExperienceReward(Player player) {
+    /*protected int getExperienceReward(Player player) {
         return 1 + this.level.random.nextInt(4);
-    }
+    }*/
 
     @Override
     public int getAmbientSoundInterval() {

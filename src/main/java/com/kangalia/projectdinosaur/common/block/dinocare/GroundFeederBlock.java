@@ -6,7 +6,6 @@ import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +31,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,7 +77,7 @@ public class GroundFeederBlock extends Block implements EntityBlock, SimpleWater
             if(tileEntity instanceof GroundFeederBlockEntity && player instanceof ServerPlayer) {
 
                 MenuProvider containerProvider = createContainerProvider(world, pos);
-                NetworkHooks.openGui(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
+                NetworkHooks.openScreen(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
             }
             else {
                 throw new IllegalStateException("Container Provider is Missing!");
@@ -91,7 +90,7 @@ public class GroundFeederBlock extends Block implements EntityBlock, SimpleWater
         return new MenuProvider() {
             @Override
             public Component getDisplayName() {
-                return new TranslatableComponent("screen.projectdinosaur.ground_feeder");
+                return Component.translatable("screen.projectdinosaur.ground_feeder");
             }
 
             @javax.annotation.Nullable
@@ -106,7 +105,7 @@ public class GroundFeederBlock extends Block implements EntityBlock, SimpleWater
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if(state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
-            world.getBlockEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            world.getBlockEntity(pos).getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
                 for (int i = 0; i < h.getSlots(); i++) {
                     popResource(world, pos, h.getStackInSlot(i));
                 }

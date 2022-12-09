@@ -12,7 +12,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -60,43 +59,43 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         if (scanner.hasTag()) {
             if (scanner.getTag() != null) {
                 if (scanner.getTag().getBoolean("dino.hasnickname")) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_nickname", scanner.getTag().getString("dino.nickname")), 55, 126, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_nickname", scanner.getTag().getString("dino.nickname")), 55, 126, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_nickname", "-----"), 55, 126, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_nickname", "-----"), 55, 126, 9544081);
                 }
                 pPoseStack.scale(0.8f, 0.8f, 0.8f);
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_age", scanner.getTag().getInt("dino.age")), -30, 12, 9544081);
+                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_age", scanner.getTag().getInt("dino.age")), -30, 12, 9544081);
                 if (scanner.getTag().getInt("dino.sex") == 0) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_sex", new TranslatableComponent("attribute.projectdinosaur.male")), -30, 28, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_sex", Component.translatable("attribute.projectdinosaur.male")), -30, 28, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_sex", new TranslatableComponent("attribute.projectdinosaur.female")), -30, 28, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_sex", Component.translatable("attribute.projectdinosaur.female")), -30, 28, 9544081);
                 }
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_health", scanner.getTag().getInt("dino.health"), scanner.getTag().getInt("dino.maxhealth")), -30, 44, 9544081);
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_food", scanner.getTag().getInt("dino.food"), scanner.getTag().getInt("dino.maxfood")), -30, 60, 9544081);
-                this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_enrichment", scanner.getTag().getInt("dino.enrichment"), scanner.getTag().getInt("dino.maxenrichment")), -30, 76, 9544081);
+                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_health", scanner.getTag().getInt("dino.health"), scanner.getTag().getInt("dino.maxhealth")), -30, 44, 9544081);
+                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_food", scanner.getTag().getInt("dino.food"), scanner.getTag().getInt("dino.maxfood")), -30, 60, 9544081);
+                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_enrichment", scanner.getTag().getInt("dino.enrichment"), scanner.getTag().getInt("dino.maxenrichment")), -30, 76, 9544081);
                 if (scanner.getTag().getInt("dino.mood") == 0) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_mood", new TranslatableComponent("attribute.projectdinosaur.happy")), -30, 92, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.happy")), -30, 92, 9544081);
                 } else if (scanner.getTag().getInt("dino.mood") == 1) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_mood", new TranslatableComponent("attribute.projectdinosaur.moody")), -30, 92, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.moody")), -30, 92, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_mood", new TranslatableComponent("attribute.projectdinosaur.angry")), -30, 92, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.angry")), -30, 92, 9544081);
                 }
                 if (scanner.getTag().getInt("dino.diet") == 0) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.herbivore")), -30, 108, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.herbivore")), -30, 108, 9544081);
                 } else if (scanner.getTag().getInt("dino.diet") == 1) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.carnivore")), -30, 108, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.carnivore")), -30, 108, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_diet", new TranslatableComponent("attribute.projectdinosaur.piscivore")), -30, 108, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.piscivore")), -30, 108, 9544081);
                 }
                 if (scanner.getTag().getInt("dino.schedule") == 0) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.diurnal")), -30, 124, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.diurnal")), -30, 124, 9544081);
                 } else if (scanner.getTag().getInt("dino.schedule") == 1) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.nocturnal")), -30, 124, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.nocturnal")), -30, 124, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_schedule", new TranslatableComponent("attribute.projectdinosaur.cathemeral")), -30, 124, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.cathemeral")), -30, 124, 9544081);
                 }
                 if (scanner.getTag().getBoolean("dino.iscryosick")) {
-                    this.font.draw(pPoseStack, new TranslatableComponent("data.projectdinosaur.dino_cryosick"), -30, 140, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_cryosick"), -30, 140, 9544081);
                 }
             }
         }

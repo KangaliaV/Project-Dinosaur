@@ -15,12 +15,12 @@ import java.util.List;
 public class CompsognathusModel extends AnimatedGeoModel<CompsognathusEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(CompsognathusEntity object) {
+    public ResourceLocation getModelResource(CompsognathusEntity object) {
         return new ResourceLocation(ProjectDinosaur.MODID, "geo/compy_model.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CompsognathusEntity object) {
+    public ResourceLocation getTextureResource(CompsognathusEntity object) {
         if (object.isAdult()) {
             if (object.getGender() == 0 && !object.isSleeping()) {
                 return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/compy_male.png");
@@ -39,13 +39,13 @@ public class CompsognathusModel extends AnimatedGeoModel<CompsognathusEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(CompsognathusEntity animatable) {
+    public ResourceLocation getAnimationResource(CompsognathusEntity animatable) {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/compy.animation.json");
     }
 
     @Override
-    public void setLivingAnimations(CompsognathusEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(CompsognathusEntity entity, int uniqueID, @Nullable AnimationEvent customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         if (customPredicate == null) return;
 

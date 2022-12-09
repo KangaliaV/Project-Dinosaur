@@ -1,20 +1,18 @@
 package com.kangalia.projectdinosaur.common.container;
 
-import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.slots.OutputSlot;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -33,7 +31,7 @@ public class FossilExcavatorContainer extends AbstractContainerMenu {
         layoutPlayerInventorySlots(8, 84);
 
         if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            tileEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
 
                 //Chisel Slot
                 addSlot(new SlotItemHandler(h, 0, 80, 16));
@@ -98,8 +96,8 @@ public class FossilExcavatorContainer extends AbstractContainerMenu {
     }
 
     public int getProgressFromTile() {
-        if (tileEntity.getTileData().contains("progress")) {
-            return tileEntity.getTileData().getInt("progress");
+        if (tileEntity.getPersistentData().contains("progress")) {
+            return tileEntity.getPersistentData().getInt("progress");
         } else {
             return 0;
         }

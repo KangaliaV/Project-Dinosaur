@@ -12,7 +12,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
@@ -31,6 +30,9 @@ public class RecombinatingRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(Container inventory, Level world) {
+        if (world.isClientSide) {
+            return false;
+        }
         if(inputs.get(0).test(inventory.getItem(0))) {
             return inputs.get(1).test(inventory.getItem(1));
         }
@@ -130,7 +132,7 @@ public class RecombinatingRecipe implements Recipe<Container> {
             buffer.writeItemStack(recipe.getResultItem(), false);
         }
 
-        @Override
+        /*@Override
         public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
             return INSTANCE;
         }
@@ -149,6 +151,6 @@ public class RecombinatingRecipe implements Recipe<Container> {
         @SuppressWarnings("unchecked") // Need this wrapper, because generics
         private static <G> Class<G> castClass(Class<?> cls) {
             return (Class<G>)cls;
-        }
+        }*/
     }
 }

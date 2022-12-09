@@ -4,16 +4,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
-import com.kangalia.projectdinosaur.core.init.RecipeInit;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
@@ -33,6 +31,9 @@ public class ExcavatingRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(Container inventory, Level world) {
+        if (world.isClientSide) {
+            return false;
+        }
         if(inputs.get(0).test(inventory.getItem(0))) {
             return inputs.get(1).test(inventory.getItem(1));
         }
@@ -132,7 +133,7 @@ public class ExcavatingRecipe implements Recipe<Container> {
             buffer.writeItemStack(recipe.getResultItem(), false);
         }
 
-        @Override
+        /*@Override
         public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
             return INSTANCE;
         }
@@ -151,7 +152,7 @@ public class ExcavatingRecipe implements Recipe<Container> {
         @SuppressWarnings("unchecked") // Need this wrapper, because generics
         private static <G> Class<G> castClass(Class<?> cls) {
             return (Class<G>)cls;
-        }
+        }*/
 
     }
 }

@@ -6,7 +6,7 @@ import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -30,21 +30,22 @@ import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 
 public class AustralovenatorEntity extends PrehistoricEntity implements IAnimatable {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -59,7 +60,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         soundVolume = 0.3F;
         sleepSchedule = 0;
         adultHealth = 40.0F;
-        name = new TranslatableComponent("dino.projectdinosaur.australovenator");
+        name = Component.translatable("dino.projectdinosaur.australovenator");
         renderScale = 35;
     }
 
@@ -75,13 +76,13 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.run", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.run", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(3.5);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.sleep", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(0.35);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.idle", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.5);
         }
         return PlayState.CONTINUE;
@@ -118,10 +119,10 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-    @Override
+    /*@Override
     protected int getExperienceReward(Player player) {
         return 1 + this.level.random.nextInt(4);
-    }
+    }*/
 
     @Override
     public int getAmbientSoundInterval() {

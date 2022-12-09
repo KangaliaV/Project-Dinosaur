@@ -15,12 +15,12 @@ import java.util.List;
 public class ScelidosaurusModel extends AnimatedGeoModel<ScelidosaurusEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(ScelidosaurusEntity object) {
+    public ResourceLocation getModelResource(ScelidosaurusEntity object) {
         return new ResourceLocation(ProjectDinosaur.MODID, "geo/scelidosaurus_model.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ScelidosaurusEntity object) {
+    public ResourceLocation getTextureResource(ScelidosaurusEntity object) {
         if (object.isAdult()) {
             if (object.getGender() == 0 && !object.isSleeping()) {
                 return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/scelidosaurus_male.png");
@@ -39,13 +39,13 @@ public class ScelidosaurusModel extends AnimatedGeoModel<ScelidosaurusEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ScelidosaurusEntity animatable) {
+    public ResourceLocation getAnimationResource(ScelidosaurusEntity animatable) {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/scelidosaurus.animation.json");
     }
 
     @Override
-    public void setLivingAnimations(ScelidosaurusEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(ScelidosaurusEntity entity, int uniqueID, @Nullable AnimationEvent customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         if (customPredicate == null) return;
 

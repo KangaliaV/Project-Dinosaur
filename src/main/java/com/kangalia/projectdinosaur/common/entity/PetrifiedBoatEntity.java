@@ -66,10 +66,11 @@ public class PetrifiedBoatEntity extends Boat {
     public Item getDropItem() {
         switch(this.getWoodType()) {
             case "petrified":
-                return ItemInit.PETRIFIED_BOAT.get();
+                //return ItemInit.PETRIFIED_BOAT.get();
             default:
-                return ItemInit.PETRIFIED_BOAT.get();
+                //return ItemInit.PETRIFIED_BOAT.get();
         }
+        return null;
     }
 
     @Override

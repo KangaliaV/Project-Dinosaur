@@ -11,7 +11,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -30,7 +30,7 @@ public class DNARecombinatorContainer extends AbstractContainerMenu {
         layoutPlayerInventorySlots(8, 84);
 
         if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            tileEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
 
                 //DNA Slot
                 addSlot(new SlotItemHandler(h, 0, 80, 16));
@@ -82,8 +82,8 @@ public class DNARecombinatorContainer extends AbstractContainerMenu {
     }
 
     public int getProgressFromTile() {
-        if (tileEntity.getTileData().contains("progress")) {
-            return tileEntity.getTileData().getInt("progress");
+        if (tileEntity.getPersistentData().contains("progress")) {
+            return tileEntity.getPersistentData().getInt("progress");
         } else {
             return 0;
         }

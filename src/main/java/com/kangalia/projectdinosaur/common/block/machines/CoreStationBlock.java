@@ -1,13 +1,10 @@
 package com.kangalia.projectdinosaur.common.block.machines;
 
 import com.kangalia.projectdinosaur.common.blockentity.CoreStationBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.FossilExcavatorBlockEntity;
 import com.kangalia.projectdinosaur.common.container.CoreStationContainer;
-import com.kangalia.projectdinosaur.common.container.FossilExcavatorContainer;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,7 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +66,7 @@ public class CoreStationBlock extends Block implements EntityBlock {
             if(tileEntity instanceof CoreStationBlockEntity && player instanceof ServerPlayer) {
 
                 MenuProvider containerProvider = createContainerProvider(world, pos);
-                NetworkHooks.openGui(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
+                NetworkHooks.openScreen(((ServerPlayer) player), containerProvider, tileEntity.getBlockPos());
             }
             else {
                 throw new IllegalStateException("Container Provider is Missing!");
@@ -82,7 +79,7 @@ public class CoreStationBlock extends Block implements EntityBlock {
         return new MenuProvider() {
             @Override
             public Component getDisplayName() {
-                return new TranslatableComponent("screen.projectdinosaur.core_station");
+                return Component.translatable("screen.projectdinosaur.core_station");
             }
 
             @javax.annotation.Nullable
@@ -97,7 +94,7 @@ public class CoreStationBlock extends Block implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         if(state.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
-            world.getBlockEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            world.getBlockEntity(pos).getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
                 for (int i = 0; i < h.getSlots(); i++) {
                     popResource(world, pos, h.getStackInSlot(i));
                 }

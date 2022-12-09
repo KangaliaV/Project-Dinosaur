@@ -6,18 +6,15 @@ import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.TimeUtil;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
@@ -29,26 +26,28 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public class CompsognathusEntity extends PrehistoricEntity implements IAnimatable {
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public CompsognathusEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -63,7 +62,7 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         soundVolume = 0.2F;
         sleepSchedule = 1;
         adultHealth = 12.0F;
-        name = new TranslatableComponent("dino.projectdinosaur.compsognathus");
+        name = Component.translatable("dino.projectdinosaur.compsognathus");
         renderScale = 75;
     }
 
@@ -79,16 +78,16 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.run", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.run", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(8.0);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.sleep", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.sleep", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(0.35);
         } else if (this.isScrem()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.screm", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.screm", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.compy.idle", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0);
         }
         return PlayState.CONTINUE;
@@ -122,10 +121,10 @@ public class CompsognathusEntity extends PrehistoricEntity implements IAnimatabl
         this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-    @Override
+    /*@Override
     protected int getExperienceReward(Player player) {
         return 1 + this.level.random.nextInt(4);
-    }
+    }*/
 
     @Nullable
     @Override
