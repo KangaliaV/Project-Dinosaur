@@ -21,18 +21,19 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 public class WaterSpawnBlock extends Block {
 
-    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.5D, 16.0D);
+    protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
     private static int minHatchTickDelay = 3600;
     private static int maxHatchTickDelay = 12000;
     private static int minYoung = 1;
     private static int maxYoung = 4;
-    private static EntityType<? extends PrehistoricEntity> dino;
+    private static Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
 
-    public WaterSpawnBlock(Properties pProperties, @NotNull EntityType<? extends PrehistoricEntity> entity) {
+    public WaterSpawnBlock(Properties pProperties, Supplier<? extends EntityType<? extends PrehistoricEntity>> entity) {
         super(pProperties);
         dino = entity;
     }
@@ -90,14 +91,14 @@ public class WaterSpawnBlock extends Block {
     }
 
     private void destroyBlock(Level pLevel, BlockPos pPos) {
-        pLevel.destroyBlock(pPos, false);
+        pLevel.destroyBlock(pPos, true);
     }
 
     private void spawnYoung(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         int i = pRandom.nextInt(minYoung, maxYoung);
 
         for(int j = 1; j <= i; ++j) {
-            PrehistoricEntity young = dino.create(pLevel);
+            PrehistoricEntity young = dino.get().create(pLevel);
             if (young != null) {
                 young.setGender(pRandom.nextInt(2));
                 young.setAgeInTicks(0);

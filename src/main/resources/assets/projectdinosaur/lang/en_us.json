@@ -140,30 +140,43 @@
 
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
 
+
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
-  "item.projectdinosaur.fertilised_aphaneramma_egg": "Fertilised Aphaneramma Egg",
-  "block.projectdinosaur.incubated_aphaneramma_egg": "Incubated Aphaneramma Egg",
-  "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
-
+  "item.projectdinosaur.arthropleura_dna": "Arthropleura DNA",
   "item.projectdinosaur.australovenator_dna": "Australovenator DNA",
-  "item.projectdinosaur.fertilised_australovenator_egg": "Fertilised Australovenator Egg",
-  "block.projectdinosaur.incubated_australovenator_egg": "Incubated Australovenator Egg",
-  "item.projectdinosaur.australovenator_spawn_egg": "Australovenator Spawn Egg",
-
-  "item.projectdinosaur.compsognathus_dna": "Compsognathus DNA",
-  "item.projectdinosaur.fertilised_compsognathus_egg": "Fertilised Compsognathus Egg",
-  "block.projectdinosaur.incubated_compsognathus_egg": "Incubated Compsognathus Egg",
-  "item.projectdinosaur.compsognathus_spawn_egg": "Compsognathus Spawn Egg",
-
+  "item.projectdinosaur.dire_wolf_dna": "Dire Wolf DNA",
+  "item.projectdinosaur.eurypterus_dna": "Eurypterus DNA",
+  "item.projectdinosaur.gastornis_dna": "Gastornis DNA",
+  "item.projectdinosaur.gorgonops_dna": "Gorgonops DNA",
+  "item.projectdinosaur.megalodon_dna": "Megalodon DNA",
+  "item.projectdinosaur.megalograptus_dna": "Megalograptus DNA",
   "item.projectdinosaur.scelidosaurus_dna": "Scelidosaurus DNA",
-  "item.projectdinosaur.fertilised_scelidosaurus_egg": "Fertilised Scelidosaurus Egg",
-  "block.projectdinosaur.incubated_scelidosaurus_egg": "Incubated Scelidosaurus Egg",
-  "item.projectdinosaur.scelidosaurus_spawn_egg": "Scelidosaurus Spawn Egg",
+  "item.projectdinosaur.tiktaalik_dna": "Tiktaalik DNA",
+  "item.projectdinosaur.trilobite_dna": "Trilobite DNA",
 
-  "item.projectdinosaur.tarbosaurus_dna": "Tarbosaurus DNA",
-  "item.projectdinosaur.fertilised_tarbosaurus_egg": "Fertilised Tarbosaurus Egg",
-  "block.projectdinosaur.incubated_tarbosaurus_egg": "Incubated Tarbosaurus Egg",
-  "item.projectdinosaur.tarbosaurus_spawn_egg": "Tarbosaurus Spawn Egg",
+  "block.projectdinosaur.aphaneramma_spawn": "Aphaneramma Spawn",
+  "block.projectdinosaur.arthropleura_spawn": "Arthropleura Spawn",
+  "block.projectdinosaur.eurypterus_spawn": "Eurypterus Spawn",
+  "block.projectdinosaur.megalograptus_spawn": "Megalograptus Spawn",
+  "block.projectdinosaur.tiktaalik_spawn": "Tiktaalik Spawn",
+  "block.projectdinosaur.trilobite_spawn": "Trilobite Spawn",
+
+  "item.projectdinosaur.dire_wolf_embryo": "Dire Wolf Embryo",
+  "item.projectdinosaur.megalodon_embryo": "Megalodon Embryo",
+
+  "item.projectdinosaur.dire_wolf_foetus": "Dire Wolf Foetus",
+  "item.projectdinosaur.megalodon_foetus": "Megalodon Foetus",
+
+  "item.projectdinosaur.australovenator_egg_fertilised": "Fertilised Australovenator Egg",
+  "item.projectdinosaur.gastornis_egg_fertilised": "Fertilised Gastornis Egg",
+  "item.projectdinosaur.gorgonops_egg_fertilised": "Fertilised Gorgonops Egg",
+  "item.projectdinosaur.scelidosaurus_egg_fertilised": "Fertilised Scelidosaurus Egg",
+
+  "block.projectdinosaur.australovenator_egg_incubated": "Incubated Australovenator Egg",
+  "block.projectdinosaur.gastornis_egg_incubated": "Incubated Gastornis Egg",
+  "block.projectdinosaur.gorgonops_egg_incubated": "Incubated Gorgonops Egg",
+  "block.projectdinosaur.scelidosaurus_egg_incubated": "Incubated Scelidosaurus Egg",
+
 
   "data.projectdinosaur.dino_species": "Species: %1$s",
   "data.projectdinosaur.dino_nickname": "Nickname: %1$s",

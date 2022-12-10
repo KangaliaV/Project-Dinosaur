@@ -6,6 +6,7 @@ import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.SignItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
@@ -120,5 +121,9 @@ public class ItemInit {
     public static final RegistryObject<Item> GROWTH_STUNTING_HORMONE = ITEMS.register("growth_stunting_hormone", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> DINO_SCANNER = ITEMS.register("dino_scanner", () -> new DinoScanner(new Item.Properties().stacksTo(1).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> CRYOPORTER = ITEMS.register("cryoporter", () -> new Cryoporter(new Item.Properties().stacksTo(1).durability(10).tab(DinoItems.DINO_ITEMS)));
+
+    //Specific Block Items
+    public static final RegistryObject<Item> APHANERAMMA_SPAWN_ITEM = ITEMS.register("aphaneramma_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.APHANERAMMA_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+
 
 }

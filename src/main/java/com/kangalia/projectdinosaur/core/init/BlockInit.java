@@ -111,7 +111,7 @@ public class BlockInit {
     public static final RegistryObject<Block> INCUBATED_SCELIDOSAURUS_EGG = registerEggBlock("incubated_scelidosaurus_egg", () -> new ScelidosaurusEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_RED).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
 
     //Spawn
-    public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerEggBlock("aphaneramma_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion(), EntityInit.APHANERAMMA.get()));
+    public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerWaterSpawnBlock("aphaneramma_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.APHANERAMMA));
     public static final RegistryObject<Block> ARTHROPLEURA_SPAWN = registerEggBlock("arthropleura_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> EURYPTERUS_SPAWN = registerEggBlock("eurypterus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> MEGALOGRAPTUS_SPAWN = registerEggBlock("megalograptus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
@@ -148,5 +148,10 @@ public class BlockInit {
 
     private static <T extends Block> void registerEggBlockItem(String name, RegistryObject<T> block) {
         ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES).stacksTo(4)));
+    }
+
+    private static <T extends Block>RegistryObject<T> registerWaterSpawnBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        return toReturn;
     }
 }
