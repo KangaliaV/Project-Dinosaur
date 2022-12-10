@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "projectdinosaur:blocks/devonian_fossil_encased"
+  }
+}

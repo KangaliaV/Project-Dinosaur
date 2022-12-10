@@ -73,16 +73,10 @@ public class IncubatorBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) {
-                    return stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_APHANERAMMA_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get() ||
+                    return stack.getItem() == ItemInit.AUSTRALOVENATOR_EGG_FERTILISED.get() ||
                             stack.getItem() == BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get() ||
+                            stack.getItem() == ItemInit.SCELIDOSAURUS_EGG_FERTILISED.get() ||
                             stack.getItem() == BlockInit.INCUBATED_SCELIDOSAURUS_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_TARBOSAURUS_EGG.get().asItem() ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {
@@ -147,15 +141,9 @@ public class IncubatorBlockEntity extends BlockEntity {
         ItemStack inputSlot = ItemStack.EMPTY;
         inputSlot = itemHandler.getStackInSlot(0);
         boolean flag;
-        if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get()) {
+        if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.AUSTRALOVENATOR_EGG_FERTILISED.get()) {
             flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get()) {
+        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.SCELIDOSAURUS_EGG_FERTILISED.get()) {
             flag = true;
         } else {
             flag = false;

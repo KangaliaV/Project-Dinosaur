@@ -37,7 +37,7 @@ public class Plaster extends Item {
 
     private boolean rightClickBlock(BlockState clickedBlock, UseOnContext context, BlockPos pos) {
         Level world = context.getLevel();
-        if (!world.isClientSide) {
+        /*if (!world.isClientSide) {
             if (clickedBlock == BlockInit.ALPINE_ROCK_FOSSIL.get().defaultBlockState()) {
                 world.setBlock(pos, BlockInit.ENCASED_ALPINE_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
@@ -102,7 +102,7 @@ public class Plaster extends Item {
                 world.setBlock(pos, BlockInit.ENCASED_WETLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-        }
+        }*/
         return false;
     }
 

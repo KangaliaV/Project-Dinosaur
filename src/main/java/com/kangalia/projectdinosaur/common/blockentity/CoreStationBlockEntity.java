@@ -84,22 +84,18 @@ public class CoreStationBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot >= 1 && slot < 7) {
-                    return stack.getItem() == ItemInit.ALPINE_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.AQUATIC_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.ARID_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.FROZEN_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.GRASSLAND_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TEMPERATE_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TROPICAL_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.WETLAND_ROCK_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.ALPINE_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.AQUATIC_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.ARID_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.FROZEN_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.GRASSLAND_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TEMPERATE_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_SPECIMEN.get() ||
-                            stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_SPECIMEN.get();
+                    return stack.getItem() == ItemInit.QUATERNARY_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.NEOGENE_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.PALEOGENE_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.CRETACEOUS_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.JURASSIC_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.TRIASSIC_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.PERMIAN_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.CARBONIFEROUS_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.DEVONIAN_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.SILURIAN_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.ORDOVICIAN_FOSSIL_SPECIMEN.get() ||
+                            stack.getItem() == ItemInit.CAMBRIAN_FOSSIL_SPECIMEN.get();
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.SYRINGE.get();

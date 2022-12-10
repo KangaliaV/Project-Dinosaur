@@ -40,7 +40,7 @@ public class ProjectDinosaur {
     private void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             WoodType.register(WoodTypesInit.PETRIFIED);
-            OreGen.registerConfiguredFeatures();
+            //OreGen.registerConfiguredFeatures();
         });
     }
 }
