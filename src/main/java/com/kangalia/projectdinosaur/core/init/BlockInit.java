@@ -8,6 +8,8 @@ import com.kangalia.projectdinosaur.common.block.enrichment.*;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
+import com.kangalia.projectdinosaur.common.block.spawn.LandSpawnBlock;
+import com.kangalia.projectdinosaur.common.block.spawn.WaterSpawnBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -109,7 +111,7 @@ public class BlockInit {
     public static final RegistryObject<Block> INCUBATED_SCELIDOSAURUS_EGG = registerEggBlock("incubated_scelidosaurus_egg", () -> new ScelidosaurusEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_RED).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
 
     //Spawn
-    public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerEggBlock("aphaneramma_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerEggBlock("aphaneramma_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion(), EntityInit.APHANERAMMA.get()));
     public static final RegistryObject<Block> ARTHROPLEURA_SPAWN = registerEggBlock("arthropleura_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> EURYPTERUS_SPAWN = registerEggBlock("eurypterus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> MEGALOGRAPTUS_SPAWN = registerEggBlock("megalograptus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
