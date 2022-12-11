@@ -1,15 +1,15 @@
 {
   "type": "projectdinosaur:extracting",
-  "weight": 1,
+  "weight": 4,
   "ingredients": [
     {
       "item": "projectdinosaur:syringe"
     },
     {
-      "item": "projectdinosaur:arid_crystallised_specimen"
+      "item": "projectdinosaur:alpine_rock_specimen"
     }
   ],
   "result": {
-    "item": "projectdinosaur:tarbosaurus_dna"
+    "item": "projectdinosaur:australovenator_dna"
   }
 }
