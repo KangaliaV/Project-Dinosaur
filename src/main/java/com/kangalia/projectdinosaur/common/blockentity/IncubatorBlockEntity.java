@@ -74,9 +74,9 @@ public class IncubatorBlockEntity extends BlockEntity {
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.AUSTRALOVENATOR_EGG_FERTILISED.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().asItem() ||
+                            stack.getItem() == BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get().asItem() ||
                             stack.getItem() == ItemInit.SCELIDOSAURUS_EGG_FERTILISED.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_SCELIDOSAURUS_EGG.get().asItem() ||
+                            stack.getItem() == BlockInit.SCELIDOSAURUS_EGG_INCUBATED.get().asItem() ||
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {
