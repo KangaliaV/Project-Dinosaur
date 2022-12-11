@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "eggs=1": [
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_one"
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_one",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_one",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_one",
+        "y": 270
+      }
+    ],
+
+    "eggs=2": [
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_two"
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_two",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_two",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_two",
+        "y": 270
+      }
+    ],
+    "eggs=3": [
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three"
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three",
+        "y": 270
+      }
+    ]
+  }
+}

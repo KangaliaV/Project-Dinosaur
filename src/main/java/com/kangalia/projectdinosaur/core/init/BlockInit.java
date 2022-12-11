@@ -8,11 +8,9 @@ import com.kangalia.projectdinosaur.common.block.enrichment.*;
 import com.kangalia.projectdinosaur.common.block.machines.*;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignStandingBlock;
 import com.kangalia.projectdinosaur.common.block.signs.PetrifiedSignWallBlock;
-import com.kangalia.projectdinosaur.common.block.spawn.LandSpawnBlock;
-import com.kangalia.projectdinosaur.common.block.spawn.WaterSpawnBlock;
+import com.kangalia.projectdinosaur.common.block.eggs.WaterSpawnBlock;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -105,10 +103,10 @@ public class BlockInit {
     public static final RegistryObject<Block> SCRATCHING_LOG_MANGROVE = registerBlock("scratching_log_mangrove", () -> new ScratchingLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).strength(2.0F).sound(SoundType.WOOD).noOcclusion()));
 
     //Incubated Eggs
-    public static final RegistryObject<Block> INCUBATED_AUSTRALOVENATOR_EGG = registerEggBlock("incubated_australovenator_egg", () -> new AustralovenatorEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
-    public static final RegistryObject<Block> INCUBATED_GASTORNIS_EGG = registerEggBlock("incubated_gastornis_egg", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
-    public static final RegistryObject<Block> INCUBATED_GORGONOPS_EGG = registerEggBlock("incubated_gorgonops_egg", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
-    public static final RegistryObject<Block> INCUBATED_SCELIDOSAURUS_EGG = registerEggBlock("incubated_scelidosaurus_egg", () -> new ScelidosaurusEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_RED).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> INCUBATED_AUSTRALOVENATOR_EGG = registerEggBlock("australovenator_egg_incubated", () -> new PrehistoricEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion(), EntityInit.AUSTRALOVENATOR, 3));
+    public static final RegistryObject<Block> INCUBATED_GASTORNIS_EGG = registerEggBlock("gastornis_egg_incubated", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> INCUBATED_GORGONOPS_EGG = registerEggBlock("gorgonops_egg_incubated", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_ORANGE).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> INCUBATED_SCELIDOSAURUS_EGG = registerEggBlock("scelidosaurus_egg_incubated", () -> new PrehistoricEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_RED).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion(), EntityInit.SCELIDOSAURUS, 4));
 
     //Spawn
     public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerWaterSpawnBlock("aphaneramma_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.APHANERAMMA));

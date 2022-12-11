@@ -1,4 +1,4 @@
-package com.kangalia.projectdinosaur.common.block.spawn;
+package com.kangalia.projectdinosaur.common.block.eggs;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import net.minecraft.core.BlockPos;
@@ -21,19 +21,20 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class WaterSpawnBlock extends Block {
+public class LandSpawnBlock extends Block {
 
-    protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
+    protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 6.0D, 14.0D);
     private static int minHatchTickDelay = 3600;
     private static int maxHatchTickDelay = 12000;
     private static int minYoung = 1;
     private static int maxYoung = 4;
-    private static Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
+    private final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
 
-    public WaterSpawnBlock(Properties pProperties, Supplier<? extends EntityType<? extends PrehistoricEntity>> entity) {
+    public LandSpawnBlock(Properties pProperties, Supplier<? extends EntityType<? extends PrehistoricEntity>> entity) {
         super(pProperties);
         dino = entity;
     }
@@ -79,9 +80,20 @@ public class WaterSpawnBlock extends Block {
     }
 
     private static boolean mayPlaceOn(BlockGetter pLevel, BlockPos pPos) {
-        FluidState fluidstate = pLevel.getFluidState(pPos);
-        FluidState fluidstate1 = pLevel.getFluidState(pPos.above());
-        return fluidstate.getType() == Fluids.WATER && fluidstate1.getType() == Fluids.EMPTY;
+        Block block = pLevel.getBlockState(pPos).getBlock();
+        if (block == Blocks.DIRT) {
+            return true;
+        } else if (block == Blocks.COARSE_DIRT) {
+            return true;
+        } else if (block == Blocks.GRASS_BLOCK) {
+            return true;
+        } else if (block == Blocks.ROOTED_DIRT) {
+            return true;
+        } else if (block == Blocks.PODZOL) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void hatch(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
@@ -91,7 +103,7 @@ public class WaterSpawnBlock extends Block {
     }
 
     private void destroyBlock(Level pLevel, BlockPos pPos) {
-        pLevel.destroyBlock(pPos, true);
+        pLevel.destroyBlock(pPos, false);
     }
 
     private void spawnYoung(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {

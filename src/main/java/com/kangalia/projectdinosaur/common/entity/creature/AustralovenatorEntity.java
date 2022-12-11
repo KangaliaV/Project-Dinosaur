@@ -53,8 +53,8 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         this.lookControl = new AustralovenatorEntity.AustralovenatorLookControl();
         this.maxUpStep = 0.5F;
         minSize = 0.25F;
-        maxMaleSize = 1.1F;
-        maxFemaleSize = 1.0F;
+        maxMaleSize = 1.3F;
+        maxFemaleSize = 1.1F;
         maxFood = 80;
         diet = 1;
         soundVolume = 0.3F;
