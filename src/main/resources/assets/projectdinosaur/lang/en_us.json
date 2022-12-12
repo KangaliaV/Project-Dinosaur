@@ -63,11 +63,14 @@
   "block.projectdinosaur.core_station": "Core Station",
   "screen.projectdinosaur.core_station": "Core Station",
 
+  "block.projectdinosaur.dna_recombinator": "DNA Recombinator",
+  "screen.projectdinosaur.dna_recombinator": "DNA Recombinator",
+
   "block.projectdinosaur.incubator": "Incubator",
   "screen.projectdinosaur.incubator": "Incubator",
 
-  "block.projectdinosaur.dna_recombinator": "DNA Recombinator",
-  "screen.projectdinosaur.dna_recombinator": "DNA Recombinator",
+  "block.projectdinosaur.embryonic_womb": "Embryonic Womb",
+  "screen.projectdinosaur.embryonic_womb": "Embryonic Womb",
 
   "block.projectdinosaur.ground_feeder": "Ground Feeder",
   "screen.projectdinosaur.ground_feeder": "Ground Feeder",

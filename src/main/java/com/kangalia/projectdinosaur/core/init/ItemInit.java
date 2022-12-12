@@ -2,6 +2,8 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.item.*;
+import com.kangalia.projectdinosaur.common.item.blockitem.EmbryonicWombBlockItem;
+import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -114,6 +116,8 @@ public class ItemInit {
     //public static final RegistryObject<Item> PETRIFIED_BOAT = ITEMS.register("petrified_boat", () -> new PetrifiedBoatItem(false, new Item.Properties().tab(DinoItems.DINO_ITEMS), Boat.Type.OAK));
     public static final RegistryObject<Item> ROTTEN_EGG = ITEMS.register("rotten_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> NUTRIENT_GEL = ITEMS.register("nutrient_gel", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> GENETIC_BASE = ITEMS.register("genetic_base", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
 
     //Interactive Items
     public static final RegistryObject<Item> PLASTER = ITEMS.register("plaster", () -> new Plaster(new Item.Properties().tab(DinoItems.DINO_ITEMS)));
@@ -124,6 +128,6 @@ public class ItemInit {
 
     //Specific Block Items
     public static final RegistryObject<Item> APHANERAMMA_SPAWN_ITEM = ITEMS.register("aphaneramma_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.APHANERAMMA_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
-
+    public static final RegistryObject<Item> EMBRYONIC_WOMB_ITEM = ITEMS.register("embryonic_womb_item", () -> new EmbryonicWombBlockItem(BlockInit.EMBRYONIC_WOMB.get(), new Item.Properties().tab(DinoBlocks.DINO_BLOCKS)));
 
 }

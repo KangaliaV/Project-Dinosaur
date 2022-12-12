@@ -38,6 +38,12 @@ public class ContainerInit {
         Level world = inv.player.getCommandSenderWorld();
         return new IncubatorContainer(windowId, world, pos, inv, inv.player);
     }));
+    public static final RegistryObject<MenuType<EmbryonicWombContainer>> EMBRYONIC_WOMB_CONTAINER = CONTAINERS.register("embryonic_womb_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        Level world = inv.player.getCommandSenderWorld();
+        return new EmbryonicWombContainer(windowId, world, pos, inv, inv.player);
+    }));
+
 
     //Dino Care
     public static final RegistryObject<MenuType<GroundFeederContainer>> GROUND_FEEDER_CONTAINER = CONTAINERS.register("ground_feeder_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
@@ -45,6 +51,7 @@ public class ContainerInit {
         Level world = inv.player.getCommandSenderWorld();
         return new GroundFeederContainer(windowId, world, pos, inv, inv.player);
     }));
+
 
     //Item Containers
     public static final RegistryObject<MenuType<DinoScannerContainer>> DINO_SCANNER_CONTAINER = CONTAINERS.register("dino_scanner_container", () -> IForgeMenuType.create((windowId, inv, data) -> {

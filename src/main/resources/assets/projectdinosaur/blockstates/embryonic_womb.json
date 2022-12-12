@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "x": 90
+    },
+    "facing=up,powered=false": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "x": -90
+    },
+    "facing=north,powered=false": {
+      "model": "projectdinosaur:block/embryonic_womb"
+    },
+    "facing=south,powered=false": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "y": 90
+    },
+    "facing=down,powered=true": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "x": 90
+    },
+    "facing=up,powered=true": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "x": -90
+    },
+    "facing=north,powered=true": {
+      "model": "projectdinosaur:block/embryonic_womb"
+    },
+    "facing=south,powered=true": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "projectdinosaur:block/embryonic_womb",
+      "y": 90
+    }
+  }
+}

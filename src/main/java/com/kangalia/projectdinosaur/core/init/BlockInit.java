@@ -78,12 +78,11 @@ public class BlockInit {
     public static final RegistryObject<Block> CORE_STATION = registerBlock("core_station", () -> new CoreStationBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0f, 6.0f).sound(SoundType.METAL).lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> DNA_RECOMBINATOR = registerBlock("dna_recombinator", () -> new DNARecombinatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0f, 6.0f).sound(SoundType.METAL).lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> INCUBATOR = registerBlock("incubator", () -> new IncubatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0f, 6.0f).sound(SoundType.METAL).lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0).requiresCorrectToolForDrops().noOcclusion()));
-    public static final RegistryObject<Block> EMBRYONIC_WOMB = registerBlock("embryonic_womb", () -> new IncubatorBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0f, 6.0f).sound(SoundType.METAL).lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0).requiresCorrectToolForDrops().noOcclusion()));
+    public static final RegistryObject<Block> EMBRYONIC_WOMB = registerBlockWithoutItem("embryonic_womb", () -> new EmbryonicWombBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0f, 6.0f).sound(SoundType.METAL).lightLevel(state -> state.getValue(BlockStateProperties.POWERED) ? 14 : 0).requiresCorrectToolForDrops().noOcclusion()));
 
     //Dino Husbandry Blocks
     public static final RegistryObject<Block> GROUND_FEEDER = registerBlock("ground_feeder", () -> new GroundFeederBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0f, 6.0f).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
     public static final RegistryObject<Block> NEST = registerBlock("nest", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW).strength(0.5F).sound(SoundType.GRASS)));
-    public static final RegistryObject<Block> BABY_NURSER = registerBlock("baby_nurser", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0F, 6.0F).sound(SoundType.METAL)));
 
     //Enrichment Blocks
     public static final RegistryObject<Block> BUBBLE_BLOWER = registerBlock("bubble_blower", () -> new BubbleBlowerBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).strength(2.0F).sound(SoundType.METAL).noOcclusion()));
@@ -149,6 +148,11 @@ public class BlockInit {
     }
 
     private static <T extends Block>RegistryObject<T> registerWaterSpawnBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        return toReturn;
+    }
+
+    private static <T extends Block>RegistryObject<T> registerBlockWithoutItem(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         return toReturn;
     }
