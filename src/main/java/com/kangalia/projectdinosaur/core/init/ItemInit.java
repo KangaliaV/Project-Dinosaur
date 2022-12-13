@@ -61,7 +61,7 @@ public class ItemInit {
     public static final RegistryObject<Item> GASTORNIS_DNA = ITEMS.register("gastornis_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> GORGONOPS_DNA = ITEMS.register("gorgonops_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> MEGALODON_DNA = ITEMS.register("megalodon_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<Item> MEGALORAPTUS_DNA = ITEMS.register("megalograptus_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> MEGALOGRAPTUS_DNA = ITEMS.register("megalograptus_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> SCELIDOSAURUS_DNA = ITEMS.register("scelidosaurus_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> TIKTAALIK_DNA = ITEMS.register("tiktaalik_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> TRILOBITE_DNA = ITEMS.register("trilobite_dna", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));

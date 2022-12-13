@@ -18,6 +18,7 @@
   "rewards": {
     "experience": 500
   },
+  "criteria": {
     "australovenator_egg": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -65,7 +66,8 @@
           }
         ]
       }
-    },
+    }
+  },
   "requirements": [
     [
       "australovenator_egg"

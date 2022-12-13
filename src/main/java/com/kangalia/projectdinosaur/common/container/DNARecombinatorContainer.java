@@ -35,16 +35,14 @@ public class DNARecombinatorContainer extends AbstractContainerMenu {
                 //DNA Slot
                 addSlot(new SlotItemHandler(h, 0, 80, 16));
 
-                //Top
+                //Left
                 addSlot(new SlotItemHandler(h, 1, 49, 16));
-                addSlot(new SlotItemHandler(h, 2, 111, 16));
+                addSlot(new SlotItemHandler(h, 2, 29, 34));
+                addSlot(new SlotItemHandler(h, 3, 49, 52));
 
-                //Middle
-                addSlot(new SlotItemHandler(h, 3, 29, 34));
-                addSlot(new SlotItemHandler(h, 4, 131, 34));
-
-                //Bottom
-                addSlot(new SlotItemHandler(h, 5, 49, 52));
+                //Right
+                addSlot(new SlotItemHandler(h, 4, 111, 16));
+                addSlot(new SlotItemHandler(h, 5, 131, 34));
                 addSlot(new SlotItemHandler(h, 6, 111, 52));
             });
         }

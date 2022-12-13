@@ -2,7 +2,7 @@
   "parent": "projectdinosaur:pd/dna",
   "display": {
     "icon": {
-      "item": "projectdinosaur:aphaneramma_spawn"
+      "item": "projectdinosaur:aphaneramma_spawn_item"
     },
     "title": {
       "translate": "advancements.pd.aphaneramma.title"

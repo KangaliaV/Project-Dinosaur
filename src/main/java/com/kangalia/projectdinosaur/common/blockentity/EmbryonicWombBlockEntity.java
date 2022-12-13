@@ -5,6 +5,7 @@ import com.kangalia.projectdinosaur.core.data.recipes.GrowingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
+import com.kangalia.projectdinosaur.core.util.OutputStackHandler;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -46,13 +48,21 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
     SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
     private final RandomNumGen rng = new RandomNumGen();
-    private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+
+    protected ItemStackHandler inputs = createInputHandler();
+    protected ItemStackHandler outputs;
+    protected ItemStackHandler outputWrapper;
+
+    private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> inputs);
+    private final LazyOptional<IItemHandler> outputWrapperHandler = LazyOptional.of(() -> outputWrapper);
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new CombinedInvWrapper(inputs, outputWrapper));
 
     public EmbryonicWombBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntitiesInit.EMBRYONIC_WOMB_ENTITY.get(), blockPos, blockState);
-        this.items = NonNullList.withSize(2, ItemStack.EMPTY);
+        this.items = NonNullList.withSize(3, ItemStack.EMPTY);
+        outputs = new ItemStackHandler(1);
+        outputWrapper = new OutputStackHandler(outputs);
     }
 
     @Override
@@ -63,19 +73,21 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
 
     @Override
     public void load(CompoundTag nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        inputs.deserializeNBT(nbt.getCompound("inputs"));
+        outputs.deserializeNBT(nbt.getCompound("outputs"));
         this.progress = nbt.getInt("progress");
         super.load(nbt);
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt) {
-        nbt.put("inv", itemHandler.serializeNBT());
+        nbt.put("inputs", inputs.serializeNBT());
+        nbt.put("outputs", outputs.serializeNBT());
         nbt.putInt("progress", this.progress);
         super.saveAdditional(nbt);
     }
 
-    private ItemStackHandler createHandler() {
+    private ItemStackHandler createInputHandler() {
         return new ItemStackHandler(2) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -85,10 +97,7 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.DIRE_WOLF_EMBYRO.get() ||
-                            stack.getItem() == ItemInit.DIRE_WOLF_FOETUS.get() ||
-                            stack.getItem() == ItemInit.MEGALODON_EMBRYO.get() ||
-                            stack.getItem() == ItemInit.MEGALODON_FOETUS.get() ||
-                            stack.getItem() == ItemInit.ROTTEN_EGG.get();
+                            stack.getItem() == ItemInit.MEGALODON_EMBRYO.get();
                 }
                 if (slot == 1) {
                     return stack.getItem() == ItemInit.NUTRIENT_GOO.get();
@@ -96,21 +105,16 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
                 return false;
 
             }
-            @Nonnull
             @Override
-            public ItemStack insertItem(int slot, ItemStack stack , boolean simulate) {
-                return(isItemValid(slot, stack)) ? super.insertItem(slot, stack, simulate) : stack;
-            }
-
-            //Hopper extraction code doesn't work. Needs to be worked on.
-            @Nonnull
-            @Override
-            public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                return super.extractItem(slot, amount, simulate);
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+                return super.insertItem(slot, stack, simulate);
             }
 
             @Override
             public int getSlotLimit(int slot) {
+                if (slot == 1) {
+                    return 64;
+                }
                 return 1;
             }
         };
@@ -119,8 +123,28 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER && side != Direction.DOWN) {
-            return handler.cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            this.setChanged();
+            if(level != null && level.getBlockState(getBlockPos()).getBlock() != this.getBlockState().getBlock()) {
+                return handler.cast();
+            }
+            if (side == null) {
+                return handler.cast();
+            }
+            if (level == null) {
+                if (side == Direction.UP) {
+                    return inputHandler.cast();
+                }
+                if (side == Direction.DOWN) {
+                    return outputWrapperHandler.cast();
+                }
+            }
+            if (side == Direction.UP) {
+                return inputHandler.cast();
+            }
+            if (side == Direction.DOWN) {
+                return outputWrapperHandler.cast();
+            }
         }
         return super.getCapability(cap, side);
     }
@@ -150,29 +174,21 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
 
     private boolean canGrow() {
         ItemStack inputSlot = ItemStack.EMPTY;
-        inputSlot = itemHandler.getStackInSlot(0);
+        inputSlot = inputs.getStackInSlot(0);
         boolean flag;
-        if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.AUSTRALOVENATOR_EGG_FERTILISED.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.SCELIDOSAURUS_EGG_FERTILISED.get()) {
-            flag = true;
-        } else {
-            flag = false;
-        }
+        flag = !inputSlot.isEmpty() && inputs.isItemValid(0, inputSlot);
         if (flag) {
-            ItemStack haySlot = itemHandler.getStackInSlot(1);
-            if (!haySlot.isEmpty()) {
-                return true;
-            }
+            ItemStack haySlot = inputs.getStackInSlot(1);
+            return !haySlot.isEmpty();
         }
         return false;
     }
 
     @Nullable
     public GrowingRecipe craft() {
-        inventory = new SimpleContainer(itemHandler.getSlots());
-        inventory.addItem(itemHandler.getStackInSlot(0));
-        inventory.addItem(itemHandler.getStackInSlot(1));
+        inventory = new SimpleContainer(inputs.getSlots());
+        inventory.addItem(inputs.getStackInSlot(0));
+        inventory.addItem(inputs.getStackInSlot(1));
         List<GrowingRecipe> recipes = level.getRecipeManager().getRecipesFor(GrowingRecipe.GrowingRecipeType.INSTANCE, inventory, level);
         if (!recipes.isEmpty()) {
             GrowingRecipe selectedRecipe;
@@ -209,14 +225,15 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
 
     public void doGrow() {
         assert this.level != null;
-        ItemStack hay = itemHandler.getStackInSlot(1);
+        ItemStack hay = inputs.getStackInSlot(1);
+        ItemStack outputSlot = outputs.getStackInSlot(0);
         if (this.canGrow()) {
             GrowingRecipe selectedRecipe = craft();
             ItemStack output = getOutput(selectedRecipe);
-            if (!output.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(0);
+            if (!output.isEmpty() && outputSlot.isEmpty()) {
+                ItemStack stack = inputs.getStackInSlot(0);
                 stack.shrink(1);
-                itemHandler.insertItem(0, output, false);
+                outputs.insertItem(0, output, false);
             }
             hay.shrink(1);
         }

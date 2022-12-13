@@ -148,6 +148,7 @@
   "block.projectdinosaur.scratching_log_mangrove": "Mangrove Scratching Log",
 
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
+  "item.projectdinosaur.nutrient_goo": "Nutrient Goo",
 
 
   "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
@@ -244,6 +245,8 @@
   "advancements.pd.dna_recombinator.description": "Craft a DNA Recombinator",
   "advancements.pd.incubator.title": "Warmth means LIFE!",
   "advancements.pd.incubator.description": "Craft an Incubator",
+  "advancements.pd.embryonic_womb.title": "Machine Mum",
+  "advancements.pd.embryonic_womb.description": "Craft an Embryonic Womb",
 
   "advancements.pd.make_plaster.title": "Paper Mache, anyone?",
   "advancements.pd.make_plaster.description": "Craft Plaster.",
@@ -281,10 +284,8 @@
 
   "advancements.challenges.incubated_egg.title": "Aww, widdle babies- AHH!",
   "advancements.challenges.incubated_egg.description": "Incubate all different dinosaur eggs.",
-  "advancements.challenges.rock_specimen.title": "These are heavy- OOF!",
-  "advancements.challenges.rock_specimen.description": "Successfully excavate all Encased Rock Fossil Fragments",
-  "advancements.challenges.crystallised_specimen.title": "Oooh, shiny Kinder Eggs!",
-  "advancements.challenges.crystallised_specimen.description": "Successfully excavate all Encased Crystallised Fossil Fragments",
+  "advancements.challenges.fossil_specimen.title": "These are heavy- OOF!",
+  "advancements.challenges.fossil_specimen.description": "Successfully excavate all Encased Rock Fossil Fragments",
   "advancements.challenges.crystals.title": "Dripping in Gems",
   "advancements.challenges.crystals.description": "Collect all different gemstone blocks.",
 
