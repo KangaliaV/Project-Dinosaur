@@ -1,0 +1,73 @@
+{
+  "variants": {
+    "eggs=1": [
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_one"
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_one",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_one",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_one",
+        "y": 270
+      }
+    ],
+
+    "eggs=2": [
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_two"
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_two",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_two",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_two",
+        "y": 270
+      }
+    ],
+    "eggs=3": [
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_three"
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_three",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_three",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_three",
+        "y": 270
+      }
+    ],
+    "eggs=4": [
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_four"
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_four",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_four",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/gastornis_egg_incubated_four",
+        "y": 270
+      }
+    ]
+  }
+}

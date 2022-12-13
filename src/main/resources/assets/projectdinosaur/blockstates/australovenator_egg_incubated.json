@@ -51,6 +51,23 @@
         "model": "projectdinosaur:block/australovenator_egg_incubated_three",
         "y": 270
       }
+    ],
+    "eggs=4": [
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three"
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three",
+        "y": 90
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three",
+        "y": 180
+      },
+      {
+        "model": "projectdinosaur:block/australovenator_egg_incubated_three",
+        "y": 270
+      }
     ]
   }
 }

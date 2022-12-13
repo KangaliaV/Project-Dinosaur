@@ -2,7 +2,7 @@
   "parent": "projectdinosaur:pd/make_chisel",
   "display": {
     "icon": {
-      "item": "projectdinosaur:arid_rock_specimen"
+      "item": "projectdinosaur:ordovician_fossil_specimen"
     },
     "title": {
       "translate": "advancements.pd.specimen.title"

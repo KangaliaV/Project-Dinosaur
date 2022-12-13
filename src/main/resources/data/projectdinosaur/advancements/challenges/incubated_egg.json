@@ -2,7 +2,7 @@
   "parent": "projectdinosaur:challenges/root",
   "display": {
     "icon": {
-      "item": "projectdinosaur:incubated_aphaneramma_egg"
+      "item": "projectdinosaur:australovenator_egg_incubated"
     },
     "title": {
       "translate": "advancements.challenges.incubated_egg.title"
@@ -18,38 +18,37 @@
   "rewards": {
     "experience": 500
   },
-  "criteria": {
-    "aphaneramma_egg": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "projectdinosaur:incubated_aphaneramma_egg"
-            ]
-          }
-        ]
-      }
-    },
     "australovenator_egg": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:incubated_australovenator_egg"
+              "projectdinosaur:australovenator_egg_incubated"
             ]
           }
         ]
       }
     },
-    "compsognathus_egg": {
+    "gastornis_egg": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:incubated_compsognathus_egg"
+              "projectdinosaur:gastornis_egg_incubated"
+            ]
+          }
+        ]
+      }
+    },
+    "gorgonops_egg": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:gorgonops_egg_incubated"
             ]
           }
         ]
@@ -61,40 +60,24 @@
         "items": [
           {
             "items": [
-              "projectdinosaur:incubated_scelidosaurus_egg"
+              "projectdinosaur:scelidosaurus_egg_incubated"
             ]
           }
         ]
       }
     },
-    "tarbosaurus_egg": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "projectdinosaur:incubated_tarbosaurus_egg"
-            ]
-          }
-        ]
-      }
-    }
-  },
   "requirements": [
-    [
-      "aphaneramma_egg"
-    ],
     [
       "australovenator_egg"
     ],
     [
-      "compsognathus_egg"
+      "gastornis_egg"
+    ],
+    [
+      "gorgonops_egg"
     ],
     [
       "scelidosaurus_egg"
-    ],
-    [
-      "tarbosaurus_egg"
     ]
   ]
 }

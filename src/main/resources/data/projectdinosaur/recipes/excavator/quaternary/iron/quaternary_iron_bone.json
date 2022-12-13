@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 4,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    {
+      "item": "projectdinosaur:quaternary_fossil_fragment"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bone"
+  }
+}

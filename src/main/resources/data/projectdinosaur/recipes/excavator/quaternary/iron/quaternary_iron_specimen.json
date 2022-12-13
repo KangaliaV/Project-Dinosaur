@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 2,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    {
+      "item": "projectdinosaur:quaternary_fossil_fragment"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:quaternary_fossil_specimen"
+  }
+}

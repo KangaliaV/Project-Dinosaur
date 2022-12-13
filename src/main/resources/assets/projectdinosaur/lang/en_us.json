@@ -127,10 +127,15 @@
   "block.projectdinosaur.gnawing_rock_granite": "Granite Gnawing Rock",
   "block.projectdinosaur.gnawing_rock_andesite": "Andesite Gnawing Rock",
   "block.projectdinosaur.gnawing_rock_diorite": "Diorite Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_blackstone": "Blackstone Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_calcite": "Calcite Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_cobbled_deepslate": "Cobbled Deepslate Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_cobblestone": "Cobblestone Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_sandstone": "Sandstone Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_red_sandstone": "Red Sandstone Gnawing Rock",
+  "block.projectdinosaur.gnawing_rock_tuff": "Tuff Gnawing Rock",
 
-  "block.projectdinosaur.scent_diffuser_herbivore": "Herbivore Scent Diffuser",
   "block.projectdinosaur.scent_diffuser_carnivore": "Carnivore Scent Diffuser",
-  "block.projectdinosaur.scent_diffuser_piscivore": "Piscivore Scent Diffuser",
 
   "block.projectdinosaur.scratching_log_oak": "Oak Scratching Log",
   "block.projectdinosaur.scratching_log_spruce": "Spruce Scratching Log",
@@ -140,9 +145,23 @@
   "block.projectdinosaur.scratching_log_darkoak": "Dark Oak Scratching Log",
   "block.projectdinosaur.scratching_log_crimson": "Crimson Scratching Log",
   "block.projectdinosaur.scratching_log_warped": "Warped Scratching Log",
+  "block.projectdinosaur.scratching_log_mangrove": "Mangrove Scratching Log",
 
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
 
+
+  "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
+  "item.projectdinosaur.arthropleura_spawn_egg": "Arthropleura Spawn Egg",
+  "item.projectdinosaur.australovenator_spawn_egg": "Australovenator Spawn Egg",
+  "item.projectdinosaur.dire_wolf_spawn_egg": "Dire Wolf Spawn Egg",
+  "item.projectdinosaur.eurypterus_spawn_egg": "Eurypterus Spawn Egg",
+  "item.projectdinosaur.gastornis_spawn_egg": "Gastornis Spawn Egg",
+  "item.projectdinosaur.gorgonops_spawn_egg": "Gorgonops Spawn Egg",
+  "item.projectdinosaur.megalodon_spawn_egg": "Megalodon Spawn Egg",
+  "item.projectdinosaur.megalograptus_spawn_egg": "Megalograptus Spawn Egg",
+  "item.projectdinosaur.scelidosaurus_spawn_egg": "Scelidosaurus Spawn Egg",
+  "item.projectdinosaur.tiktaalik_spawn_egg": "Tiktaalik Spawn Egg",
+  "item.projectdinosaur.trilobite_spawn_egg": "Trilobite Spawn Egg",
 
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
   "item.projectdinosaur.arthropleura_dna": "Arthropleura DNA",

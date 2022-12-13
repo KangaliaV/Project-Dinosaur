@@ -1,0 +1,30 @@
+{
+  "type": "projectdinosaur:recombinating",
+  "weight": 1,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:gastornis_dna"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:gastornis_egg_fertilised"
+  }
+}

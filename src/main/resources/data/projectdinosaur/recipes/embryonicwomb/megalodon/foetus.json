@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:growing",
+  "weight": 3,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:megalodon_embryo"
+    },
+    {
+      "item": "projectdinosaur:nutrient_goo"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:megalodon_foetus"
+  }
+}

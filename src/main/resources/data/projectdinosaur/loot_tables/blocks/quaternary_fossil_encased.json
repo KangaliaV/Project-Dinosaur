@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "quaternary_fossil_encased",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "projectdinosaur:quaternary_fossil_encased"
+        }
+      ]
+    }
+  ]
+}

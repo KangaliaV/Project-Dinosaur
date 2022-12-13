@@ -6,6 +6,7 @@ import com.kangalia.projectdinosaur.common.item.blockitem.EmbryonicWombBlockItem
 import com.kangalia.projectdinosaur.core.itemgroup.DinoBlocks;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoCreatures;
 import com.kangalia.projectdinosaur.core.itemgroup.DinoItems;
+import com.kangalia.projectdinosaur.core.itemgroup.DinoSpawnEggs;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
@@ -72,12 +73,12 @@ public class ItemInit {
     public static final RegistryObject<Item> SCELIDOSAURUS_EGG_FERTILISED = ITEMS.register("scelidosaurus_egg_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
 
     //Spawn
-    public static final RegistryObject<Item> APHANERAMMA_SPAWN_FERTILISED = ITEMS.register("aphaneramma_spawn_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<Item> ARTHROPLEURA_SPAWN_FERTILISED = ITEMS.register("arthropleura_spawn_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<Item> EURYPTERUS_SPAWN_FERTILISED = ITEMS.register("eurypterus_egg_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<Item> MEGALOGRAPTUS_SPAWN_FERTILISED = ITEMS.register("megalograptus_spawn_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<Item> TIKTAALIK_SPAWN_FERTILISED = ITEMS.register("tiktaalik_spawn_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<Item> TRILOBITE_SPAWN_FERTILISED = ITEMS.register("trilobite_spawn_fertilised", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> APHANERAMMA_SPAWN_ITEM = ITEMS.register("aphaneramma_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.APHANERAMMA_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> ARTHROPLEURA_SPAWN_ITEM = ITEMS.register("arthropleura_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.ARTHROPLEURA_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> EURYPTERUS_SPAWN_ITEM = ITEMS.register("eurypterus_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.EURYPTERUS_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> MEGALOGRAPTUS_SPAWN_ITEM = ITEMS.register("megalograptus_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.MEGALOGRAPTUS_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> TIKTAALIK_SPAWN_ITEM = ITEMS.register("tiktaalik_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.TIKTAALIK_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<Item> TRILOBITE_SPAWN_ITEM = ITEMS.register("trilobite_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.TRILOBITE_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
 
     //Embryos
     public static final RegistryObject<Item> DIRE_WOLF_EMBYRO = ITEMS.register("dire_wolf_embryo", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
@@ -88,18 +89,18 @@ public class ItemInit {
     public static final RegistryObject<Item> MEGALODON_FOETUS = ITEMS.register("megalodon_foetus", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoCreatures.DINO_CREATURES)));
 
     //Spawn Eggs
-    public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> ATHROPLEURA_SPAWN_EGG = ITEMS.register("arthropleura_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> AUSTRALOVENATOR_SPAWN_EGG = ITEMS.register("australovenator_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.AUSTRALOVENATOR, 0x805e2d, 0x4d4943, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> DIRE_WOLF_SPAWN_EGG = ITEMS.register("dire_wolf_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> EURYPTERUS_SPAWN_EGG = ITEMS.register("eurypterus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> GASTORNIS_SPAWN_EGG = ITEMS.register("gastornis_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> GORGONOPS_SPAWN_EGG = ITEMS.register("gorgonops_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> MEGALODON_SPAWN_EGG = ITEMS.register("megalodon_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> MEGALOGRAPTUS_SPAWN_EGG = ITEMS.register("megalograptus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> SCELIDOSAURUS_SPAWN_EGG = ITEMS.register("scelidosaurus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.SCELIDOSAURUS, 0x764631, 0xcb9f8a, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> TIKTAALIK_SPAWN_EGG = ITEMS.register("tiktaalik_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
-    public static final RegistryObject<ForgeSpawnEggItem> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoCreatures.DINO_CREATURES)));
+    public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> ATHROPLEURA_SPAWN_EGG = ITEMS.register("arthropleura_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x1d1d1d, 0xa6b1b5, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> AUSTRALOVENATOR_SPAWN_EGG = ITEMS.register("australovenator_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.AUSTRALOVENATOR, 0x805e2d, 0x4d4943, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> DIRE_WOLF_SPAWN_EGG = ITEMS.register("dire_wolf_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x544742, 0x403e3d, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> EURYPTERUS_SPAWN_EGG = ITEMS.register("eurypterus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x274f41, 0x773f28, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> GASTORNIS_SPAWN_EGG = ITEMS.register("gastornis_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x433727, 0x938878, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> GORGONOPS_SPAWN_EGG = ITEMS.register("gorgonops_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x262422, 0x968670, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> MEGALODON_SPAWN_EGG = ITEMS.register("megalodon_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x5c6163, 0xbbc4c7, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> MEGALOGRAPTUS_SPAWN_EGG = ITEMS.register("megalograptus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0xbbc4c7, 0xb2a3a0, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> SCELIDOSAURUS_SPAWN_EGG = ITEMS.register("scelidosaurus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.SCELIDOSAURUS, 0x764631, 0xcb9f8a, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> TIKTAALIK_SPAWN_EGG = ITEMS.register("tiktaalik_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x4a453c, 0xa2b0b3, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x212121, 0x9f5405, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
 
     //Gems
     public static final RegistryObject<Item> HEMATINE = ITEMS.register("hematine", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
@@ -116,8 +117,7 @@ public class ItemInit {
     //public static final RegistryObject<Item> PETRIFIED_BOAT = ITEMS.register("petrified_boat", () -> new PetrifiedBoatItem(false, new Item.Properties().tab(DinoItems.DINO_ITEMS), Boat.Type.OAK));
     public static final RegistryObject<Item> ROTTEN_EGG = ITEMS.register("rotten_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> NUTRIENT_GEL = ITEMS.register("nutrient_gel", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> GENETIC_BASE = ITEMS.register("genetic_base", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> NUTRIENT_GOO = ITEMS.register("nutrient_goo", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
 
     //Interactive Items
     public static final RegistryObject<Item> PLASTER = ITEMS.register("plaster", () -> new Plaster(new Item.Properties().tab(DinoItems.DINO_ITEMS)));
@@ -127,7 +127,6 @@ public class ItemInit {
     public static final RegistryObject<Item> CRYOPORTER = ITEMS.register("cryoporter", () -> new Cryoporter(new Item.Properties().stacksTo(1).durability(10).tab(DinoItems.DINO_ITEMS)));
 
     //Specific Block Items
-    public static final RegistryObject<Item> APHANERAMMA_SPAWN_ITEM = ITEMS.register("aphaneramma_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.APHANERAMMA_SPAWN.get(), new Item.Properties().tab(DinoCreatures.DINO_CREATURES)));
     public static final RegistryObject<Item> EMBRYONIC_WOMB_ITEM = ITEMS.register("embryonic_womb_item", () -> new EmbryonicWombBlockItem(BlockInit.EMBRYONIC_WOMB.get(), new Item.Properties().tab(DinoBlocks.DINO_BLOCKS)));
 
 }

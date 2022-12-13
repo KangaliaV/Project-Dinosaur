@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "~~~",
+    "#@#",
+    "SSS"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:glass"
+    },
+    "~": {
+      "item": "minecraft:iron_ingot"
+    },
+    "@": {
+      "item": "projectdinosaur:nutrient_goo"
+    },
+    "S": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:embryonic_womb_item",
+    "count": 1
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:extracting",
+  "weight": 4,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:syringe"
+    },
+    {
+      "item": "projectdinosaur:paleogene_fossil_specimen"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:gastornis_dna"
+  }
+}

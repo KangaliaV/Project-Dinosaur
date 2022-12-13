@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:incubating",
+  "weight": 3,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:scelidosaurus_egg_fertilised"
+    },
+    {
+      "item": "minecraft:hay_block"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:scelidosaurus_egg_incubated"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "projectdinosaur:recombinating",
+  "weight": 1,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:trilobite_dna"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:trilobite_spawn_item"
+  }
+}

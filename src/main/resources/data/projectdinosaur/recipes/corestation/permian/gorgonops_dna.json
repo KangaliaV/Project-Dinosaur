@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:extracting",
+  "weight": 4,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:syringe"
+    },
+    {
+      "item": "projectdinosaur:permian_fossil_specimen"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:gorgonops_dna"
+  }
+}

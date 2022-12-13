@@ -1,11 +1,10 @@
 {
   "replace": false,
   "values": [
-    "projectdinosaur:incubated_aphaneramma_egg",
-    "projectdinosaur:incubated_australovenator_egg",
-    "projectdinosaur:incubated_compsognathus_egg",
-    "projectdinosaur:incubated_scelidosaurus_egg",
-    "projectdinosaur:incubated_tarbosaurus_egg"
+    "projectdinosaur:australovenator_egg_incubated",
+    "projectdinosaur:gastornis_egg_incubated",
+    "projectdinosaur:gorgonops_egg_incubated",
+    "projectdinosaur:scelidosaurus_egg_incubated"
 
   ]
 }

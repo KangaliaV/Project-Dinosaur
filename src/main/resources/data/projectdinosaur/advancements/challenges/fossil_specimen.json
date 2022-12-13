@@ -1,0 +1,205 @@
+{
+  "parent": "projectdinosaur:challenges/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:cambrian_fossil_specimen"
+    },
+    "title": {
+      "translate": "advancements.challenges.fossil_specimen.title"
+    },
+    "description": {
+      "translate": "advancements.challenges.fossil_specimen.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 250
+  },
+  "criteria": {
+    "quaternary": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:quaternary_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "neogene": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:neogene_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "paleogene": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:paleogene_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "cretaceous": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:cretaceous_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "jurassic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:jurassic_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "triassic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:triassic_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "permian": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:permian_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "carboniferous": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:carboniferous_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "devonian": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:devonian_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "silurian": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:silurian_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "ordovician": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:ordovician_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    },
+    "cambrian": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:cambrian_fossil_specimen"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "quaternary"
+    ],
+    [
+      "neogene"
+    ],
+    [
+      "paleogene"
+    ],
+    [
+      "cretaceous"
+    ],
+    [
+      "jurassic"
+    ],
+    [
+      "triassic"
+    ],
+    [
+      "permian"
+    ],
+    [
+      "carboniferous"
+    ],
+    [
+      "devonian"
+    ],
+    [
+      "silurian"
+    ],
+    [
+      "ordovician"
+    ],
+    [
+      "cambrian"
+    ]
+  ]
+}

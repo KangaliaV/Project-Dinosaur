@@ -91,7 +91,7 @@ public class EmbryonicWombBlockEntity extends BlockEntity implements IAnimatable
                             stack.getItem() == ItemInit.ROTTEN_EGG.get();
                 }
                 if (slot == 1) {
-                    return stack.getItem() == ItemInit.NUTRIENT_GEL.get();
+                    return stack.getItem() == ItemInit.NUTRIENT_GOO.get();
                 }
                 return false;
 
