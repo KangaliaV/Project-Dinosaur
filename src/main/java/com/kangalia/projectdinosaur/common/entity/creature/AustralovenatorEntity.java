@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -160,6 +162,21 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     @Override
     public AgeableMob getBreedOffspring(@Nonnull ServerLevel serverWorld, @Nonnull AgeableMob ageableMob) {
         return EntityInit.AUSTRALOVENATOR.get().create(serverWorld);
+    }
+
+    @Override
+    public int getBreedingType() {
+        return 0;
+    }
+
+    @Override
+    public Block getEggType() {
+        return BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get();
+    }
+
+    @Override
+    public int getClutchSize() {
+        return 3;
     }
 
     @Override

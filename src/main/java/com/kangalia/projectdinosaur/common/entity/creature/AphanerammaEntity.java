@@ -4,32 +4,48 @@ import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
+import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -51,6 +67,9 @@ import javax.annotation.Nonnull;
 
 public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
 
+    private static final EntityDataAccessor<BlockPos> TRAVEL_POS = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> TRAVELLING = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.BOOLEAN);
+
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -58,7 +77,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new AphanerammaEntity.AphanerammaMoveControl(this);
         this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
-        this.maxUpStep = 0.5F;
+        this.maxUpStep = 1.0F;
         minSize = 0.25F;
         maxMaleSize = 0.8F;
         maxFemaleSize = 1.0F;
@@ -74,7 +93,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 4.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.2F)
+                .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
@@ -115,10 +134,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
-        this.goalSelector.addGoal(1, new AphanerammaRandomStrollGoal(this, 1.0D, 200));
-        this.goalSelector.addGoal(2, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new AphanerammaTravelGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new AphanerammaRandomStrollGoal(this, 1.0D, 100));
+        this.goalSelector.addGoal(3, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -139,23 +159,53 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.BAT_AMBIENT;
+        if (!this.isInWater()) {
+            return SoundEvents.AXOLOTL_IDLE_AIR;
+        } else {
+            return SoundEvents.AXOLOTL_IDLE_WATER;
+        }
+    }
+
+    void setTravelPos(BlockPos pTravelPos) {
+        this.entityData.set(TRAVEL_POS, pTravelPos);
+    }
+
+    BlockPos getTravelPos() {
+        return this.entityData.get(TRAVEL_POS);
+    }
+
+    boolean isTravelling() {
+        return this.entityData.get(TRAVELLING);
+    }
+
+    void setTravelling(boolean pIsTravelling) {
+        this.entityData.set(TRAVELLING, pIsTravelling);
+    }
+
+    @Override
+    public int getBreedingType() {
+        return 1;
+    }
+
+    @Override
+    public ItemStack getSpawnType() {
+        return ItemInit.APHANERAMMA_SPAWN_ITEM.get().getDefaultInstance();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.BAT_HURT;
+        return SoundEvents.AXOLOTL_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.BAT_DEATH;
+        return SoundEvents.AXOLOTL_DEATH;
     }
 
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.SLIME_SQUISH_SMALL, 0.15F, 1.0F);
+        this.playSound(SoundEvents.FROG_STEP, 0.15F, 1.0F);
     }
 
     @Override
@@ -174,7 +224,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     protected PathNavigation createNavigation(Level level) {
-        return new AphanerammaEntity.AphanerammaPathNavigation(this, level);
+        return new AphanerammaPathNavigation(this, level);
     }
 
     @org.jetbrains.annotations.Nullable
@@ -186,6 +236,27 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     @Override
     public int getAdultAge() {
         return 5;
+    }
+
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(TRAVEL_POS, BlockPos.ZERO);
+        this.entityData.define(TRAVELLING, false);
+    }
+
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("TravelPosX", this.getTravelPos().getX());
+        pCompound.putInt("TravelPosY", this.getTravelPos().getY());
+        pCompound.putInt("TravelPosZ", this.getTravelPos().getZ());
+    }
+
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        int l = pCompound.getInt("TravelPosX");
+        int i1 = pCompound.getInt("TravelPosY");
+        int j1 = pCompound.getInt("TravelPosZ");
+        this.setTravelPos(new BlockPos(l, i1, j1));
     }
 
     public void travel(Vec3 p_149181_) {
@@ -210,109 +281,156 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
     }
 
-    static class AphanerammaMoveControl extends SmoothSwimmingMoveControl {
+    static class AphanerammaMoveControl extends MoveControl {
         private final AphanerammaEntity aphaneramma;
 
         AphanerammaMoveControl(AphanerammaEntity aphanerammaEntity) {
-            super(aphanerammaEntity, 85, 10, 0.1F, 0.5F, false);
+            super(aphanerammaEntity);
             this.aphaneramma = aphanerammaEntity;
         }
 
+        private void updateSpeed() {
+            if (this.aphaneramma.isInWater()) {
+                this.aphaneramma.setDeltaMovement(this.aphaneramma.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
+                if (this.aphaneramma.isBaby()) {
+                    this.aphaneramma.setSpeed(Math.max(this.aphaneramma.getSpeed() / 2.0F, 0.06F));
+
+                }
+            } else if (this.aphaneramma.onGround) {
+                this.aphaneramma.setSpeed(Math.max(this.aphaneramma.getSpeed(), 0.06F));
+            }
+        }
+
         public void tick() {
-            if (!this.aphaneramma.isSleeping()) {
-                super.tick();
+            this.updateSpeed();
+            if (this.operation == MoveControl.Operation.MOVE_TO && !this.aphaneramma.getNavigation().isDone()) {
+                double d0 = this.wantedX - this.aphaneramma.getX();
+                double d1 = this.wantedY - this.aphaneramma.getY();
+                double d2 = this.wantedZ - this.aphaneramma.getZ();
+                double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                d1 /= d3;
+                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                this.aphaneramma.setYRot(this.rotlerp(this.aphaneramma.getYRot(), f, 90.0F));
+                this.aphaneramma.yBodyRot = this.aphaneramma.getYRot();
+                float f1 = (float)(this.speedModifier * this.aphaneramma.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                this.aphaneramma.setSpeed(Mth.lerp(0.125F, this.aphaneramma.getSpeed(), f1));
+                this.aphaneramma.setDeltaMovement(this.aphaneramma.getDeltaMovement().add(0.0D, (double)this.aphaneramma.getSpeed() * d1 * 0.1D, 0.0D));
+            } else {
+                this.aphaneramma.setSpeed(0.0F);
             }
         }
     }
 
-    static class AphanerammaPathNavigation extends WaterBoundPathNavigation {
-        AphanerammaPathNavigation(AphanerammaEntity p_30294_, Level p_30295_) {
-            super(p_30294_, p_30295_);
+    static class AphanerammaPathNavigation extends AmphibiousPathNavigation {
+        AphanerammaPathNavigation(AphanerammaEntity entity, Level pLevel) {
+            super(entity, pLevel);
         }
 
-        protected boolean canUpdatePath() {
-            return true;
-        }
+        public boolean isStableDestination(BlockPos pPos) {
+            Mob mob = this.mob;
+            if (mob instanceof AphanerammaEntity aphaneramma) {
+                if (aphaneramma.isTravelling()) {
+                    return this.level.getBlockState(pPos).is(Blocks.WATER);
+                }
+            }
 
-        protected PathFinder createPathFinder(int p_149222_) {
-            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
-            return new PathFinder(this.nodeEvaluator, p_149222_);
-        }
-
-        public boolean isStableDestination(BlockPos p_149224_) {
-            return !this.level.getBlockState(p_149224_.below()).isAir();
+            return !this.level.getBlockState(pPos.below()).isAir();
         }
     }
 
     static class AphanerammaRandomStrollGoal extends RandomStrollGoal {
         private final AphanerammaEntity aphaneramma;
-        private final boolean checkNoActionTime;
 
-        public AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval) {
-            this(entity, pSpeedModifier, pInterval, true);
-        }
-
-        public AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval, boolean pCheckNoActionTime) {
+        AphanerammaRandomStrollGoal(AphanerammaEntity entity, double pSpeedModifier, int pInterval) {
             super(entity, pSpeedModifier, pInterval);
             this.aphaneramma = entity;
-            this.checkNoActionTime = pCheckNoActionTime;
         }
 
-        @Override
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
         public boolean canUse() {
-            if (this.mob.isVehicle()) {
-                return false;
-            } else {
-                if (!this.forceTrigger) {
-                    if (this.checkNoActionTime && this.mob.getNoActionTime() >= 100) {
-                        return false;
-                    }
+            return !this.mob.isInWater() && !this.aphaneramma.isSleeping() && super.canUse();
+        }
+    }
 
-                    if (this.mob.getRandom().nextInt(reducedTickDelay(this.interval)) != 0) {
-                        return false;
-                    }
-                }
-                Vec3 vec3;
-                if (aphaneramma.isInWater()) {
-                    vec3 = this.getSwimmablePosition();
-                } else {
-                    vec3 = this.getPosition();
-                }
-                if (vec3 == null) {
-                    return false;
-                } else {
-                    this.wantedX = vec3.x;
-                    this.wantedY = vec3.y;
-                    this.wantedZ = vec3.z;
-                    this.forceTrigger = false;
-                    return true;
-                }
-            }
+    static class AphanerammaTravelGoal extends Goal {
+        private final AphanerammaEntity aphaneramma;
+        private final double speedModifier;
+        private boolean stuck;
+
+        AphanerammaTravelGoal(AphanerammaEntity entity, double pSpeedModifier) {
+            this.aphaneramma = entity;
+            this.speedModifier = pSpeedModifier;
         }
 
-        @Override
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            return this.aphaneramma.isInWater() && !this.aphaneramma.isSleeping();
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
         public void start() {
-            if (this.aphaneramma.isInWater()) {
-                getPosition();
-                this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier * 2);
-            } else {
-                this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
+            int i = 512;
+            int j = 4;
+            RandomSource randomsource = this.aphaneramma.random;
+            int k = randomsource.nextInt(1025) - 512;
+            int l = randomsource.nextInt(9) - 4;
+            int i1 = randomsource.nextInt(1025) - 512;
+            if ((double)l + this.aphaneramma.getY() > (double)(this.aphaneramma.level.getSeaLevel() - 1)) {
+                l = 0;
+            }
+
+            BlockPos blockpos = new BlockPos((double)k + this.aphaneramma.getX(), (double)l + this.aphaneramma.getY(), (double)i1 + this.aphaneramma.getZ());
+            this.aphaneramma.setTravelPos(blockpos);
+            this.aphaneramma.setTravelling(true);
+            this.stuck = false;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            if (this.aphaneramma.getNavigation().isDone()) {
+                Vec3 vec3 = Vec3.atBottomCenterOf(this.aphaneramma.getTravelPos());
+                Vec3 vec31 = DefaultRandomPos.getPosTowards(this.aphaneramma, 16, 3, vec3, (double)((float)Math.PI / 10F));
+                if (vec31 == null) {
+                    vec31 = DefaultRandomPos.getPosTowards(this.aphaneramma, 8, 7, vec3, (double)((float)Math.PI / 2F));
+                }
+                if (vec31 != null) {
+                    int i = Mth.floor(vec31.x);
+                    int j = Mth.floor(vec31.z);
+                    int k = 34;
+                    if (!this.aphaneramma.level.hasChunksAt(i - 34, j - 34, i + 34, j + 34)) {
+                        vec31 = null;
+                    }
+                }
+                if (vec31 == null) {
+                    this.stuck = true;
+                    return;
+                }
+                this.aphaneramma.getNavigation().moveTo(vec31.x, vec31.y, vec31.z, this.speedModifier);
             }
         }
 
-        @Override
-        @javax.annotation.Nullable
-        protected Vec3 getPosition() {
-            return DefaultRandomPos.getPos(this.mob, 10, 7);
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            return !this.aphaneramma.getNavigation().isDone() && !this.stuck;
         }
 
-        protected Vec3 getSwimmablePosition() {
-            return BehaviorUtils.getRandomSwimmablePos(this.mob, 10, 7);
-        }
-
-        @Override
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
         public void stop() {
-            this.mob.getNavigation().stop();
+            this.aphaneramma.setTravelling(false);
             super.stop();
         }
     }

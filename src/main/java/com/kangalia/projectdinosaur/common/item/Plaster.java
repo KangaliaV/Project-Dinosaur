@@ -29,80 +29,66 @@ public class Plaster extends Item {
 
             if (success) {
                 world.playSound(null, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.NEUTRAL, 2.0F, world.random.nextFloat() + 0.4F + 0.8F);
-                stack.shrink(1 );
+                if (context.getPlayer() != null && !context.getPlayer().isCreative()) {
+                    stack.shrink(1);
+                }
             }
         }
-        return InteractionResult.CONSUME;
+        return InteractionResult.PASS;
     }
 
     private boolean rightClickBlock(BlockState clickedBlock, UseOnContext context, BlockPos pos) {
         Level world = context.getLevel();
-        /*if (!world.isClientSide) {
-            if (clickedBlock == BlockInit.ALPINE_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_ALPINE_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+        if (!world.isClientSide) {
+            if (clickedBlock == BlockInit.QUATERNARY_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.QUATERNARY_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.ARID_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_ARID_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.NEOGENE_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.NEOGENE_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.AQUATIC_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_AQUATIC_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.PALEOGENE_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.PALEOGENE_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.FROZEN_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_FROZEN_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.CRETACEOUS_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.CRETACEOUS_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.GRASSLAND_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_GRASSLAND_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.JURASSIC_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.JURASSIC_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.TEMPERATE_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_TEMPERATE_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.TRIASSIC_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.TRIASSIC_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.TROPICAL_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_TROPICAL_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.PERMIAN_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.PERMIAN_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.WETLAND_ROCK_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_WETLAND_ROCK_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.CARBONIFEROUS_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.CARBONIFEROUS_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.ALPINE_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_ALPINE_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.DEVONIAN_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.DEVONIAN_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.ARID_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_ARID_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.SILURIAN_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.SILURIAN_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.AQUATIC_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_AQUATIC_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.ORDOVICIAN_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.ORDOVICIAN_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.FROZEN_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_FROZEN_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
+            if (clickedBlock == BlockInit.CAMBRIAN_FOSSIL.get().defaultBlockState()) {
+                world.setBlock(pos, BlockInit.CAMBRIAN_FOSSIL_ENCASED.get().defaultBlockState(), Block.UPDATE_ALL);
                 return true;
             }
-            if (clickedBlock == BlockInit.GRASSLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_GRASSLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
-                return true;
-            }
-            if (clickedBlock == BlockInit.TEMPERATE_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_TEMPERATE_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
-                return true;
-            }
-            if (clickedBlock == BlockInit.TROPICAL_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_TROPICAL_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
-                return true;
-            }
-            if (clickedBlock == BlockInit.WETLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState()) {
-                world.setBlock(pos, BlockInit.ENCASED_WETLAND_CRYSTALLISED_FOSSIL.get().defaultBlockState(), Block.UPDATE_ALL);
-                return true;
-            }
-        }*/
+        }
         return false;
     }
 

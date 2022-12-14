@@ -73,7 +73,6 @@ public class Cryoporter extends Item {
         entity.save(compoundtag);
         stack.setTag(compoundtag);
         entity.remove(Entity.RemovalReason.DISCARDED);
-
     }
 
 
