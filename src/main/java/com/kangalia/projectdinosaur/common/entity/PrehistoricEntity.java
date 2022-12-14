@@ -9,6 +9,7 @@ import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,6 +27,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,6 +36,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.event.level.PistonEvent;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -92,7 +98,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         Random random = new Random();
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
-        this.setMatingTicks(12000);
+        this.setMatingTicks(1200);
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
         this.setRemainingCryosicknessTime(0);
@@ -222,7 +228,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                     if (this.distanceToSqr(prehistoric.getX(), prehistoric.getBoundingBox().minY, prehistoric.getZ()) <= distance && prehistoric.onGround && this.onGround && this.isAdult() && prehistoric.isAdult()) {
                         this.setMatingTicks(this.random.nextInt(6000) + 6000);
                         prehistoric.setMatingTicks(this.random.nextInt(12000) + 12000);
-                        this.layEgg(prehistoric);
+                        if (this.getBreedingType() == 1) {
+                            this.laySpawn(prehistoric);
+                        } else {
+                            this.layEgg(prehistoric);
+                        }
                     }
                 }
             }
@@ -234,14 +244,32 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         if (!prehistoric.isInWater()) {
             Level level = prehistoric.level;
             level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
-            if (prehistoric instanceof AustralovenatorEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get().defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(3) + 1), 3);
-            } else if (prehistoric instanceof ScelidosaurusEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.SCELIDOSAURUS_EGG_INCUBATED.get().defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
-            } else {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get().defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(3) + 1), 3);
-            }
+            Block eggType = prehistoric.getEggType();
+            level.setBlock(prehistoric.getOnPos().above(), eggType.defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(prehistoric.getClutchSize()) + 1), 3);
         }
+    }
+
+    public void laySpawn(PrehistoricEntity prehistoric) {
+        if (!prehistoric.level.isClientSide) {
+            ItemEntity item = new ItemEntity(prehistoric.level, prehistoric.getX(), prehistoric.getY(), prehistoric.getZ(), prehistoric.getSpawnType());
+            prehistoric.level.addFreshEntity(item);
+        }
+    }
+
+    public int getBreedingType() {
+        return 0;
+    }
+
+    public Block getEggType() {
+        return null;
+    }
+
+    public int getClutchSize() {
+        return 1;
+    }
+
+    public ItemStack getSpawnType() {
+        return ItemStack.EMPTY;
     }
 
     @Nonnull
@@ -272,6 +300,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 item.shrink(2);
                 playHormoneSound(pPlayer);
             } else if (!this.isStunted()) {
+                this.setHunger(this.getHunger() - 5);
                 this.setAgeInDays(this.getAgeInDays() + 1);
                 item.shrink(1);
                 playHormoneSound(pPlayer);
