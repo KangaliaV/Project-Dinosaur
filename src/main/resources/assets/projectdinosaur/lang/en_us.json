@@ -1,7 +1,8 @@
 {
   "itemGroup.dino_blocks": "Project Dinosaur: Blocks",
-  "itemGroup.dino_items": "Project Dinosaur: Items",
-  "itemGroup.dino_creatures": "Project Dinosaur: Mobs",
+  "itemGroup.dino_items": "Project Dinosaur: General Items",
+  "itemGroup.dino_creatures": "Project Dinosaur: Dino Items",
+  "itemGroup.dino_spawn_eggs": "Project Dinosaur: Spawn Eggs",
 
   "block.projectdinosaur.petrified_planks": "Petrified Planks",
   "block.projectdinosaur.petrified_log": "Petrified Log",
