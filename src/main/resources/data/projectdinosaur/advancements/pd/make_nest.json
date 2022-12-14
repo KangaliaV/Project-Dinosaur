@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "syringe": {
+    "nest": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "syringe"
+      "nest"
     ]
   ]
 }

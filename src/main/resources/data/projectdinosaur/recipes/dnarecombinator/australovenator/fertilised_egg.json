@@ -13,18 +13,9 @@
     },
     {
       "item": "minecraft:egg"
-    },
-    {
-      "item": "minecraft:egg"
-    },
-    {
-      "item": "minecraft:egg"
-    },
-    {
-      "item": "minecraft:egg"
     }
   ],
   "result": {
-    "item": "projectdinosaur:fertilised_australovenator_egg"
+    "item": "projectdinosaur:australovenator_egg_fertilised"
   }
 }

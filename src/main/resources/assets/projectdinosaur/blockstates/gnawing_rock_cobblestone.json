@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "projectdinosaur:block/gnawing_rock_cobblestone" },
+    "facing=east": { "model": "projectdinosaur:block/gnawing_rock_cobblestone", "y": 90 },
+    "facing=south": { "model": "projectdinosaur:block/gnawing_rock_cobblestone", "y": 180 },
+    "facing=west": { "model": "projectdinosaur:block/gnawing_rock_cobblestone", "y": 270 }
+  }
+}

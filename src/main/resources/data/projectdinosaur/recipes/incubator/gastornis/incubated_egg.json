@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:incubating",
+  "weight": 3,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:gastornis_egg_fertilised"
+    },
+    {
+      "item": "minecraft:hay_block"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:gastornis_egg_incubated"
+  }
+}

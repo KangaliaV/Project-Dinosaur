@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "projectdinosaur:items/carboniferous_fossil_specimen"
+  }
+}

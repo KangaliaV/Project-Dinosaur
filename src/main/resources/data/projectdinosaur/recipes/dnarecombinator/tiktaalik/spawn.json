@@ -1,0 +1,21 @@
+{
+  "type": "projectdinosaur:recombinating",
+  "weight": 1,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:tiktaalik_dna"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:tiktaalik_spawn_item"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 4,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:netherite_chisel"
+    },
+    {
+      "item": "projectdinosaur:carboniferous_fossil_fragment"
+    }
+  ],
+  "result": {
+    "item": "minecraft:cobbled_deepslate"
+  }
+}

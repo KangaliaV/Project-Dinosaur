@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.common.blockentity;
 import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
+import com.kangalia.projectdinosaur.core.util.OutputStackHandler;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,12 +37,20 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
     private final RandomNumGen rng = new RandomNumGen();
-    private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+
+    protected ItemStackHandler inputs = createInputHandler();
+    protected ItemStackHandler outputs;
+    protected ItemStackHandler outputWrapper;
+
+    private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> inputs);
+    private final LazyOptional<IItemHandler> outputWrapperHandler = LazyOptional.of(() -> outputWrapper);
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new CombinedInvWrapper(inputs, outputWrapper));
 
     public DNARecombinatorBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntitiesInit.DNA_RECOMBINATOR_ENTITY.get(), blockPos, blockState);
         this.items = NonNullList.withSize(7, ItemStack.EMPTY);
+        outputs = new ItemStackHandler(3);
+        outputWrapper = new OutputStackHandler(outputs);
     }
 
     @Override
@@ -51,60 +61,58 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
 
     @Override
     public void load(CompoundTag nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        inputs.deserializeNBT(nbt.getCompound("inputs"));
+        outputs.deserializeNBT(nbt.getCompound("outputs"));
         this.progress = nbt.getInt("progress");
         super.load(nbt);
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt) {
-        nbt.put("inv", itemHandler.serializeNBT());
+        nbt.put("inputs", inputs.serializeNBT());
+        nbt.put("outputs", outputs.serializeNBT());
         nbt.putInt("progress", this.progress);
         super.saveAdditional(nbt);
     }
 
-    private ItemStackHandler createHandler() {
-        return new ItemStackHandler(7) {
+    private ItemStackHandler createInputHandler() {
+        return new ItemStackHandler(4) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
             }
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot > 0 & slot < 7) {
-                    return stack.getItem() == Items.EGG ||
-                            stack.getItem() == ItemInit.ROTTEN_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get() ||
-                            stack.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get();
+                if (slot > 0 & slot < 4) {
+                    return stack.getItem() == Items.EGG;
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.APHANERAMMA_DNA.get() ||
+                            stack.getItem() == ItemInit.ARTHROPLEURA_DNA.get() ||
                             stack.getItem() == ItemInit.AUSTRALOVENATOR_DNA.get() ||
-                            stack.getItem() == ItemInit.COMPSOGNATHUS_DNA.get() ||
+                            stack.getItem() == ItemInit.DIRE_WOLF_DNA.get() ||
+                            stack.getItem() == ItemInit.EURYPTERUS_DNA.get() ||
+                            stack.getItem() == ItemInit.GASTORNIS_DNA.get() ||
+                            stack.getItem() == ItemInit.GORGONOPS_DNA.get() ||
+                            stack.getItem() == ItemInit.MEGALODON_DNA.get() ||
+                            stack.getItem() == ItemInit.MEGALOGRAPTUS_DNA.get() ||
                             stack.getItem() == ItemInit.SCELIDOSAURUS_DNA.get() ||
-                            stack.getItem() == ItemInit.TARBOSAURUS_DNA.get();
+                            stack.getItem() == ItemInit.TIKTAALIK_DNA.get() ||
+                            stack.getItem() == ItemInit.TRILOBITE_DNA.get();
                 }
                 return false;
 
             }
-            @Nonnull
             @Override
-            public ItemStack insertItem(int slot, ItemStack stack , boolean simulate) {
-                return(isItemValid(slot, stack)) ? super.insertItem(slot, stack, simulate) : stack;
-            }
-
-            //Hopper extraction code doesn't work. Needs to be worked on.
-            @Nonnull
-            @Override
-            public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                return super.extractItem(slot, amount, simulate);
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+                return super.insertItem(slot, stack, simulate);
             }
 
             @Override
             public int getSlotLimit(int slot) {
+                if (slot == 0) {
+                    return 64;
+                }
                 return 1;
             }
         };
@@ -113,8 +121,28 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER && side != Direction.DOWN) {
-            return handler.cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            this.setChanged();
+            if(level != null && level.getBlockState(getBlockPos()).getBlock() != this.getBlockState().getBlock()) {
+                return handler.cast();
+            }
+            if (side == null) {
+                return handler.cast();
+            }
+            if (level == null) {
+                if (side == Direction.UP) {
+                    return inputHandler.cast();
+                }
+                if (side == Direction.DOWN) {
+                    return outputWrapperHandler.cast();
+                }
+            }
+            if (side == Direction.UP) {
+                return inputHandler.cast();
+            }
+            if (side == Direction.DOWN) {
+                return outputWrapperHandler.cast();
+            }
         }
         return super.getCapability(cap, side);
     }
@@ -145,14 +173,14 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
     private boolean canRecombine() {
         ItemStack inputSlot = ItemStack.EMPTY;
         int counter = 0;
-        for (int slot = 1; slot < 7; slot++) {
-            inputSlot = itemHandler.getStackInSlot(slot);
+        for (int slot = 1; slot < 4; slot++) {
+            inputSlot = inputs.getStackInSlot(slot);
             if (!inputSlot.isEmpty() && inputSlot.getItem() == Items.EGG) {
                 ++counter;
             }
         }
-        if (counter == 6) {
-            ItemStack syringeSlot = itemHandler.getStackInSlot(0);
+        if (counter == 3) {
+            ItemStack syringeSlot = inputs.getStackInSlot(0);
             if (!syringeSlot.isEmpty()) {
                 return true;
             }
@@ -162,9 +190,9 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
 
     @Nullable
     public RecombinatingRecipe craft() {
-        inventory = new SimpleContainer(itemHandler.getSlots());
+        inventory = new SimpleContainer(inputs.getSlots());
         for (int i = 0; i < 7; i++) {
-            inventory.addItem(itemHandler.getStackInSlot(i));
+            inventory.addItem(inputs.getStackInSlot(i));
             List<RecombinatingRecipe> recipes = level.getRecipeManager().getRecipesFor(RecombinatingRecipe.RecombinatingRecipeType.INSTANCE, inventory, level);
             if (!recipes.isEmpty()) {
                 RecombinatingRecipe selectedRecipe;
@@ -202,7 +230,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
 
     public void doRecombine() {
         assert this.level != null;
-        ItemStack dna = itemHandler.getStackInSlot(0);
+        ItemStack dna = inputs.getStackInSlot(0);
         if (this.canRecombine()) {
             RecombinatingRecipe selectedRecipe1 = craft();
             ItemStack output1 = getOutput(selectedRecipe1);
@@ -210,41 +238,30 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
             ItemStack output2 = getOutput(selectedRecipe2);
             RecombinatingRecipe selectedRecipe3 = craft();
             ItemStack output3 = getOutput(selectedRecipe3);
-            RecombinatingRecipe selectedRecipe4 = craft();
-            ItemStack output4 = getOutput(selectedRecipe4);
-            RecombinatingRecipe selectedRecipe5 = craft();
-            ItemStack output5 = getOutput(selectedRecipe5);
-            RecombinatingRecipe selectedRecipe6 = craft();
-            ItemStack output6 = getOutput(selectedRecipe6);
             if (!output1.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(1);
-                stack.shrink(1);
-                itemHandler.insertItem(1, output1, false);
+                ItemStack stack = inputs.getStackInSlot(1);
+                ItemStack output = outputs.getStackInSlot(0);
+                if (output.isEmpty()) {
+                    stack.shrink(1);
+                    outputs.insertItem(0, output1, false);
+                }
             }
             if (!output2.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(2);
-                stack.shrink(1);
-                itemHandler.insertItem(2, output2, false);
+                ItemStack stack = inputs.getStackInSlot(2);
+                ItemStack output = outputs.getStackInSlot(1);
+                if (output.isEmpty()) {
+                    stack.shrink(1);
+                    outputs.insertItem(1, output2, false);
+                }
+
             }
             if (!output3.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(3);
-                stack.shrink(1);
-                itemHandler.insertItem(3, output3, false);
-            }
-            if (!output4.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(4);
-                stack.shrink(1);
-                itemHandler.insertItem(4, output4, false);
-            }
-            if (!output5.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(5);
-                stack.shrink(1);
-                itemHandler.insertItem(5, output5, false);
-            }
-            if (!output6.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(6);
-                stack.shrink(1);
-                itemHandler.insertItem(6, output6, false);
+                ItemStack stack = inputs.getStackInSlot(3);
+                ItemStack output = outputs.getStackInSlot(2);
+                if (output.isEmpty()) {
+                    stack.shrink(1);
+                    outputs.insertItem(2, output3, false);
+                }
             }
             dna.shrink(1);
         }

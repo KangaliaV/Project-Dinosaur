@@ -84,22 +84,18 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot >= 1 && slot < 7) {
-                    return stack.getItem() == ItemInit.ALPINE_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.AQUATIC_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.ARID_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.FROZEN_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.GRASSLAND_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.TEMPERATE_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.TROPICAL_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.WETLAND_ROCK_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.ALPINE_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.AQUATIC_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.ARID_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.FROZEN_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.GRASSLAND_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.TEMPERATE_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.TROPICAL_CRYSTALLISED_FRAGMENT.get().asItem() ||
-                            stack.getItem() == ItemInit.WETLAND_CRYSTALLISED_FRAGMENT.get().asItem();
+                    return stack.getItem() == ItemInit.QUATERNARY_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.NEOGENE_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.PALEOGENE_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.CRETACEOUS_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.JURASSIC_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.TRIASSIC_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.PERMIAN_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.CARBONIFEROUS_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.DEVONIAN_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.SILURIAN_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.ORDOVICIAN_FOSSIL_FRAGMENT.get().asItem() ||
+                            stack.getItem() == ItemInit.CAMBRIAN_FOSSIL_FRAGMENT.get().asItem();
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.IRON_CHISEL.get() ||

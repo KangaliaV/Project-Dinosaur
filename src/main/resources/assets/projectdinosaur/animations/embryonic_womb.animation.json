@@ -1,0 +1,112 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"lidopening": {
+			"animation_length": 1.04,
+			"bones": {
+				"Lid": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.04": {
+							"vector": [-40, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"lidclosing": {
+			"animation_length": 1.04,
+			"bones": {
+				"Lid": {
+					"rotation": {
+						"0.0": {
+							"vector": [-40, 0, 0]
+						},
+						"1.04": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"lidopen": {
+			"loop": true,
+			"bones": {
+				"Lid": {
+					"rotation": {
+						"vector": [-40, 0, 0]
+					}
+				}
+			}
+		},
+		"animation.embryonic_womb.embryo": {
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"Embryo": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, -90, 0]
+						},
+						"2.0": {
+							"vector": [0, -185, 0]
+						},
+						"3.0": {
+							"vector": [0, -272.5, 0]
+						},
+						"4.0": {
+							"vector": [0, -360, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, -0.6, 0]
+						},
+						"0.0417": {
+							"vector": [0, -0.6, 0]
+						},
+						"0.9583": {
+							"vector": [0, 0.4, 0]
+						},
+						"1.0": {
+							"vector": [0, 0.4, 0]
+						},
+						"1.0417": {
+							"vector": [0, 0.4, 0]
+						},
+						"1.9583": {
+							"vector": [0, -0.6, 0]
+						},
+						"2.0": {
+							"vector": [0, -0.6, 0]
+						},
+						"2.0417": {
+							"vector": [0, -0.6, 0]
+						},
+						"2.9583": {
+							"vector": [0, 0.4, 0]
+						},
+						"3.0": {
+							"vector": [0, 0.4, 0]
+						},
+						"3.0417": {
+							"vector": [0, 0.4, 0]
+						},
+						"3.9583": {
+							"vector": [0, -0.6, 0]
+						},
+						"4.0": {
+							"vector": [0, -0.6, 0]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

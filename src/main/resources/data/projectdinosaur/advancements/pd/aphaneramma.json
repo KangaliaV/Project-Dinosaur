@@ -1,8 +1,8 @@
 {
-  "parent": "projectdinosaur:pd/fertilised_egg",
+  "parent": "projectdinosaur:pd/dna",
   "display": {
     "icon": {
-      "item": "projectdinosaur:incubated_aphaneramma_egg"
+      "item": "projectdinosaur:aphaneramma_spawn_item"
     },
     "title": {
       "translate": "advancements.pd.aphaneramma.title"
@@ -16,13 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "egg": {
+    "aphaneramma": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:incubated_aphaneramma_egg"
+              "projectdinosaur:aphaneramma_spawn_item"
             ]
           }
         ]
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "egg"
+      "aphaneramma"
     ]
   ]
 }

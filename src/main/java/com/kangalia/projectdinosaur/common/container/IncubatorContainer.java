@@ -1,5 +1,6 @@
 package com.kangalia.projectdinosaur.common.container;
 
+import com.kangalia.projectdinosaur.common.blockentity.slots.OutputSlot;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ContainerInit;
 import net.minecraft.core.BlockPos;
@@ -35,8 +36,11 @@ public class IncubatorContainer extends AbstractContainerMenu {
                 //Top Egg Slot
                 addSlot(new SlotItemHandler(h, 0, 96, 22));
 
-                //Bottom Hay Slots
+                //Bottom Hay Slot
                 addSlot(new SlotItemHandler(h, 1, 96, 49));
+
+                //Output Slot
+                addSlot(new OutputSlot(h, 2, 132, 36));
             });
         }
     }

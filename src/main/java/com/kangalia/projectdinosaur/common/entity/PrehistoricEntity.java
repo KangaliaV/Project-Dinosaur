@@ -234,18 +234,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         if (!prehistoric.isInWater()) {
             Level level = prehistoric.level;
             level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
-            if (prehistoric instanceof AphanerammaEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
-            } else if (prehistoric instanceof CompsognathusEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().defaultBlockState().setValue(CompsognathusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
-            } else if (prehistoric instanceof AustralovenatorEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().defaultBlockState().setValue(AustralovenatorEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+            if (prehistoric instanceof AustralovenatorEntity) {
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get().defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(3) + 1), 3);
             } else if (prehistoric instanceof ScelidosaurusEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_SCELIDOSAURUS_EGG.get().defaultBlockState().setValue(ScelidosaurusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
-            } else if (prehistoric instanceof TarbosaurusEntity) {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_TARBOSAURUS_EGG.get().defaultBlockState().setValue(TarbosaurusEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.SCELIDOSAURUS_EGG_INCUBATED.get().defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
             } else {
-                level.setBlock(prehistoric.getOnPos().above(), BlockInit.INCUBATED_APHANERAMMA_EGG.get().defaultBlockState().setValue(AphanerammaEggBlock.EGGS, prehistoric.random.nextInt(4) + 1), 3);
+                level.setBlock(prehistoric.getOnPos().above(), BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get().defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(3) + 1), 3);
             }
         }
     }
@@ -472,6 +466,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public float getAdultHealth() {
         return adultHealth;
+    }
+
+    public Block getEgg() {
+        return null;
     }
 
     public int getDiet() {

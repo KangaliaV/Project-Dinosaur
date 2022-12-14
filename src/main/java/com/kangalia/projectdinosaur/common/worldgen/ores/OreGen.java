@@ -58,7 +58,7 @@ public class OreGen {
     public static Holder<PlacedFeature> WETLAND_ROCK_OREGEN_UNDERGROUND;
     public static Holder<PlacedFeature> WETLAND_CRYSTALLISED_OREGEN_UNDERGROUND;
 
-    public static void registerConfiguredFeatures() {
+    /*public static void registerConfiguredFeatures() {
         // Alpine
         OreConfiguration alpineRockConfig = new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.ALPINE_ROCK_FOSSIL.get().defaultBlockState(), ROCK_VEINSIZE);
         ALPINE_ROCK_OREGEN = registerPlacedFeature("alpine_rock_fossil", new ConfiguredFeature<>(Feature.ORE, (alpineRockConfig)),
@@ -311,7 +311,7 @@ public class OreGen {
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> Holder<PlacedFeature> registerPlacedFeature(String registryName, ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
         return PlacementUtils.register(registryName, Holder.direct(feature), placementModifiers);
-    }
+    }*/
 
     /*public static void onBiomeLoadingEvent(BiomeLoadingEvent event) {
         //Petrified Wood

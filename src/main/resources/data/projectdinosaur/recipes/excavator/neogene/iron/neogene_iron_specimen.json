@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 2,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:iron_chisel"
+    },
+    {
+      "item": "projectdinosaur:neogene_fossil_fragment"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:neogene_fossil_specimen"
+  }
+}

@@ -1,0 +1,59 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"1": "projectdinosaur:blocks/scratching_log_mangrove",
+		"particle": "projectdinosaur:blocks/scratching_log_mangrove"
+	},
+	"elements": [
+		{
+			"name": "log",
+			"from": [5, 0, 5],
+			"to": [11, 16, 11],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 8], "texture": "#1"},
+				"east": {"uv": [3, 0, 6, 8], "texture": "#1"},
+				"south": {"uv": [6, 0, 9, 8], "texture": "#1"},
+				"west": {"uv": [0, 8, 3, 16], "texture": "#1"},
+				"up": {"uv": [6, 11, 3, 8], "texture": "#1"},
+				"down": {"uv": [9, 8, 6, 11], "texture": "#1"}
+			}
+		},
+		{
+			"name": "branch1",
+			"from": [8, 8, 3],
+			"to": [10, 13, 5],
+			"rotation": {"angle": -45, "axis": "x", "origin": [8, 10.5, 4]},
+			"faces": {
+				"north": {"uv": [9, 0, 10, 2.5], "texture": "#1"},
+				"east": {"uv": [9, 2.5, 10, 5], "texture": "#1"},
+				"south": {"uv": [9, 5, 10, 7.5], "texture": "#1"},
+				"west": {"uv": [9, 7.5, 10, 10], "texture": "#1"},
+				"up": {"uv": [11, 8, 10, 7], "texture": "#1"},
+				"down": {"uv": [11, 8, 10, 9], "texture": "#1"}
+			}
+		},
+		{
+			"name": "branch2",
+			"from": [6, 4.5, 6.5],
+			"to": [8, 6.5, 11.5],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [7, 10.5, 12]},
+			"faces": {
+				"north": {"uv": [9, 10, 10, 11], "texture": "#1"},
+				"east": {"uv": [10, 0, 12.5, 1], "texture": "#1"},
+				"south": {"uv": [10, 9, 11, 10], "texture": "#1"},
+				"west": {"uv": [10, 1, 12.5, 2], "texture": "#1"},
+				"up": {"uv": [11, 4.5, 10, 2], "texture": "#1"},
+				"down": {"uv": [11, 4.5, 10, 7], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "scratchinglog",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

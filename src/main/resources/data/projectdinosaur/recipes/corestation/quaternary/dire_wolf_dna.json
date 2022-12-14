@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:extracting",
+  "weight": 4,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:syringe"
+    },
+    {
+      "item": "projectdinosaur:quaternary_fossil_specimen"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:dire_wolf_dna"
+  }
+}

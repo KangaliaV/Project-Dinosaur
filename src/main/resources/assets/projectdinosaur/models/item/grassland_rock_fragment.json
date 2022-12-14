@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "projectdinosaur:items/grassland_rock_fragment"
-  }
-}

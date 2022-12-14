@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "rock_specimen": {
+    "dna": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "rock_specimen"
+      "dna"
     ]
   ]
 }

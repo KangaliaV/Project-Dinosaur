@@ -2,7 +2,7 @@
   "parent": "projectdinosaur:pd/dna",
   "display": {
     "icon": {
-      "item": "projectdinosaur:fertilised_aphaneramma_egg"
+      "item": "projectdinosaur:australovenator_egg_fertilised"
     },
     "title": {
       "translate": "advancements.pd.fertilised_egg.title"
@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "rock_specimen": {
+    "eggs": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "rock_specimen"
+      "eggs"
     ]
   ]
 }

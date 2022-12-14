@@ -1,0 +1,21 @@
+{
+  "type": "projectdinosaur:recombinating",
+  "weight": 2,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:megalograptus_dna"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:rotten_egg"
+  }
+}

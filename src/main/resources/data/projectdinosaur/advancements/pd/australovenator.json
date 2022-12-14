@@ -2,7 +2,7 @@
   "parent": "projectdinosaur:pd/fertilised_egg",
   "display": {
     "icon": {
-      "item": "projectdinosaur:incubated_australovenator_egg"
+      "item": "projectdinosaur:australovenator_egg_incubated"
     },
     "title": {
       "translate": "advancements.pd.australovenator.title"
@@ -16,13 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "egg": {
+    "australovenator": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:incubated_australovenator_egg"
+              "projectdinosaur:australovenator_egg_incubated"
             ]
           }
         ]
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "egg"
+      "australovenator"
     ]
   ]
 }

@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.core.util;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.*;
+import com.kangalia.projectdinosaur.common.block.render.EmbryonicWombRenderer;
 import com.kangalia.projectdinosaur.common.container.GroundFeederContainer;
 import com.kangalia.projectdinosaur.common.entity.render.*;
 import com.kangalia.projectdinosaur.core.init.*;
@@ -26,13 +27,9 @@ public class ClientSetup {
         MenuScreens.register(ContainerInit.CORE_STATION_CONTAINER.get(), CoreStationScreen::new);
         MenuScreens.register(ContainerInit.DNA_RECOMBINATOR_CONTAINER.get(), DNARecombinatorScreen::new);
         MenuScreens.register(ContainerInit.INCUBATOR_CONTAINER.get(), IncubatorScreen::new);
+        MenuScreens.register(ContainerInit.EMBRYONIC_WOMB_CONTAINER.get(), EmbryonicWombScreen::new);
         MenuScreens.register(ContainerInit.GROUND_FEEDER_CONTAINER.get(), GroundFeederScreen::new);
         MenuScreens.register(ContainerInit.DINO_SCANNER_CONTAINER.get(), DinoScannerScreen::new);
-
-        // Goes in JSON model files now under "render_type"
-        //ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_DOOR.get(), RenderType.cutout());
-        //ItemBlockRenderTypes.setRenderLayer(BlockInit.PETRIFIED_TRAPDOOR.get(), RenderType.cutout());
-        //ItemBlockRenderTypes.setRenderLayer(BlockInit.INCUBATOR.get(), RenderType.translucent());
 
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
 
@@ -44,5 +41,7 @@ public class ClientSetup {
         EntityRenderers.register(EntityInit.COMPSOGNATHUS.get(), CompsognathusRenderer::new);
         EntityRenderers.register(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusRenderer::new);
         EntityRenderers.register(EntityInit.TARBOSAURUS.get(), TarbosaurusRenderer::new);
+
+        BlockEntityRenderers.register(BlockEntitiesInit.EMBRYONIC_WOMB_ENTITY.get(), EmbryonicWombRenderer::new);
     }
 }

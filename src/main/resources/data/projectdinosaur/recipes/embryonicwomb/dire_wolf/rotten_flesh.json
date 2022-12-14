@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:growing",
+  "weight": 3,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:dire_wolf_embryo"
+    },
+    {
+      "item": "projectdinosaur:nutrient_goo"
+    }
+  ],
+  "result": {
+    "item": "minecraft:rotten_flesh"
+  }
+}

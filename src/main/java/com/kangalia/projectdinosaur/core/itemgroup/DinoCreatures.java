@@ -14,6 +14,6 @@ public class DinoCreatures extends CreativeModeTab {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(ItemInit.APHANERAMMA_SPAWN_EGG.get());
+        return new ItemStack(ItemInit.AUSTRALOVENATOR_EGG_FERTILISED.get());
     }
 }

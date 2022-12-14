@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "syringe": {
+    "rotten_egg": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "syringe"
+      "rotten_egg"
     ]
   ]
 }

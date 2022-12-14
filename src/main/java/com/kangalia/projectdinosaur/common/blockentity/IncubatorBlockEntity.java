@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.core.data.recipes.IncubatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
+import com.kangalia.projectdinosaur.core.util.OutputStackHandler;
 import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +25,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,12 +38,20 @@ public class IncubatorBlockEntity extends BlockEntity {
     SimpleContainer inventory;
     private final NonNullList<ItemStack> items;
     private final RandomNumGen rng = new RandomNumGen();
-    private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+
+    protected ItemStackHandler inputs = createInputHandler();
+    protected ItemStackHandler outputs;
+    protected ItemStackHandler outputWrapper;
+
+    private final LazyOptional<IItemHandler> inputHandler = LazyOptional.of(() -> inputs);
+    private final LazyOptional<IItemHandler> outputWrapperHandler = LazyOptional.of(() -> outputWrapper);
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new CombinedInvWrapper(inputs, outputWrapper));
 
     public IncubatorBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntitiesInit.INCUBATOR_ENTITY.get(), blockPos, blockState);
-        this.items = NonNullList.withSize(2, ItemStack.EMPTY);
+        this.items = NonNullList.withSize(3, ItemStack.EMPTY);
+        outputs = new ItemStackHandler(1);
+        outputWrapper = new OutputStackHandler(outputs);
     }
 
     @Override
@@ -52,19 +62,21 @@ public class IncubatorBlockEntity extends BlockEntity {
 
     @Override
     public void load(CompoundTag nbt) {
-        itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        inputs.deserializeNBT(nbt.getCompound("inputs"));
+        outputs.deserializeNBT(nbt.getCompound("outputs"));
         this.progress = nbt.getInt("progress");
         super.load(nbt);
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt) {
-        nbt.put("inv", itemHandler.serializeNBT());
+        nbt.put("inputs", inputs.serializeNBT());
+        nbt.put("outputs", outputs.serializeNBT());
         nbt.putInt("progress", this.progress);
         super.saveAdditional(nbt);
     }
 
-    private ItemStackHandler createHandler() {
+    private ItemStackHandler createInputHandler() {
         return new ItemStackHandler(2) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -73,17 +85,10 @@ public class IncubatorBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) {
-                    return stack.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_APHANERAMMA_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_COMPSOGNATHUS_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_AUSTRALOVENATOR_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_SCELIDOSAURUS_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get() ||
-                            stack.getItem() == BlockInit.INCUBATED_TARBOSAURUS_EGG.get().asItem() ||
-                            stack.getItem() == ItemInit.ROTTEN_EGG.get();
+                    return stack.getItem() == ItemInit.AUSTRALOVENATOR_EGG_FERTILISED.get() ||
+                            stack.getItem() == ItemInit.GASTORNIS_EGG_FERTILISED.get() ||
+                            stack.getItem() == ItemInit.GORGONOPS_EGG_FERTILISED.get() ||
+                            stack.getItem() == ItemInit.SCELIDOSAURUS_EGG_FERTILISED.get();
                 }
                 if (slot == 1) {
                     return stack.getItem() == Blocks.HAY_BLOCK.asItem();
@@ -91,22 +96,18 @@ public class IncubatorBlockEntity extends BlockEntity {
                 return false;
 
             }
-            @Nonnull
             @Override
-            public ItemStack insertItem(int slot, ItemStack stack , boolean simulate) {
-                return(isItemValid(slot, stack)) ? super.insertItem(slot, stack, simulate) : stack;
-            }
-
-            //Hopper extraction code doesn't work. Needs to be worked on.
-            @Nonnull
-            @Override
-            public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                return super.extractItem(slot, amount, simulate);
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+                return super.insertItem(slot, stack, simulate);
             }
 
             @Override
             public int getSlotLimit(int slot) {
-                return 1;
+                if (slot == 1) {
+                    return 64;
+                } else {
+                    return 1;
+                }
             }
         };
     }
@@ -114,8 +115,28 @@ public class IncubatorBlockEntity extends BlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER && side != Direction.DOWN) {
-            return handler.cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            this.setChanged();
+            if(level != null && level.getBlockState(getBlockPos()).getBlock() != this.getBlockState().getBlock()) {
+                return handler.cast();
+            }
+            if (side == null) {
+                return handler.cast();
+            }
+            if (level == null) {
+                if (side == Direction.UP) {
+                    return inputHandler.cast();
+                }
+                if (side == Direction.DOWN) {
+                    return outputWrapperHandler.cast();
+                }
+            }
+            if (side == Direction.UP) {
+                return inputHandler.cast();
+            }
+            if (side == Direction.DOWN) {
+                return outputWrapperHandler.cast();
+            }
         }
         return super.getCapability(cap, side);
     }
@@ -145,35 +166,21 @@ public class IncubatorBlockEntity extends BlockEntity {
 
     private boolean canIncubate() {
         ItemStack inputSlot = ItemStack.EMPTY;
-        inputSlot = itemHandler.getStackInSlot(0);
+        inputSlot = inputs.getStackInSlot(0);
         boolean flag;
-        if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_APHANERAMMA_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_COMPSOGNATHUS_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_AUSTRALOVENATOR_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_SCELIDOSAURUS_EGG.get()) {
-            flag = true;
-        } else if (!inputSlot.isEmpty() && inputSlot.getItem() == ItemInit.FERTILISED_TARBOSAURUS_EGG.get()) {
-            flag = true;
-        } else {
-            flag = false;
-        }
+        flag = !inputSlot.isEmpty() && inputs.isItemValid(0, inputSlot);
         if (flag) {
-            ItemStack haySlot = itemHandler.getStackInSlot(1);
-            if (!haySlot.isEmpty()) {
-                return true;
-            }
+            ItemStack haySlot = inputs.getStackInSlot(1);
+            return !haySlot.isEmpty();
         }
         return false;
     }
 
     @Nullable
     public IncubatingRecipe craft() {
-        inventory = new SimpleContainer(itemHandler.getSlots());
-        inventory.addItem(itemHandler.getStackInSlot(0));
-        inventory.addItem(itemHandler.getStackInSlot(1));
+        inventory = new SimpleContainer(inputs.getSlots());
+        inventory.addItem(inputs.getStackInSlot(0));
+        inventory.addItem(inputs.getStackInSlot(1));
         List<IncubatingRecipe> recipes = level.getRecipeManager().getRecipesFor(IncubatingRecipe.IncubatingRecipeType.INSTANCE, inventory, level);
         if (!recipes.isEmpty()) {
             IncubatingRecipe selectedRecipe;
@@ -210,14 +217,15 @@ public class IncubatorBlockEntity extends BlockEntity {
 
     public void doIncubate() {
         assert this.level != null;
-        ItemStack hay = itemHandler.getStackInSlot(1);
+        ItemStack hay = inputs.getStackInSlot(1);
+        ItemStack outputSlot = outputs.getStackInSlot(0);
         if (this.canIncubate()) {
             IncubatingRecipe selectedRecipe = craft();
             ItemStack output = getOutput(selectedRecipe);
-            if (!output.isEmpty()) {
-                ItemStack stack = itemHandler.getStackInSlot(0);
+            if (!output.isEmpty() && outputSlot.isEmpty()) {
+                ItemStack stack = inputs.getStackInSlot(0);
                 stack.shrink(1);
-                itemHandler.insertItem(0, output, false);
+                outputs.insertItem(0, output, false);
             }
             hay.shrink(1);
         }

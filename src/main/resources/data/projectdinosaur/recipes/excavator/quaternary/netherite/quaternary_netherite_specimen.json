@@ -1,0 +1,15 @@
+{
+  "type": "projectdinosaur:excavating",
+  "weight": 6,
+  "ingredients": [
+    {
+      "item": "projectdinosaur:netherite_chisel"
+    },
+    {
+      "item": "projectdinosaur:quaternary_fossil_fragment"
+    }
+  ],
+  "result": {
+    "item": "projectdinosaur:paleogene_fossil_specimen"
+  }
+}
