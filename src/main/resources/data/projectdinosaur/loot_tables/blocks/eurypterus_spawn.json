@@ -10,6 +10,21 @@
           "type": "minecraft:item",
           "name": "projectdinosaur:eurypterus_spawn_item"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "enchantments": [
+              {
+                "enchantment": "minecraft:silk_touch",
+                "levels": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   ]

@@ -100,7 +100,7 @@ public class ItemInit {
     public static final RegistryObject<ForgeSpawnEggItem> MEGALOGRAPTUS_SPAWN_EGG = ITEMS.register("megalograptus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0xbbc4c7, 0xb2a3a0, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
     public static final RegistryObject<ForgeSpawnEggItem> SCELIDOSAURUS_SPAWN_EGG = ITEMS.register("scelidosaurus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.SCELIDOSAURUS, 0x764631, 0xcb9f8a, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
     public static final RegistryObject<ForgeSpawnEggItem> TIKTAALIK_SPAWN_EGG = ITEMS.register("tiktaalik_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x4a453c, 0xa2b0b3, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
-    public static final RegistryObject<ForgeSpawnEggItem> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x212121, 0x9f5405, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
+    public static final RegistryObject<ForgeSpawnEggItem> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.TRILOBITE, 0x212121, 0x9f5405, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
 
     //Gems
     public static final RegistryObject<Item> HEMATINE = ITEMS.register("hematine", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
