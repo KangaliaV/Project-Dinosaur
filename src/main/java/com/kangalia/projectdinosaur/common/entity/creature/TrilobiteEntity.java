@@ -68,7 +68,7 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
     @Override
     public SpawnGroupData finalizeSpawn(@Nonnull ServerLevelAccessor serverLevelAccessor, @Nonnull DifficultyInstance difficultyInstance, @Nonnull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         Random random = new Random();
-        this.setVariant(random.nextInt(2));
+        this.setVariant(random.nextInt(5));
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 

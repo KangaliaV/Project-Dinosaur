@@ -108,7 +108,7 @@ public class WaterSpawnBlock extends Block {
                 young.setHungerTicks(1600);
                 young.setEnrichment(young.getMaxEnrichment() / 2);
                 if (young instanceof TrilobiteEntity) {
-                    ((TrilobiteEntity) young).setVariant(pRandom.nextInt(2));
+                    ((TrilobiteEntity) young).setVariant(pRandom.nextInt(5));
                 }
                 young.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
                 young.setPersistenceRequired();
