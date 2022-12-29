@@ -1,9 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.render;
 
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.CompsognathusEntity;
 import com.kangalia.projectdinosaur.common.entity.model.AustralovenatorModel;
-import com.kangalia.projectdinosaur.common.entity.model.CompsognathusModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;

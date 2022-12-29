@@ -1,0 +1,43 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.trilobite.idle": {
+			"loop": true,
+			"animation_length": 0.6,
+			"bones": {
+				"antenna1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2": {
+							"vector": [-7.5, -5, 0]
+						},
+						"0.4": {
+							"vector": [-2.5, -10, 0]
+						},
+						"0.6": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"antenna2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2": {
+							"vector": [7.5, -5, 0]
+						},
+						"0.4": {
+							"vector": [2.5, -10, 0]
+						},
+						"0.6": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		}
+	}
+}
