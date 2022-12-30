@@ -120,7 +120,7 @@ public class BlockInit {
     public static final RegistryObject<Block> EURYPTERUS_SPAWN = registerEggBlock("eurypterus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> MEGALOGRAPTUS_SPAWN = registerEggBlock("megalograptus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> TIKTAALIK_SPAWN = registerEggBlock("tiktaalik_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
-    public static final RegistryObject<Block> TRILOBITE_SPAWN = registerEggBlock("trilobite_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> TRILOBITE_SPAWN = registerEggBlock("trilobite_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.TRILOBITE));
 
     //Gem Blocks
     public static final RegistryObject<Block> HEMATINE_BLOCK = registerBlock("hematine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));

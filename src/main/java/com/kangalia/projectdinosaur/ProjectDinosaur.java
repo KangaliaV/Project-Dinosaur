@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur;
 
-import com.kangalia.projectdinosaur.common.worldgen.ores.OreGen;
+import com.kangalia.projectdinosaur.common.worldgen.features.ConfiguredFeatures;
+import com.kangalia.projectdinosaur.common.worldgen.features.PlacedFeatures;
 import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,7 +31,9 @@ public class ProjectDinosaur {
         EntityInit.ENTITY_TYPES.register(bus);
         RecipeInit.register(bus);
 
-        //MinecraftForge.EVENT_BUS.addListener(OreGen::onBiomeLoadingEvent);
+        ConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
+        PlacedFeatures.PLACED_FEATURES.register(bus);
+
         MinecraftForge.EVENT_BUS.register(this);
 
         bus.addListener(this::init);

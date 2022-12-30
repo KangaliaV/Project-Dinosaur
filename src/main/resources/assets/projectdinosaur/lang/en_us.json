@@ -231,9 +231,8 @@
 
   "dino.projectdinosaur.aphaneramma": "Aphaneramma",
   "dino.projectdinosaur.australovenator": "Australovenator",
-  "dino.projectdinosaur.compsognathus": "Compsognathus",
   "dino.projectdinosaur.scelidosaurus": "Scelidosaurus",
-  "dino.projectdinosaur.tarbosaurus": "Tarbosaurus",
+  "dino.projectdinosaur.trilobite": "Trilobite",
 
   "advancements.pd.root.title": "Project Dinosaur",
   "advancements.pd.root.description": "Get your goggles and gloves on; time to bring dinosaurs to life!",
@@ -292,8 +291,7 @@
 
   "cryoporter.projectdinosaur:aphaneramma": "Aphaneramma",
   "cryoporter.projectdinosaur:australovenator": "Australovenator",
-  "cryoporter.projectdinosaur:compsognathus": "Compsognathus",
   "cryoporter.projectdinosaur:scelidosaurus": "Scelidosaurus",
-  "cryoporter.projectdinosaur:tarbosaurus": "Tarbosaurus",
+  "cryoporter.projectdinosaur:trilobite": "Trilobite",
   "cryoporter.projectdinosaur.empty": "Empty"
 }

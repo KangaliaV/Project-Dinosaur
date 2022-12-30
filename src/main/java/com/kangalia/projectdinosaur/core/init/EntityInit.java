@@ -31,20 +31,15 @@ public class EntityInit {
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "australovenator").toString()));
 
-    public static final RegistryObject<EntityType<CompsognathusEntity>> COMPSOGNATHUS = ENTITY_TYPES.register("compsognathus",
-            () -> EntityType.Builder.of(CompsognathusEntity::new, MobCategory.CREATURE)
-                    .sized(0.4f, 0.6f)
-                    .setTrackingRange(8)
-                    .build(new ResourceLocation(ProjectDinosaur.MODID, "compsognathus").toString()));
-
     public static final RegistryObject<EntityType<ScelidosaurusEntity>> SCELIDOSAURUS = ENTITY_TYPES.register("scelidosaurus",
             () -> EntityType.Builder.of(ScelidosaurusEntity::new, MobCategory.CREATURE)
                     .sized(0.9f, 1.1f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "scelidosaurus").toString()));
-    public static final RegistryObject<EntityType<TarbosaurusEntity>> TARBOSAURUS = ENTITY_TYPES.register("tarbosaurus",
-            () -> EntityType.Builder.of(TarbosaurusEntity::new, MobCategory.CREATURE)
-                    .sized(2.0f, 3.3f)
+
+    public static final RegistryObject<EntityType<TrilobiteEntity>> TRILOBITE = ENTITY_TYPES.register("trilobite",
+            () -> EntityType.Builder.of(TrilobiteEntity::new, MobCategory.CREATURE)
+                    .sized(0.6f, 0.3f)
                     .setTrackingRange(8)
-                    .build(new ResourceLocation(ProjectDinosaur.MODID, "tarbosaurus").toString()));
+                    .build(new ResourceLocation(ProjectDinosaur.MODID, "compsognathus").toString()));
 }
