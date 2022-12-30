@@ -25,8 +25,10 @@ public class TrilobiteModel extends AnimatedGeoModel<TrilobiteEntity> {
             return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite3.png");
         } else if (object.getVariant() == 3) {
             return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite4.png");
-        } else {
+        } else if (object.getVariant() == 4) {
             return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite5.png");
+        } else {
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite6.png");
         }
     }
 
