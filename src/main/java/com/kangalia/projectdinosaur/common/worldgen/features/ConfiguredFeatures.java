@@ -46,6 +46,9 @@ public class ConfiguredFeatures {
     public static final Supplier<List<OreConfiguration.TargetBlockState>> CAMBRIAN_CONFIGURATION = Suppliers.memoize(() -> List.of(
             OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlockInit.CAMBRIAN_FOSSIL.get().defaultBlockState())));
 
+    public static final Supplier<List<OreConfiguration.TargetBlockState>> PETRIFIED_CONFIGURATION = Suppliers.memoize(() -> List.of(
+            OreConfiguration.target(OreFeatures.STONE_ORE_REPLACEABLES, BlockInit.PETRIFIED_LOG.get().defaultBlockState())));
+
     //Ore Features
     public static final RegistryObject<ConfiguredFeature<?, ?>> QUATERNARY_FOSSIL_ORE = CONFIGURED_FEATURES.register("quaternary_fossil_ore",
             () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(Objects.requireNonNull(QUATERNARY_CONFIGURATION.get()),8)));
@@ -71,4 +74,7 @@ public class ConfiguredFeatures {
             () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(Objects.requireNonNull(ORDOVICIAN_CONFIGURATION.get()),8)));
     public static final RegistryObject<ConfiguredFeature<?, ?>> CAMBRIAN_FOSSIL_ORE = CONFIGURED_FEATURES.register("cambrian_fossil_ore",
             () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(Objects.requireNonNull(CAMBRIAN_CONFIGURATION.get()),8)));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> PETRIFIED_LOG_ORE = CONFIGURED_FEATURES.register("petrified_log_ore",
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(Objects.requireNonNull(PETRIFIED_CONFIGURATION.get()),16)));
 }
