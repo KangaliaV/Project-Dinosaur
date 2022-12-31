@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:diorite"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:gnawing_rock_diorite",
+    "count": 2
+  }
+}

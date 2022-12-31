@@ -37,35 +37,35 @@
     ],
     "eggs=3": [
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two"
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_three"
       },
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two",
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_three",
         "y": 90
       },
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two",
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_three",
         "y": 180
       },
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two",
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_three",
         "y": 270
       }
     ],
     "eggs=4": [
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two"
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_four"
       },
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two",
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_four",
         "y": 90
       },
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two",
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_four",
         "y": 180
       },
       {
-        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_two",
+        "model": "projectdinosaur:block/scelidosaurus_egg_incubated_four",
         "y": 270
       }
     ]

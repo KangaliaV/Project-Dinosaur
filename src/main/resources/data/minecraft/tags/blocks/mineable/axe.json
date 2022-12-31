@@ -1,6 +1,30 @@
 {
   "replace": false,
   "values": [
+    "projectdinosaur:petrified_log",
+    "projectdinosaur:stripped_petrified_log",
+    "projectdinosaur:petrified_wood",
+    "projectdinosaur:stripped_petrified_wood",
+    "projectdinosaur:petrified_planks",
+    "projectdinosaur:petrified_slab",
+    "projectdinosaur:petrified_stairs",
+    "projectdinosaur:petrified_fence",
+    "projectdinosaur:petrified_fence_gate",
+    "projectdinosaur:petrified_button",
+    "projectdinosaur:petrified_pressure_plate",
+    "projectdinosaur:petrified_door",
+    "projectdinosaur:petrified_trapdoor",
+    "projectdinosaur:petrified_sign",
+    "projectdinosaur:petrified_sign_wall",
 
+    "projectdinosaur:scratching_log_oak",
+    "projectdinosaur:scratching_log_spruce",
+    "projectdinosaur:scratching_log_birch",
+    "projectdinosaur:scratching_log_jungle",
+    "projectdinosaur:scratching_log_acacia",
+    "projectdinosaur:scratching_log_darkoak",
+    "projectdinosaur:scratching_log_crimson",
+    "projectdinosaur:scratching_log_warped",
+    "projectdinosaur:scratching_log_mangrove"
   ]
 }
