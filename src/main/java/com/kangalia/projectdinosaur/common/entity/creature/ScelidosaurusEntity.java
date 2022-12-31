@@ -68,7 +68,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 5.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.MOVEMENT_SPEED, 0.275F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
