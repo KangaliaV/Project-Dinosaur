@@ -52,11 +52,11 @@ public class ScelidosaurusModel extends AnimatedGeoModel<ScelidosaurusEntity> {
         List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
 
         IBone head = this.getAnimationProcessor().getBone("skull");
-        IBone neckbase = this.getAnimationProcessor().getBone("neckbase");
-        IBone neck = this.getAnimationProcessor().getBone("neck1");
+        IBone shoulders = this.getAnimationProcessor().getBone("shoulders");
+        IBone neck = this.getAnimationProcessor().getBone("neck");
         if (!entity.isSleeping()) {
             head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
-            neckbase.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 5);
+            shoulders.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
             neck.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
         }
     }

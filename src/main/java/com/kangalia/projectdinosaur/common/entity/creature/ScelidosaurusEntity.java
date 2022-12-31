@@ -53,22 +53,22 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         this.moveControl = new ScelidosaurusEntity.ScelidosaurusMoveControl();
         this.lookControl = new ScelidosaurusEntity.ScelidosaurusLookControl();
         this.maxUpStep = 0.5F;
-        minSize = 0.35F;
-        maxMaleSize = 2.0F;
-        maxFemaleSize = 1.75F;
+        minSize = 0.25F;
+        maxMaleSize = 1.2F;
+        maxFemaleSize = 1.0F;
         maxFood = 60;
         diet = 0;
         soundVolume = 0.3F;
         sleepSchedule = 0;
         adultHealth = 20.0F;
         name = Component.translatable("dino.projectdinosaur.scelidosaurus");
-        renderScale = 50;
+        renderScale = 40;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 5.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.2F)
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
@@ -78,10 +78,10 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.run", ILoopType.EDefaultLoopTypes.LOOP));
-            event.getController().setAnimationSpeed(1.65);
+            event.getController().setAnimationSpeed(1.25);
         } else if (this.isSleeping()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.sleep", ILoopType.EDefaultLoopTypes.LOOP));
-            event.getController().setAnimationSpeed(0.75);
+            event.getController().setAnimationSpeed(0.40);
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.idle", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(0.75);
