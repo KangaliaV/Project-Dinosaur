@@ -169,7 +169,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
 
     @Override
     public int getClutchSize() {
-        return 2;
+        return 4;
     }
 
     @Override
