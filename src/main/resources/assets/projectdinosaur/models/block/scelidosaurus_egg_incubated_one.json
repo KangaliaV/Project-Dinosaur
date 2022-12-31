@@ -1,0 +1,64 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "projectdinosaur:blocks/scelidosaurus_egg_incubated",
+		"particle": "projectdinosaur:blocks/scelidosaurus_egg_incubated"
+	},
+	"elements": [
+		{
+			"from": [9.05, 0, 4.05],
+			"to": [12.95, 6.2, 7.95],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [11, 3.33333, 6]},
+			"faces": {
+				"north": {"uv": [3, 0, 5.25, 3.25], "texture": "#0"},
+				"east": {"uv": [3, 3.5, 5.25, 6.75], "texture": "#0"},
+				"south": {"uv": [5.5, 0, 7.75, 3.25], "texture": "#0"},
+				"west": {"uv": [5.5, 3.5, 7.75, 6.75], "texture": "#0"},
+				"up": {"uv": [11.75, 4.75, 9.5, 2.5], "texture": "#0"},
+				"down": {"uv": [5.25, 9.5, 3, 11.75], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9.8, 1, 4.8],
+			"to": [12.2, 6.95, 7.2],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [11, 3.33333, 6]},
+			"faces": {
+				"north": {"uv": [8, 2.5, 9.5, 6.25], "texture": "#0"},
+				"east": {"uv": [0, 8.5, 1.5, 12.25], "texture": "#0"},
+				"south": {"uv": [1.5, 8.5, 3, 12.25], "texture": "#0"},
+				"west": {"uv": [9, 6.5, 10.5, 10.25], "texture": "#0"},
+				"up": {"uv": [11, 6.5, 9.5, 5], "texture": "#0"},
+				"down": {"uv": [7, 9.5, 5.5, 11], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.55, 0.5, 3.55],
+			"to": [13.45, 4.45, 8.45],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [11, 3.33333, 6]},
+			"faces": {
+				"north": {"uv": [0, 6, 2.75, 8.25], "texture": "#0"},
+				"east": {"uv": [3, 7, 5.75, 9.25], "texture": "#0"},
+				"south": {"uv": [6, 7, 8.75, 9.25], "texture": "#0"},
+				"west": {"uv": [8, 0, 10.75, 2.25], "texture": "#0"},
+				"up": {"uv": [2.75, 2.75, 0, 0], "texture": "#0"},
+				"down": {"uv": [2.75, 3, 0, 5.75], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "clutch",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "egg1",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1, 2]
+				}
+			]
+		}
+	]
+}
