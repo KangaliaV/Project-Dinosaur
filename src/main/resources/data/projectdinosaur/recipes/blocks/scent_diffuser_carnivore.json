@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#~#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "~": {
+      "item": "minecraft:beef"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:scent_diffuser_carnivore",
+    "count": 1
+  }
+}

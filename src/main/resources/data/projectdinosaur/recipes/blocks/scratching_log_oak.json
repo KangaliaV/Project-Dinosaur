@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "~",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:oak_log"
+    },
+    "~": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "projectdinosaur:scratching_log_oak",
+    "count": 1
+  }
+}

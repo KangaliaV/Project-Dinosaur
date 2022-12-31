@@ -55,6 +55,7 @@
     "projectdinosaur:gnawing_rock_cobblestone",
     "projectdinosaur:gnawing_rock_sandstone",
     "projectdinosaur:gnawing_rock_red_sandstone",
-    "projectdinosaur:gnawing_rock_tuff"
+    "projectdinosaur:gnawing_rock_tuff",
+    "projectdinosaur:scent_diffuser_carnivore"
   ]
 }
