@@ -201,6 +201,7 @@
   "block.projectdinosaur.gorgonops_egg_incubated": "Incubated Gorgonops Egg",
   "block.projectdinosaur.scelidosaurus_egg_incubated": "Incubated Scelidosaurus Egg",
 
+  "data.projectdinosaur.weight": "%1$s%% Chance",
 
   "data.projectdinosaur.dino_species": "Species: %1$s",
   "data.projectdinosaur.dino_nickname": "Nickname: %1$s",

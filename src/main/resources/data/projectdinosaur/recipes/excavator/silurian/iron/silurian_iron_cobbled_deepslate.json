@@ -1,6 +1,6 @@
 {
   "type": "projectdinosaur:excavating",
-  "weight": 6,
+  "weight": 10,
   "ingredients": [
     {
       "item": "projectdinosaur:iron_chisel"

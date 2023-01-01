@@ -1,6 +1,6 @@
 {
   "type": "projectdinosaur:excavating",
-  "weight": 6,
+  "weight": 5,
   "ingredients": [
     {
       "item": "projectdinosaur:netherite_chisel"

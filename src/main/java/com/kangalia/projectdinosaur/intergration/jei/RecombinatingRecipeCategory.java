@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.intergration.jei;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.data.recipes.RecombinatingRecipe;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
+import com.kangalia.projectdinosaur.core.init.ItemInit;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -11,6 +12,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +27,7 @@ public class RecombinatingRecipeCategory implements IRecipeCategory<Recombinatin
     private final IDrawable icon;
 
     public RecombinatingRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 85);
+        this.background = helper.createDrawable(TEXTURE, 10, 10, 150, 65);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockInit.DNA_RECOMBINATOR.get()));
     }
 
@@ -51,16 +53,37 @@ public class RecombinatingRecipeCategory implements IRecipeCategory<Recombinatin
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecombinatingRecipe recipe, IFocusGroup focuses) {
+        if (recipe.getResultItem().is(ItemInit.ROTTEN_EGG.get())) {
+            return;
+        }
         //DNA
-        builder.addSlot(RecipeIngredientRole.INPUT, 80, 16).addIngredients(recipe.getIngredients().get(0));
+        builder.addSlot(RecipeIngredientRole.INPUT, 70, 6).addIngredients(recipe.getIngredients().get(0));
         //Eggs
-        builder.addSlot(RecipeIngredientRole.INPUT, 49, 16).addIngredients(Ingredient.of(Items.EGG));
-        builder.addSlot(RecipeIngredientRole.INPUT, 29, 34).addIngredients(Ingredient.of(Items.EGG));
-        builder.addSlot(RecipeIngredientRole.INPUT, 49, 52).addIngredients(Ingredient.of(Items.EGG));
+        builder.addSlot(RecipeIngredientRole.INPUT, 39, 6).addIngredients(Ingredient.of(Items.EGG));
+        builder.addSlot(RecipeIngredientRole.INPUT, 19, 24).addIngredients(Ingredient.of(Items.EGG));
+        builder.addSlot(RecipeIngredientRole.INPUT, 39, 42).addIngredients(Ingredient.of(Items.EGG));
         //Ouputs
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 111, 16).addItemStack(recipe.getResultItem());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 131, 34).addItemStack(recipe.getResultItem());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 111, 52).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 6).addItemStack(ItemInit.ROTTEN_EGG.get().getDefaultInstance()).addTooltipCallback((recipeSlotView, tooltip) -> {
+            int weight = recipe.getWeight();
+            if (weight != 10) {
+                tooltip.add(1, Component.translatable("data.projectdinosaur.weight", 60)
+                        .withStyle(ChatFormatting.GRAY));
+            }
+        });
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 24).addItemStack(recipe.getResultItem()).addTooltipCallback((recipeSlotView, tooltip) -> {
+            int weight = recipe.getWeight();
+            if (weight != 10) {
+                tooltip.add(1, Component.translatable("data.projectdinosaur.weight", (weight * 10))
+                        .withStyle(ChatFormatting.GRAY));
+            }
+        });
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 42).addItemStack(ItemInit.ROTTEN_EGG.get().getDefaultInstance()).addTooltipCallback((recipeSlotView, tooltip) -> {
+            int weight = recipe.getWeight();
+            if (weight != 10) {
+                tooltip.add(1, Component.translatable("data.projectdinosaur.weight", 60)
+                        .withStyle(ChatFormatting.GRAY));
+            }
+        });
 
 
 

@@ -1,6 +1,6 @@
 {
   "type": "projectdinosaur:incubating",
-  "weight": 3,
+  "weight": 5,
   "ingredients": [
     {
       "item": "projectdinosaur:australovenator_egg_fertilised"
