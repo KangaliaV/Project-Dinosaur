@@ -1,6 +1,6 @@
 {
   "type": "projectdinosaur:recombinating",
-  "weight": 1,
+  "weight": 4,
   "ingredients": [
     {
       "item": "projectdinosaur:gorgonops_dna"

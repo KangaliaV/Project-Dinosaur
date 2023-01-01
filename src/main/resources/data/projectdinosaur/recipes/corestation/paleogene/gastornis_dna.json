@@ -1,6 +1,6 @@
 {
   "type": "projectdinosaur:extracting",
-  "weight": 4,
+  "weight": 10,
   "ingredients": [
     {
       "item": "projectdinosaur:syringe"
