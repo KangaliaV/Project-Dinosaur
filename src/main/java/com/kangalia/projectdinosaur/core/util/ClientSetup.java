@@ -38,6 +38,7 @@ public class ClientSetup {
 
         EntityRenderers.register(EntityInit.APHANERAMMA.get(), AphanerammaRenderer::new);
         EntityRenderers.register(EntityInit.AUSTRALOVENATOR.get(), AustralovenatorRenderer::new);
+        EntityRenderers.register(EntityInit.GASTORNIS.get(), GastornisRenderer::new);
         EntityRenderers.register(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusRenderer::new);
         EntityRenderers.register(EntityInit.TRILOBITE.get(), TrilobiteRenderer::new);
 

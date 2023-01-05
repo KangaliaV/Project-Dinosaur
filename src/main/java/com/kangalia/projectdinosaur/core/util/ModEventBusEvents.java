@@ -20,6 +20,7 @@ public class ModEventBusEvents {
     public static void AddEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityInit.APHANERAMMA.get(), AphanerammaEntity.setCustomAttributes().build());
         event.put(EntityInit.AUSTRALOVENATOR.get(), AustralovenatorEntity.setCustomAttributes().build());
+        event.put(EntityInit.GASTORNIS.get(), GastornisEntity.setCustomAttributes().build());
         event.put(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusEntity.setCustomAttributes().build());
         event.put(EntityInit.TRILOBITE.get(), TrilobiteEntity.setCustomAttributes().build());
     }

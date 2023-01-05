@@ -31,6 +31,12 @@ public class EntityInit {
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "australovenator").toString()));
 
+    public static final RegistryObject<EntityType<GastornisEntity>> GASTORNIS = ENTITY_TYPES.register("gastornis",
+            () -> EntityType.Builder.of(GastornisEntity::new, MobCategory.CREATURE)
+                    .sized(1.1f, 1.6f)
+                    .setTrackingRange(8)
+                    .build(new ResourceLocation(ProjectDinosaur.MODID, "gastornis").toString()));
+
     public static final RegistryObject<EntityType<ScelidosaurusEntity>> SCELIDOSAURUS = ENTITY_TYPES.register("scelidosaurus",
             () -> EntityType.Builder.of(ScelidosaurusEntity::new, MobCategory.CREATURE)
                     .sized(0.9f, 1.1f)
