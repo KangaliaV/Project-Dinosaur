@@ -151,7 +151,6 @@
   "item.projectdinosaur.rotten_egg": "Rotten Egg",
   "item.projectdinosaur.nutrient_goo": "Nutrient Goo",
 
-
   "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
   "item.projectdinosaur.arthropleura_spawn_egg": "Arthropleura Spawn Egg",
   "item.projectdinosaur.australovenator_spawn_egg": "Australovenator Spawn Egg",
@@ -232,8 +231,15 @@
 
   "dino.projectdinosaur.aphaneramma": "Aphaneramma",
   "dino.projectdinosaur.australovenator": "Australovenator",
+  "dino.projectdinosaur.gastornis": "Gastornis",
   "dino.projectdinosaur.scelidosaurus": "Scelidosaurus",
   "dino.projectdinosaur.trilobite": "Trilobite",
+
+  "entity.projectdinosaur.aphaneramma": "Aphaneramma",
+  "entity.projectdinosaur.australovenator": "Australovenator",
+  "entity.projectdinosaur.gastornis": "Gastornis",
+  "entity.projectdinosaur.scelidosaurus": "Scelidosaurus",
+  "entity.projectdinosaur.trilobite": "Trilobite",
 
   "advancements.pd.root.title": "Project Dinosaur",
   "advancements.pd.root.description": "Get your goggles and gloves on; time to bring dinosaurs to life!",
@@ -292,6 +298,7 @@
 
   "cryoporter.projectdinosaur:aphaneramma": "Aphaneramma",
   "cryoporter.projectdinosaur:australovenator": "Australovenator",
+  "cryoporter.projectdinosaur:gastornis": "Gastornis",
   "cryoporter.projectdinosaur:scelidosaurus": "Scelidosaurus",
   "cryoporter.projectdinosaur:trilobite": "Trilobite",
   "cryoporter.projectdinosaur.empty": "Empty"
