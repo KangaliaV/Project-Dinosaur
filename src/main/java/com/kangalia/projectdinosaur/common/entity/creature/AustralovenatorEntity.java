@@ -69,7 +69,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.MOVEMENT_SPEED, 0.35F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
