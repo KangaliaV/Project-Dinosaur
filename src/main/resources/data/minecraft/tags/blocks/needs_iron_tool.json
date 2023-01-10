@@ -25,15 +25,6 @@
     "projectdinosaur:devonian_fossil_encased",
     "projectdinosaur:silurian_fossil_encased",
     "projectdinosaur:ordovician_fossil_encased",
-    "projectdinosaur:cambrian_fossil_encased",
-
-    "projectdinosaur:hematine_block",
-    "projectdinosaur:azurite_block",
-    "projectdinosaur:amber_block",
-    "projectdinosaur:aquamarine_block",
-    "projectdinosaur:uravorite_block",
-    "projectdinosaur:malachite_block",
-    "projectdinosaur:sphene_block",
-    "projectdinosaur:almandine_block"
+    "projectdinosaur:cambrian_fossil_encased"
   ]
 }
