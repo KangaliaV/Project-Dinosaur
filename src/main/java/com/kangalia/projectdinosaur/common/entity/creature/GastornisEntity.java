@@ -69,7 +69,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.MOVEMENT_SPEED, 0.35F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
@@ -94,7 +94,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<GastornisEntity>(this, "controller", 10, this::predicate));
+        data.addAnimationController(new AnimationController<GastornisEntity>(this, "controller", 5, this::predicate));
     }
 
     @Override
@@ -188,7 +188,6 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
             if (!GastornisEntity.this.isSleeping()) {
                 super.tick();
             }
-
         }
     }
 
@@ -201,7 +200,6 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
             if (!GastornisEntity.this.isSleeping()) {
                 super.tick();
             }
-
         }
     }
 }
