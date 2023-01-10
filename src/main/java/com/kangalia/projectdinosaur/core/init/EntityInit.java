@@ -33,7 +33,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<GastornisEntity>> GASTORNIS = ENTITY_TYPES.register("gastornis",
             () -> EntityType.Builder.of(GastornisEntity::new, MobCategory.CREATURE)
-                    .sized(1.1f, 1.6f)
+                    .sized(0.9f, 1.5f)
                     .setTrackingRange(8)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "gastornis").toString()));
 
