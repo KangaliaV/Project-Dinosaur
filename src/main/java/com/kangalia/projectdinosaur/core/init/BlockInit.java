@@ -122,17 +122,6 @@ public class BlockInit {
     public static final RegistryObject<Block> TIKTAALIK_SPAWN = registerEggBlock("tiktaalik_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> TRILOBITE_SPAWN = registerEggBlock("trilobite_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.TRILOBITE));
 
-    //Gem Blocks
-    public static final RegistryObject<Block> HEMATINE_BLOCK = registerBlock("hematine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AZURITE_BLOCK = registerBlock("azurite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AMBER_BLOCK = registerBlock("amber_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> AQUAMARINE_BLOCK = registerBlock("aquamarine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> URAVORITE_BLOCK = registerBlock("uravorite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> MALACHITE_BLOCK = registerBlock("malachite_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> SPHENE_BLOCK = registerBlock("sphene_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-    public static final RegistryObject<Block> ALMANDINE_BLOCK = registerBlock("almandine_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(4.0f, 5.0f).sound(SoundType.METAL).requiresCorrectToolForDrops()));
-
-
     //Helper Methods
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
