@@ -63,7 +63,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         sleepSchedule = 0;
         adultHealth = 40.0F;
         name = Component.translatable("dino.projectdinosaur.australovenator");
-        renderScale = 35;
+        renderScale = 30;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
