@@ -47,9 +47,9 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         int j = this.getGuiTop();
         this.blit(pPoseStack, i-40, j-20, 0, 0, 247, 169);
         if (scanner.getTag() != null) {
-            renderEntity(i + 112, j + 75, scanner.getTag().getInt("dino.scale"), container.getPrehistoricEntity());
+            renderEntity(i + 112, j + 80, scanner.getTag().getInt("dino.scale"), container.getPrehistoricEntity());
         } else {
-            renderEntity(i + 112, j + 75, 50, container.getPrehistoricEntity());
+            renderEntity(i + 112, j + 80, 50, container.getPrehistoricEntity());
         }
     }
 
@@ -131,7 +131,9 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         entityrenderdispatcher.overrideCameraOrientation(quaternion1);
         entityrenderdispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> entityrenderdispatcher.render(pLivingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
+        RenderSystem.runAsFancy(() -> {
+            entityrenderdispatcher.render(pLivingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
+        });
         multibuffersource$buffersource.endBatch();
         entityrenderdispatcher.setRenderShadow(true);
         pLivingEntity.yBodyRot = f2;

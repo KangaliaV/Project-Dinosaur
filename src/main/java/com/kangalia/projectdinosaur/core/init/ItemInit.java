@@ -102,16 +102,6 @@ public class ItemInit {
     public static final RegistryObject<ForgeSpawnEggItem> TIKTAALIK_SPAWN_EGG = ITEMS.register("tiktaalik_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x4a453c, 0xa2b0b3, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
     public static final RegistryObject<ForgeSpawnEggItem> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.TRILOBITE, 0x212121, 0x9f5405, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
 
-    //Gems
-    public static final RegistryObject<Item> HEMATINE = ITEMS.register("hematine", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> AZURITE = ITEMS.register("azurite", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> AQUAMARINE = ITEMS.register("aquamarine", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> URAVORITE = ITEMS.register("uravorite", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> MALACHITE = ITEMS.register("malachite", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> SPHENE = ITEMS.register("sphene", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-    public static final RegistryObject<Item> ALMANDINE = ITEMS.register("almandine", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
-
     //Miscellaneous Items
     public static final RegistryObject<Item> PETRIFIED_SIGN = ITEMS.register("petrified_sign", () -> new SignItem(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS), BlockInit.PETRIFIED_SIGN.get(), BlockInit.PETRIFIED_SIGN_WALL.get()));
     //public static final RegistryObject<Item> PETRIFIED_BOAT = ITEMS.register("petrified_boat", () -> new PetrifiedBoatItem(false, new Item.Properties().tab(DinoItems.DINO_ITEMS), Boat.Type.OAK));
