@@ -196,6 +196,9 @@
   "data.projectdinosaur.dino_schedule": "%1$s",
   "data.projectdinosaur.dino_cryosick": "Cryosick",
 
+  "genome.projectdinosaur.parent1": "%2$sParent 1: %1$s",
+  "genome.projectdinosaur.parent2": "%2$sParent 2: %1$s",
+
   "attribute.projectdinosaur.happy": "Happy",
   "attribute.projectdinosaur.moody": "Moody",
   "attribute.projectdinosaur.angry": "Angry",

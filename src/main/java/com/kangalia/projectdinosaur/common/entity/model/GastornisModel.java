@@ -21,20 +21,57 @@ public class GastornisModel extends AnimatedGeoModel<GastornisEntity> {
 
     @Override
     public ResourceLocation getTextureResource(GastornisEntity object) {
-        if (object.isAdult()) {
-            if (object.getGender() == 0 && !object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male.png");
-            } else if (object.getGender() == 1 && !object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female.png");
-            } else if (object.getGender() == 0 && object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male_sleeping.png");
+        if (object.getColourMorph() == 0) { //Normal
+            if (object.isAdult()) {
+                if (object.getGender() == 0 && !object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male.png");
+                } else if (object.getGender() == 1 && !object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female.png");
+                } else if (object.getGender() == 0 && object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male_sleeping.png");
+                } else {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female_sleeping.png");
+                }
+
+            } else if (object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby_sleeping.png");
             } else {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female_sleeping.png");
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby.png");
             }
-        } else if (object.isSleeping()) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby_sleeping.png");
+        } else if (object.getColourMorph() == 1) { //Albino
+            if (object.isAdult()) {
+                if (object.getGender() == 0 && !object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male_albino.png");
+                } else if (object.getGender() == 1 && !object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female_albino.png");
+                } else if (object.getGender() == 0 && object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male_sleeping_albino.png");
+                } else {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female_sleeping_albino.png");
+                }
+
+            } else if (object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby_sleeping_albino.png");
+            } else {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby_albino.png");
+            }
         } else {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby.png");
+            if (object.isAdult()) { //Melanistic  NEED TO MAKE THESE TEXTURES - ALBINO FOR NOW
+                if (object.getGender() == 0 && !object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male_albino.png");
+                } else if (object.getGender() == 1 && !object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female_albino.png");
+                } else if (object.getGender() == 0 && object.isSleeping()) {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_male_sleeping_albino.png");
+                } else {
+                    return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_female_sleeping_albino.png");
+                }
+
+            } else if (object.isSleeping()) {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby_sleeping_albino.png");
+            } else {
+                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis_baby_albino.png");
+            }
         }
     }
 

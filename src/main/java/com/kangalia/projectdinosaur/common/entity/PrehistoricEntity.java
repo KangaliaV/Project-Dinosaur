@@ -5,7 +5,9 @@ import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
+import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -37,6 +39,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.event.level.PistonEvent;
 import org.jetbrains.annotations.Nullable;
@@ -245,7 +248,19 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             Level level = prehistoric.level;
             level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
             Block eggType = prehistoric.getEggType();
-            level.setBlock(prehistoric.getOnPos().above(), eggType.defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(prehistoric.getClutchSize()) + 1), 3);
+            BlockPos eggPos = prehistoric.getOnPos().above();
+            level.setBlock(eggPos, eggType.defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(prehistoric.getClutchSize()) + 1), 3);
+            BlockEntity eggEntity = level.getBlockEntity(eggPos);
+            if (prehistoric instanceof GastornisEntity && this instanceof GastornisEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.GASTORNIS_EGG_ENTITY.get()) {
+                GastornisEggBlockEntity gastornisEggEntity = (GastornisEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
+                System.out.println("Egg Entity: "+gastornisEggEntity);
+                if (gastornisEggEntity != null) {
+                    System.out.println("Father: "+((GastornisEntity) this).getGenes());
+                    System.out.println("Mother: "+((GastornisEntity) prehistoric).getGenes());
+                    gastornisEggEntity.setParent1(((GastornisEntity) this).getGenes());
+                    gastornisEggEntity.setParent2(((GastornisEntity) prehistoric).getGenes());
+                }
+            }
         }
     }
 

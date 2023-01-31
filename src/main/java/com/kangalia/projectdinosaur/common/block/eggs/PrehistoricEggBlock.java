@@ -13,11 +13,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,14 +33,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public class PrehistoricEggBlock extends Block {
+public class PrehistoricEggBlock extends Block implements EntityBlock {
 
     private static final VoxelShape ONE_EGG_AABB = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 7.0D, 14.0D);
     private static final VoxelShape MULTIPLE_EGGS_AABB = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
-    private final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
-    private final int maxEggs;
+    public final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
+    public final int maxEggs;
 
     public PrehistoricEggBlock(BlockBehaviour.Properties pProperties, Supplier<? extends EntityType<? extends PrehistoricEntity>> entity, int eggs) {
         super(pProperties);
@@ -69,7 +71,7 @@ public class PrehistoricEggBlock extends Block {
         }
     }
 
-    private void decreaseEggs(Level pLevel, BlockPos pPos, BlockState pState) {
+    public void decreaseEggs(Level pLevel, BlockPos pPos, BlockState pState) {
         pLevel.playSound((Player)null, pPos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + pLevel.random.nextFloat() * 0.2F);
         int i = pState.getValue(EGGS);
         if (i <= 1) {
@@ -107,7 +109,7 @@ public class PrehistoricEggBlock extends Block {
         }
     }
 
-    private boolean shouldHatch(Level pLevel) {
+    public boolean shouldHatch(Level pLevel) {
         float f = pLevel.getTimeOfDay(1.0F);
         if ((double)f < 0.29D && (double)f > 0.25D) {
             return true;
@@ -128,15 +130,6 @@ public class PrehistoricEggBlock extends Block {
         if (onNest(pLevel, pPos) && !pLevel.isClientSide) {
             pLevel.levelEvent(2005, pPos, 0);
         }
-    }
-
-    /**
-     * Called after a player has successfully harvested this block. This method will only be called if the player has
-     * used the correct tool and drops should be spawned.
-     */
-    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pTe, ItemStack pStack) {
-        super.playerDestroy(pLevel, pPlayer, pPos, pState, pTe, pStack);
-        this.decreaseEggs(pLevel, pPos, pState);
     }
 
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
@@ -168,5 +161,11 @@ public class PrehistoricEggBlock extends Block {
         } else {
             return false;
         }
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return null;
     }
 }

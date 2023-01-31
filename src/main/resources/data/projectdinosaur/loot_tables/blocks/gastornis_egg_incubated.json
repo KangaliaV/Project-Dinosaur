@@ -2,30 +2,56 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "incubated_egg",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "projectdinosaur:gastornis_egg_incubated"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:copy_nbt",
+                  "ops": [
+                    {
+                      "op": "replace",
+                      "source": "Parent1",
+                      "target": "BlockEntityTag.Parent1"
+                    },
+                    {
+                      "op": "replace",
+                      "source": "Parent2",
+                      "target": "BlockEntityTag.Parent2"
+                    }
+                  ],
+                  "source": "block_entity"
+                }
+              ],
+              "name": "projectdinosaur:gastornis_egg_incubated"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "projectdinosaur:gastornis_egg_incubated"
+            }
+          ]
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "enchantments": [
-              {
-                "enchantment": "minecraft:silk_touch",
-                "levels": {
-                  "min": 1
-                }
-              }
-            ]
-          }
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }
