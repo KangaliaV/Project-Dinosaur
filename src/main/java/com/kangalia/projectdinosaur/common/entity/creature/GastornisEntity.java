@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -76,12 +77,18 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0F)
+                .add(Attributes.MAX_HEALTH, 50.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.35F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
+    }
+
+    protected void randomizeAttributes() {
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -191,7 +198,18 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setGenes(this.generateGenes());
         System.out.println(this.getGenes());
+        this.randomizeAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public float getGenderMaxSize() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxMaleSize;
+        } else {
+            return sizeCoefficient * maxFemaleSize;
+        }
     }
 
     public String generateGenes() {
@@ -208,6 +226,27 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
 
     public void setGenes(String genes) {
         this.entityData.set(GENOME, genes);
+    }
+
+    public int getGeneDominance(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        if (gene == 2) {
+            return genome.calculateDominanceFC(alleles);
+        } else if (gene == 3) {
+            return genome.calculateDominanceUC(alleles);
+        } else if (gene == 4) {
+            return genome.calculateDominancePC(alleles);
+        } else if (gene == 5) {
+            return genome.calculateDominanceHC(alleles);
+        } else if (gene == 6) {
+            return genome.calculateDominanceSC(alleles);
+        } else {
+            return genome.calculateDominanceBC(alleles);
+        }
+    }
+
+    public int getCoefficient(int gene) {
+        return genome.calculateDominanceSC(genome.getAlleles(this.getGenes(), gene));
     }
 
     public int getColourMorph() {

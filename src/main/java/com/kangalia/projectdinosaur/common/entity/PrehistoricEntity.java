@@ -171,8 +171,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 } else if (!isSleeping()) {
                     if (!this.isMoody()) {
                         this.breed();
-                    } else {
-                        this.setMatingTicks(this.random.nextInt(6000) + 6000);
                     }
                 }
             }

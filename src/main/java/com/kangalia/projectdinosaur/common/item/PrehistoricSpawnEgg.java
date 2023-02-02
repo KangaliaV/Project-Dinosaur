@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -36,11 +37,15 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
             if (mob == null) {
                 return Optional.empty();
             } else {
-                mob.setAgeInDays(0);
+                if (mob instanceof GastornisEntity gastornis) {
+                    gastornis.setGenes(gastornis.generateGenes());
+                }
+                mob.setAgeInTicks(0);
                 mob.setGender(random.nextInt(2));
                 mob.setHunger(mob.getMaxFood());
                 mob.setHungerTicks(1600);
                 mob.setMatingTicks(12000);
+                mob.setEnrichment(mob.getMaxEnrichment());
                 if (!mob.isBaby()) {
                     return Optional.empty();
                 } else {
