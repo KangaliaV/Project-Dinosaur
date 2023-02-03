@@ -27,7 +27,8 @@ public class BaseGenome {
 
     public String setInheritedGenes(String parent1, String parent2) {
         if (parent1 == null || parent2 == null) {
-            return setRandomGenes();
+            parent1 = setRandomGenes();
+            parent2 = setRandomGenes();
         }
 
         String haploid1 = "";

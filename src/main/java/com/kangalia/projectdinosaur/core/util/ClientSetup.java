@@ -3,17 +3,20 @@ package com.kangalia.projectdinosaur.core.util;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.*;
 import com.kangalia.projectdinosaur.common.block.render.EmbryonicWombRenderer;
-import com.kangalia.projectdinosaur.common.container.GroundFeederContainer;
 import com.kangalia.projectdinosaur.common.entity.render.*;
-import com.kangalia.projectdinosaur.core.init.*;
+import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
+import com.kangalia.projectdinosaur.core.init.ContainerInit;
+import com.kangalia.projectdinosaur.core.init.EntityInit;
+import com.kangalia.projectdinosaur.core.init.WoodTypesInit;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.RenderTypeGroup;
+import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -43,5 +46,7 @@ public class ClientSetup {
         EntityRenderers.register(EntityInit.TRILOBITE.get(), TrilobiteRenderer::new);
 
         BlockEntityRenderers.register(BlockEntitiesInit.EMBRYONIC_WOMB_ENTITY.get(), EmbryonicWombRenderer::new);
+
+
     }
 }

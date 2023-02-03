@@ -80,11 +80,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float soundVolume;
     public int sleepSchedule;
     private UUID persistentAngerTarget;
-    public float adultHealth;
     public Component name;
     public int renderScale;
     public int maxEnrichment = 100;
     private boolean validTarget;
+    boolean ageFlag = false;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -107,7 +107,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setRemainingCryosicknessTime(0);
         this.setEnrichment(maxEnrichment / 2);
         this.setEnrichmentTicks(2000);
-        this.setAdultAttributes();
+        this.setAttributes(true);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -126,8 +126,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public void tick() {
         super.tick();
         if (!level.isClientSide) {
-            if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
-                this.setAdultAttributes();
+            if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !ageFlag) {
+                this.setAttributes(true);
+                ageFlag = true;
             }
             if (!this.isStunted()) {
                 this.setAgeInTicks(this.getAgeInTicks() + 1);
@@ -500,13 +501,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
     }
 
-    public void setAdultAttributes() {
-        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(this.getAdultHealth());
-        this.setHealth(this.getAdultHealth());
-    }
+    public void randomizeAttributes(boolean adult) {}
 
-    public float getAdultHealth() {
-        return adultHealth;
+    public void setAttributes(boolean adult) {
+        this.randomizeAttributes(adult);
+        this.setHealth((float)this.getAttribute(Attributes.MAX_HEALTH).getValue());
     }
 
     public Block getEgg() {

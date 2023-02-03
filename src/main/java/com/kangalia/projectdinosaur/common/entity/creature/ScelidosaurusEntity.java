@@ -60,7 +60,6 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         diet = 0;
         soundVolume = 0.3F;
         sleepSchedule = 0;
-        adultHealth = 20.0F;
         name = Component.translatable("dino.projectdinosaur.scelidosaurus");
         renderScale = 40;
     }

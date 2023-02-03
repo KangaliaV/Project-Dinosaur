@@ -70,14 +70,13 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         diet = 0;
         soundVolume = 0.3F;
         sleepSchedule = 0;
-        adultHealth = 50.0F;
         name = Component.translatable("dino.projectdinosaur.gastornis");
         renderScale = 35;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0F)
+                .add(Attributes.MAX_HEALTH, 13.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.35F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
@@ -85,10 +84,17 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
                 .add(Attributes.ATTACK_SPEED, 1.0F);
     }
 
-    public void randomizeAttributes() {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
+    @Override
+    public void randomizeAttributes(boolean adult) {
+        if (adult) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
+        } else {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10))/4);
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -198,7 +204,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setGenes(this.generateGenes(true));
         System.out.println(this.getGenes());
-        this.randomizeAttributes();
+        this.setAttributes(true);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 

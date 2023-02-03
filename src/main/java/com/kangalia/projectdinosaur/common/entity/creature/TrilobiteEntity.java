@@ -60,7 +60,6 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
         diet = 0;
         soundVolume = 0.2F;
         sleepSchedule = 2;
-        adultHealth = 16.0F;
         name = Component.translatable("dino.projectdinosaur.trilobite");
         renderScale = 60;
     }

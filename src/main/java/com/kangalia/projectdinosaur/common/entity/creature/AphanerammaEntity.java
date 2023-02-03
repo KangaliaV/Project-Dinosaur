@@ -85,7 +85,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         diet = 2;
         soundVolume = 0.2F;
         sleepSchedule = 0;
-        adultHealth = 16.0F;
         name = Component.translatable("dino.projectdinosaur.aphaneramma");
         renderScale = 60;
     }

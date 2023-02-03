@@ -62,6 +62,7 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
                     young.setHunger(young.getMaxFood() / 2);
                     young.setHungerTicks(1600);
                     young.setEnrichment(young.getMaxEnrichment() / 2);
+                    young.setAttributes(false);
                     young.moveTo((double) pPos.getX() + 0.3D + (double) j * 0.2D, (double) pPos.getY(), (double) pPos.getZ() + 0.3D, 0.0F, 0.0F);
                     pLevel.addFreshEntity(young);
                     System.out.println(((AustralovenatorEntity) young).getGenes());

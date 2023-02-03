@@ -70,7 +70,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         diet = 1;
         soundVolume = 0.3F;
         sleepSchedule = 0;
-        adultHealth = 40.0F;
         name = Component.translatable("dino.projectdinosaur.australovenator");
         renderScale = 30;
     }
@@ -85,10 +84,17 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
                 .add(Attributes.ATTACK_SPEED, 1.0F);
     }
 
-    protected void randomizeAttributes() {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
+    @Override
+    public void randomizeAttributes(boolean adult) {
+        if (adult) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
+        } else {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10))/4);
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -203,7 +209,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setGenes(this.generateGenes());
         System.out.println(this.getGenes());
-        this.randomizeAttributes();
+        this.setAttributes(true);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
