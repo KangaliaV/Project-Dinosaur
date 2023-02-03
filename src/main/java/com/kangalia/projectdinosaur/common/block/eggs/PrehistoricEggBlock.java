@@ -94,7 +94,6 @@ public class PrehistoricEggBlock extends Block implements EntityBlock {
             for(int j = 0; j < pState.getValue(EGGS); ++j) {
                 pLevel.levelEvent(2001, pPos, Block.getId(pState));
                 PrehistoricEntity young = dino.get().create(pLevel);
-                System.out.println(young);
                 if (young != null) {
                     young.setGender(pRandom.nextInt(2));
                     young.setAgeInTicks(0);
@@ -133,7 +132,6 @@ public class PrehistoricEggBlock extends Block implements EntityBlock {
     }
 
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
-        System.out.println(pState.getValue(EGGS));
         return !pUseContext.isSecondaryUseActive() && pUseContext.getItemInHand().is(this.asItem()) && pState.getValue(EGGS) < maxEggs ? true : super.canBeReplaced(pState, pUseContext);
     }
 

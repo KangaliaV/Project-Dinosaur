@@ -21,59 +21,6 @@ public class GastornisModel extends AnimatedGeoModel<GastornisEntity> {
 
     @Override
     public ResourceLocation getTextureResource(GastornisEntity object) {
-        /*String origin = "textures/entity/mob/dino/gastornis/gastornis";
-        String png = ".png";
-        String sleeping = "_sleeping";
-        String albino = "_albino";
-        String melanistic = "_melanistic";
-        String path = origin;
-        String genome = object.getGenes();
-
-        if (object.getColourMorph() == 1) { //Albino
-            if (object.isBaby()) {
-                path = path + "_baby";
-            } else {
-                if (object.getGender() == 0) {
-                    path = path + "_male";
-                } else {
-                    path = path + "_female";
-                }
-            }
-            if (object.isSleeping()) {
-                path = path + sleeping;
-            }
-            path = path + albino;
-        } else if (object.getColourMorph() == 2) { //Melanistic
-            if (object.isBaby()) {
-                path = path + "_baby";
-            } else {
-                if (object.getGender() == 0) {
-                    path = path + "_male";
-                } else {
-                    path = path + "_female";
-                }
-            }
-            if (object.isSleeping()) {
-                path = path + sleeping;
-            }
-            path = path + melanistic;
-        } else { //Normal
-            if (object.isBaby()) {
-                path = path + "_baby";
-            } else {
-                path = path + switch (object.getGeneDominance(1)) { //Feather Colour
-                    case 1 -> "_black";
-                    case 2 -> "_cream";
-                    case 3 -> "_red";
-                    case 4 -> "_grey";
-                    case 5 -> "_white";
-                    default -> "_brown";
-                };
-            }
-            if (object.isSleeping()) {
-                path = path + sleeping;
-            }
-        }*/
         return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/gastornis_invis.png");
     }
 

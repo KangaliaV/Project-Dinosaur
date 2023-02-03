@@ -41,9 +41,7 @@ public class BaseGenome {
                 r.nextInt(2);
                 allele = temp.charAt(r.nextInt(temp.length()));
             }
-            System.out.println(allele);
             haploid1 = builder.append(allele).toString();
-            System.out.println(haploid1);
         }
         String haploid2 = "";
         StringBuilder builder1 = new StringBuilder();
@@ -56,9 +54,7 @@ public class BaseGenome {
                 r.nextInt(2);
                 allele1 = temp1.charAt(r.nextInt(temp1.length()));
             }
-            System.out.println(allele1);
             haploid2 = builder1.append(allele1).toString();
-            System.out.println(haploid2);
         }
         return stopCodon + haploid1 + stopCodon + haploid2;
     }

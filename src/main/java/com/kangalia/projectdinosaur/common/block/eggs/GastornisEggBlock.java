@@ -74,7 +74,6 @@ public class GastornisEggBlock extends PrehistoricEggBlock {
 
     @Override
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
-        System.out.println(pState.getValue(EGGS));
         ItemStack eggItem = pUseContext.getItemInHand();
         CompoundTag tag = BlockItem.getBlockEntityData(eggItem);
         String parent1 = "";
@@ -166,7 +165,6 @@ public class GastornisEggBlock extends PrehistoricEggBlock {
     }
 
     public String getParent1DataFromBlockEntity(Level level, BlockPos pos, BlockEntity entity) {
-        //BlockEntity entity = level.getBlockEntity(pos);
         String parent1 = "";
         String parent2 = "";
         if (entity instanceof GastornisEggBlockEntity eggEntity) {
@@ -176,7 +174,6 @@ public class GastornisEggBlock extends PrehistoricEggBlock {
     }
 
     public String getParent2DataFromBlockEntity(Level level, BlockPos pos, BlockEntity entity) {
-        //BlockEntity entity = level.getBlockEntity(pos);
         String parent2 = "";
         if (entity instanceof GastornisEggBlockEntity eggEntity) {
             parent2 = eggEntity.getParent2();

@@ -251,7 +251,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             BlockEntity eggEntity = level.getBlockEntity(eggPos);
             if (prehistoric instanceof GastornisEntity && this instanceof GastornisEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.GASTORNIS_EGG_ENTITY.get()) {
                 GastornisEggBlockEntity gastornisEggEntity = (GastornisEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
-                System.out.println("Egg Entity: "+gastornisEggEntity);
                 if (gastornisEggEntity != null) {
                     System.out.println("Father: "+((GastornisEntity) this).getGenes());
                     System.out.println("Mother: "+((GastornisEntity) prehistoric).getGenes());

@@ -16,22 +16,18 @@ public class AustralovenatorEggBlockEntity extends BlockEntity {
     }
 
     public String getParent1() {
-        System.out.println("Parent1Entity: "+parent1);
         return parent1;
     }
 
     public String getParent2() {
-        System.out.println("Parent2Entity: "+parent2);
         return parent2;
     }
 
     public void setParent1(String p1) {
-        System.out.println("P1: "+p1);
         parent1 = p1;
     }
 
     public void setParent2(String p2) {
-        System.out.println("P2: "+p2);
         parent2 = p2;
     }
 
@@ -45,7 +41,6 @@ public class AustralovenatorEggBlockEntity extends BlockEntity {
     public void readParents(String parent1, String parent2) {
         this.setParent1(parent1);
         this.setParent2(parent2);
-        System.out.println("Set Parents to: "+parent1+" and "+parent2);
     }
 
     @Override

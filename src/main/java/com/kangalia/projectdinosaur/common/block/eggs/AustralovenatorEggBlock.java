@@ -74,7 +74,6 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
 
     @Override
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
-        System.out.println(pState.getValue(EGGS));
         ItemStack eggItem = pUseContext.getItemInHand();
         CompoundTag tag = BlockItem.getBlockEntityData(eggItem);
         String parent1 = "";

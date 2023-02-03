@@ -95,7 +95,6 @@ public class GastornisGenome extends BaseGenome {
 
     @Override
     public char mutateGenes(int index) {
-        System.out.println("Mutated");
         char allele;
         if (index == 0) {
             allele = CM.charAt(r.nextInt(CM.length()));
@@ -197,31 +196,5 @@ public class GastornisGenome extends BaseGenome {
         } else {
             return 2;
         }
-    }
-
-    public float calculateCoefficient(String alleles) {
-        String allele0 = alleles.substring(0);
-        String allele1 = alleles.substring(1);
-        float coefficient0 = 1f;
-        float coefficient1 = 1f;
-        for (int i=0; i < 5; i++) {
-            coefficient0 = switch (allele0) {
-                case "B" -> 0.8f;
-                case "A" -> 0.9f;
-                case "D" -> 1.1f;
-                case "E" -> 1.2f;
-                default -> 1f;
-            };
-        }
-        for (int i=0; i < 5; i++) {
-            coefficient1 = switch (allele1) {
-                case "B" -> 0.8f;
-                case "A" -> 0.9f;
-                case "D" -> 1.1f;
-                case "E" -> 1.2f;
-                default -> 1f;
-            };
-        }
-        return (coefficient0+coefficient1)/2;
     }
 }
