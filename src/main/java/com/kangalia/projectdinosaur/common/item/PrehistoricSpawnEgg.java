@@ -38,7 +38,8 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
                 return Optional.empty();
             } else {
                 if (mob instanceof GastornisEntity gastornis) {
-                    gastornis.setGenes(gastornis.generateGenes());
+                    gastornis.setGenes(gastornis.generateGenes(true));
+                    gastornis.randomizeAttributes();
                 }
                 mob.setAgeInTicks(0);
                 mob.setGender(random.nextInt(2));

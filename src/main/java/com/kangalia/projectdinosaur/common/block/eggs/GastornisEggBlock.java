@@ -52,7 +52,7 @@ public class GastornisEggBlock extends PrehistoricEggBlock {
                     String parent1Genes = getParent1GenesFromBlockEntity(eggEntity);
                     String parent2Genes = getParent2GenesFromBlockEntity(eggEntity);
                     if (Objects.equals(parent1Genes, "") || Objects.equals(parent2Genes, "") || parent1Genes == null || parent2Genes == null) {
-                        ((GastornisEntity) young).setGenes(((GastornisEntity) young).generateGenes());
+                        ((GastornisEntity) young).setGenes(((GastornisEntity) young).generateGenes(false));
                     } else {
                         ((GastornisEntity) young).setGenes(((GastornisEntity) young).inheritGenes(parent1Genes, parent2Genes));
                     }

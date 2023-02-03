@@ -1,21 +1,34 @@
 package com.kangalia.projectdinosaur.common.entity.genetics.genomes;
 
 import com.kangalia.projectdinosaur.common.entity.genetics.BaseGenome;
-import com.kangalia.projectdinosaur.core.util.RandomNumGen;
 
 public class GastornisGenome extends BaseGenome {
 
+    //Total Genome - This is for spawn eggs and the full list which mutations draw from.
     public String CM = "AMN"; //Colour Morph (A=Albino, M=Melanistic, N=Normal)
     public String FC = "WGCROB"; //Feather Colour (W=White, G=Grey, C=Cream, R=Red, O=Brown, B=Black)
     public String UC = "WGC"; //Underside Colour (W=White, G=Grey, C=Cream)
     public String PC = "WGCROB"; //Pattern Colour (W=White, G=Grey, C=Cream, R=Red, O=Brown, B=Black)
     public String HC = "RGB"; //Highlight Colour (R=Red, G=Green, B=Blue) *Only visible on males*
-    public String SC = "CGOB"; //Skin Colour (C=Cream, G=Grey, O=Brown, B=Black)
+    public String SC = "CGOB"; //Skin Colour (C=Cream, G=Canvas, O=Brown, B=Black)
     public String BC = "CYO"; //Beak Colour (C=Cream, Y=Yellow, O=Orange)
     public String SP = "ABCDE"; //Speed (A=1, B=2, C=3, D=4, E=5)
     public String SZ = "ABCDE"; //Size (A=1, B=2, C=3, D=4, E=5)
     public String AD = "ABCDE"; //Attack Damage (A=1, B=2, C=3, D=4, E=5)
     public String HP = "ABCDE"; //Health (A=1, B=2, C=3, D=4, E=5)
+
+    //Allowed Genome - This is for those first hatching from incubated eggs.
+    public String CMA = "N"; //Colour Morph (N=Normal)
+    public String FCA = "GOB"; //Feather Colour (G=Grey, O=Brown, B=Black)
+    public String UCA = "GC"; //Underside Colour (G=Grey, C=Cream)
+    public String PCA = "GOB"; //Pattern Colour (G=Grey, O=Brown, B=Black)
+    public String HCA = "GB"; //Highlight Colour (G=Green, B=Blue) *Only visible on males*
+    public String SCA = "GO"; //Skin Colour (G=Canvas, O=Brown)
+    public String BCA = "YO"; //Beak Colour (Y=Yellow, O=Orange)
+    public String SPA = "BCD"; //Speed (B=2, C=3, D=4)
+    public String SZA = "BCD"; //Size (B=2, C=3, D=4)
+    public String ADA = "BCD"; //Attack Damage (B=2, C=3, D=4)
+    public String HPA = "BCD"; //Health (B=2, C=3, D=4)
 
     public GastornisGenome() {
         haploidLengthMin = 11;
@@ -50,6 +63,36 @@ public class GastornisGenome extends BaseGenome {
                 HP.charAt(r.nextInt(HP.length()));
         return haploid1 + haploid2;
     }
+
+    @Override
+    public String setRandomAllowedGenes() {
+        String haploid1 = stopCodon +
+                CMA.charAt(r.nextInt(CMA.length())) +
+                FCA.charAt(r.nextInt(FCA.length())) +
+                UCA.charAt(r.nextInt(UCA.length())) +
+                PCA.charAt(r.nextInt(PCA.length())) +
+                HCA.charAt(r.nextInt(HCA.length())) +
+                SCA.charAt(r.nextInt(SCA.length())) +
+                BCA.charAt(r.nextInt(BCA.length())) +
+                SPA.charAt(r.nextInt(SPA.length())) +
+                SZA.charAt(r.nextInt(SZA.length())) +
+                ADA.charAt(r.nextInt(ADA.length())) +
+                HPA.charAt(r.nextInt(HPA.length()));
+        String haploid2 = stopCodon +
+                CMA.charAt(r.nextInt(CMA.length())) +
+                FCA.charAt(r.nextInt(FCA.length())) +
+                UCA.charAt(r.nextInt(UCA.length())) +
+                PCA.charAt(r.nextInt(PCA.length())) +
+                HCA.charAt(r.nextInt(HCA.length())) +
+                SCA.charAt(r.nextInt(SCA.length())) +
+                BCA.charAt(r.nextInt(BCA.length())) +
+                SPA.charAt(r.nextInt(SPA.length())) +
+                SZA.charAt(r.nextInt(SZA.length())) +
+                ADA.charAt(r.nextInt(ADA.length())) +
+                HPA.charAt(r.nextInt(HPA.length()));
+        return haploid1 + haploid2;
+    }
+
     @Override
     public char mutateGenes(int index) {
         System.out.println("Mutated");

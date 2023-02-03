@@ -21,7 +21,7 @@ public class GastornisModel extends AnimatedGeoModel<GastornisEntity> {
 
     @Override
     public ResourceLocation getTextureResource(GastornisEntity object) {
-        String origin = "textures/entity/mob/dino/gastornis/gastornis";
+        /*String origin = "textures/entity/mob/dino/gastornis/gastornis";
         String png = ".png";
         String sleeping = "_sleeping";
         String albino = "_albino";
@@ -29,67 +29,52 @@ public class GastornisModel extends AnimatedGeoModel<GastornisEntity> {
         String path = origin;
         String genome = object.getGenes();
 
-        if (object.isAdult()) {
-            if (object.getGender() == 0) {
-                path = path + "_male";
-            } else {
-                path = path + "_female";
-            }
-        } else {
-            path = path + "_baby";
-        }
-
-        if (object.isSleeping()) {
-            path = path + sleeping;
-        }
-
         if (object.getColourMorph() == 1) { //Albino
+            if (object.isBaby()) {
+                path = path + "_baby";
+            } else {
+                if (object.getGender() == 0) {
+                    path = path + "_male";
+                } else {
+                    path = path + "_female";
+                }
+            }
+            if (object.isSleeping()) {
+                path = path + sleeping;
+            }
             path = path + albino;
         } else if (object.getColourMorph() == 2) { //Melanistic
+            if (object.isBaby()) {
+                path = path + "_baby";
+            } else {
+                if (object.getGender() == 0) {
+                    path = path + "_male";
+                } else {
+                    path = path + "_female";
+                }
+            }
+            if (object.isSleeping()) {
+                path = path + sleeping;
+            }
             path = path + melanistic;
-        } else { //Have an else here that will lead to a different method that will calculate all the different colours for the Gastornis using the genome.
-            path = path + switch (object.getGeneDominance(1)) { //Feather Colour
-                case 1 -> "_black";
-                case 2 -> "_cream";
-                case 3 -> "_red";
-                case 4 -> "_grey";
-                case 5 -> "_white";
-                default -> "_brown";
-            };
-            path = path + switch (object.getGeneDominance(2)) { //Underside Colour
-                case 1 -> "_grey";
-                case 2 -> "_white";
-                default -> "_cream";
-            };
-            path = path + switch (object.getGeneDominance(3)) { //Pattern Colour
-                case 1 -> "_brown";
-                case 2 -> "_cream";
-                case 3 -> "_red";
-                case 4 -> "_grey";
-                case 5 -> "_white";
-                default -> "_black";
-            };
-            if (object.getGender() == 1) {
-                path = path + switch (object.getGeneDominance(4)) { //Highlight Colour *only on males*
-                    case 1 -> "_red";
-                    case 2 -> "_green";
-                    default -> "_blue";
+        } else { //Normal
+            if (object.isBaby()) {
+                path = path + "_baby";
+            } else {
+                path = path + switch (object.getGeneDominance(1)) { //Feather Colour
+                    case 1 -> "_black";
+                    case 2 -> "_cream";
+                    case 3 -> "_red";
+                    case 4 -> "_grey";
+                    case 5 -> "_white";
+                    default -> "_brown";
                 };
             }
-            path = path + switch (object.getGeneDominance(5)) { //Skin Colour
-                case 1 -> "_brown";
-                case 2 -> "_grey";
-                case 3 -> "_black";
-                default -> "_cream";
-            };
-            path = path + switch (object.getGeneDominance(6)) { //Highlight Colour *only on males*
-                case 1 -> "_orange";
-                case 2 -> "_cream";
-                default -> "_yellow";
-            };
-        }
-
-        return new ResourceLocation(ProjectDinosaur.MODID, path + png);
+            if (object.isSleeping()) {
+                path = path + sleeping;
+            }
+        }*/
+        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/gastornis_invis.png");
     }
 
     @Override

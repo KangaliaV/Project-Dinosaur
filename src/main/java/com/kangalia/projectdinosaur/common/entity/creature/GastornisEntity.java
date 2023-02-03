@@ -85,7 +85,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
                 .add(Attributes.ATTACK_SPEED, 1.0F);
     }
 
-    protected void randomizeAttributes() {
+    public void randomizeAttributes() {
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
@@ -196,7 +196,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
 
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        this.setGenes(this.generateGenes());
+        this.setGenes(this.generateGenes(true));
         System.out.println(this.getGenes());
         this.randomizeAttributes();
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
@@ -212,8 +212,12 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         }
     }
 
-    public String generateGenes() {
-        return genome.setRandomGenes();
+    public String generateGenes(boolean allowed) {
+        if (allowed) {
+            return genome.setRandomGenes();
+        } else {
+            return genome.setRandomAllowedGenes();
+        }
     }
 
     public String inheritGenes(String parent1, String parent2) {
@@ -230,23 +234,19 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
 
     public int getGeneDominance(int gene) {
         String alleles = genome.getAlleles(this.getGenes(), gene);
-        if (gene == 2) {
+        if (gene == 1) {
             return genome.calculateDominanceFC(alleles);
-        } else if (gene == 3) {
+        } else if (gene == 2) {
             return genome.calculateDominanceUC(alleles);
-        } else if (gene == 4) {
+        } else if (gene == 3) {
             return genome.calculateDominancePC(alleles);
-        } else if (gene == 5) {
+        } else if (gene == 4) {
             return genome.calculateDominanceHC(alleles);
-        } else if (gene == 6) {
+        } else if (gene == 5) {
             return genome.calculateDominanceSC(alleles);
         } else {
             return genome.calculateDominanceBC(alleles);
         }
-    }
-
-    public int getCoefficient(int gene) {
-        return genome.calculateDominanceSC(genome.getAlleles(this.getGenes(), gene));
     }
 
     public int getColourMorph() {

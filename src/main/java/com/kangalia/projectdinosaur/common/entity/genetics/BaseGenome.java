@@ -21,6 +21,10 @@ public class BaseGenome {
         return stopCodon+stopCodon;
     }
 
+    public String setRandomAllowedGenes() {
+        return stopCodon+stopCodon;
+    }
+
     public String setInheritedGenes(String parent1, String parent2) {
         if (parent1 == null || parent2 == null) {
             return setRandomGenes();
@@ -90,5 +94,31 @@ public class BaseGenome {
         }
         String allele = String.valueOf(genome.charAt(1));
         return allele.equals("M");
+    }
+
+    public float calculateCoefficient(String alleles) {
+        String allele0 = alleles.substring(0);
+        String allele1 = alleles.substring(1);
+        float coefficient0 = 1f;
+        float coefficient1 = 1f;
+        for (int i=0; i < 5; i++) {
+            coefficient0 = switch (allele0) {
+                case "B" -> 0.8f;
+                case "A" -> 0.9f;
+                case "D" -> 1.1f;
+                case "E" -> 1.2f;
+                default -> 1f;
+            };
+        }
+        for (int i=0; i < 5; i++) {
+            coefficient1 = switch (allele1) {
+                case "B" -> 0.8f;
+                case "A" -> 0.9f;
+                case "D" -> 1.1f;
+                case "E" -> 1.2f;
+                default -> 1f;
+            };
+        }
+        return (coefficient0+coefficient1)/2;
     }
 }
