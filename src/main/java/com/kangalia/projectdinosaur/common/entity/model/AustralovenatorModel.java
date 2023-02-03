@@ -4,7 +4,6 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.IAnimatableModel;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -22,21 +21,7 @@ public class AustralovenatorModel extends AnimatedGeoModel<AustralovenatorEntity
 
     @Override
     public ResourceLocation getTextureResource(AustralovenatorEntity object) {
-        if (object.isAdult()) {
-            if (object.getGender() == 0 && !object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_male.png");
-            } else if (object.getGender() == 1 && !object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_female.png");
-            } else if (object.getGender() == 0 && object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_male_sleeping.png");
-            } else {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_female_sleeping.png");
-            }
-        } else if (object.isSleeping()) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_baby_sleeping.png");
-        } else {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator_baby.png");
-        }
+        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator/australovenator_invis.png");
     }
 
     @Override
