@@ -39,7 +39,7 @@ public class AustralovenatorGenome extends BaseGenome {
                 CM.charAt(r.nextInt(CM.length())) +
                 BC.charAt(r.nextInt(BC.length())) +
                 UC.charAt(r.nextInt(UC.length())) +
-                PT.charAt(r.nextInt(PC.length())) +
+                PT.charAt(r.nextInt(PT.length())) +
                 PC.charAt(r.nextInt(PC.length())) +
                 HC.charAt(r.nextInt(HC.length())) +
                 SP.charAt(r.nextInt(SP.length())) +
@@ -50,7 +50,7 @@ public class AustralovenatorGenome extends BaseGenome {
                 CM.charAt(r.nextInt(CM.length())) +
                 BC.charAt(r.nextInt(BC.length())) +
                 UC.charAt(r.nextInt(UC.length())) +
-                PT.charAt(r.nextInt(PC.length())) +
+                PT.charAt(r.nextInt(PT.length())) +
                 PC.charAt(r.nextInt(PC.length())) +
                 HC.charAt(r.nextInt(HC.length())) +
                 SP.charAt(r.nextInt(SP.length())) +
@@ -66,7 +66,7 @@ public class AustralovenatorGenome extends BaseGenome {
                 CMA.charAt(r.nextInt(CMA.length())) +
                 BCA.charAt(r.nextInt(BCA.length())) +
                 UCA.charAt(r.nextInt(UCA.length())) +
-                PTA.charAt(r.nextInt(PCA.length())) +
+                PTA.charAt(r.nextInt(PTA.length())) +
                 PCA.charAt(r.nextInt(PCA.length())) +
                 HCA.charAt(r.nextInt(HCA.length())) +
                 SPA.charAt(r.nextInt(SPA.length())) +
@@ -77,7 +77,7 @@ public class AustralovenatorGenome extends BaseGenome {
                 CMA.charAt(r.nextInt(CMA.length())) +
                 BCA.charAt(r.nextInt(BCA.length())) +
                 UCA.charAt(r.nextInt(UCA.length())) +
-                PTA.charAt(r.nextInt(PCA.length())) +
+                PTA.charAt(r.nextInt(PTA.length())) +
                 PCA.charAt(r.nextInt(PCA.length())) +
                 HCA.charAt(r.nextInt(HCA.length())) +
                 SPA.charAt(r.nextInt(SPA.length())) +
@@ -114,69 +114,69 @@ public class AustralovenatorGenome extends BaseGenome {
 
     // ALLELE DOMINANCE
 
-    public int calculateDominanceBC(String alleles) {
+    public String calculateDominanceBC(String alleles) {
         if (alleles.contains("O")) {
-            return 0;
+            return "Orange";
         } else if (alleles.contains("D")) {
-            return 1;
+            return "Grey";
         } else if (alleles.contains("G")) {
-            return 2;
+            return "Green";
         } else {
-            return 3;
+            return "Cream";
         }
     }
 
-    public int calculateDominanceUC(String alleles) {
+    public String calculateDominanceUC(String alleles) {
         if (alleles.contains("C")) {
-            return 0;
+            return "Cream";
         } else if (alleles.contains("G")) {
-            return 1;
+            return "Grey";
         } else if (alleles.contains("O")) {
-            return 2;
+            return "Brown";
         } else {
-            return 3;
+            return "Black";
         }
     }
 
-    public int calculateDominancePT(String alleles) {
+    public String calculateDominancePT(String alleles) {
         if (alleles.contains("C")) {
-            return 0;
+            return "Circles";
         } else if (alleles.contains("S")) {
-            return 1;
+            return "Stripes";
         } else if (alleles.contains("R")) {
-            return 2;
+            return "Rings";
         } else if (alleles.contains("P")) {
-            return 3;
+            return "Spots";
         } else {
-            return 4;
+            return "Clownfish";
         }
     }
 
-    public int calculateDominancePC(String alleles) {
+    public String calculateDominancePC(String alleles) {
         if (alleles.contains("G")) {
-            return 0;
+            return "Grey";
         } else if (alleles.contains("B")) {
-            return 1;
+            return "Black";
         } else if (alleles.contains("Y")) {
-            return 2;
+            return "Yellow";
         } else if (alleles.contains("W")) {
-            return 3;
+            return "White";
         } else if (alleles.contains("R")) {
-            return 4;
+            return "Red";
         } else {
-            return 5;
+            return "Cyan";
         }
     }
 
-    public int calculateDominanceHC(String alleles) {
+    public String calculateDominanceHC(String alleles) {
         if (alleles.contains("B")) {
-            return 0;
+            return "Blue";
         } else if (alleles.contains("G")) {
-            return 1;
+            return "Green";
         } else if (alleles.contains("Y")) {
-            return 2;
+            return "Yellow";
         } else {
-            return 3;
+            return "Red";
         }
     }
 }

@@ -196,6 +196,27 @@
   "data.projectdinosaur.dino_schedule": "%1$s",
   "data.projectdinosaur.dino_cryosick": "Cryosick",
 
+  "data.projectdinosaur.dino_species_scientific": "%1$s",
+  "data.projectdinosaur.dino_genome": "%1$s",
+  "data.projectdinosaur.dino_morph": "Morph: %1$s",
+  "data.projectdinosaur.speed": "Speed: %1$s",
+  "data.projectdinosaur.size": "Size: %1$s",
+  "data.projectdinosaur.attack_damage": "Damage: %1$s",
+  "data.projectdinosaur.max_health": "Health: %1$s",
+
+  "data.projectdinosaur.gastornis.feather": "Feathers: %1$s",
+  "data.projectdinosaur.gastornis.underside": "Underside: %1$s",
+  "data.projectdinosaur.gastornis.pattern": "Pattern: %1$s",
+  "data.projectdinosaur.gastornis.highlight": "Highlight: %1$s (%2$s)",
+  "data.projectdinosaur.gastornis.skin": "Skin: %1$s",
+  "data.projectdinosaur.gastornis.beak": "Beak: %1$s",
+
+  "data.projectdinosaur.australovenator.base": "Base: %1$s",
+  "data.projectdinosaur.australovenator.underside": "Underside: %1$s",
+  "data.projectdinosaur.australovenator.pattern": "Pattern: %1$s (%2$s)",
+  "data.projectdinosaur.australovenator.highlight": "Highlight: %1$s (%2$s)",
+
+
   "genome.projectdinosaur.parent1": "%2$sParent 1: %1$s",
   "genome.projectdinosaur.parent2": "%2$sParent 2: %1$s",
 
@@ -219,6 +240,9 @@
   "dino.projectdinosaur.gastornis": "Gastornis",
   "dino.projectdinosaur.scelidosaurus": "Scelidosaurus",
   "dino.projectdinosaur.trilobite": "Trilobite",
+
+  "dino.projectdinosaur.australovenator.scientific": "Australovenator wintonensis",
+  "dino.projectdinosaur.gastornis.scientific": "Gastornis gigantea",
 
   "entity.projectdinosaur.aphaneramma": "Aphaneramma",
   "entity.projectdinosaur.australovenator": "Australovenator",

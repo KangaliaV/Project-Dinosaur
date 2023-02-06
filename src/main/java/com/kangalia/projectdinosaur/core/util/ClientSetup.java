@@ -33,6 +33,7 @@ public class ClientSetup {
         MenuScreens.register(ContainerInit.EMBRYONIC_WOMB_CONTAINER.get(), EmbryonicWombScreen::new);
         MenuScreens.register(ContainerInit.GROUND_FEEDER_CONTAINER.get(), GroundFeederScreen::new);
         MenuScreens.register(ContainerInit.DINO_SCANNER_CONTAINER.get(), DinoScannerScreen::new);
+        MenuScreens.register(ContainerInit.GENOME_SCANNER_CONTAINER.get(), GenomeScannerScreen::new);
 
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
 

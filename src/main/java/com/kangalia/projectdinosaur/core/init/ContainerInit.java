@@ -58,4 +58,8 @@ public class ContainerInit {
         ItemStack stack = inv.player.getItemInHand(inv.player.getUsedItemHand());
         return new DinoScannerContainer(windowId, stack, inv, inv.player);
     }));
+    public static final RegistryObject<MenuType<GenomeScannerContainer>> GENOME_SCANNER_CONTAINER = CONTAINERS.register("genome_scanner_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
+        ItemStack stack = inv.player.getItemInHand(inv.player.getUsedItemHand());
+        return new GenomeScannerContainer(windowId, stack, inv, inv.player);
+    }));
 }

@@ -29,44 +29,37 @@ public class GastornisLayer extends GeoLayerRenderer {
     public String getTypeAndColourPath(GastornisEntity gastornis, int gene) {
         String path = "gastornis";
         if (gene == 0) {
-            if (gastornis.isBaby()) {
-                path = path + "_baby";
-                if (gastornis.isSleeping()) {
-                    path = path + "_sleeping";
-                }
-                path = path + switch (gastornis.getColourMorph()) { //Colour Morph
-                    case 1 -> "_albino";
-                    case 2 -> "_melanistic";
-                    default -> "";
-                };
-                return path;
-            }
-            if (gastornis.getColourMorph() != 0) {
-                if (gastornis.getGender() == 0) {
-                    path = path + "_male";
+            if (!gastornis.getColourMorph().equals("Normal")) {
+                if (gastornis.isBaby()) {
+                    path = path + "_baby";
                 } else {
-                    path = path + "_female";
+                    if (gastornis.getGender() == 0) {
+                        path = path + "_male";
+                    } else {
+                        path = path + "_female";
+                    }
                 }
+                path = path + "_" + gastornis.getColourMorph().toLowerCase(); //Colour Morph
                 if (gastornis.isSleeping()) {
                     path = path + "_sleeping";
                 }
+                return path;
+            } else {
+                if (gastornis.isBaby()) {
+                    path = path + "_baby";
+                    if (gastornis.isSleeping()) {
+                        path = path + "_sleeping";
+                    }
+                    return path;
+                } else {
+                    return path + "_invis";
+                }
             }
-            path = path + switch (gastornis.getColourMorph()) { //Colour Morph
-                case 1 -> "_albino";
-                case 2 -> "_melanistic";
-                default -> "_invis";
-            };
-            return path;
         }
-        if (gastornis.getColourMorph() == 2 && !gastornis.isBaby()) {
+        if (gastornis.getColourMorph().equals("Melanistic") && !gastornis.isBaby()) {
             if (gene == 4) {
                 if (gastornis.getGender() == 0) {
-                    path = path + "_highlight" + switch (gastornis.getGeneDominance(4)) { //Highlight Colour *only on males*
-                        case 1 -> "_red";
-                        case 2 -> "_green";
-                        default -> "_blue";
-                    };
-                    path = path + "_melanistic";
+                    path = path + "_highlight_" + gastornis.getGeneDominance(4).toLowerCase() + "_melanistic";  //Highlight Colour *only on males*
                     if (gastornis.isSleeping()) {
                         path = path + "_sleeping";
                     }
@@ -76,23 +69,11 @@ public class GastornisLayer extends GeoLayerRenderer {
                 return path;
             }
         }
-        if (gastornis.getColourMorph() == 0 && !gastornis.isBaby()) {
+        if (gastornis.getColourMorph().equals("Normal") && !gastornis.isBaby()) {
             if (gene == 1) {
-                path = path + "_feather" + switch (gastornis.getGeneDominance(1)) { //Feather Colour
-                    case 1 -> "_black";
-                    case 2 -> "_cream";
-                    case 3 -> "_red";
-                    case 4 -> "_grey";
-                    case 5 -> "_white";
-                    default -> "_brown";
-                };
-                return path;
+                return path + "_feather_" + gastornis.getGeneDominance(1).toLowerCase(); //Feather Colour
             } else if (gene == 2) {
-                path = path + "_underside" + switch (gastornis.getGeneDominance(2)) { //Underside Colour
-                    case 1 -> "_grey";
-                    case 2 -> "_white";
-                    default -> "_cream";
-                };
+                path = path + "_underside_" + gastornis.getGeneDominance(2).toLowerCase(); //Underside Colour
                 if (gastornis.getGender() == 1) {
                     if (gastornis.isSleeping()) {
                         path = path + "_sleeping";
@@ -100,22 +81,10 @@ public class GastornisLayer extends GeoLayerRenderer {
                 }
                 return path;
             } else if (gene == 3) {
-                path = path + "_pattern" + switch (gastornis.getGeneDominance(3)) { //Pattern Colour
-                    case 1 -> "_brown";
-                    case 2 -> "_cream";
-                    case 3 -> "_red";
-                    case 4 -> "_grey";
-                    case 5 -> "_white";
-                    default -> "_black";
-                };
-                return path;
+                return path + "_pattern_" + gastornis.getGeneDominance(3).toLowerCase();  //Pattern Colour
             } else if (gene == 4) {
                 if (gastornis.getGender() == 0) {
-                    path = path + "_highlight" + switch (gastornis.getGeneDominance(4)) { //Highlight Colour *only on males*
-                        case 1 -> "_red";
-                        case 2 -> "_green";
-                        default -> "_blue";
-                    };
+                    path = path + "_highlight_" + gastornis.getGeneDominance(4).toLowerCase(); //Highlight Colour *only on males*
                     if (gastornis.isSleeping()) {
                         path = path + "_sleeping";
                     }
@@ -124,20 +93,9 @@ public class GastornisLayer extends GeoLayerRenderer {
                 }
                 return path;
             } else if (gene == 5) {
-                path = path + "_skin" + switch (gastornis.getGeneDominance(5)) { //Skin Colour
-                    case 1 -> "_brown";
-                    case 2 -> "_canvas";
-                    case 3 -> "_black";
-                    default -> "_cream";
-                };
-                return path;
+                return path + "_skin_" + gastornis.getGeneDominance(5).toLowerCase();
             } else {
-                path = path + "_beak" + switch (gastornis.getGeneDominance(6)) { //Beak Colour
-                    case 1 -> "_orange";
-                    case 2 -> "_cream";
-                    default -> "_yellow";
-                };
-                return path;
+                return path + "_beak_" + gastornis.getGeneDominance(6).toLowerCase();  //Beak Colour
             }
         }
         return path + "_invis";

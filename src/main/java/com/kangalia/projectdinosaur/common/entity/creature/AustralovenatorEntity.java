@@ -71,6 +71,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         soundVolume = 0.3F;
         sleepSchedule = 0;
         name = Component.translatable("dino.projectdinosaur.australovenator");
+        nameScientific = Component.translatable("dino.projectdinosaur.australovenator.scientific");
         renderScale = 30;
     }
 
@@ -87,13 +88,13 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     @Override
     public void randomizeAttributes(boolean adult) {
         if (adult) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
         } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10))/4);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/4);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
         }
     }
 
@@ -207,7 +208,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
 
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        this.setGenes(this.generateGenes());
+        this.setGenes(this.generateGenes(true));
         System.out.println(this.getGenes());
         this.setAttributes(true);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
@@ -223,14 +224,19 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         }
     }
 
-    public String generateGenes() {
-        return genome.setRandomGenes();
+    public String generateGenes(boolean allowed) {
+        if (allowed) {
+            return genome.setRandomGenes();
+        } else {
+            return genome.setRandomAllowedGenes();
+        }
     }
 
     public String inheritGenes(String parent1, String parent2) {
         return genome.setInheritedGenes(parent1, parent2);
     }
 
+    @Override
     public String getGenes() {
         return this.entityData.get(GENOME);
     }
@@ -239,7 +245,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         this.entityData.set(GENOME, genes);
     }
 
-    public int getGeneDominance(int gene) {
+    public String getGeneDominance(int gene) {
         String alleles = genome.getAlleles(this.getGenes(), gene);
         if (gene == 2) {
             return genome.calculateDominanceBC(alleles);
@@ -254,13 +260,34 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         }
     }
 
-    public int getColourMorph() {
-        if (genome.isAlbino(this.getGenes())) {
-            return 1;
-        } else if (genome.isMelanistic(this.getGenes())) {
-            return 2;
+    public String getCoefficientRating(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        float coefficient = genome.calculateCoefficient(alleles);
+        if (coefficient == 1.2f) {
+            return "Highest";
+        } else if (coefficient < 1.2f && coefficient >= 1.1f) {
+            return "High";
+        } else if (coefficient < 1.1f && coefficient >= 1f) {
+            return "Mid-High";
+        } else if (coefficient < 1f && coefficient >= 0.9f) {
+            return "Mid-Low";
+        } else if (coefficient < 0.9f && coefficient > 0.8f) {
+            return "Low";
+        } else if (coefficient == 0.8f) {
+            return "Lowest";
         } else {
-            return 0;
+            return "Error";
+        }
+    }
+
+    @Override
+    public String getColourMorph() {
+        if (genome.isAlbino(this.getGenes())) {
+            return "Albino";
+        } else if (genome.isMelanistic(this.getGenes())) {
+            return "Melanistic";
+        } else {
+            return "Normal";
         }
     }
 

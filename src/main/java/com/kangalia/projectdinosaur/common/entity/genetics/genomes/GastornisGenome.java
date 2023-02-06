@@ -124,77 +124,77 @@ public class GastornisGenome extends BaseGenome {
 
     // ALLELE DOMINANCE
 
-    public int calculateDominanceFC(String alleles) {
+    public String calculateDominanceFC(String alleles) {
         if (alleles.contains("O")) {
-            return 0;
+            return "Brown";
         } else if (alleles.contains("B")) {
-            return 1;
+            return "Black";
         } else if (alleles.contains("C")) {
-            return 2;
+            return "Cream";
         } else if (alleles.contains("R")) {
-            return 3;
+            return "Red";
         } else if (alleles.contains("G")) {
-            return 4;
+            return "Grey";
         } else {
-            return 5;
+            return "White";
         }
     }
 
-    public int calculateDominanceUC(String alleles) {
+    public String calculateDominanceUC(String alleles) {
         if (alleles.contains("C")) {
-            return 0;
+            return "Cream";
         } else if (alleles.contains("G")) {
-            return 1;
+            return "Grey";
         } else {
-            return 2;
+            return "White";
         }
     }
 
-    public int calculateDominancePC(String alleles) {
+    public String calculateDominancePC(String alleles) {
         if (alleles.contains("B")) {
-            return 0;
+            return "Black";
         } else if (alleles.contains("0")) {
-            return 1;
+            return "Brown";
         } else if (alleles.contains("C")) {
-            return 2;
+            return "Cream";
         } else if (alleles.contains("R")) {
-            return 3;
+            return "Red";
         } else if (alleles.contains("G")) {
-            return 4;
+            return "Grey";
         } else {
-            return 5;
+            return "White";
         }
     }
 
-    public int calculateDominanceHC(String alleles) {
+    public String calculateDominanceHC(String alleles) {
         if (alleles.contains("B")) {
-            return 0;
+            return "Blue";
         } else if (alleles.contains("R")) {
-            return 1;
+            return "Red";
         } else {
-            return 2;
+            return "Green";
         }
     }
 
-    public int calculateDominanceSC(String alleles) {
+    public String calculateDominanceSC(String alleles) {
         if (alleles.contains("C")) {
-            return 0;
+            return "Cream";
         } else if (alleles.contains("0")) {
-            return 1;
+            return "Brown";
         } else if (alleles.contains("G")) {
-            return 2;
+            return "Canvas";
         } else {
-            return 3;
+            return "Black";
         }
     }
 
-    public int calculateDominanceBC(String alleles) {
+    public String calculateDominanceBC(String alleles) {
         if (alleles.contains("Y")) {
-            return 0;
+            return "Yellow";
         } else if (alleles.contains("O")) {
-            return 1;
+            return "Orange";
         } else {
-            return 2;
+            return "Cream";
         }
     }
 }

@@ -71,6 +71,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         soundVolume = 0.3F;
         sleepSchedule = 0;
         name = Component.translatable("dino.projectdinosaur.gastornis");
+        nameScientific = Component.translatable("dino.projectdinosaur.gastornis.scientific");
         renderScale = 35;
     }
 
@@ -230,6 +231,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         return genome.setInheritedGenes(parent1, parent2);
     }
 
+    @Override
     public String getGenes() {
         return this.entityData.get(GENOME);
     }
@@ -238,7 +240,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         this.entityData.set(GENOME, genes);
     }
 
-    public int getGeneDominance(int gene) {
+    public String getGeneDominance(int gene) {
         String alleles = genome.getAlleles(this.getGenes(), gene);
         if (gene == 1) {
             return genome.calculateDominanceFC(alleles);
@@ -255,13 +257,34 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         }
     }
 
-    public int getColourMorph() {
-        if (genome.isAlbino(this.getGenes())) {
-            return 1;
-        } else if (genome.isMelanistic(this.getGenes())) {
-            return 2;
+    public String getCoefficientRating(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        float coefficient = genome.calculateCoefficient(alleles);
+        if (coefficient == 1.2f) {
+            return "Highest";
+        } else if (coefficient < 1.2f && coefficient >= 1.1f) {
+            return "High";
+        } else if (coefficient < 1.1f && coefficient >= 1f) {
+            return "Mid-High";
+        } else if (coefficient < 1f && coefficient >= 0.9f) {
+            return "Mid-Low";
+        } else if (coefficient < 0.9f && coefficient > 0.8f) {
+            return "Low";
+        } else if (coefficient == 0.8f) {
+            return "Lowest";
         } else {
-            return 0;
+            return "Error";
+        }
+    }
+
+    @Override
+    public String getColourMorph() {
+        if (genome.isAlbino(this.getGenes())) {
+            return "Albino";
+        } else if (genome.isMelanistic(this.getGenes())) {
+            return "Melanistic";
+        } else {
+            return "Normal";
         }
     }
 

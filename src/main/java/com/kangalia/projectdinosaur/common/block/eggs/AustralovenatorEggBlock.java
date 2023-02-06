@@ -52,7 +52,7 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
                     String parent1Genes = getParent1GenesFromBlockEntity(eggEntity);
                     String parent2Genes = getParent2GenesFromBlockEntity(eggEntity);
                     if (Objects.equals(parent1Genes, "") || Objects.equals(parent2Genes, "") || parent1Genes == null || parent2Genes == null) {
-                        ((AustralovenatorEntity) young).setGenes(((AustralovenatorEntity) young).generateGenes());
+                        ((AustralovenatorEntity) young).setGenes(((AustralovenatorEntity) young).generateGenes(false));
                     } else {
                         ((AustralovenatorEntity) young).setGenes(((AustralovenatorEntity) young).inheritGenes(parent1Genes, parent2Genes));
                     }

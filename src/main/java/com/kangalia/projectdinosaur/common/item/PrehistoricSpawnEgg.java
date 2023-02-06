@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
@@ -37,6 +38,11 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
             if (mob == null) {
                 return Optional.empty();
             } else {
+                if (mob instanceof AustralovenatorEntity australovenator) {
+                    australovenator.setGenes(australovenator.generateGenes(true));
+                } else if (mob instanceof GastornisEntity gastornis) {
+                    gastornis.setGenes(gastornis.generateGenes(true));
+                }
                 mob.setAgeInTicks(0);
                 mob.setGender(random.nextInt(2));
                 mob.setHunger(mob.getMaxFood());

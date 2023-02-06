@@ -11,6 +11,8 @@ import net.minecraft.world.entity.Entity;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
+import java.util.Locale;
+
 public class AustralovenatorLayer extends GeoLayerRenderer {
 
     // A resource location for the texture of the layer. This will be applied onto pre-existing cubes on the model
@@ -29,44 +31,31 @@ public class AustralovenatorLayer extends GeoLayerRenderer {
     public String getTypeAndColourPath(AustralovenatorEntity australovenator, int gene) {
         String path = "australovenator";
         if (gene == 0) {
-            if (australovenator.isBaby()) {
-                path = path + "_baby";
+            if (!australovenator.getColourMorph().equals("Normal")) {
+                if (australovenator.isBaby()) {
+                    path = path + "_baby";
+                }
+                path = path + "_" + australovenator.getColourMorph().toLowerCase(); //Colour Morph (Baby)
                 if (australovenator.isSleeping()) {
                     path = path + "_sleeping";
                 }
-                path = path + switch (australovenator.getColourMorph()) { //Colour Morph
-                    case 1 -> "_albino";
-                    case 2 -> "_melanistic";
-                    default -> "";
-                };
                 return path;
-            }
-            if (australovenator.getColourMorph() != 0) {
-                if (australovenator.getGender() == 0) {
-                    path = path + "_male";
+            } else {
+                if (australovenator.isBaby()) {
+                    path = path + "_baby";
+                    if (australovenator.isSleeping()) {
+                        path = path + "_sleeping";
+                    }
+                    return path;
                 } else {
-                    path = path + "_female";
-                }
-                if (australovenator.isSleeping()) {
-                    path = path + "_sleeping";
+                    return path + "_invis";
                 }
             }
-            path = path + switch (australovenator.getColourMorph()) { //Colour Morph
-                case 1 -> "_albino";
-                case 2 -> "_melanistic";
-                default -> "_invis";
-            };
-            return path;
         }
-        if (australovenator.getColourMorph() == 2 && !australovenator.isBaby()) {
+        if (australovenator.getColourMorph().equals("Melanistic") && !australovenator.isBaby()) {
             if (gene == 4) {
                 if (australovenator.getGender() == 0) {
-                    path = path + "_highlight" + switch (australovenator.getGeneDominance(4)) { //Highlight Colour *only on males*
-                        case 1 -> "_red";
-                        case 2 -> "_green";
-                        default -> "_blue";
-                    };
-                    path = path + "_melanistic";
+                    path = path + "_highlight_" + australovenator.getGeneDominance(4).toLowerCase() + "_melanistic";  //Highlight Colour *only on males*
                     if (australovenator.isSleeping()) {
                         path = path + "_sleeping";
                     }
@@ -76,14 +65,9 @@ public class AustralovenatorLayer extends GeoLayerRenderer {
                 return path;
             }
         }
-        if (australovenator.getColourMorph() == 0 && !australovenator.isBaby()) {
+        if (australovenator.getColourMorph().equals("Normal") && !australovenator.isBaby()) {
             if (gene == 1) {
-                path = path + "_base" + switch (australovenator.getGeneDominance(1)) { //Feather Colour
-                    case 1 -> "_grey";
-                    case 2 -> "_green";
-                    case 3 -> "_cream";
-                    default -> "_orange";
-                };
+                path = path + "_base_" + australovenator.getGeneDominance(2).toLowerCase(); //Base Colour
                 if (australovenator.getGender() == 1) {
                     if (australovenator.isSleeping()) {
                         path = path + "_sleeping";
@@ -91,40 +75,16 @@ public class AustralovenatorLayer extends GeoLayerRenderer {
                 }
                 return path;
             } else if (gene == 2) {
-                path = path + "_underside" + switch (australovenator.getGeneDominance(2)) { //Underside Colour
-                    case 1 -> "_grey";
-                    case 2 -> "_brown";
-                    case 3 -> "_black";
-                    default -> "_cream";
-                };
-                return path;
+                return path + "_underside_" + australovenator.getGeneDominance(3).toLowerCase(); //Underside Colour
             } else if (gene == 3) {
-                path = path + "_pattern_type" + switch (australovenator.getGeneDominance(3)) { //Pattern Type
-                    case 1 -> "_stripes";
-                    case 2 -> "_rings";
-                    case 3 -> "_spots";
-                    case 4 -> "_clownfish";
-                    default -> "_circles";
-                };
-                return path;
-            } else if (gene == 4) {
-                path = path + "_pattern_colour" + switch (australovenator.getGeneDominance(4)) { //Pattern Colour
-                    case 1 -> "_black";
-                    case 2 -> "_yellow";
-                    case 3 -> "_white";
-                    case 4 -> "_red";
-                    case 5 -> "_cyan";
-                    default -> "_grey";
-                };
-                return path;
+                if (australovenator.getGender() == 0) {
+                    return path + "_male_pattern_" + australovenator.getGeneDominance(4).toLowerCase() + "_" + australovenator.getGeneDominance(5).toLowerCase(); //Pattern Type & Colour (Male)
+                } else {
+                    return path + "_female_pattern_" + australovenator.getGeneDominance(4).toLowerCase() + "_" + australovenator.getGeneDominance(5).toLowerCase(); //Pattern Type & Colour (Female)
+                }
             } else {
                 if (australovenator.getGender() == 0) {
-                    path = path + "_highlight" + switch (australovenator.getGeneDominance(5)) { //Highlight Colour *only on males*
-                        case 1 -> "_green";
-                        case 2 -> "_yellow";
-                        case 3 -> "_red";
-                        default -> "_blue";
-                    };
+                    path = path + "_highlight_" + australovenator.getGeneDominance(6).toLowerCase(); //Highlight Colour *only on males*
                     if (australovenator.isSleeping()) {
                         path = path + "_sleeping";
                     }

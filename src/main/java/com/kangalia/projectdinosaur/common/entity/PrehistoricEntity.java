@@ -81,6 +81,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int sleepSchedule;
     private UUID persistentAngerTarget;
     public Component name;
+    public Component nameScientific;
     public int renderScale;
     public int maxEnrichment = 100;
     private boolean validTarget;
@@ -508,6 +509,18 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setHealth((float)this.getAttribute(Attributes.MAX_HEALTH).getValue());
     }
 
+    public String getGenes() {
+        return "";
+    }
+
+    public String getColourMorph() {
+        return "Normal";
+    }
+
+    public String getCoefficientRating(int gene) {
+        return "Error!";
+    }
+
     public Block getEgg() {
         return null;
     }
@@ -707,6 +720,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public Component getSpecies() {
         return name;
+    }
+
+    public Component getSpeciesScientific() {
+        return nameScientific;
     }
 
     public int getRenderScale() {
