@@ -18,7 +18,6 @@ public class GenomeScannerContainer extends AbstractContainerMenu {
     public GenomeScannerContainer(int containerID, ItemStack stack, Inventory playerInventory, Player playerEntity) {
         super(ContainerInit.GENOME_SCANNER_CONTAINER.get(), containerID);
         player = playerEntity;
-        System.out.println("Container Created: "+this);
     }
 
     public ItemStack getItem() {
@@ -27,12 +26,10 @@ public class GenomeScannerContainer extends AbstractContainerMenu {
             scanner = (GenomeScanner) scannerStack.getItem();
             scanner.saveNBT(scannerStack, scanner.getClickedEntity());
         }
-        System.out.println("Got Item: "+scannerStack);
         return scannerStack;
     }
 
     public PrehistoricEntity getPrehistoricEntity() {
-        System.out.println("Got Entity: "+scanner.getClickedEntity());
         return scanner.getClickedEntity();
     }
 

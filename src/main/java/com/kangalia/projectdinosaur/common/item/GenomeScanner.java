@@ -35,13 +35,10 @@ public class GenomeScanner extends Item {
     public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
         Level level = pPlayer.getLevel();
         System.out.println(pInteractionTarget);
-        if (pInteractionTarget instanceof PrehistoricEntity) {
-            setClickedEntity((PrehistoricEntity) pInteractionTarget);
-            System.out.println("Is Prehistoric Entity");
+        if (pInteractionTarget instanceof PrehistoricEntity prehistoric) {
+            setClickedEntity(prehistoric);
             if (!level.isClientSide) {
-                System.out.println("Isn't client side");
-                MenuProvider containerProvider = createContainerProvider((PrehistoricEntity) pInteractionTarget, pPlayer.getItemInHand(pUsedHand));
-                System.out.println("containerProvider: "+containerProvider);
+                MenuProvider containerProvider = createContainerProvider(prehistoric, pPlayer.getItemInHand(pUsedHand));
                 NetworkHooks.openScreen((ServerPlayer) pPlayer, containerProvider);
                 return InteractionResult.SUCCESS;
             }

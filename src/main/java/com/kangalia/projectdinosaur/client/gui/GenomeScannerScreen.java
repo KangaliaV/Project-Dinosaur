@@ -24,7 +24,6 @@ public class GenomeScannerScreen extends AbstractContainerScreen<GenomeScannerCo
         this.titleLabelY = 12;
         scanner = genomeScannerContainer.getItem();
         container = genomeScannerContainer;
-        System.out.println("Screen Created: "+genomeScannerContainer);
     }
 
     @Override
