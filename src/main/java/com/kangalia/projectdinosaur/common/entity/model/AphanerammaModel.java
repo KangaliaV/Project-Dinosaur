@@ -24,21 +24,7 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
 
     @Override
     public ResourceLocation getTextureResource(AphanerammaEntity object) {
-        if (object.isAdult()) {
-            if (object.getGender() == 0 && !object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_male.png");
-            } else if (object.getGender() == 1 && !object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_female.png");
-            } else if (object.getGender() == 0 && object.isSleeping()) {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_male_sleeping.png");
-            } else {
-                return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_female_sleeping.png");
-            }
-        } else if (object.isSleeping()) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_baby_sleeping.png");
-        } else {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma_baby.png");
-        }
+        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma/aphaneramma_invis.png");
     }
 
     @Override
