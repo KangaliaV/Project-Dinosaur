@@ -95,16 +95,18 @@ public class AustralovenatorGenome extends BaseGenome {
         } else if (index == 1) {
             allele = BC.charAt(r.nextInt(BC.length()));
         } else if (index == 2) {
-            allele = PT.charAt(r.nextInt(PT.length()));
+            allele = UC.charAt(r.nextInt(UC.length()));
         } else if (index == 3) {
-            allele = PC.charAt(r.nextInt(PC.length()));
+            allele = PT.charAt(r.nextInt(PT.length()));
         } else if (index == 4) {
-            allele = HC.charAt(r.nextInt(HC.length()));
+            allele = PC.charAt(r.nextInt(PC.length()));
         } else if (index == 5) {
-            allele = SP.charAt(r.nextInt(SP.length()));
+            allele = HC.charAt(r.nextInt(HC.length()));
         } else if (index == 6) {
-            allele = SZ.charAt(r.nextInt(SZ.length()));
+            allele = SP.charAt(r.nextInt(SP.length()));
         } else if (index == 7) {
+            allele = SZ.charAt(r.nextInt(SZ.length()));
+        } else if (index == 8) {
             allele = AD.charAt(r.nextInt(AD.length()));
         } else {
             allele = HP.charAt(r.nextInt(HP.length()));
