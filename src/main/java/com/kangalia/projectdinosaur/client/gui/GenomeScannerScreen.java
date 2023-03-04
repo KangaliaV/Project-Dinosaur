@@ -60,6 +60,7 @@ public class GenomeScannerScreen extends Screen {
                     }
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.gastornis.skin", scanner.getTag().getString("dino.gastornis.skin")), 50+xCorrection, 160+yCorrection, 9544081);
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.gastornis.beak", scanner.getTag().getString("dino.gastornis.beak")), 50+xCorrection, 172+yCorrection, 9544081);
+
                 } else if (scanner.getTag().getBoolean("dino.australovenator")) {
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_genome", scanner.getTag().getString("dino.genome")), 163, 75, 10728867);
                     pPoseStack.scale(0.8f, 0.8f, 0.8f);
@@ -71,6 +72,18 @@ public class GenomeScannerScreen extends Screen {
                         this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.australovenator.highlight", scanner.getTag().getString("dino.australovenator.highlight"), "Y"), 50+xCorrection, 148+yCorrection, 9544081);
                     } else {
                         this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.australovenator.highlight", scanner.getTag().getString("dino.australovenator.highlight"), "N"), 50+xCorrection, 148+yCorrection, 9544081);
+                    }
+
+                } else if (scanner.getTag().getBoolean("dino.aphaneramma")) {
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_genome", scanner.getTag().getString("dino.genome")), 163, 75, 10728867);
+                    pPoseStack.scale(0.8f, 0.8f, 0.8f);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_morph", scanner.getTag().getString("dino.morph")), 50+xCorrection, 100+yCorrection, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.aphaneramma.base", scanner.getTag().getString("dino.aphaneramma.base")), 50+xCorrection, 112+yCorrection, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.aphaneramma.underside", scanner.getTag().getString("dino.aphaneramma.underside")), 50+xCorrection, 124+yCorrection, 9544081);
+                    if (scanner.getTag().getInt("dino.sex") == 0) {
+                        this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.aphaneramma.pattern", scanner.getTag().getString("dino.aphaneramma.pattern"), "M"), 50 + xCorrection, 136 + yCorrection, 9544081);
+                    } else {
+                        this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.aphaneramma.pattern", scanner.getTag().getString("dino.aphaneramma.pattern"), "F"), 50 + xCorrection, 136 + yCorrection, 9544081);
                     }
                 }
                 this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.speed", scanner.getTag().getString("dino.speed")), 50+xCorrection, 204+yCorrection, 9544081);

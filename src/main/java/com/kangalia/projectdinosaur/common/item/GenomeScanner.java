@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.client.gui.GenomeScannerScreen;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
 import net.minecraft.client.Minecraft;
@@ -46,6 +47,7 @@ public class GenomeScanner extends Item {
         nbt.putString("dino.morph", prehistoric.getColourMorph());
         nbt.putInt("dino.sex", prehistoric.getGender());
         if (prehistoric instanceof GastornisEntity gastornis) {
+            nbt.putBoolean("dino.aphaneramma", false);
             nbt.putBoolean("dino.australovenator", false);
             nbt.putBoolean("dino.gastornis", true);
             nbt.putString("dino.gastornis.feather", gastornis.getGeneDominance(1));
@@ -60,6 +62,7 @@ public class GenomeScanner extends Item {
             nbt.putString("dino.max_health", prehistoric.getCoefficientRating(10));
 
         } else if (prehistoric instanceof AustralovenatorEntity australovenator) {
+            nbt.putBoolean("dino.aphaneramma", false);
             nbt.putBoolean("dino.gastornis", false);
             nbt.putBoolean("dino.australovenator", true);
             nbt.putString("dino.australovenator.base", australovenator.getGeneDominance(2));
@@ -71,6 +74,18 @@ public class GenomeScanner extends Item {
             nbt.putString("dino.size", prehistoric.getCoefficientRating(7));
             nbt.putString("dino.attack_damage", prehistoric.getCoefficientRating(8));
             nbt.putString("dino.max_health", prehistoric.getCoefficientRating(9));
+
+        } else if (prehistoric instanceof AphanerammaEntity aphaneramma) {
+            nbt.putBoolean("dino.gastornis", false);
+            nbt.putBoolean("dino.australovenator", false);
+            nbt.putBoolean("dino.aphaneramma", true);
+            nbt.putString("dino.aphaneramma.base", aphaneramma.getGeneDominance(1));
+            nbt.putString("dino.aphaneramma.underside", aphaneramma.getGeneDominance(2));
+            nbt.putString("dino.aphaneramma.pattern", aphaneramma.getGeneDominance(3));
+            nbt.putString("dino.speed", prehistoric.getCoefficientRating(4));
+            nbt.putString("dino.size", prehistoric.getCoefficientRating(5));
+            nbt.putString("dino.attack_damage", prehistoric.getCoefficientRating(6));
+            nbt.putString("dino.max_health", prehistoric.getCoefficientRating(7));
         }
 
         stack.setTag(nbt);

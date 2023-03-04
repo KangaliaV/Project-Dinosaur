@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "gbg",
+    "gsg",
     "iri"
   ],
   "key": {
@@ -14,11 +14,11 @@
     "g": {
       "item": "minecraft:glass_pane"
     },
-    "b": {
-      "item": "minecraft:glass_bottle"
+    "s": {
+      "item": "projectdinosaur:syringe"
     }
   },
   "result": {
-    "item": "projectdinosaur:dino_scanner"
+    "item": "projectdinosaur:genome_scanner"
   }
 }

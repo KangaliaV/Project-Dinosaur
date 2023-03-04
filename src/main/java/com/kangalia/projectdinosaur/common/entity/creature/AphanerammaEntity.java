@@ -92,7 +92,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         soundVolume = 0.2F;
         sleepSchedule = 0;
         name = Component.translatable("dino.projectdinosaur.aphaneramma");
-        nameScientific = Component.translatable("dino.projectdinosaur.scientific.aphaneramma");
+        nameScientific = Component.translatable("dino.projectdinosaur.aphaneramma.scientific");
         renderScale = 60;
     }
 
