@@ -15,6 +15,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -95,6 +97,24 @@ public class AphanerammaSpawnBlock extends WaterSpawnBlock {
                 }
             }
         }
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        BlockEntity blockentity = pLevel.getBlockEntity(pPos);
+        if (!pLevel.isClientSide && !pPlayer.isCreative()) {
+            if (blockentity instanceof AphanerammaSpawnBlockEntity eggBlockEntity) {
+                ItemStack itemstack = new ItemStack(this);
+                CompoundTag compoundtag = new CompoundTag();
+                compoundtag.put("parentGenome", eggBlockEntity.writeParents());
+                BlockItem.setBlockEntityData(itemstack, BlockEntitiesInit.APHANERAMMA_SPAWN_ENTITY.get(), compoundtag);
+                ItemEntity itementity = new ItemEntity(pLevel, (double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, itemstack);
+                itementity.setDefaultPickUpDelay();
+                pLevel.addFreshEntity(itementity);
+
+            }
+        }
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Override
