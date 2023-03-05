@@ -66,6 +66,10 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         minSize = 0.25F;
         maxMaleSize = 1.3F;
         maxFemaleSize = 1.1F;
+        minHeight = 0.45f;
+        maxHeight = 1.2f;
+        minWidth = 0.4f;
+        maxWidth = 1.05f;
         maxFood = 80;
         diet = 1;
         soundVolume = 0.3F;
@@ -73,6 +77,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         name = Component.translatable("dino.projectdinosaur.australovenator");
         nameScientific = Component.translatable("dino.projectdinosaur.australovenator.scientific");
         renderScale = 30;
+        breedingType = 0;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -86,15 +91,19 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     }
 
     @Override
-    public void randomizeAttributes(boolean adult) {
-        if (adult) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
+    public void randomizeAttributes(int age) {
+        if (age == 0) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+        } else if (age == 1) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/4);
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 2);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
         }
     }
 
@@ -187,11 +196,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     }
 
     @Override
-    public int getBreedingType() {
-        return 0;
-    }
-
-    @Override
     public Block getEggType() {
         return BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get();
     }
@@ -210,7 +214,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setGenes(this.generateGenes(true));
         System.out.println(this.getGenes());
-        this.setAttributes(true);
+        this.setAttributes(0);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -221,6 +225,26 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
             return sizeCoefficient * maxMaleSize;
         } else {
             return sizeCoefficient * maxFemaleSize;
+        }
+    }
+
+    @Override
+    public float getMaxHeight() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxHeight;
+        } else {
+            return sizeCoefficient * (maxHeight - 0.2f);
+        }
+    }
+
+    @Override
+    public float getMaxWidth() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxWidth;
+        } else {
+            return sizeCoefficient * (maxWidth - 0.1f);
         }
     }
 

@@ -62,10 +62,10 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
                     young.setHunger(young.getMaxFood() / 2);
                     young.setHungerTicks(1600);
                     young.setEnrichment(young.getMaxEnrichment() / 2);
-                    young.setAttributes(false);
+                    young.setAttributes(3);
                     young.moveTo((double) pPos.getX() + 0.3D + (double) j * 0.2D, (double) pPos.getY(), (double) pPos.getZ() + 0.3D, 0.0F, 0.0F);
                     pLevel.addFreshEntity(young);
-                    System.out.println(((AustralovenatorEntity) young).getGenes());
+                    System.out.println(young.getGenes());
                 }
             }
             pLevel.playSound((Player) null, pPos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.7F, 0.9F + pRandom.nextFloat() * 0.2F);
@@ -166,9 +166,7 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
     }
 
     public String getParent1DataFromBlockEntity(Level level, BlockPos pos, BlockEntity entity) {
-        //BlockEntity entity = level.getBlockEntity(pos);
         String parent1 = "";
-        String parent2 = "";
         if (entity instanceof AustralovenatorEggBlockEntity eggEntity) {
             parent1 = eggEntity.getParent1();
         }
@@ -176,7 +174,6 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
     }
 
     public String getParent2DataFromBlockEntity(Level level, BlockPos pos, BlockEntity entity) {
-        //BlockEntity entity = level.getBlockEntity(pos);
         String parent2 = "";
         if (entity instanceof AustralovenatorEggBlockEntity eggEntity) {
             parent2 = eggEntity.getParent2();
@@ -185,7 +182,7 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
     }
 
     public void playerDecreaseEggs(Level pLevel, BlockPos pPos, BlockState pState, String parent1, String parent2) {
-        pLevel.playSound((Player)null, pPos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + pLevel.random.nextFloat() * 0.2F);
+        pLevel.playSound(null, pPos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + pLevel.random.nextFloat() * 0.2F);
         int i = pState.getValue(EGGS);
         if (i <= 1) {
             pLevel.destroyBlock(pPos, false);

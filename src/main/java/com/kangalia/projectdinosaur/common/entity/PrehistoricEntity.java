@@ -73,6 +73,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float minSize;
     public float maxMaleSize;
     public float maxFemaleSize;
+    public float minHeight;
+    public float maxHeight;
+    public float minWidth;
+    public float maxWidth;
     public int maxFood;
     public int diet;
     protected GroundFeederBlockEntity groundFeeder;
@@ -87,7 +91,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int renderScale;
     public int maxEnrichment = 100;
     private boolean validTarget;
-    boolean ageFlag = false;
+    boolean adultFlag = false;
+    boolean juviFlag = false;
     public int breedingType;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
@@ -111,7 +116,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setRemainingCryosicknessTime(0);
         this.setEnrichment(maxEnrichment / 2);
         this.setEnrichmentTicks(2000);
-        this.setAttributes(true);
+        this.setAttributes(0);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -127,12 +132,42 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
+    public EntityDimensions getDimensions(Pose pPose) {
+        if (!Objects.equals(this.getGenes(), "")) {
+            return super.getDimensions(pPose).scale(this.getDimensionScaleWidth(), this.getDimensionScaleHeight());
+        } else {
+            return super.getDimensions(pPose);
+        }
+    }
+
+    public float getDimensionScaleHeight() {
+        float step = (this.getMaxHeight() - this.minHeight) / ((this.getAdultAge() * 24000) + 1);
+        if (this.getAgeInTicks() >= this.getAdultAge() * 24000) {
+            return this.minHeight + ((step) * this.getAdultAge() * 24000);
+        }
+        return minHeight + ((step * this.getAgeInTicks()));
+    }
+
+    public float getDimensionScaleWidth() {
+        float step = (this.getMaxWidth() - this.minWidth) / ((this.getAdultAge() * 24000) + 1);
+        if (this.getAgeInTicks() >= this.getAdultAge() * 24000) {
+            return this.minWidth + ((step) * this.getAdultAge() * 24000);
+        }
+        return minWidth + ((step * this.getAgeInTicks()));
+    }
+
+    @Override
     public void tick() {
         super.tick();
+        refreshDimensions();
         if (!level.isClientSide) {
-            if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !ageFlag) {
-                this.setAttributes(true);
-                ageFlag = true;
+            if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !adultFlag) {
+                this.setAttributes(0);
+                adultFlag = true;
+            }
+            if (this.isJuvenile() && !juviFlag) {
+                this.setAttributes(1);
+                juviFlag = true;
             }
             if (!this.isStunted()) {
                 this.setAgeInTicks(this.getAgeInTicks() + 1);
@@ -344,6 +379,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 item.shrink(1);
                 playHormoneSound(pPlayer);
             }
+            refreshDimensions();
             return InteractionResult.SUCCESS;
         } else if (item.is(ItemInit.GROWTH_STUNTING_HORMONE.get()) && !this.isAdult() && !this.isStunted()) {
             this.setStunted(true);
@@ -527,11 +563,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
     }
 
-    public void randomizeAttributes(boolean adult) {}
+    public void randomizeAttributes(int age) {}
 
-    public void setAttributes(boolean adult) {
-        this.randomizeAttributes(adult);
+    public void setAttributes(int age) {
+        this.randomizeAttributes(age);
         this.setHealth((float)this.getAttribute(Attributes.MAX_HEALTH).getValue());
+        refreshDimensions();
     }
 
     public String getGenes() {
@@ -659,6 +696,22 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             return maxMaleSize;
         } else {
             return maxFemaleSize;
+        }
+    }
+
+    public float getMaxHeight() {
+        if (this.getGender() == 0) {
+            return maxHeight;
+        } else {
+            return maxHeight - 0.5f;
+        }
+    }
+
+    public float getMaxWidth() {
+        if (this.getGender() == 0) {
+            return maxWidth;
+        } else {
+            return maxWidth - 0.2f;
         }
     }
 

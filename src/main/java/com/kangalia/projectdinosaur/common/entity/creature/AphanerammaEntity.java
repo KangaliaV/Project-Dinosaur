@@ -108,13 +108,17 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     @Override
-    public void randomizeAttributes(boolean adult) {
-        if (adult) {
+    public void randomizeAttributes(int age) {
+        if (age == 0) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+        } else if (age == 1) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4))/4);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4))/2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/4);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
         }
@@ -257,7 +261,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         this.setGenes(this.generateGenes(true));
         System.out.println(this.getGenes());
-        this.setAttributes(true);
+        this.setAttributes(0);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 

@@ -55,6 +55,7 @@ public class AphanerammaSpawnBlock extends WaterSpawnBlock {
                 young.setHunger(young.getMaxFood() / 2);
                 young.setHungerTicks(1600);
                 young.setEnrichment(young.getMaxEnrichment() / 2);
+                young.setAttributes(3);
                 young.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
                 young.setPersistenceRequired();
                 pLevel.addFreshEntity(young);
