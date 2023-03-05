@@ -115,7 +115,7 @@ public class BlockInit {
     public static final RegistryObject<Block> SCELIDOSAURUS_EGG_INCUBATED = registerEggBlock("scelidosaurus_egg_incubated", () -> new PrehistoricEggBlock(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_RED).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion(), EntityInit.SCELIDOSAURUS, 4));
 
     //Spawn
-    public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerWaterSpawnBlock("aphaneramma_spawn", () -> new WaterSpawnBlock(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.APHANERAMMA));
+    public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerWaterSpawnBlock("aphaneramma_spawn", () -> new AphanerammaSpawnBlock(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.APHANERAMMA));
     public static final RegistryObject<Block> ARTHROPLEURA_SPAWN = registerEggBlock("arthropleura_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> EURYPTERUS_SPAWN = registerEggBlock("eurypterus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> MEGALOGRAPTUS_SPAWN = registerEggBlock("megalograptus_spawn", () -> new Block(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.COLOR_GREEN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));

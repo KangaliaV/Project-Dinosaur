@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.core.init;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.*;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.AphanerammaSpawnBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +28,9 @@ public class BlockEntitiesInit {
     //Eggs
     public static final RegistryObject<BlockEntityType<AustralovenatorEggBlockEntity>> AUSTRALOVENATOR_EGG_ENTITY = TILE_ENTITIES.register("australovenator_egg", () -> BlockEntityType.Builder.of(AustralovenatorEggBlockEntity::new, BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get()).build(null));
     public static final RegistryObject<BlockEntityType<GastornisEggBlockEntity>> GASTORNIS_EGG_ENTITY = TILE_ENTITIES.register("gastornis_egg", () -> BlockEntityType.Builder.of(GastornisEggBlockEntity::new, BlockInit.GASTORNIS_EGG_INCUBATED.get()).build(null));
+
+    //Spawn
+    public static final RegistryObject<BlockEntityType<AphanerammaSpawnBlockEntity>> APHANERAMMA_SPAWN_ENTITY = TILE_ENTITIES.register("aphaneramma_spawn", () -> BlockEntityType.Builder.of(AphanerammaSpawnBlockEntity::new, BlockInit.APHANERAMMA_SPAWN.get()).build(null));
 
 
     //Other

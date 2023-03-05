@@ -120,4 +120,9 @@ public class ItemInit {
     //Specific Block Items
     public static final RegistryObject<Item> EMBRYONIC_WOMB_ITEM = ITEMS.register("embryonic_womb_item", () -> new EmbryonicWombBlockItem(BlockInit.EMBRYONIC_WOMB.get(), new Item.Properties().tab(DinoBlocks.DINO_BLOCKS)));
 
+    //Dev Items
+    public static final RegistryObject<Item> LOVE_POTION = ITEMS.register("love_potion", () -> new LovePotion(new Item.Properties()));
+    public static final RegistryObject<Item> HUNGER_POTION = ITEMS.register("hunger_potion", () -> new HungerPotion(new Item.Properties()));
+    public static final RegistryObject<Item> ANGER_POTION = ITEMS.register("anger_potion", () -> new AngerPotion(new Item.Properties()));
+
 }

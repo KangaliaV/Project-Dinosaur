@@ -5,6 +5,7 @@ import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -86,6 +88,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int maxEnrichment = 100;
     private boolean validTarget;
     boolean ageFlag = false;
+    public int breedingType;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -254,10 +257,18 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             if (prehistoric instanceof GastornisEntity && this instanceof GastornisEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.GASTORNIS_EGG_ENTITY.get()) {
                 GastornisEggBlockEntity gastornisEggEntity = (GastornisEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
                 if (gastornisEggEntity != null) {
-                    System.out.println("Father: "+((GastornisEntity) this).getGenes());
-                    System.out.println("Mother: "+((GastornisEntity) prehistoric).getGenes());
-                    gastornisEggEntity.setParent1(((GastornisEntity) this).getGenes());
-                    gastornisEggEntity.setParent2(((GastornisEntity) prehistoric).getGenes());
+                    System.out.println("Father: "+ this.getGenes());
+                    System.out.println("Mother: "+ prehistoric.getGenes());
+                    gastornisEggEntity.setParent1(this.getGenes());
+                    gastornisEggEntity.setParent2(prehistoric.getGenes());
+                }
+            } else if (prehistoric instanceof AustralovenatorEntity && this instanceof AustralovenatorEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.AUSTRALOVENATOR_EGG_ENTITY.get()) {
+                AustralovenatorEggBlockEntity australovenatorEggEntity = (AustralovenatorEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
+                if (australovenatorEggEntity != null) {
+                    System.out.println("Father: "+ this.getGenes());
+                    System.out.println("Mother: "+ prehistoric.getGenes());
+                    australovenatorEggEntity.setParent1(this.getGenes());
+                    australovenatorEggEntity.setParent2(prehistoric.getGenes());
                 }
             }
         }
@@ -265,13 +276,27 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public void laySpawn(PrehistoricEntity prehistoric) {
         if (!prehistoric.level.isClientSide) {
-            ItemEntity item = new ItemEntity(prehistoric.level, prehistoric.getX(), prehistoric.getY(), prehistoric.getZ(), prehistoric.getSpawnType());
+            ItemStack itemstack = prehistoric.getSpawnType();
+            if (this instanceof AphanerammaEntity) {
+                itemstack = new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
+                CompoundTag compoundtag = new CompoundTag();
+                compoundtag.put("parentGenome", this.writeSpawnParents(prehistoric));
+                BlockItem.setBlockEntityData(itemstack, BlockEntitiesInit.APHANERAMMA_SPAWN_ENTITY.get(), compoundtag);
+            }
+            ItemEntity item = new ItemEntity(prehistoric.level, prehistoric.getX(), prehistoric.getY(), prehistoric.getZ(), itemstack);
             prehistoric.level.addFreshEntity(item);
         }
     }
 
+    public CompoundTag writeSpawnParents(PrehistoricEntity prehistoric) {
+        CompoundTag compoundTag = new CompoundTag();
+        compoundTag.putString("parent1", this.getGenes());
+        compoundTag.putString("parent2", prehistoric.getGenes());
+        return compoundTag;
+    }
+
     public int getBreedingType() {
-        return 0;
+        return breedingType;
     }
 
     public Block getEggType() {

@@ -94,6 +94,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         name = Component.translatable("dino.projectdinosaur.aphaneramma");
         nameScientific = Component.translatable("dino.projectdinosaur.aphaneramma.scientific");
         renderScale = 60;
+        breedingType = 1;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -199,11 +200,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     void setTravelling(boolean pIsTravelling) {
         this.entityData.set(TRAVELLING, pIsTravelling);
-    }
-
-    @Override
-    public int getBreedingType() {
-        return 1;
     }
 
     @Override
