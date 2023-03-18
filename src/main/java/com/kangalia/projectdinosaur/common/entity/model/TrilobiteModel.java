@@ -17,19 +17,7 @@ public class TrilobiteModel extends AnimatedGeoModel<TrilobiteEntity> {
 
     @Override
     public ResourceLocation getTextureResource(TrilobiteEntity object) {
-        if (object.getVariant() == 0) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite1.png");
-        } else if (object.getVariant() == 1) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite2.png");
-        } else if (object.getVariant() == 2) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite3.png");
-        } else if (object.getVariant() == 3) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite4.png");
-        } else if (object.getVariant() == 4) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite5.png");
-        } else {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite6.png");
-        }
+        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/trilobite/trilobite_invis.png");
     }
 
     @Override

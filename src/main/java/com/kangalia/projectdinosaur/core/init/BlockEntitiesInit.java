@@ -6,6 +6,7 @@ import com.kangalia.projectdinosaur.common.blockentity.*;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.AphanerammaSpawnBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.TrilobiteSpawnBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -31,6 +32,7 @@ public class BlockEntitiesInit {
 
     //Spawn
     public static final RegistryObject<BlockEntityType<AphanerammaSpawnBlockEntity>> APHANERAMMA_SPAWN_ENTITY = TILE_ENTITIES.register("aphaneramma_spawn", () -> BlockEntityType.Builder.of(AphanerammaSpawnBlockEntity::new, BlockInit.APHANERAMMA_SPAWN.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TrilobiteSpawnBlockEntity>> TRILOBITE_SPAWN_ENTITY = TILE_ENTITIES.register("trilobite_spawn", () -> BlockEntityType.Builder.of(TrilobiteSpawnBlockEntity::new, BlockInit.TRILOBITE_SPAWN.get()).build(null));
 
 
     //Other

@@ -221,6 +221,11 @@
   "data.projectdinosaur.aphaneramma.underside": "Underside: %1$s",
   "data.projectdinosaur.aphaneramma.pattern": "Pattern: %1$s (%2$s)",
 
+  "data.projectdinosaur.trilobite.base": "Base: %1$s",
+  "data.projectdinosaur.trilobite.underside": "Underside: %1$s",
+  "data.projectdinosaur.trilobite.pattern": "Pattern: %1$s (%2$s)",
+  "data.projectdinosaur.trilobite.horn": "Horn Size: %1$s",
+
 
   "genome.projectdinosaur.parent1": "%2$sParent 1: %1$s",
   "genome.projectdinosaur.parent2": "%2$sParent 2: %1$s",
@@ -249,6 +254,7 @@
   "dino.projectdinosaur.aphaneramma.scientific": "Aphaneramma rostratum",
   "dino.projectdinosaur.australovenator.scientific": "Australovenator wintonensis",
   "dino.projectdinosaur.gastornis.scientific": "Gastornis gigantea",
+  "dino.projectdinosaur.trilobite.scientific": "Paradoxides paradoxissimus",
 
   "entity.projectdinosaur.aphaneramma": "Aphaneramma",
   "entity.projectdinosaur.australovenator": "Australovenator",

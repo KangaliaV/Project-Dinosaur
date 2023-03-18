@@ -2,6 +2,7 @@ package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
+import com.kangalia.projectdinosaur.common.entity.genetics.genomes.TrilobiteGenome;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -43,9 +45,10 @@ import java.util.Random;
 
 public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
 
-    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(TrilobiteEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(TrilobiteEntity.class, EntityDataSerializers.STRING);
 
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private TrilobiteGenome genome = new TrilobiteGenome();
 
     public TrilobiteEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -56,19 +59,18 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
         minSize = 0.25F;
         maxMaleSize = 1.0F;
         maxFemaleSize = 1.2F;
+        minHeight = 0.1f;
+        maxHeight = 0.2f;
+        minWidth = 0.3f;
+        maxWidth = 1.0f;
         maxFood = 50;
         diet = 0;
         soundVolume = 0.2F;
         sleepSchedule = 2;
         name = Component.translatable("dino.projectdinosaur.trilobite");
+        nameScientific = Component.translatable("dino.projectdinosaur.trilobite.scientific");
         renderScale = 60;
-    }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(@Nonnull ServerLevelAccessor serverLevelAccessor, @Nonnull DifficultyInstance difficultyInstance, @Nonnull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        Random random = new Random();
-        this.setVariant(random.nextInt(6));
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+        breedingType = 1;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -79,6 +81,20 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
+    }
+
+    @Override
+    public void randomizeAttributes(int age) {
+        if (age == 0) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
+        } else if (age == 1) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 1.5);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)) / 2);
+        } else {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -117,12 +133,24 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
         return 1 + this.level.random.nextInt(4);
     }*/
 
-    public int getVariant() {
-        return entityData.get(VARIANT);
+    @Override
+    public float getMaxHeight() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * (maxHeight * 0.9f);
+        } else {
+            return sizeCoefficient * maxHeight;
+        }
     }
 
-    public void setVariant(int variant) {
-        entityData.set(VARIANT, variant);
+    @Override
+    public float getMaxWidth() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * (maxWidth * 0.8f);
+        } else {
+            return sizeCoefficient * maxWidth;
+        }
     }
 
     @Override
@@ -189,22 +217,107 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
 
     @Override
     public int getAdultAge() {
-        return 5;
+        return 4;
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        this.setGenes(this.generateGenes(true));
+        System.out.println(this.getGenes());
+        this.setAttributes(0);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public float getGenderMaxSize() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxMaleSize;
+        } else {
+            return sizeCoefficient * maxFemaleSize;
+        }
+    }
+
+    public String generateGenes(boolean allowed) {
+        if (allowed) {
+            return genome.setRandomGenes();
+        } else {
+            return genome.setRandomAllowedGenes();
+        }
+    }
+
+    public String inheritGenes(String parent1, String parent2) {
+        return genome.setInheritedGenes(parent1, parent2);
+    }
+
+    @Override
+    public String getGenes() {
+        return this.entityData.get(GENOME);
+    }
+
+    public void setGenes(String genes) {
+        this.entityData.set(GENOME, genes);
+    }
+
+    public String getGeneDominance(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        if (gene == 1) {
+            return genome.calculateDominanceBC(alleles);
+        } else if (gene == 2) {
+            return genome.calculateDominanceUC(alleles);
+        } else if (gene == 3) {
+            return genome.calculateDominancePT(alleles);
+        } else if (gene == 4) {
+            return genome.calculateDominancePC(alleles);
+        } else {
+            return genome.calculateDominanceHT(alleles);
+        }
+    }
+
+    public String getCoefficientRating(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        float coefficient = genome.calculateCoefficient(alleles);
+        if (coefficient == 1.2f) {
+            return "Highest";
+        } else if (coefficient < 1.2f && coefficient >= 1.1f) {
+            return "High";
+        } else if (coefficient < 1.1f && coefficient >= 1f) {
+            return "Mid-High";
+        } else if (coefficient < 1f && coefficient >= 0.9f) {
+            return "Mid-Low";
+        } else if (coefficient < 0.9f && coefficient > 0.8f) {
+            return "Low";
+        } else if (coefficient == 0.8f) {
+            return "Lowest";
+        } else {
+            return "Error";
+        }
+    }
+
+    @Override
+    public String getColourMorph() {
+        if (genome.isAlbino(this.getGenes())) {
+            return "Albino";
+        } else if (genome.isMelanistic(this.getGenes())) {
+            return "Melanistic";
+        } else {
+            return "Normal";
+        }
     }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
+        this.entityData.define(GENOME, "");
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("Variant", this.getVariant());
+        pCompound.putString("Genome", this.getGenes());
     }
 
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.setVariant(pCompound.getInt("Variant"));
+        this.setGenes(pCompound.getString("Genome"));
     }
 
     class TrilobiteMoveControl extends MoveControl {

@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.TrilobiteEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -45,6 +46,8 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
                     gastornis.setGenes(gastornis.generateGenes(true));
                 } else if (mob instanceof AphanerammaEntity aphaneramma) {
                     aphaneramma.setGenes(aphaneramma.generateGenes(true));
+                } else if (mob instanceof TrilobiteEntity trilobite) {
+                    trilobite.setGenes(trilobite.generateGenes(true));
                 }
                 mob.setAgeInTicks(0);
                 mob.setGender(random.nextInt(2));
@@ -52,6 +55,7 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
                 mob.setHungerTicks(1600);
                 mob.setMatingTicks(12000);
                 mob.setEnrichment(mob.getMaxEnrichment());
+                mob.setAttributes(0);
                 if (!mob.isBaby()) {
                     return Optional.empty();
                 } else {

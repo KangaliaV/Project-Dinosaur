@@ -46,6 +46,7 @@ public class GenomeScannerScreen extends Screen {
             if (scanner.getTag() != null) {
                 this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_species_scientific", entity.getSpeciesScientific()).withStyle(ChatFormatting.ITALIC), 163, 55, 10728867);
 
+                // GASTORNIS
                 if (scanner.getTag().getBoolean("dino.gastornis")) {
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_genome", scanner.getTag().getString("dino.genome")), 163, 75, 10728867);
                     pPoseStack.scale(0.8f, 0.8f, 0.8f);
@@ -61,6 +62,7 @@ public class GenomeScannerScreen extends Screen {
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.gastornis.skin", scanner.getTag().getString("dino.gastornis.skin")), 50+xCorrection, 160+yCorrection, 9544081);
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.gastornis.beak", scanner.getTag().getString("dino.gastornis.beak")), 50+xCorrection, 172+yCorrection, 9544081);
 
+                // AUSTRALOVENATOR
                 } else if (scanner.getTag().getBoolean("dino.australovenator")) {
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_genome", scanner.getTag().getString("dino.genome")), 163, 75, 10728867);
                     pPoseStack.scale(0.8f, 0.8f, 0.8f);
@@ -74,6 +76,7 @@ public class GenomeScannerScreen extends Screen {
                         this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.australovenator.highlight", scanner.getTag().getString("dino.australovenator.highlight"), "N"), 50+xCorrection, 148+yCorrection, 9544081);
                     }
 
+                // APHANERAMMA
                 } else if (scanner.getTag().getBoolean("dino.aphaneramma")) {
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_genome", scanner.getTag().getString("dino.genome")), 163, 75, 10728867);
                     pPoseStack.scale(0.8f, 0.8f, 0.8f);
@@ -85,7 +88,19 @@ public class GenomeScannerScreen extends Screen {
                     } else {
                         this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.aphaneramma.pattern", scanner.getTag().getString("dino.aphaneramma.pattern"), "F"), 50 + xCorrection, 136 + yCorrection, 9544081);
                     }
+
+                // TRILOBITE
+                } else if (scanner.getTag().getBoolean("dino.trilobite")) {
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_genome", scanner.getTag().getString("dino.genome")), 163, 75, 10728867);
+                    pPoseStack.scale(0.8f, 0.8f, 0.8f);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_morph", scanner.getTag().getString("dino.morph")), 50+xCorrection, 100+yCorrection, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.trilobite.base", scanner.getTag().getString("dino.trilobite.base")), 50+xCorrection, 112+yCorrection, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.trilobite.underside", scanner.getTag().getString("dino.trilobite.underside")), 50+xCorrection, 124+yCorrection, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.trilobite.pattern", scanner.getTag().getString("dino.trilobite.pattern"), scanner.getTag().getString("dino.trilobite.pattern_colour")), 50 + xCorrection, 136 + yCorrection, 9544081);
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.trilobite.horn", scanner.getTag().getString("dino.trilobite.horn")), 50+xCorrection, 148+yCorrection, 9544081);
                 }
+
+                // UNIVERSALS
                 this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.speed", scanner.getTag().getString("dino.speed")), 50+xCorrection, 204+yCorrection, 9544081);
                 this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.size", scanner.getTag().getString("dino.size")), 50+xCorrection, 216+yCorrection, 9544081);
                 this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.attack_damage", scanner.getTag().getString("dino.attack_damage")), 150+xCorrection, 204+yCorrection, 9544081);

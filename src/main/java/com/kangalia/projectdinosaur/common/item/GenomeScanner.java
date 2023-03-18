@@ -5,6 +5,7 @@ import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.TrilobiteEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -42,13 +43,18 @@ public class GenomeScanner extends Item {
 
     public void saveNBT(ItemStack stack, PrehistoricEntity prehistoric) {
         CompoundTag nbt = stack.getOrCreateTag();
+
+        nbt.putBoolean("dino.aphaneramma", false);
+        nbt.putBoolean("dino.australovenator", false);
+        nbt.putBoolean("dino.gastornis", false);
+        nbt.putBoolean("dino.trilobite", false);
+
         nbt.putString("dino.name.scientific", prehistoric.getSpeciesScientific().getString());
         nbt.putString("dino.genome", prehistoric.getGenes());
         nbt.putString("dino.morph", prehistoric.getColourMorph());
         nbt.putInt("dino.sex", prehistoric.getGender());
+
         if (prehistoric instanceof GastornisEntity gastornis) {
-            nbt.putBoolean("dino.aphaneramma", false);
-            nbt.putBoolean("dino.australovenator", false);
             nbt.putBoolean("dino.gastornis", true);
             nbt.putString("dino.gastornis.feather", gastornis.getGeneDominance(1));
             nbt.putString("dino.gastornis.underside", gastornis.getGeneDominance(2));
@@ -62,8 +68,6 @@ public class GenomeScanner extends Item {
             nbt.putString("dino.max_health", prehistoric.getCoefficientRating(10));
 
         } else if (prehistoric instanceof AustralovenatorEntity australovenator) {
-            nbt.putBoolean("dino.aphaneramma", false);
-            nbt.putBoolean("dino.gastornis", false);
             nbt.putBoolean("dino.australovenator", true);
             nbt.putString("dino.australovenator.base", australovenator.getGeneDominance(2));
             nbt.putString("dino.australovenator.underside", australovenator.getGeneDominance(3));
@@ -76,8 +80,6 @@ public class GenomeScanner extends Item {
             nbt.putString("dino.max_health", prehistoric.getCoefficientRating(9));
 
         } else if (prehistoric instanceof AphanerammaEntity aphaneramma) {
-            nbt.putBoolean("dino.gastornis", false);
-            nbt.putBoolean("dino.australovenator", false);
             nbt.putBoolean("dino.aphaneramma", true);
             nbt.putString("dino.aphaneramma.base", aphaneramma.getGeneDominance(1));
             nbt.putString("dino.aphaneramma.underside", aphaneramma.getGeneDominance(2));
@@ -86,6 +88,18 @@ public class GenomeScanner extends Item {
             nbt.putString("dino.size", prehistoric.getCoefficientRating(5));
             nbt.putString("dino.attack_damage", prehistoric.getCoefficientRating(6));
             nbt.putString("dino.max_health", prehistoric.getCoefficientRating(7));
+
+        } else if (prehistoric instanceof TrilobiteEntity trilobite) {
+            nbt.putBoolean("dino.trilobite", true);
+            nbt.putString("dino.trilobite.base", trilobite.getGeneDominance(1));
+            nbt.putString("dino.trilobite.underside", trilobite.getGeneDominance(2));
+            nbt.putString("dino.trilobite.pattern", trilobite.getGeneDominance(3));
+            nbt.putString("dino.trilobite.pattern_colour", trilobite.getGeneDominance(4));
+            nbt.putString("dino.trilobite.horn", trilobite.getGeneDominance(5));
+            nbt.putString("dino.speed", prehistoric.getCoefficientRating(6));
+            nbt.putString("dino.size", prehistoric.getCoefficientRating(7));
+            nbt.putString("dino.attack_damage", "---");
+            nbt.putString("dino.max_health", prehistoric.getCoefficientRating(8));
         }
 
         stack.setTag(nbt);
