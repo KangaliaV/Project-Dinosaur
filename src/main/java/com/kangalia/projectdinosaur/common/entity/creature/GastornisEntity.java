@@ -1,5 +1,6 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
+import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.eggs.PrehistoricEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
@@ -16,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -55,6 +57,9 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
 
@@ -62,6 +67,16 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
 
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private GastornisGenome genome = new GastornisGenome();
+
+    // Base Textures
+    private static final ResourceLocation DEAFULT_PATH = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/");
+
+    public static final String FEATHERS = "feathers";
+    public static final String UNDERSIDE = "underside";
+    public static final String PATTERN = "pattern";
+    public static final String HIGHLIGHT = "highlight";
+    public static final String SKIN = "skin";
+    public static final String BEAK = "beak";
 
     public GastornisEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);

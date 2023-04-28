@@ -18,6 +18,10 @@ public class RandomNumGen {
         return rng.nextInt();
     }
 
+    public double nextDouble() {
+        return rng.nextDouble();
+    }
+
     public int nextInt(int bound) {
         return rng.nextInt(bound);
     }

@@ -16,18 +16,12 @@ public class GastornisRenderer extends GeoEntityRenderer<GastornisEntity> {
 
     public GastornisRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new GastornisModel());
-        addLayer(new GastornisLayer(this, 0));
-        addLayer(new GastornisLayer(this, 1));
-        addLayer(new GastornisLayer(this, 2));
-        addLayer(new GastornisLayer(this, 3));
-        addLayer(new GastornisLayer(this, 4));
-        addLayer(new GastornisLayer(this, 5));
-        addLayer(new GastornisLayer(this, 6));
     }
 
     @Override
     public void render(GeoModel model, GastornisEntity animatable, float partialTicks, RenderType type, PoseStack matrixStackIn, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float scale = animatable.getAgeScaleData();
+        matrixStackIn.scale(scale, scale, scale);
         this.shadowRadius = scale * 0.4F;
         super.render(model, animatable, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }

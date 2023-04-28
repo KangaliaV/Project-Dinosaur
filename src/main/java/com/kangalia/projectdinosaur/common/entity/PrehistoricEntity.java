@@ -131,7 +131,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
-    @Override
+    /*@Override
     public EntityDimensions getDimensions(Pose pPose) {
         if (!Objects.equals(this.getGenes(), "")) {
             return super.getDimensions(pPose).scale(this.getDimensionScaleWidth(), this.getDimensionScaleHeight());
@@ -146,7 +146,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             return this.minHeight + ((step) * this.getAdultAge() * 24000);
         }
         return minHeight + ((step * this.getAgeInTicks()));
-    }
+    }*/
 
     public float getDimensionScaleWidth() {
         float step = (this.getMaxWidth() - this.minWidth) / ((this.getAdultAge() * 24000) + 1);
