@@ -131,7 +131,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
-    /*@Override
+    @Override
     public EntityDimensions getDimensions(Pose pPose) {
         if (!Objects.equals(this.getGenes(), "")) {
             return super.getDimensions(pPose).scale(this.getDimensionScaleWidth(), this.getDimensionScaleHeight());
@@ -141,19 +141,29 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public float getDimensionScaleHeight() {
-        float step = (this.getMaxHeight() - this.minHeight) / ((this.getAdultAge() * 24000) + 1);
+        float step = (getMaxHeight() - this.minHeight) / ((this.getAdultAge() * 24000) + 1);
         if (this.getAgeInTicks() >= this.getAdultAge() * 24000) {
             return this.minHeight + ((step) * this.getAdultAge() * 24000);
         }
-        return minHeight + ((step * this.getAgeInTicks()));
-    }*/
+        return minHeight + (step * this.getAgeInTicks());
+    }
 
     public float getDimensionScaleWidth() {
-        float step = (this.getMaxWidth() - this.minWidth) / ((this.getAdultAge() * 24000) + 1);
+        float step = (getMaxWidth() - this.minWidth) / ((this.getAdultAge() * 24000) + 1);
         if (this.getAgeInTicks() >= this.getAdultAge() * 24000) {
             return this.minWidth + ((step) * this.getAdultAge() * 24000);
         }
-        return minWidth + ((step * this.getAgeInTicks()));
+        return minWidth + (step * this.getAgeInTicks());
+    }
+
+    @Override
+    public int getExperienceReward() {
+        float multiplier = 2.0f * this.getBbWidth();
+        if (this.getDiet() == 1) {
+            multiplier = multiplier * 1.5f;
+        }
+
+        return Math.min(this.getAdultAge(), this.getAdultAge() * (int)multiplier) + this.level.random.nextInt(3);
     }
 
     @Override

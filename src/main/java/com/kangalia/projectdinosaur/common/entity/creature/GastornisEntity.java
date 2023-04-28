@@ -11,6 +11,7 @@ import com.kangalia.projectdinosaur.common.entity.genetics.genomes.GastornisGeno
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
+import net.minecraft.client.gui.screens.social.PlayerEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -68,16 +69,6 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private GastornisGenome genome = new GastornisGenome();
 
-    // Base Textures
-    private static final ResourceLocation DEAFULT_PATH = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/");
-
-    public static final String FEATHERS = "feathers";
-    public static final String UNDERSIDE = "underside";
-    public static final String PATTERN = "pattern";
-    public static final String HIGHLIGHT = "highlight";
-    public static final String SKIN = "skin";
-    public static final String BEAK = "beak";
-
     public GastornisEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
         this.moveControl = new GastornisEntity.GastornisMoveControl();
@@ -86,6 +77,10 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         minSize = 0.25F;
         maxMaleSize = 1.25F;
         maxFemaleSize = 1.15F;
+        minHeight = 0.45f;
+        maxHeight = 1.0f;
+        minWidth = 0.4f;
+        maxWidth = 1.05f;
         maxFood = 80;
         diet = 0;
         soundVolume = 0.3F;
@@ -98,7 +93,7 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 13.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.35F)
+                .add(Attributes.MOVEMENT_SPEED, 0.4F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
@@ -108,17 +103,17 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
     @Override
     public void randomizeAttributes(int age) {
         if (age == 0) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
         } else if (age == 1) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 1.5);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)) / 2);
         } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4))/2);
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/4);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/2);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10))/4);
         }
     }
 
@@ -162,10 +157,25 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         this.targetSelector.addGoal(2, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-    /*@Override
-    protected int getExperienceReward(Player player) {
-        return 1 + this.level.random.nextInt(4);
-    }*/
+    @Override
+    public float getMaxHeight() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxHeight;
+        } else {
+            return sizeCoefficient * (maxHeight - 0.1f);
+        }
+    }
+
+    @Override
+    public float getMaxWidth() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxWidth;
+        } else {
+            return sizeCoefficient * (maxWidth - 0.1f);
+        }
+    }
 
     @Override
     public int getAmbientSoundInterval() {
