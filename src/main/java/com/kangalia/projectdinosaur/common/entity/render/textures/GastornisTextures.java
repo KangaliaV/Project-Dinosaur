@@ -23,6 +23,9 @@ public class GastornisTextures extends TextureUtils {
     ResourceLocation EYE_ADULT = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/eye_adult.png");
     ResourceLocation EYE_BABY = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/eye_baby.png");
 
+    ResourceLocation UNDERSIDE_BLEND = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/underside_blend.png");
+    ResourceLocation PATTERN_BLEND = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/pattern_blend.png");
+    ResourceLocation HIGHLIGHT_BLEND = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/highlight_blend.png");
 
     public NativeImage colourGastornis(GastornisEntity gastornis) throws IOException {
         String morph = gastornis.getColourMorph();
@@ -45,21 +48,27 @@ public class GastornisTextures extends TextureUtils {
         NativeImage beak_image = getNativeImageFromResourceLocation(BEAK);
 
         NativeImage eye_image = getNativeImageFromResourceLocation(EYE_ADULT);
-
         boolean isBaby = gastornis.isBaby();
-
         if (isBaby) {
             eye_image = getNativeImageFromResourceLocation(EYE_BABY);
         }
 
+        NativeImage underside_blend_image = getNativeImageFromResourceLocation(UNDERSIDE_BLEND);
+        NativeImage pattern_blend_image = getNativeImageFromResourceLocation(PATTERN_BLEND);
+        NativeImage highlight_blend_image = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND);
+
         if (morph.equals("Albino")) {
             feathers_image = colourAlbino(feathers_image, "feathers", isBaby);
             underside_image = colourAlbino(underside_image, "underside", isBaby);
+            underside_blend_image = colourAlbino(underside_blend_image, "underside", isBaby);
             pattern_image = colourAlbino(pattern_image, "pattern", isBaby);
+            pattern_blend_image = colourAlbino(pattern_blend_image, "pattern", isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_albino");
+                highlight_blend_image = colourHighlight(highlight_blend_image, highlight.toLowerCase()+"_albino");
             } else {
                 highlight_image = colourAlbino(highlight_image, "highlight_female", isBaby);
+                highlight_blend_image = colourAlbino(highlight_blend_image, "highlight_female", isBaby);
             }
             skin_image = colourAlbino(skin_image, "skin", isBaby);
             beak_image = colourAlbino(beak_image, "beak", isBaby);
@@ -67,87 +76,51 @@ public class GastornisTextures extends TextureUtils {
         } else if (morph.equals("Melanistic")) {
             feathers_image = colourMelanistic(feathers_image, "feathers", isBaby);
             underside_image = colourMelanistic(underside_image, "underside", isBaby);
+            underside_blend_image = colourMelanistic(underside_blend_image, "underside", isBaby);
             pattern_image = colourMelanistic(pattern_image, "pattern", isBaby);
+            pattern_blend_image = colourMelanistic(pattern_blend_image, "pattern", isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_melanistic");
+                highlight_blend_image = colourHighlight(highlight_blend_image, highlight.toLowerCase()+"_melanistic");
+
             } else {
                 highlight_image = colourMelanistic(highlight_image, "highlight_female", isBaby);
+                highlight_blend_image = colourMelanistic(highlight_blend_image, "highlight_female", isBaby);
             }
             skin_image = colourMelanistic(skin_image, "skin", isBaby);
             beak_image = colourMelanistic(beak_image, "beak", isBaby);
         } else {
             feathers_image = colourFeathersOrPattern(feathers_image, feathers.toLowerCase(), isBaby);
             underside_image = colourUnderside(underside_image, underside.toLowerCase(), isBaby);
+            underside_blend_image = colourUnderside(underside_blend_image, underside.toLowerCase(), isBaby);
             pattern_image = colourFeathersOrPattern(pattern_image, pattern.toLowerCase(), isBaby);
+            pattern_blend_image = colourFeathersOrPattern(pattern_blend_image, pattern.toLowerCase(), isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase());
+                highlight_blend_image = colourHighlight(highlight_blend_image, highlight.toLowerCase());
             } else {
                 highlight_image = colourUnderside(highlight_image, underside.toLowerCase(), isBaby);
+                highlight_blend_image = colourUnderside(highlight_blend_image, underside.toLowerCase(), isBaby);
             }
             skin_image = colourSkin(skin_image, skin.toLowerCase(), isBaby);
             beak_image = colourBeak(beak_image, beak.toLowerCase(), isBaby);
         }
 
-        combineLayers(base_image, skin_image);
-        combineLayers(base_image, underside_image);
-        combineLayers(base_image, beak_image);
-        combineLayers(base_image, feathers_image);
-        combineLayers(base_image, pattern_image);
-        combineLayers(base_image, highlight_image);
+        combineLayers(base_image, skin_image, false);
+        combineLayers(base_image, underside_image, false);
+        combineLayers(base_image, beak_image, false);
+        combineLayers(base_image, feathers_image, false);
+        combineLayers(base_image, pattern_image, false);
+        combineLayers(base_image, highlight_image, false);
         if (!gastornis.isSleeping()) {
-            combineLayers(base_image, eye_image);
+            combineLayers(base_image, eye_image, false);
         }
+
+        combineLayers(base_image, underside_blend_image, true);
+        combineLayers(base_image, pattern_blend_image, true);
+        combineLayers(base_image, highlight_blend_image, true);
 
         return base_image;
-    }
-
-    public void combineLayers(NativeImage base, NativeImage image) {
-        for(int y = 0; y < base.getHeight(); ++y) {
-            for(int x = 0; x < base.getWidth(); ++x) {
-                int image_colour = image.getPixelRGBA(x, y);
-                if (NativeImage.getA(image_colour) > 0) {
-                    base.setPixelRGBA(x, y, image_colour);
-                }
-            }
-        }
-    }
-
-    public void stainLayer(NativeImage base, Color colour) {
-        for(int y = 0; y < base.getHeight(); ++y) {
-            for(int x = 0; x < base.getWidth(); ++x) {
-                int colourRGB = colour.getRGB();
-                int alpha = NativeImage.getA(base.getPixelRGBA(x, y));
-                Color base_colour = new Color(base.getPixelRGBA(x, y));
-                Color average = new Color(this.multiply(base_colour.getRGB(), colourRGB));
-                base.setPixelRGBA(x, y, this.stainViaLuminance(alpha, base_colour, average));
-            }
-        }
-    }
-
-    public int stainViaLuminance(int alpha, Color colour1, Color colour2) {
-        int R = colour1.getRed();
-        int G = colour1.getGreen();
-        int B = colour1.getBlue();
-
-        // Standard Luminance Calculation:
-        float L = (float) ((0.2126*R) + (0.7152*G) + (0.0722*B));
-
-        int finalRed = (int) ((colour2.getRed() * L) / 255);
-        int finalGreen = (int) ((colour2.getGreen() * L) / 255);
-        int finalBlue = (int) ((colour2.getBlue() * L) / 255);
-
-        return NativeImage.combine(alpha, finalRed, finalGreen, finalBlue);
-    }
-
-    public int multiply(int color, int baseColour) {
-        int a = NativeImage.getA(color);
-        int r = NativeImage.getR(color);
-        r = (int)((float)r * NativeImage.getR(baseColour)) / 255;
-        int g = NativeImage.getG(color);
-        g = (int)((float)g * NativeImage.getG(baseColour)) / 255;
-        int b = NativeImage.getB(color);
-        b = (int)((float)b * NativeImage.getB(baseColour)) / 255;
-        return NativeImage.combine(a, r, g, b);
     }
 
     public NativeImage colourAlbino(NativeImage image, String layer, boolean isBaby) {
