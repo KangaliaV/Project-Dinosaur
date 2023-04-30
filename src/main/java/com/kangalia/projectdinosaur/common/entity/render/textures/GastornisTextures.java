@@ -60,47 +60,49 @@ public class GastornisTextures extends TextureUtils {
         if (morph.equals("Albino")) {
             feathers_image = colourAlbino(feathers_image, "feathers", isBaby);
             underside_image = colourAlbino(underside_image, "underside", isBaby);
-            underside_blend_image = colourAlbino(underside_blend_image, "underside", isBaby);
+            underside_blend_image = colourUndersideBlend(underside_blend_image, base_image, "albino", isBaby);
             pattern_image = colourAlbino(pattern_image, "pattern", isBaby);
-            pattern_blend_image = colourAlbino(pattern_blend_image, "pattern", isBaby);
+            pattern_blend_image = colourPatternBlend(pattern_blend_image, base_image,"albino", isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_albino");
-                highlight_blend_image = colourHighlight(highlight_blend_image, highlight.toLowerCase()+"_albino");
+                highlight_blend_image = colourHighlightBlend(highlight_blend_image, base_image, highlight.toLowerCase()+"_albino");
             } else {
                 highlight_image = colourAlbino(highlight_image, "highlight_female", isBaby);
-                highlight_blend_image = colourAlbino(highlight_blend_image, "highlight_female", isBaby);
+                highlight_blend_image = colourUndersideBlend(highlight_blend_image, base_image, "albino", isBaby);
             }
             skin_image = colourAlbino(skin_image, "skin", isBaby);
             beak_image = colourAlbino(beak_image, "beak", isBaby);
             eye_image = colourAlbino(eye_image, "eye", isBaby);
+
         } else if (morph.equals("Melanistic")) {
             feathers_image = colourMelanistic(feathers_image, "feathers", isBaby);
             underside_image = colourMelanistic(underside_image, "underside", isBaby);
-            underside_blend_image = colourMelanistic(underside_blend_image, "underside", isBaby);
+            underside_blend_image = colourUndersideBlend(underside_blend_image, base_image, "melanistic", isBaby);
             pattern_image = colourMelanistic(pattern_image, "pattern", isBaby);
-            pattern_blend_image = colourMelanistic(pattern_blend_image, "pattern", isBaby);
+            pattern_blend_image = colourPatternBlend(pattern_blend_image, base_image, "melanistic", isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_melanistic");
-                highlight_blend_image = colourHighlight(highlight_blend_image, highlight.toLowerCase()+"_melanistic");
+                highlight_blend_image = colourHighlightBlend(highlight_blend_image, base_image, highlight.toLowerCase()+"_melanistic");
 
             } else {
                 highlight_image = colourMelanistic(highlight_image, "highlight_female", isBaby);
-                highlight_blend_image = colourMelanistic(highlight_blend_image, "highlight_female", isBaby);
+                highlight_blend_image = colourUndersideBlend(highlight_blend_image, base_image, "melanistic", isBaby);
             }
             skin_image = colourMelanistic(skin_image, "skin", isBaby);
             beak_image = colourMelanistic(beak_image, "beak", isBaby);
+
         } else {
             feathers_image = colourFeathersOrPattern(feathers_image, feathers.toLowerCase(), isBaby);
             underside_image = colourUnderside(underside_image, underside.toLowerCase(), isBaby);
-            underside_blend_image = colourUnderside(underside_blend_image, underside.toLowerCase(), isBaby);
+            underside_blend_image = colourUndersideBlend(underside_blend_image, base_image, underside.toLowerCase(), isBaby);
             pattern_image = colourFeathersOrPattern(pattern_image, pattern.toLowerCase(), isBaby);
-            pattern_blend_image = colourFeathersOrPattern(pattern_blend_image, pattern.toLowerCase(), isBaby);
+            pattern_blend_image = colourPatternBlend(pattern_blend_image, base_image, pattern.toLowerCase(), isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase());
-                highlight_blend_image = colourHighlight(highlight_blend_image, highlight.toLowerCase());
+                highlight_blend_image = colourHighlightBlend(highlight_blend_image, base_image, highlight.toLowerCase());
             } else {
                 highlight_image = colourUnderside(highlight_image, underside.toLowerCase(), isBaby);
-                highlight_blend_image = colourUnderside(highlight_blend_image, underside.toLowerCase(), isBaby);
+                highlight_blend_image = colourUndersideBlend(highlight_blend_image, base_image, underside.toLowerCase(), isBaby);
             }
             skin_image = colourSkin(skin_image, skin.toLowerCase(), isBaby);
             beak_image = colourBeak(beak_image, beak.toLowerCase(), isBaby);
@@ -191,6 +193,35 @@ public class GastornisTextures extends TextureUtils {
         return image;
     }
 
+    public NativeImage colourPatternBlend(NativeImage image, NativeImage luminance, String c, boolean isBaby) {
+        Color colour;
+        if (isBaby) {
+            colour = switch (c) {
+                case "white", "grey", "cream" -> new Color(225, 219, 215);
+                case "red" -> new Color(160, 107, 84);
+                case "brown" -> new Color(170, 133, 106);
+                case "black" -> new Color(111, 100, 90);
+                case "albino" -> new Color(245, 199, 195);
+                case "melanistic" -> new Color(67, 68, 74);
+                default -> new Color(0, 0, 0);
+            };
+        } else {
+            colour = switch (c) {
+                case "white" -> new Color(225, 219, 215);
+                case "grey" -> new Color(164, 157, 152);
+                case "cream" -> new Color(255, 226, 192);
+                case "red" -> new Color(110, 57, 34);
+                case "brown" -> new Color(120, 83, 56);
+                case "black" -> new Color(61, 50, 40);
+                case "albino" -> new Color(245, 219, 215);
+                case "melanistic" -> new Color(37, 38, 44);
+                default -> new Color(0, 0, 0);
+            };
+        }
+        stainLayerDiffBase(image, luminance, colour);
+        return image;
+    }
+
     public NativeImage colourUnderside(NativeImage image, String c, boolean isBaby) {
         Color colour;
         if (isBaby) {
@@ -205,6 +236,29 @@ public class GastornisTextures extends TextureUtils {
         }
         stainLayer(image, colour);
         return image;
+    }
+
+    public NativeImage colourUndersideBlend(NativeImage image, NativeImage luminance, String c, boolean isBaby) {
+        Color colour;
+        if (isBaby) {
+            colour = switch (c) {
+                case "albino" -> new Color(245, 199, 195);
+                case "melanistic" -> new Color(67, 68, 74);
+                default -> new Color(225, 219, 215);
+            };
+        } else {
+            colour = switch (c) {
+                case "albino" -> new Color(245, 219, 215);
+                case "melanistic" -> new Color(37, 38, 44);
+                case "white" -> new Color(225, 219, 215);
+                case "grey" -> new Color(164, 157, 152);
+                case "cream" -> new Color(255, 226, 192);
+                default -> new Color(0, 0, 0);
+            };
+        }
+        stainLayerDiffBase(image, luminance, colour);
+        return image;
+
     }
 
     public NativeImage colourHighlight(NativeImage image, String c) {
@@ -224,6 +278,27 @@ public class GastornisTextures extends TextureUtils {
         };
 
         stainLayer(image, colour);
+        return image;
+    }
+
+    public NativeImage colourHighlightBlend(NativeImage image, NativeImage luminance, String c) {
+        Color colour = switch (c) {
+            case "red" -> new Color(120, 20, 30);
+            case "green" -> new Color(20, 120, 35);
+            case "blue" -> new Color(20, 40, 120);
+
+            case "red_melanistic" -> new Color(50, 0, 0);
+            case "green_melanistic" -> new Color(0, 50, 0);
+            case "blue_melanistic" -> new Color(0, 0, 50);
+
+            case "red_albino" -> new Color(255, 190, 190);
+            case "green_albino" -> new Color(200, 250, 200);
+            case "blue_albino" -> new Color(200, 200, 250);
+
+            default -> new Color(0, 0, 0);
+        };
+
+        stainLayerDiffBase(image, luminance, colour);
         return image;
     }
 

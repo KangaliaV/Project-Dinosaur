@@ -59,6 +59,20 @@ public class TextureUtils {
 
     }
 
+    public void stainLayerDiffBase(NativeImage base, NativeImage luminanceLayer, Color colour) {
+        for(int y = 0; y < base.getHeight(); ++y) {
+            for(int x = 0; x < base.getWidth(); ++x) {
+                int colourRGB = colour.getRGB();
+                int alpha = NativeImage.getA(base.getPixelRGBA(x, y));
+                Color base_colour = new Color(base.getPixelRGBA(x, y));
+                Color new_colour = new Color(this.multiply(base_colour.getRGB(), colourRGB));
+                Color luminance_colour = new Color(luminanceLayer.getPixelRGBA(x, y));
+
+                base.setPixelRGBA(x, y, this.stainViaLuminance(alpha, luminance_colour, new_colour));
+            }
+        }
+    }
+
     public void stainLayer(NativeImage base, Color colour) {
         for(int y = 0; y < base.getHeight(); ++y) {
             for(int x = 0; x < base.getWidth(); ++x) {

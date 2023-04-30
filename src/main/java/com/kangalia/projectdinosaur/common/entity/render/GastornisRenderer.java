@@ -2,7 +2,6 @@ package com.kangalia.projectdinosaur.common.entity.render;
 
 import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
 import com.kangalia.projectdinosaur.common.entity.model.GastornisModel;
-import com.kangalia.projectdinosaur.common.entity.render.layer.GastornisLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;

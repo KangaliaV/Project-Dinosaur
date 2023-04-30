@@ -23,7 +23,6 @@ import java.util.Map;
 public class GastornisModel extends AnimatedGeoModel<GastornisEntity> {
 
     private static final Map<String, ResourceLocation> LOCATION_CACHE = Maps.newHashMap();
-
     GastornisTextures textures = new GastornisTextures();
 
     @Override
@@ -39,9 +38,9 @@ public class GastornisModel extends AnimatedGeoModel<GastornisEntity> {
         } else {
             try {
                 NativeImage texture = textures.colourGastornis(object);
-                ResourceLocation location = new ResourceLocation(ProjectDinosaur.MODID, "gastornis_" +genes+"_"+object.isAdult()+"_"+object.isSleeping());
+                ResourceLocation location = new ResourceLocation(ProjectDinosaur.MODID, "gastornis_" +genes);
                 Minecraft.getInstance().getTextureManager().register(location, new CustomTexture(texture));
-                LOCATION_CACHE.put(object.getGenes().toLowerCase()+"_"+object.isAdult()+"_"+object.isSleeping(), location);
+                LOCATION_CACHE.put(genes, location);
                 return location;
             } catch (IOException e) {
                 e.printStackTrace();
