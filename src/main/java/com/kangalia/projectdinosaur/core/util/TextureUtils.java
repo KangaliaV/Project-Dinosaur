@@ -25,20 +25,24 @@ public class TextureUtils {
         return null;
     }
 
-    public void combineLayers(NativeImage base, NativeImage image, boolean blend) {
+    public void combineLayers(NativeImage base, NativeImage image) {
+        for(int y = 0; y < base.getHeight(); ++y) {
+            for(int x = 0; x < base.getWidth(); ++x) {
+                int image_colour = image.getPixelRGBA(x, y);
+                if (NativeImage.getA(image_colour) > 0) {
+                    base.setPixelRGBA(x, y, image_colour);
+                }
+            }
+        }
+    }
+
+    public void combineLayersBlend(NativeImage base, NativeImage image, double weight) {
         for(int y = 0; y < base.getHeight(); ++y) {
             for(int x = 0; x < base.getWidth(); ++x) {
                 int base_colour = base.getPixelRGBA(x, y);
                 int image_colour = image.getPixelRGBA(x, y);
-                Color new_colour;
-                int final_colour;
                 if (NativeImage.getA(image_colour) > 0) {
-                    if (blend) {
-                        new_colour = blendColour(new Color(base_colour), new Color(image_colour), 0.7);
-                        final_colour = new_colour.getRGB();
-                    } else {
-                        final_colour = image_colour;
-                    }
+                    int final_colour = blendColour(new Color(base_colour), new Color(image_colour), weight).getRGB();
                     base.setPixelRGBA(x, y, final_colour);
                 }
             }

@@ -108,19 +108,19 @@ public class GastornisTextures extends TextureUtils {
             beak_image = colourBeak(beak_image, beak.toLowerCase(), isBaby);
         }
 
-        combineLayers(base_image, skin_image, false);
-        combineLayers(base_image, underside_image, false);
-        combineLayers(base_image, beak_image, false);
-        combineLayers(base_image, feathers_image, false);
-        combineLayers(base_image, pattern_image, false);
-        combineLayers(base_image, highlight_image, false);
+        combineLayers(base_image, skin_image);
+        combineLayers(base_image, underside_image);
+        combineLayers(base_image, beak_image);
+        combineLayers(base_image, feathers_image);
+        combineLayers(base_image, pattern_image);
+        combineLayers(base_image, highlight_image);
         if (!gastornis.isSleeping()) {
-            combineLayers(base_image, eye_image, false);
+            combineLayers(base_image, eye_image);
         }
 
-        combineLayers(base_image, underside_blend_image, true);
-        combineLayers(base_image, pattern_blend_image, true);
-        combineLayers(base_image, highlight_blend_image, true);
+        combineLayersBlend(base_image, underside_blend_image, 0.7);
+        combineLayersBlend(base_image, pattern_blend_image, 0.7);
+        combineLayersBlend(base_image, highlight_blend_image, 0.7);
 
         return base_image;
     }
