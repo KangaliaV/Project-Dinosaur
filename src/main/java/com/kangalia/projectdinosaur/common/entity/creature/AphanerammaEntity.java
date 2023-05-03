@@ -87,6 +87,10 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         minSize = 0.25F;
         maxMaleSize = 0.8F;
         maxFemaleSize = 1.0F;
+        minHeight = 0.25f;
+        maxHeight = 0.45f;
+        minWidth = 0.4f;
+        maxWidth = 1.05f;
         maxFood = 50;
         diet = 2;
         soundVolume = 0.2F;
@@ -272,6 +276,26 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
             return sizeCoefficient * maxMaleSize;
         } else {
             return sizeCoefficient * maxFemaleSize;
+        }
+    }
+
+    @Override
+    public float getMaxHeight() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxHeight;
+        } else {
+            return sizeCoefficient * (maxHeight - 0.1f);
+        }
+    }
+
+    @Override
+    public float getMaxWidth() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxWidth;
+        } else {
+            return sizeCoefficient * (maxWidth - 0.2f);
         }
     }
 
