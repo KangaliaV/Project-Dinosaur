@@ -195,8 +195,6 @@ public class AustralovenatorTextures extends TextureUtils {
         NativeImage highlight_blend_image1 = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND1);
         NativeImage highlight_blend_image2 = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND2);
 
-        System.out.println("Pattern Colour: "+pattern_colour.toLowerCase());
-
         boolean b = !(pattern.equals("Rings") || pattern.equals("Clownfish") || pattern.equals("Spots"));
 
         if (morph.equals("Albino")) {
@@ -298,7 +296,8 @@ public class AustralovenatorTextures extends TextureUtils {
     public NativeImage colourAlbino(NativeImage image, String layer, boolean isBaby) {
         Color colour = new Color(255, 255, 255);
         boolean a = layer.equals("base") || layer.equals("underside");
-        boolean b = layer.equals("pattern") || layer.equals("highlight_female") || layer.equals("eye");
+        boolean b = layer.equals("pattern") || layer.equals("highlight_female");
+        boolean c = layer.equals("eye");
         if (isBaby) {
             if (a) {
                 colour = new Color(245, 199, 175);
@@ -311,6 +310,9 @@ public class AustralovenatorTextures extends TextureUtils {
             } else if (b) {
                 colour = new Color(255, 209, 205);
             }
+        }
+        if (c) {
+            colour = new Color(255, 239, 225);
         }
         stainLayer(image, colour);
         return image;
