@@ -28,10 +28,7 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
@@ -42,6 +39,7 @@ import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -409,43 +407,19 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
     }
 
-    static class AphanerammaMoveControl extends MoveControl {
+    static class AphanerammaMoveControl extends SmoothSwimmingMoveControl {
         private final AphanerammaEntity aphaneramma;
 
-        AphanerammaMoveControl(AphanerammaEntity aphanerammaEntity) {
-            super(aphanerammaEntity);
-            this.aphaneramma = aphanerammaEntity;
-        }
-
-        private void updateSpeed() {
-            if (this.aphaneramma.isInWater()) {
-                this.aphaneramma.setDeltaMovement(this.aphaneramma.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
-                if (this.aphaneramma.isBaby()) {
-                    this.aphaneramma.setSpeed(Math.max(this.aphaneramma.getSpeed() / 2.0F, 0.06F));
-
-                }
-            } else if (this.aphaneramma.onGround) {
-                this.aphaneramma.setSpeed(Math.max(this.aphaneramma.getSpeed(), 0.06F));
-            }
+        public AphanerammaMoveControl(AphanerammaEntity Aphaneramma) {
+            super(Aphaneramma, 85, 10, 3.0F, 2.1F, false);
+            this.aphaneramma = Aphaneramma;
         }
 
         public void tick() {
-            this.updateSpeed();
-            if (this.operation == MoveControl.Operation.MOVE_TO && !this.aphaneramma.getNavigation().isDone()) {
-                double d0 = this.wantedX - this.aphaneramma.getX();
-                double d1 = this.wantedY - this.aphaneramma.getY();
-                double d2 = this.wantedZ - this.aphaneramma.getZ();
-                double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                d1 /= d3;
-                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.aphaneramma.setYRot(this.rotlerp(this.aphaneramma.getYRot(), f, 90.0F));
-                this.aphaneramma.yBodyRot = this.aphaneramma.getYRot();
-                float f1 = (float)(this.speedModifier * this.aphaneramma.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                this.aphaneramma.setSpeed(Mth.lerp(0.125F, this.aphaneramma.getSpeed(), f1));
-                this.aphaneramma.setDeltaMovement(this.aphaneramma.getDeltaMovement().add(0.0D, (double)this.aphaneramma.getSpeed() * d1 * 0.1D, 0.0D));
-            } else {
-                this.aphaneramma.setSpeed(0.0F);
+            if (!this.aphaneramma.isSleeping()) {
+                super.tick();
             }
+
         }
     }
 
