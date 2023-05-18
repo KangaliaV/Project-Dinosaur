@@ -63,7 +63,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         this.lookControl = new ScelidosaurusEntity.ScelidosaurusLookControl();
         this.maxUpStep = 0.5F;
         minSize = 0.25F;
-        maxMaleSize = 1.2F;
+        maxMaleSize = 1.1F;
         maxFemaleSize = 1.0F;
         minHeight = 0.45f;
         maxHeight = 1.2f;

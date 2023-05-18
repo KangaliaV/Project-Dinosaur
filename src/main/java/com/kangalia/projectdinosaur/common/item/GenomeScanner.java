@@ -1,32 +1,39 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.client.gui.GenomeScannerScreen;
+import com.kangalia.projectdinosaur.common.container.DinoScannerContainer;
+import com.kangalia.projectdinosaur.common.container.GenomeScannerContainer;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.TrilobiteEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
 public class GenomeScanner extends Item {
 
+    PrehistoricEntity clickedEntity;
+
     public GenomeScanner(Properties pProperties) {
         super(pProperties);
     }
 
-    @Nonnull
+    /*@Nonnull
     @Override
     public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
         Level level = pPlayer.getLevel();
@@ -39,6 +46,45 @@ public class GenomeScanner extends Item {
             }
         }
         return InteractionResult.PASS;
+    }*/
+
+    @Nonnull
+    @Override
+    public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
+        Level level = pPlayer.getLevel();
+        if (pInteractionTarget instanceof PrehistoricEntity) {
+            setClickedEntity((PrehistoricEntity) pInteractionTarget);
+            if (!level.isClientSide) {
+                MenuProvider containerProvider = createContainerProvider((PrehistoricEntity) pInteractionTarget, pPlayer.getItemInHand(pUsedHand));
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, containerProvider);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    private MenuProvider createContainerProvider(PrehistoricEntity entity, ItemStack stack) {
+        return new MenuProvider() {
+            @Nonnull
+            @Override
+            public Component getDisplayName() {
+                return Component.translatable("data.projectdinosaur.dino_species", entity.getSpecies());
+            }
+
+            @Nonnull
+            @Override
+            public AbstractContainerMenu createMenu(int i, @Nonnull Inventory playerInventory, @Nonnull Player playerEntity) {
+                return new GenomeScannerContainer(i, stack, playerInventory, playerEntity);
+            }
+        };
+    }
+
+    public PrehistoricEntity getClickedEntity() {
+        return clickedEntity;
+    }
+
+    public void setClickedEntity(PrehistoricEntity entity) {
+        clickedEntity = entity;
     }
 
     public void saveNBT(ItemStack stack, PrehistoricEntity prehistoric) {
@@ -47,6 +93,7 @@ public class GenomeScanner extends Item {
         nbt.putBoolean("dino.aphaneramma", false);
         nbt.putBoolean("dino.australovenator", false);
         nbt.putBoolean("dino.gastornis", false);
+        nbt.putBoolean("dino.scelidosaurus", false);
         nbt.putBoolean("dino.trilobite", false);
 
         nbt.putString("dino.name.scientific", prehistoric.getSpeciesScientific().getString());
@@ -100,14 +147,19 @@ public class GenomeScanner extends Item {
             nbt.putString("dino.size", prehistoric.getCoefficientRating(7));
             nbt.putString("dino.attack_damage", "---");
             nbt.putString("dino.max_health", prehistoric.getCoefficientRating(8));
+
+        } else if (prehistoric instanceof ScelidosaurusEntity scelidosaurus) {
+            nbt.putBoolean("dino.scelidosaurus", true);
+            nbt.putString("dino.scelidosaurus.base", scelidosaurus.getGeneDominance(1));
+            nbt.putString("dino.scelidosaurus.underside", scelidosaurus.getGeneDominance(2));
+            nbt.putString("dino.scelidosaurus.pattern", scelidosaurus.getGeneDominance(3));
+            nbt.putString("dino.scelidosaurus.highlight", scelidosaurus.getGeneDominance(4));
+            nbt.putString("dino.speed", prehistoric.getCoefficientRating(5));
+            nbt.putString("dino.size", prehistoric.getCoefficientRating(6));
+            nbt.putString("dino.attack_damage", prehistoric.getCoefficientRating(7));
+            nbt.putString("dino.max_health", prehistoric.getCoefficientRating(8));
         }
 
         stack.setTag(nbt);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void openScanner(PrehistoricEntity entity, ItemStack scanner) {
-        Minecraft mc = Minecraft.getInstance();
-        mc.setScreen(new GenomeScannerScreen(entity, scanner));
     }
 }

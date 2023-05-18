@@ -4,11 +4,10 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.*;
 import com.kangalia.projectdinosaur.common.block.render.EmbryonicWombRenderer;
 import com.kangalia.projectdinosaur.common.entity.render.*;
-import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
-import com.kangalia.projectdinosaur.core.init.ContainerInit;
-import com.kangalia.projectdinosaur.core.init.EntityInit;
-import com.kangalia.projectdinosaur.core.init.WoodTypesInit;
+import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -30,6 +29,7 @@ public class ClientSetup {
         MenuScreens.register(ContainerInit.EMBRYONIC_WOMB_CONTAINER.get(), EmbryonicWombScreen::new);
         MenuScreens.register(ContainerInit.GROUND_FEEDER_CONTAINER.get(), GroundFeederScreen::new);
         MenuScreens.register(ContainerInit.DINO_SCANNER_CONTAINER.get(), DinoScannerScreen::new);
+        MenuScreens.register(ContainerInit.GENOME_SCANNER_CONTAINER.get(), GenomeScannerScreen::new);
 
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
 
@@ -43,7 +43,5 @@ public class ClientSetup {
         EntityRenderers.register(EntityInit.TRILOBITE.get(), TrilobiteRenderer::new);
 
         BlockEntityRenderers.register(BlockEntitiesInit.EMBRYONIC_WOMB_ENTITY.get(), EmbryonicWombRenderer::new);
-
-
     }
 }
