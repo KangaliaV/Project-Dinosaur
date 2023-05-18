@@ -78,6 +78,8 @@ public class AustralovenatorTextures extends TextureUtils {
     ResourceLocation EYE_ADULT = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator/eye_adult.png");
     ResourceLocation EYE_BABY = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator/eye_baby.png");
 
+    ResourceLocation MOUTH = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/australovenator/mouth.png");
+
     ResourceLocation PATTERN;
     ResourceLocation PATTERN_BLEND1;
     ResourceLocation PATTERN_BLEND2;
@@ -196,6 +198,8 @@ public class AustralovenatorTextures extends TextureUtils {
         NativeImage highlight_blend_image1 = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND1);
         NativeImage highlight_blend_image2 = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND2);
 
+        NativeImage mouth_image = getNativeImageFromResourceLocation(MOUTH);
+
         boolean b = !(pattern.equals("Rings") || pattern.equals("Clownfish") || pattern.equals("Spots"));
 
         if (morph.equals("Albino")) {
@@ -291,6 +295,8 @@ public class AustralovenatorTextures extends TextureUtils {
         if (!australovenator.isSleeping()) {
             combineLayers(base_image, eye_image);
         }
+
+        combineLayers(base_image, mouth_image);
 
         return base_image;
     }

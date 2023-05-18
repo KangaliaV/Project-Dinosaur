@@ -30,6 +30,8 @@ public class ScelidosaurusTextures extends TextureUtils {
     ResourceLocation HIGHLIGHT_BLEND1 = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/scelidosaurus/highlight_blend1.png");
     ResourceLocation HIGHLIGHT_BLEND2 = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/scelidosaurus/highlight_blend2.png");
 
+    ResourceLocation MOUTH = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/scelidosaurus/mouth.png");
+
     public NativeImage colourScelidosaurus(ScelidosaurusEntity scelidosaurus) throws IOException {
         String morph = scelidosaurus.getColourMorph();
         String base = scelidosaurus.getGeneDominance(1);
@@ -61,6 +63,8 @@ public class ScelidosaurusTextures extends TextureUtils {
         NativeImage pattern_blend_image2 = getNativeImageFromResourceLocation(PATTERN_BLEND2);
         NativeImage highlight_blend_image1 = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND1);
         NativeImage highlight_blend_image2 = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND2);
+
+        NativeImage mouth_image = getNativeImageFromResourceLocation(MOUTH);
 
         if (morph.equals("Albino")) {
             base_image = colourAlbino(base_image, "base", isBaby);
@@ -141,6 +145,8 @@ public class ScelidosaurusTextures extends TextureUtils {
         if (!scelidosaurus.isSleeping()) {
             combineLayers(base_image, eye_image);
         }
+
+        combineLayers(base_image, mouth_image);
 
         return base_image;
     }

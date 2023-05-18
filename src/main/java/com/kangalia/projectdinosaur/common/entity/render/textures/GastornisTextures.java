@@ -27,6 +27,8 @@ public class GastornisTextures extends TextureUtils {
     ResourceLocation PATTERN_BLEND = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/pattern_blend.png");
     ResourceLocation HIGHLIGHT_BLEND = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/highlight_blend.png");
 
+    ResourceLocation MOUTH = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/gastornis/mouth.png");
+
     public NativeImage colourGastornis(GastornisEntity gastornis) throws IOException {
         String morph = gastornis.getColourMorph();
         String feathers = gastornis.getGeneDominance(1);
@@ -57,6 +59,8 @@ public class GastornisTextures extends TextureUtils {
         NativeImage underside_blend_image = getNativeImageFromResourceLocation(UNDERSIDE_BLEND);
         NativeImage pattern_blend_image = getNativeImageFromResourceLocation(PATTERN_BLEND);
         NativeImage highlight_blend_image = getNativeImageFromResourceLocation(HIGHLIGHT_BLEND);
+
+        NativeImage mouth_image = getNativeImageFromResourceLocation(MOUTH);
 
         if (morph.equals("Albino")) {
             feathers_image = colourAlbino(feathers_image, "feathers", isBaby);
@@ -123,6 +127,8 @@ public class GastornisTextures extends TextureUtils {
         if (!gastornis.isSleeping()) {
             combineLayers(base_image, eye_image);
         }
+
+        combineLayers(base_image, mouth_image);
 
         return base_image;
     }

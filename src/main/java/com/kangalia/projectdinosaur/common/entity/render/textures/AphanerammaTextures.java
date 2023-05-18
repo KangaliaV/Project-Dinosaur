@@ -29,6 +29,8 @@ public class AphanerammaTextures extends TextureUtils {
     ResourceLocation EYE_ADULT = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma/eyes_adult.png");
     ResourceLocation EYE_BABY = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma/eyes_baby.png");
 
+    ResourceLocation MOUTH = new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/aphaneramma/mouth.png");
+
     ResourceLocation PATTERN;
     ResourceLocation PATTERN_BLEND1;
     ResourceLocation PATTERN_BLEND2;
@@ -68,6 +70,8 @@ public class AphanerammaTextures extends TextureUtils {
         NativeImage underside_blend_image2 = getNativeImageFromResourceLocation(UNDERSIDE_BLEND2);
         NativeImage pattern_blend_image1 = getNativeImageFromResourceLocation(PATTERN_BLEND1);
         NativeImage pattern_blend_image2 = getNativeImageFromResourceLocation(PATTERN_BLEND2);
+
+        NativeImage mouth_image = getNativeImageFromResourceLocation(MOUTH);
 
         if (morph.equals("Albino")) {
             base_image = colourAlbino(base_image, "base", isBaby);
@@ -116,6 +120,8 @@ public class AphanerammaTextures extends TextureUtils {
         if (!aphaneramma.isSleeping()) {
             combineLayers(base_image, eye_image);
         }
+
+        combineLayers(base_image, mouth_image);
 
         return base_image;
     }
