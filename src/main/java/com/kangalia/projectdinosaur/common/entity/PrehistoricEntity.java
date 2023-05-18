@@ -7,6 +7,7 @@ import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.ScelidosaurusEggBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
@@ -314,6 +315,14 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                     System.out.println("Mother: "+ prehistoric.getGenes());
                     australovenatorEggEntity.setParent1(this.getGenes());
                     australovenatorEggEntity.setParent2(prehistoric.getGenes());
+                }
+            } else if (prehistoric instanceof ScelidosaurusEntity && this instanceof ScelidosaurusEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.SCELIDOSAURUS_EGG_ENTITY.get()) {
+                ScelidosaurusEggBlockEntity scelidosaurusEggEntity = (ScelidosaurusEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
+                if (scelidosaurusEggEntity != null) {
+                    System.out.println("Father: "+ this.getGenes());
+                    System.out.println("Mother: "+ prehistoric.getGenes());
+                    scelidosaurusEggEntity.setParent1(this.getGenes());
+                    scelidosaurusEggEntity.setParent2(prehistoric.getGenes());
                 }
             }
         }

@@ -113,7 +113,7 @@ public class PrehistoricEggBlock extends Block implements EntityBlock {
         if ((double)f < 0.29D && (double)f > 0.25D) {
             return true;
         } else {
-            return pLevel.random.nextInt(500) == 0;
+            return pLevel.random.nextInt(125) == 0;
         }
     }
 

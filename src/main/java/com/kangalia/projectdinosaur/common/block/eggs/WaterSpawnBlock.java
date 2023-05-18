@@ -31,8 +31,8 @@ import java.util.function.Supplier;
 public class WaterSpawnBlock extends Block implements EntityBlock {
 
     protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
-    private static int minHatchTickDelay = 3600;
-    private static int maxHatchTickDelay = 12000;
+    private static int minHatchTickDelay = 1800;
+    private static int maxHatchTickDelay = 6000;
     private static int minYoung = 1;
     private static int maxYoung = 4;
     public final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
