@@ -36,6 +36,7 @@ public class GastornisTextures extends TextureUtils {
         String skin = gastornis.getGeneDominance(5);
         String beak = gastornis.getGeneDominance(6);
 
+        NativeImage original = getNativeImageFromResourceLocation(BASE);
         NativeImage base_image = getNativeImageFromResourceLocation(BASE);
         NativeImage feathers_image = getNativeImageFromResourceLocation(FEATHERS);
         NativeImage underside_image = getNativeImageFromResourceLocation(UNDERSIDE);
@@ -60,15 +61,15 @@ public class GastornisTextures extends TextureUtils {
         if (morph.equals("Albino")) {
             feathers_image = colourAlbino(feathers_image, "feathers", isBaby);
             underside_image = colourAlbino(underside_image, "underside", isBaby);
-            underside_blend_image = colourUndersideBlend(underside_blend_image, base_image, "albino", isBaby);
+            underside_blend_image = colourUndersideBlend(underside_blend_image, original, "albino", isBaby);
             pattern_image = colourAlbino(pattern_image, "pattern", isBaby);
-            pattern_blend_image = colourPatternBlend(pattern_blend_image, base_image,"albino", isBaby);
+            pattern_blend_image = colourPatternBlend(pattern_blend_image, original,"albino", isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_albino");
-                highlight_blend_image = colourHighlightBlend(highlight_blend_image, base_image, highlight.toLowerCase()+"_albino");
+                highlight_blend_image = colourHighlightBlend(highlight_blend_image, original, highlight.toLowerCase()+"_albino");
             } else {
                 highlight_image = colourAlbino(highlight_image, "highlight_female", isBaby);
-                highlight_blend_image = colourUndersideBlend(highlight_blend_image, base_image, "albino", isBaby);
+                highlight_blend_image = colourUndersideBlend(highlight_blend_image, original, "albino", isBaby);
             }
             skin_image = colourAlbino(skin_image, "skin", isBaby);
             beak_image = colourAlbino(beak_image, "beak", isBaby);
@@ -77,16 +78,16 @@ public class GastornisTextures extends TextureUtils {
         } else if (morph.equals("Melanistic")) {
             feathers_image = colourMelanistic(feathers_image, "feathers", isBaby);
             underside_image = colourMelanistic(underside_image, "underside", isBaby);
-            underside_blend_image = colourUndersideBlend(underside_blend_image, base_image, "melanistic", isBaby);
+            underside_blend_image = colourUndersideBlend(underside_blend_image, original, "melanistic", isBaby);
             pattern_image = colourMelanistic(pattern_image, "pattern", isBaby);
-            pattern_blend_image = colourPatternBlend(pattern_blend_image, base_image, "melanistic", isBaby);
+            pattern_blend_image = colourPatternBlend(pattern_blend_image, original, "melanistic", isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_melanistic");
-                highlight_blend_image = colourHighlightBlend(highlight_blend_image, base_image, highlight.toLowerCase()+"_melanistic");
+                highlight_blend_image = colourHighlightBlend(highlight_blend_image, original, highlight.toLowerCase()+"_melanistic");
 
             } else {
                 highlight_image = colourMelanistic(highlight_image, "highlight_female", isBaby);
-                highlight_blend_image = colourUndersideBlend(highlight_blend_image, base_image, "melanistic", isBaby);
+                highlight_blend_image = colourUndersideBlend(highlight_blend_image, original, "melanistic", isBaby);
             }
             skin_image = colourMelanistic(skin_image, "skin", isBaby);
             beak_image = colourMelanistic(beak_image, "beak", isBaby);
@@ -94,15 +95,15 @@ public class GastornisTextures extends TextureUtils {
         } else {
             feathers_image = colourFeathersOrPattern(feathers_image, feathers.toLowerCase(), isBaby);
             underside_image = colourUnderside(underside_image, underside.toLowerCase(), isBaby);
-            underside_blend_image = colourUndersideBlend(underside_blend_image, base_image, underside.toLowerCase(), isBaby);
+            underside_blend_image = colourUndersideBlend(underside_blend_image, original, underside.toLowerCase(), isBaby);
             pattern_image = colourFeathersOrPattern(pattern_image, pattern.toLowerCase(), isBaby);
-            pattern_blend_image = colourPatternBlend(pattern_blend_image, base_image, pattern.toLowerCase(), isBaby);
+            pattern_blend_image = colourPatternBlend(pattern_blend_image, original, pattern.toLowerCase(), isBaby);
             if (gastornis.getGender() == 0 && !gastornis.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase());
-                highlight_blend_image = colourHighlightBlend(highlight_blend_image, base_image, highlight.toLowerCase());
+                highlight_blend_image = colourHighlightBlend(highlight_blend_image, original, highlight.toLowerCase());
             } else {
                 highlight_image = colourUnderside(highlight_image, underside.toLowerCase(), isBaby);
-                highlight_blend_image = colourUndersideBlend(highlight_blend_image, base_image, underside.toLowerCase(), isBaby);
+                highlight_blend_image = colourUndersideBlend(highlight_blend_image, original, underside.toLowerCase(), isBaby);
             }
             skin_image = colourSkin(skin_image, skin.toLowerCase(), isBaby);
             beak_image = colourBeak(beak_image, beak.toLowerCase(), isBaby);
@@ -114,13 +115,14 @@ public class GastornisTextures extends TextureUtils {
         combineLayers(base_image, feathers_image);
         combineLayers(base_image, pattern_image);
         combineLayers(base_image, highlight_image);
-        if (!gastornis.isSleeping()) {
-            combineLayers(base_image, eye_image);
-        }
 
         combineLayersBlend(base_image, underside_blend_image, 0.7);
         combineLayersBlend(base_image, pattern_blend_image, 0.7);
         combineLayersBlend(base_image, highlight_blend_image, 0.7);
+
+        if (!gastornis.isSleeping()) {
+            combineLayers(base_image, eye_image);
+        }
 
         return base_image;
     }

@@ -3,10 +3,7 @@ package com.kangalia.projectdinosaur.core.init;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.*;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.AphanerammaSpawnBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.TrilobiteSpawnBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -29,6 +26,7 @@ public class BlockEntitiesInit {
     //Eggs
     public static final RegistryObject<BlockEntityType<AustralovenatorEggBlockEntity>> AUSTRALOVENATOR_EGG_ENTITY = TILE_ENTITIES.register("australovenator_egg", () -> BlockEntityType.Builder.of(AustralovenatorEggBlockEntity::new, BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get()).build(null));
     public static final RegistryObject<BlockEntityType<GastornisEggBlockEntity>> GASTORNIS_EGG_ENTITY = TILE_ENTITIES.register("gastornis_egg", () -> BlockEntityType.Builder.of(GastornisEggBlockEntity::new, BlockInit.GASTORNIS_EGG_INCUBATED.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ScelidosaurusEggBlockEntity>> SCELIDOSAURUS_EGG_ENTITY = TILE_ENTITIES.register("scelidosaurus_egg", () -> BlockEntityType.Builder.of(ScelidosaurusEggBlockEntity::new, BlockInit.SCELIDOSAURUS_EGG_INCUBATED.get()).build(null));
 
     //Spawn
     public static final RegistryObject<BlockEntityType<AphanerammaSpawnBlockEntity>> APHANERAMMA_SPAWN_ENTITY = TILE_ENTITIES.register("aphaneramma_spawn", () -> BlockEntityType.Builder.of(AphanerammaSpawnBlockEntity::new, BlockInit.APHANERAMMA_SPAWN.get()).build(null));

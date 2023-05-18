@@ -110,7 +110,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         Random random = new Random();
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
-        this.setMatingTicks(1200);
+        this.setMatingTicks(7500);
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
         this.setRemainingCryosicknessTime(0);

@@ -92,6 +92,7 @@ public class AustralovenatorTextures extends TextureUtils {
         String pattern_colour = australovenator.getGeneDominance(5);
         String highlight = australovenator.getGeneDominance(6);
 
+        NativeImage original = getNativeImageFromResourceLocation(BASE);
         NativeImage base_image = getNativeImageFromResourceLocation(BASE);
         NativeImage underside_image = getNativeImageFromResourceLocation(UNDERSIDE);
         switch (pattern) {
@@ -200,84 +201,81 @@ public class AustralovenatorTextures extends TextureUtils {
         if (morph.equals("Albino")) {
             base_image = colourAlbino(base_image, "base", isBaby);
             underside_image = colourAlbino(underside_image, "underside", isBaby);
-            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, base_image, "albino", isBaby);
-            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, base_image, "albino", isBaby);
+            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, original, "albino", isBaby);
+            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, original, "albino", isBaby);
             if (b) {
                 pattern_image = colourAlbino(pattern_image, "pattern", isBaby);
             }
             if (c && pattern_blend_image3 != null || pattern_blend_image4 != null) {
-                pattern_blend_image3 = colourPatternBlend(pattern_blend_image3, base_image, "albino", isBaby);
-                pattern_blend_image4 = colourPatternBlend(pattern_blend_image4, base_image, "albino", isBaby);
+                pattern_blend_image3 = colourPatternBlend(pattern_blend_image3, original, "albino", isBaby);
+                pattern_blend_image4 = colourPatternBlend(pattern_blend_image4, original, "albino", isBaby);
             }
-            pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, "albino", isBaby);
-            pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, "albino", isBaby);
+            pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, "albino", isBaby);
+            pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, "albino", isBaby);
             if (australovenator.getGender() == 0 && !australovenator.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_albino");
-                highlight_blend_image1 = colourHighlightBlend(highlight_blend_image1, base_image, highlight.toLowerCase()+"_albino");
-                highlight_blend_image2 = colourHighlightBlend(highlight_blend_image2, base_image, highlight.toLowerCase()+"_albino");
+                highlight_blend_image1 = colourHighlightBlend(highlight_blend_image1, original, highlight.toLowerCase()+"_albino");
+                highlight_blend_image2 = colourHighlightBlend(highlight_blend_image2, original, highlight.toLowerCase()+"_albino");
             } else {
                 highlight_image = colourAlbino(highlight_image, "highlight_female", isBaby);
-                highlight_blend_image1 = colourUndersideBlend(highlight_blend_image1, base_image, "albino", isBaby);
-                highlight_blend_image2 = colourUndersideBlend(highlight_blend_image2, base_image, "albino", isBaby);
+                highlight_blend_image1 = colourUndersideBlend(highlight_blend_image1, original, "albino", isBaby);
+                highlight_blend_image2 = colourUndersideBlend(highlight_blend_image2, original, "albino", isBaby);
             }
             eye_image = colourAlbino(eye_image, "eye", isBaby);
         } else if (morph.equals("Melanistic")) {
             base_image = colourMelanistic(base_image, "base", isBaby);
             underside_image = colourMelanistic(underside_image, "underside", isBaby);
-            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, base_image, "melanistic", isBaby);
-            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, base_image, "melanistic", isBaby);
+            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, original, "melanistic", isBaby);
+            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, original, "melanistic", isBaby);
             if (b) {
                 pattern_image = colourMelanistic(pattern_image, "pattern", isBaby);
             }
             if (c && pattern_blend_image3 != null || pattern_blend_image4 != null) {
-                pattern_blend_image3 = colourPatternBlend(pattern_blend_image3, base_image, "melanistic", isBaby);
-                pattern_blend_image4 = colourPatternBlend(pattern_blend_image4, base_image, "melanistic", isBaby);
+                pattern_blend_image3 = colourPatternBlend(pattern_blend_image3, original, "melanistic", isBaby);
+                pattern_blend_image4 = colourPatternBlend(pattern_blend_image4, original, "melanistic", isBaby);
             }
-            pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, "melanistic", isBaby);
-            pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, "melanistic", isBaby);
+            pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, "melanistic", isBaby);
+            pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, "melanistic", isBaby);
             if (australovenator.getGender() == 0 && !australovenator.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase()+"_melanistic");
-                highlight_blend_image1 = colourHighlightBlend(highlight_blend_image1, base_image, highlight.toLowerCase()+"_melanistic");
-                highlight_blend_image2 = colourHighlightBlend(highlight_blend_image2, base_image, highlight.toLowerCase()+"_melanistic");
+                highlight_blend_image1 = colourHighlightBlend(highlight_blend_image1, original, highlight.toLowerCase()+"_melanistic");
+                highlight_blend_image2 = colourHighlightBlend(highlight_blend_image2, original, highlight.toLowerCase()+"_melanistic");
             } else {
                 highlight_image = colourMelanistic(highlight_image, "highlight_female", isBaby);
-                highlight_blend_image1 = colourUndersideBlend(highlight_blend_image1, base_image, "melanistic", isBaby);
-                highlight_blend_image2 = colourUndersideBlend(highlight_blend_image2, base_image, "melanistic", isBaby);
+                highlight_blend_image1 = colourUndersideBlend(highlight_blend_image1, original, "melanistic", isBaby);
+                highlight_blend_image2 = colourUndersideBlend(highlight_blend_image2, original, "melanistic", isBaby);
             }
         } else {
             base_image = colourBase(base_image, base.toLowerCase(), isBaby);
             underside_image = colourUnderside(underside_image, underside.toLowerCase(), isBaby);
-            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, base_image, underside.toLowerCase(), isBaby);
-            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, base_image, underside.toLowerCase(), isBaby);
+            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, original, underside.toLowerCase(), isBaby);
+            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, original, underside.toLowerCase(), isBaby);
             if (b) {
                 pattern_image = colourPattern(pattern_image, pattern_colour.toLowerCase(), isBaby);
             }
             if (c && pattern_blend_image3 != null || pattern_blend_image4 != null) {
-                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, "black", isBaby);
-                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, "black", isBaby);
-                pattern_blend_image3 = colourPatternBlend(pattern_blend_image3, base_image, pattern_colour.toLowerCase(), isBaby);
-                pattern_blend_image4 = colourPatternBlend(pattern_blend_image4, base_image, pattern_colour.toLowerCase(), isBaby);
+                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, "black", isBaby);
+                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, "black", isBaby);
+                pattern_blend_image3 = colourPatternBlend(pattern_blend_image3, original, pattern_colour.toLowerCase(), isBaby);
+                pattern_blend_image4 = colourPatternBlend(pattern_blend_image4, original, pattern_colour.toLowerCase(), isBaby);
             } else {
-                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, pattern_colour.toLowerCase(), isBaby);
-                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, pattern_colour.toLowerCase(), isBaby);
+                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, pattern_colour.toLowerCase(), isBaby);
+                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, pattern_colour.toLowerCase(), isBaby);
             }
             if (australovenator.getGender() == 0 && !australovenator.isBaby()) {
                 highlight_image = colourHighlight(highlight_image, highlight.toLowerCase());
-                highlight_blend_image1 = colourHighlightBlend(highlight_blend_image1, base_image, highlight.toLowerCase());
-                highlight_blend_image2 = colourHighlightBlend(highlight_blend_image2, base_image, highlight.toLowerCase());
+                highlight_blend_image1 = colourHighlightBlend(highlight_blend_image1, original, highlight.toLowerCase());
+                highlight_blend_image2 = colourHighlightBlend(highlight_blend_image2, original, highlight.toLowerCase());
             } else {
                 highlight_image = colourUnderside(highlight_image, underside.toLowerCase(), isBaby);
-                highlight_blend_image1 = colourUndersideBlend(highlight_blend_image1, base_image, highlight.toLowerCase(), isBaby);
-                highlight_blend_image2 = colourUndersideBlend(highlight_blend_image2, base_image, highlight.toLowerCase(), isBaby);
+                highlight_blend_image1 = colourUndersideBlend(highlight_blend_image1, original, underside.toLowerCase(), isBaby);
+                highlight_blend_image2 = colourUndersideBlend(highlight_blend_image2, original, underside.toLowerCase(), isBaby);
             }
         }
 
         combineLayers(base_image, underside_image);
         combineLayers(base_image, pattern_image);
         combineLayers(base_image, highlight_image);
-        if (!australovenator.isSleeping()) {
-            combineLayers(base_image, eye_image);
-        }
 
         combineLayersBlend(base_image, underside_blend_image1, 0.5);
         combineLayersBlend(base_image, underside_blend_image2, 0.75);
@@ -289,6 +287,10 @@ public class AustralovenatorTextures extends TextureUtils {
         combineLayersBlend(base_image, pattern_blend_image2, 0.75);
         combineLayersBlend(base_image, highlight_blend_image1, 0.5);
         combineLayersBlend(base_image, highlight_blend_image2, 0.75);
+
+        if (!australovenator.isSleeping()) {
+            combineLayers(base_image, eye_image);
+        }
 
         return base_image;
     }

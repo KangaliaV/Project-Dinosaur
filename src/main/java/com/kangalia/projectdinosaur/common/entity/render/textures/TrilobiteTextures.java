@@ -40,10 +40,13 @@ public class TrilobiteTextures extends TextureUtils {
 
         boolean isBaby = trilobite.isBaby();
 
+        NativeImage original = getNativeImageFromResourceLocation(BASE_ADULT_LARGE);
         NativeImage base_image = getNativeImageFromResourceLocation(BASE_ADULT_LARGE);
         if (isBaby) {
+            original = getNativeImageFromResourceLocation(BASE_BABY);
             base_image = getNativeImageFromResourceLocation(BASE_BABY);
         } else if (horn.equals("Small")) {
+            original = getNativeImageFromResourceLocation(BASE_ADULT_SMALL);
             base_image = getNativeImageFromResourceLocation(BASE_ADULT_SMALL);
         }
 
@@ -65,29 +68,29 @@ public class TrilobiteTextures extends TextureUtils {
         if (morph.equals("Albino")) {
             base_image = colourAlbino(base_image, "base", isBaby);
             underside_image = colourAlbino(underside_image, "underside", isBaby);
-            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, base_image, "albino", isBaby);
-            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, base_image, "albino", isBaby);
+            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, original, "albino", isBaby);
+            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, original, "albino", isBaby);
             if (!pattern.equals("None") || !trilobite.isBaby()) {
-                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, "albino");
-                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, "albino");
+                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, "albino");
+                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, "albino");
             }
         } else if (morph.equals("Melanistic")) {
             base_image = colourMelanistic(base_image, "base", isBaby);
             underside_image = colourMelanistic(underside_image, "underside", isBaby);
-            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, base_image, "melanistic", isBaby);
-            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, base_image, "melanistic", isBaby);
+            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, original, "melanistic", isBaby);
+            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, original, "melanistic", isBaby);
             if (!pattern.equals("None") || !trilobite.isBaby()) {
-                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, "melanistic");
-                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, "melanistic");
+                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, "melanistic");
+                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, "melanistic");
             }
         } else {
             base_image = colourBase(base_image, base.toLowerCase(), isBaby);
             underside_image = colourUnderside(underside_image, underside.toLowerCase(), isBaby);
-            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, base_image, underside.toLowerCase(), isBaby);
-            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, base_image, underside.toLowerCase(), isBaby);
+            underside_blend_image1 = colourUndersideBlend(underside_blend_image1, original, underside.toLowerCase(), isBaby);
+            underside_blend_image2 = colourUndersideBlend(underside_blend_image2, original, underside.toLowerCase(), isBaby);
             if (!pattern.equals("None") || !trilobite.isBaby()) {
-                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, base_image, pattern_colour.toLowerCase());
-                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, base_image, pattern_colour.toLowerCase());
+                pattern_blend_image1 = colourPatternBlend(pattern_blend_image1, original, pattern_colour.toLowerCase());
+                pattern_blend_image2 = colourPatternBlend(pattern_blend_image2, original, pattern_colour.toLowerCase());
             }
         }
 
