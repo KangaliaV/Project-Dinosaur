@@ -4,9 +4,7 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.block.eggs.PrehistoricEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.GastornisGenome;
 import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
@@ -88,6 +86,11 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         name = Component.translatable("dino.projectdinosaur.gastornis");
         nameScientific = Component.translatable("dino.projectdinosaur.gastornis.scientific");
         renderScale = 35;
+        maleRoamDistance = 64;
+        femaleRoamDistance = 48;
+        juvinileRoamDistance = 24;
+        babyRoamDistance = 4;
+        isLand = true;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -147,6 +150,11 @@ public class GastornisEntity extends PrehistoricEntity implements IAnimatable {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.25D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));

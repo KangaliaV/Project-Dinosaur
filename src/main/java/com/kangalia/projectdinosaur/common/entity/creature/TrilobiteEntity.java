@@ -1,7 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.TrilobiteGenome;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
@@ -71,6 +71,11 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
         nameScientific = Component.translatable("dino.projectdinosaur.trilobite.scientific");
         renderScale = 60;
         breedingType = 1;
+        maleRoamDistance = 20;
+        femaleRoamDistance = 15;
+        juvinileRoamDistance = 7;
+        babyRoamDistance = 4;
+        isLand = false;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -122,16 +127,16 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1.25D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
-
-    /*@Override
-    protected int getExperienceReward(Player player) {
-        return 1 + this.level.random.nextInt(4);
-    }*/
 
     @Override
     public float getMaxHeight() {

@@ -1,9 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AphanerammaGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
@@ -97,6 +95,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         nameScientific = Component.translatable("dino.projectdinosaur.aphaneramma.scientific");
         renderScale = 60;
         breedingType = 1;
+        maleRoamDistance = 32;
+        femaleRoamDistance = 24;
+        juvinileRoamDistance = 12;
+        babyRoamDistance = 2;
+        isLand = false;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -160,6 +163,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new AphanerammaTravelGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new AphanerammaRandomStrollGoal(this, 1.0D, 100));
         this.goalSelector.addGoal(3, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
@@ -171,11 +179,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }
-
-    /*@Override
-    protected int getExperienceReward(Player player) {
-        return 1 + this.level.random.nextInt(4);
-    }*/
 
     @Override
     public int getAmbientSoundInterval() {

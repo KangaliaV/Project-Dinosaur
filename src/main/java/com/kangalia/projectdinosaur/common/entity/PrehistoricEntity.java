@@ -32,6 +32,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -61,6 +62,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Integer> HUNGER_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> HEALING_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> MISSED_SLEEP = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SCREM = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STUNTED = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> REMAINING_ANGER_TIME = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
@@ -68,8 +70,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Integer> ENRICHMENT = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ENRICHMENT_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ENRICHMENT_COOLDOWN = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<BlockPos> NEST_POS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> PREGNANCY_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> MATE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.STRING);
+
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-    private static final Predicate<Entity> PREHISTORIC_PREDICATE = entity -> entity instanceof PrehistoricEntity;
 
     public float minSize;
     public float maxMaleSize;
@@ -80,7 +86,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float maxWidth;
     public int maxFood;
     public int diet;
-    protected GroundFeederBlockEntity groundFeeder;
     protected EnrichmentBlock enrichment;
     protected Block nest;
     protected BlockPos blockPos = BlockPos.ZERO;
@@ -91,10 +96,15 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public Component nameScientific;
     public int renderScale;
     public int maxEnrichment = 100;
-    private boolean validTarget;
     boolean adultFlag = false;
     boolean juviFlag = false;
     public int breedingType;
+    public boolean canSleep;
+    public int maleRoamDistance;
+    public int femaleRoamDistance;
+    public int juvinileRoamDistance;
+    public int babyRoamDistance;
+    public boolean isLand;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -129,6 +139,20 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 this.setLastHurtByMob(this.getLastHurtByMob());
             }
             this.updatePersistentAnger((ServerLevel)this.level, true);
+        }
+    }
+
+    public int getRoamDistance() {
+        if (this.isBaby()) {
+            return babyRoamDistance;
+        } else if (this.isJuvenile()) {
+            return juvinileRoamDistance;
+        } else {
+            if (this.getGender() == 0) {
+                return maleRoamDistance;
+            } else {
+                return femaleRoamDistance;
+            }
         }
     }
 
@@ -168,10 +192,30 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
+    public boolean canMate(Animal pOtherAnimal) {
+        if (pOtherAnimal == this) {
+            return false;
+        } else if (pOtherAnimal.getClass() != this.getClass()) {
+            return false;
+        } else {
+            PrehistoricEntity prehistoric = (PrehistoricEntity) pOtherAnimal;
+            if (!prehistoric.isAdult() || !this.isAdult()) {
+                return false;
+            } else if (prehistoric.getMatingTicks() > 0 || this.getMatingTicks() > 0) {
+                return false;
+            } else if (prehistoric.getGender() == this.getGender()) {
+                return false;
+            } else return !prehistoric.isGrumpy() || !this.isGrumpy();
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
         refreshDimensions();
         if (!level.isClientSide) {
+
+            // AGE
             if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !adultFlag) {
                 this.setAttributes(0);
                 adultFlag = true;
@@ -184,6 +228,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 this.setAgeInTicks(this.getAgeInTicks() + 1);
                 setAgeScale(getAgeScale());
             }
+
+
+            // HUNGER
             if (this.getHungerTicks() > 0) {
                 this.setHungerTicks(this.getHungerTicks() - 1);
             } else if (this.getHungerTicks() <= 0) {
@@ -195,47 +242,59 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 }
                 this.setHungerTicks(this.random.nextInt(600) + 1000);
             }
-            if (this.isHungry() && !isSleeping()) {
-                eatFromNearestFeeder();
-            }
+
+
+            // ENRICHMENT
             if (this.getEnrichmentTicks() > 0) {
                 this.setEnrichmentTicks(this.getEnrichmentTicks() - 1);
             } else if (this.getEnrichmentTicks() <= 0) {
                 if (this.getEnrichment() > 0) {
                     this.setEnrichment(this.getEnrichment() - 1);
-                } else if (this.getEnrichment() <= 0) {
-                    this.hurt(DamageSource.GENERIC, 1);
-                    this.playHurtSound(DamageSource.GENERIC);
                 }
                 this.setEnrichmentTicks(this.random.nextInt(500) + 1500);
             }
             if (this.getEnrichmentCooldown() > 0) {
                 this.setEnrichmentCooldown(this.getEnrichmentCooldown() - 1);
-            } else if (this.getEnrichmentCooldown() <= 0) {
-                if (isGrumpy() && !isSleeping()) {
-                    playWithNearestEnrichment();
-                }
             }
+
+
+            // MATING
             if (this.isAdult()) {
                 if (this.getMatingTicks() > 0) {
                     this.setMatingTicks(this.getMatingTicks() - 1);
-                } else if (!isSleeping()) {
-                    if (!this.isMoody()) {
-                        this.breed();
-                    }
                 }
             }
+
+
+            // PREGNANCY
+            if (this.getPregnancyTicks() > 0) {
+                this.setPregnancyTicks(this.getPregnancyTicks() - 1);
+            }
+
+
+            // CRYOSICKNESS
             if (this.getRemainingCryosicknessTime() > 0) {
                 this.setRemainingCryosicknessTime(this.getRemainingCryosicknessTime() - 1);
             }
+
+
+            // SLEEPING
             if (this.shouldSleep() && !this.isSleeping()) {
-                if (this.findNestToSleep() == 1) {
+                if (this.canSleep) {
                     this.setSleeping(true);
+                    this.setMissedSleep(0);
+                } else {
+                    this.addMissedSleep();
                 }
             }
             if (!this.shouldSleep() && this.isSleeping()) {
                 this.setSleeping(false);
+                this.setCanSleep(false);
+                System.out.println("MissedSleep: "+this.getMissedSleep());
             }
+
+
+            // HEALTH REGEN
             if (this.getHealth() < this.getMaxHealth() && !this.isStarving()) {
                 this.setHealingTicks(this.getHealingTicks() + 1);
                 if (this.getHealingTicks() == 100) {
@@ -250,103 +309,35 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
-    public void breed() {
-        if (this.getGender() == 0) {
-            double d0 = 64;
-            List<Entity> list = level.getEntities(this, this.getBoundingBox().inflate(d0, 4.0D, d0), PREHISTORIC_PREDICATE);
-            List<PrehistoricEntity> listOfFemales = new ArrayList<>();
-            if (!list.isEmpty()) {
-                for (Entity e : list) {
-                    PrehistoricEntity mob = (PrehistoricEntity) e;
-                    if (!mob.equals(this)) {
-                        if (mob.getType() == this.getType()) {
-                            if (mob.isAdult()) {
-                                if (mob.getGender() == 1) {
-                                    if (mob.getMatingTicks() == 0) {
-                                        listOfFemales.add(mob);
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-            if (!listOfFemales.isEmpty() && this.getMatingTicks() == 0) {
-                PrehistoricEntity prehistoric = listOfFemales.get(0);
-                if (prehistoric.getMatingTicks() == 0) {
-                    this.getNavigation().moveTo(prehistoric, 1);
-                    double distance = this.getBbWidth() * 4.0F * this.getBbWidth() * 4.0F + prehistoric.getBbWidth();
-                    if (this.distanceToSqr(prehistoric.getX(), prehistoric.getBoundingBox().minY, prehistoric.getZ()) <= distance && prehistoric.onGround && this.onGround && this.isAdult() && prehistoric.isAdult()) {
-                        this.setMatingTicks(this.random.nextInt(6000) + 6000);
-                        prehistoric.setMatingTicks(this.random.nextInt(12000) + 12000);
-                        if (this.getBreedingType() == 1) {
-                            this.laySpawn(prehistoric);
-                        } else {
-                            this.layEgg(prehistoric);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void layEgg(PrehistoricEntity prehistoric) {
-        BlockPos blockpos = prehistoric.blockPosition();
-        if (!prehistoric.isInWater()) {
-            Level level = prehistoric.level;
-            level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
-            Block eggType = prehistoric.getEggType();
-            BlockPos eggPos = prehistoric.getOnPos().above();
-            level.setBlock(eggPos, eggType.defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(prehistoric.getClutchSize()) + 1), 3);
-            BlockEntity eggEntity = level.getBlockEntity(eggPos);
-            if (prehistoric instanceof GastornisEntity && this instanceof GastornisEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.GASTORNIS_EGG_ENTITY.get()) {
-                GastornisEggBlockEntity gastornisEggEntity = (GastornisEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
-                if (gastornisEggEntity != null) {
-                    System.out.println("Father: "+ this.getGenes());
-                    System.out.println("Mother: "+ prehistoric.getGenes());
-                    gastornisEggEntity.setParent1(this.getGenes());
-                    gastornisEggEntity.setParent2(prehistoric.getGenes());
-                }
-            } else if (prehistoric instanceof AustralovenatorEntity && this instanceof AustralovenatorEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.AUSTRALOVENATOR_EGG_ENTITY.get()) {
-                AustralovenatorEggBlockEntity australovenatorEggEntity = (AustralovenatorEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
-                if (australovenatorEggEntity != null) {
-                    System.out.println("Father: "+ this.getGenes());
-                    System.out.println("Mother: "+ prehistoric.getGenes());
-                    australovenatorEggEntity.setParent1(this.getGenes());
-                    australovenatorEggEntity.setParent2(prehistoric.getGenes());
-                }
-            } else if (prehistoric instanceof ScelidosaurusEntity && this instanceof ScelidosaurusEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.SCELIDOSAURUS_EGG_ENTITY.get()) {
-                ScelidosaurusEggBlockEntity scelidosaurusEggEntity = (ScelidosaurusEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
-                if (scelidosaurusEggEntity != null) {
-                    System.out.println("Father: "+ this.getGenes());
-                    System.out.println("Mother: "+ prehistoric.getGenes());
-                    scelidosaurusEggEntity.setParent1(this.getGenes());
-                    scelidosaurusEggEntity.setParent2(prehistoric.getGenes());
-                }
-            }
-        }
-    }
-
-    public void laySpawn(PrehistoricEntity prehistoric) {
-        if (!prehistoric.level.isClientSide) {
-            ItemStack itemstack = prehistoric.getSpawnType();
-            if (this instanceof AphanerammaEntity) {
-                itemstack = new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
-                CompoundTag compoundtag = new CompoundTag();
-                compoundtag.put("parentGenome", this.writeSpawnParents(prehistoric));
-                BlockItem.setBlockEntityData(itemstack, BlockEntitiesInit.APHANERAMMA_SPAWN_ENTITY.get(), compoundtag);
-            }
-            ItemEntity item = new ItemEntity(prehistoric.level, prehistoric.getX(), prehistoric.getY(), prehistoric.getZ(), itemstack);
-            prehistoric.level.addFreshEntity(item);
-        }
-    }
-
-    public CompoundTag writeSpawnParents(PrehistoricEntity prehistoric) {
+    public CompoundTag writeSpawnParents(String prehistoric) {
         CompoundTag compoundTag = new CompoundTag();
         compoundTag.putString("parent1", this.getGenes());
-        compoundTag.putString("parent2", prehistoric.getGenes());
+        compoundTag.putString("parent2", prehistoric);
         return compoundTag;
+    }
+
+    public String getMate() {
+        return this.entityData.get(MATE);
+    }
+
+    public void setMate(String mateGenes) {
+        this.entityData.set(MATE, mateGenes);
+    }
+
+    public boolean isPregnant() {
+        return this.entityData.get(PREGNANT);
+    }
+
+    public void setPregnant(boolean pregnant) {
+        this.entityData.set(PREGNANT, pregnant);
+    }
+
+    public int getPregnancyTicks() {
+        return this.entityData.get(PREGNANCY_TICKS);
+    }
+
+    public void setPregnancyTicks(int ticks) {
+        this.entityData.set(PREGNANCY_TICKS, ticks);
     }
 
     public int getBreedingType() {
@@ -424,122 +415,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
-    protected void eatFromNearestFeeder() {
-        int i = 16;
-        int j = 8;
-        BlockPos blockpos = this.blockPosition();
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-
-        for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
-            for(int l = 0; l < i; ++l) {
-                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
-                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
-                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
-                        if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTarget(this.level, blockpos$mutableblockpos)) {
-                            this.blockPos = blockpos$mutableblockpos;
-                            if (!groundFeeder.isEmpty(this)) {
-                                this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
-                                BlockPos blockPosAbove = this.blockPos.above();
-                                if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
-                                    this.getNavigation().stop();
-                                    groundFeeder.feedEntity(this);
-                                    this.setHungerTicks(1600);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-        if (pLevel.getBlockEntity(pPos) instanceof GroundFeederBlockEntity) {
-            groundFeeder = (GroundFeederBlockEntity) pLevel.getBlockEntity(pPos);
-            return groundFeeder != null;
-        }
-        return false;
-    }
-
-    public int findNestToSleep() {
-        int i = 16;
-        int j = 8;
-        BlockPos blockpos = this.blockPosition();
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-
-        for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
-            for(int l = 0; l < i; ++l) {
-                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
-                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
-                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
-                        if (this.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTargetSleeping(this.level, blockpos$mutableblockpos)) {
-                            this.blockPos = blockpos$mutableblockpos;
-                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, (this.blockPos.getY() + 1), (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
-                            BlockPos blockPosAbove = this.blockPos.above();
-                            if (blockPosAbove.closerToCenterThan(this.position(), 1.0D)) {
-                                this.getNavigation().stop();
-                                this.setSleeping(true);
-                                return 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return 1;
-    }
-
-    protected void playWithNearestEnrichment() {
-        int i = 16;
-        int j = 8;
-        BlockPos blockpos = this.blockPosition();
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-
-        for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
-            for(int l = 0; l < i; ++l) {
-                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
-                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
-                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
-                        validTarget = this.isValidTargetEnrichment(this.level, blockpos$mutableblockpos, this);
-                        if (this.isWithinRestriction(blockpos$mutableblockpos) && validTarget) {
-                            this.blockPos = blockpos$mutableblockpos;
-                            this.getNavigation().moveTo((double) ((float) this.blockPos.getX()) + 0.5D, this.blockPos.getY() + 1, (double) ((float) this.blockPos.getZ()) + 0.5D, 1.0D);
-                            BlockPos blockPosAbove = this.blockPos.above();
-                            if (blockPosAbove.closerToCenterThan(this.position(), 2.0D)) {
-                                this.getNavigation().stop();
-                                this.setEnrichment(this.getEnrichment() + 20);
-                                this.setEnrichmentTicks(random.nextInt(400) + 2000);
-                                this.setEnrichmentCooldown(2400);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    protected boolean isValidTargetEnrichment(LevelReader pLevel, BlockPos pPos, PrehistoricEntity entity) {
-        if (pLevel.getBlockState(pPos).getBlock() instanceof EnrichmentBlock) {
-            if (pLevel.getBlockState(pPos).getBlock() instanceof BubbleBlowerBlock && !(entity instanceof AphanerammaEntity)) {
-                return false;
-            }
-            if (pLevel.getBlockState(pPos).getBlock() instanceof ScentDiffuserBlock && !(entity.getDiet() == 1)) {
-                return false;
-            } else {
-                enrichment = (EnrichmentBlock) pLevel.getBlockState(pPos).getBlock();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected boolean isValidTargetSleeping(LevelReader pLevel, BlockPos pPos) {
-        if (pLevel.getBlockState(pPos).getBlock().equals(BlockInit.NEST.get())) {
-            nest = pLevel.getBlockState(pPos).getBlock();
-            return true;
-        }
-        return false;
+    public boolean isTerrestrial() {
+        return this.isLand;
     }
 
     public void setSleeping(boolean sleeping) {
@@ -553,7 +430,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public boolean shouldSleep() {
         if (this.isCryosick()) {
             return true;
-        } else if (this.isAngry() || this.isStarving() || this.isInWater()) {
+        } else if (this.isAngry() || this.isStarving()) {
+            return false;
+        } else if (this.isTerrestrial() && this.isInWater()) {
             return false;
         } else if (this.level.isDay() && getSleepSchedule() == 1) {
             return true;
@@ -562,8 +441,24 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         } else return false;
     }
 
+    public void setCanSleep(boolean sleep) {
+        canSleep = sleep;
+    }
+
     public boolean isSleeping() {
         return this.entityData.get(SLEEPING);
+    }
+
+    public int getMissedSleep() {
+        return this.entityData.get(MISSED_SLEEP);
+    }
+
+    public void setMissedSleep(int sleepMissed) {
+        this.entityData.set(MISSED_SLEEP, sleepMissed);
+    }
+
+    public void addMissedSleep() {
+        this.setMissedSleep(this.getMissedSleep() + 1);
     }
 
     public boolean isCryosick() {
@@ -801,7 +696,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean isMoody() {
-        return this.getEnrichment() < (maxEnrichment / 2);
+        return this.getEnrichment() < (maxEnrichment / 2) || this.getMissedSleep() == 4;
     }
 
     public boolean isMoodyAt(LivingEntity livingEntity) {
@@ -812,7 +707,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean isGrumpy() {
-        return this.getEnrichment() < (maxEnrichment * 0.8f);
+        return this.getEnrichment() < (maxEnrichment * 0.8f) || this.getMissedSleep() == 2;
     }
 
     public Component getSpecies() {
@@ -886,17 +781,26 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return false;
     }
 
+    public BlockPos getNestPos() {
+        return this.entityData.get(NEST_POS);
+    }
+
+    public void setNestPos(BlockPos pHomePos) {
+        this.entityData.set(NEST_POS, pHomePos);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(AGE_IN_TICKS, 0);
         this.entityData.define(AGE_SCALE, 0.0F);
         this.entityData.define(GENDER, 0);
-        this.entityData.define(MATING_TICKS, 240);
+        this.entityData.define(MATING_TICKS, 0);
         this.entityData.define(HUNGER, 0);
         this.entityData.define(HUNGER_TICKS, 0);
         this.entityData.define(HEALING_TICKS, 0);
         this.entityData.define(SLEEPING, false);
+        this.entityData.define(MISSED_SLEEP, 0);
         this.entityData.define(SCREM, false);
         this.entityData.define(STUNTED, false);
         this.entityData.define(REMAINING_CRYOSICKNESS_TIME, 0);
@@ -904,6 +808,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(ENRICHMENT, 0);
         this.entityData.define(ENRICHMENT_TICKS, 0);
         this.entityData.define(ENRICHMENT_COOLDOWN, 0);
+        this.entityData.define(NEST_POS, BlockPos.ZERO);
+        this.entityData.define(PREGNANT, false);
+        this.entityData.define(PREGNANCY_TICKS, 0);
+        this.entityData.define(MATE, "");
     }
 
     @Override
@@ -917,6 +825,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putInt("HungerTicks", this.getHungerTicks());
         pCompound.putInt("HealingTicks", this.getHealingTicks());
         pCompound.putBoolean("Sleeping", this.isSleeping());
+        pCompound.putInt("MissedSleep", this.getMissedSleep());
         pCompound.putBoolean("Screm", this.isScrem());
         pCompound.putBoolean("Stunted", this.isStunted());
         pCompound.putInt("RemainingCryosicknessTime", this.getRemainingCryosicknessTime());
@@ -924,6 +833,13 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putInt("Enrichment", this.getEnrichment());
         pCompound.putInt("EnrichmentTicks", this.getEnrichmentTicks());
         pCompound.putInt("EnrichmentCooldown", this.getEnrichmentCooldown());
+        pCompound.putInt("EnrichmentCooldown", this.getEnrichmentCooldown());
+        pCompound.putInt("NestPosX", this.getNestPos().getX());
+        pCompound.putInt("NestPosY", this.getNestPos().getY());
+        pCompound.putInt("NestPosZ", this.getNestPos().getZ());
+        pCompound.putBoolean("Pregnant", this.isPregnant());
+        pCompound.putInt("PregnancyTicks", this.getPregnancyTicks());
+        pCompound.putString("Mate", this.getMate());
     }
 
     @Override
@@ -937,6 +853,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setHungerTicks(pCompound.getInt("HungerTicks"));
         this.setHealingTicks(pCompound.getInt("HealingTicks"));
         this.setSleeping(pCompound.getBoolean("Sleeping"));
+        this.setMissedSleep(pCompound.getInt("MissedSleep"));
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
         this.setRemainingCryosicknessTime(pCompound.getInt("RemainingCryosicknessTime"));
@@ -944,5 +861,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setEnrichment(pCompound.getInt("Enrichment"));
         this.setEnrichmentTicks(pCompound.getInt("EnrichmentTicks"));
         this.setEnrichmentCooldown(pCompound.getInt("EnrichmentCooldown"));
+        int i = pCompound.getInt("NestPosX");
+        int j = pCompound.getInt("NestPosY");
+        int k = pCompound.getInt("NestPosZ");
+        this.setNestPos(new BlockPos(i, j, k));
+        this.setPregnant(pCompound.getBoolean("Pregnant"));
+        this.setPregnancyTicks(pCompound.getInt("PregnancyTicks"));
+        this.setMate(pCompound.getString("Mate"));
     }
 }

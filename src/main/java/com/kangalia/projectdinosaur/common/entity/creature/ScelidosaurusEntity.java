@@ -1,9 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AustralovenatorGenome;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.ScelidosaurusGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
@@ -77,6 +75,11 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         nameScientific = Component.translatable("dino.projectdinosaur.scelidosaurus.scientific");
         renderScale = 40;
         breedingType = 0;
+        maleRoamDistance = 48;
+        femaleRoamDistance = 36;
+        juvinileRoamDistance = 18;
+        babyRoamDistance = 4;
+        isLand = true;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -135,6 +138,11 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.0D));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -144,11 +152,6 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new ResetUniversalAngerTargetGoal<>(this, true));
     }
-
-    /*@Override
-    protected int getExperienceReward(Player player) {
-        return 1 + this.level.random.nextInt(4);
-    }*/
 
     @Override
     public int getAmbientSoundInterval() {
