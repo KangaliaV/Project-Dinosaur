@@ -20,8 +20,8 @@ public class AustralovenatorRenderer extends GeoEntityRenderer<AustralovenatorEn
     @Override
     public void render(GeoModel model, AustralovenatorEntity animatable, float partialTicks, RenderType type, PoseStack matrixStackIn, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float scale = animatable.getAgeScaleData();
-        matrixStackIn.scale(scale, scale, scale);
         this.shadowRadius = scale * 0.2F;
+        matrixStackIn.scale(scale, scale, scale);
         super.render(model, animatable, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }

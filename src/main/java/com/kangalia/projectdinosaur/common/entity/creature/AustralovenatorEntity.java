@@ -4,18 +4,22 @@ import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AustralovenatorGenome;
+import com.kangalia.projectdinosaur.common.entity.genetics.genomes.GastornisGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
@@ -30,8 +34,10 @@ import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -47,7 +53,10 @@ import javax.annotation.Nonnull;
 
 public class AustralovenatorEntity extends PrehistoricEntity implements IAnimatable {
 
+    private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(AustralovenatorEntity.class, EntityDataSerializers.STRING);
+
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AustralovenatorGenome genome = new AustralovenatorGenome();
 
     public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -57,13 +66,18 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         minSize = 0.25F;
         maxMaleSize = 1.3F;
         maxFemaleSize = 1.1F;
+        minHeight = 0.45f;
+        maxHeight = 1.2f;
+        minWidth = 0.4f;
+        maxWidth = 1.05f;
         maxFood = 80;
         diet = 1;
         soundVolume = 0.3F;
         sleepSchedule = 0;
-        adultHealth = 40.0F;
         name = Component.translatable("dino.projectdinosaur.australovenator");
+        nameScientific = Component.translatable("dino.projectdinosaur.australovenator.scientific");
         renderScale = 30;
+        breedingType = 0;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -74,6 +88,23 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
+    }
+
+    @Override
+    public void randomizeAttributes(int age) {
+        if (age == 0) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+        } else if (age == 1) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
+        } else {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 2);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -165,11 +196,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     }
 
     @Override
-    public int getBreedingType() {
-        return 0;
-    }
-
-    @Override
     public Block getEggType() {
         return BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get();
     }
@@ -182,6 +208,129 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
     @Override
     public int getAdultAge() {
         return 10;
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        this.setGenes(this.generateGenes(true));
+        System.out.println(this.getGenes());
+        this.setAttributes(0);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public float getGenderMaxSize() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxMaleSize;
+        } else {
+            return sizeCoefficient * maxFemaleSize;
+        }
+    }
+
+    @Override
+    public float getMaxHeight() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxHeight;
+        } else {
+            return sizeCoefficient * (maxHeight - 0.2f);
+        }
+    }
+
+    @Override
+    public float getMaxWidth() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxWidth;
+        } else {
+            return sizeCoefficient * (maxWidth - 0.1f);
+        }
+    }
+
+    public String generateGenes(boolean allowed) {
+        if (allowed) {
+            return genome.setRandomGenes();
+        } else {
+            return genome.setRandomAllowedGenes();
+        }
+    }
+
+    public String inheritGenes(String parent1, String parent2) {
+        return genome.setInheritedGenes(parent1, parent2);
+    }
+
+    @Override
+    public String getGenes() {
+        return this.entityData.get(GENOME);
+    }
+
+    public void setGenes(String genes) {
+        this.entityData.set(GENOME, genes);
+    }
+
+    public String getGeneDominance(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        if (gene == 2) {
+            return genome.calculateDominanceBC(alleles);
+        } else if (gene == 3) {
+            return genome.calculateDominanceUC(alleles);
+        } else if (gene == 4) {
+            return genome.calculateDominancePT(alleles);
+        } else if (gene == 5) {
+            return genome.calculateDominancePC(alleles);
+        } else {
+            return genome.calculateDominanceHC(alleles);
+        }
+    }
+
+    public String getCoefficientRating(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        float coefficient = genome.calculateCoefficient(alleles);
+        if (coefficient == 1.2f) {
+            return "Highest";
+        } else if (coefficient < 1.2f && coefficient >= 1.1f) {
+            return "High";
+        } else if (coefficient < 1.1f && coefficient >= 1f) {
+            return "Mid-High";
+        } else if (coefficient < 1f && coefficient >= 0.9f) {
+            return "Mid-Low";
+        } else if (coefficient < 0.9f && coefficient > 0.8f) {
+            return "Low";
+        } else if (coefficient == 0.8f) {
+            return "Lowest";
+        } else {
+            return "Error";
+        }
+    }
+
+    @Override
+    public String getColourMorph() {
+        if (genome.isAlbino(this.getGenes())) {
+            return "Albino";
+        } else if (genome.isMelanistic(this.getGenes())) {
+            return "Melanistic";
+        } else {
+            return "Normal";
+        }
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(GENOME, "");
+    }
+
+    @Override
+    public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putString("Genome", this.getGenes());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        this.setGenes(pCompound.getString("Genome"));
     }
 
     class AustralovenatorMoveControl extends MoveControl {

@@ -20,8 +20,8 @@ public class TrilobiteRenderer extends GeoEntityRenderer<TrilobiteEntity> {
     @Override
     public void render(GeoModel model, TrilobiteEntity animatable, float partialTicks, RenderType type, PoseStack matrixStackIn, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float scale = animatable.getAgeScaleData();
-        matrixStackIn.scale(scale, scale, scale);
         this.shadowRadius = scale * 0.3F;
+        matrixStackIn.scale(scale, scale, scale);
         super.render(model, animatable, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }

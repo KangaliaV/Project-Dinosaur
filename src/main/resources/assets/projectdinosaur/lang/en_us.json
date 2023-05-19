@@ -56,6 +56,7 @@
   "item.projectdinosaur.growth_accelerating_hormone": "Growth Accelerating Hormone",
   "item.projectdinosaur.growth_stunting_hormone": "Growth Stunting Hormone",
   "item.projectdinosaur.dino_scanner": "Dino Scanner",
+  "item.projectdinosaur.genome_scanner": "Genome Scanner",
   "item.projectdinosaur.cryoporter": "Cryoporter",
 
   "block.projectdinosaur.fossil_excavator": "Fossil Excavator",
@@ -196,6 +197,44 @@
   "data.projectdinosaur.dino_schedule": "%1$s",
   "data.projectdinosaur.dino_cryosick": "Cryosick",
 
+  "data.projectdinosaur.dino_species_scientific": "%1$s",
+  "data.projectdinosaur.dino_genome": "%1$s",
+  "data.projectdinosaur.dino_morph": "Morph: %1$s",
+  "data.projectdinosaur.speed": "Speed: %1$s",
+  "data.projectdinosaur.size": "Size: %1$s",
+  "data.projectdinosaur.attack_damage": "Damage: %1$s",
+  "data.projectdinosaur.max_health": "Health: %1$s",
+
+  "data.projectdinosaur.gastornis.feather": "Feathers: %1$s",
+  "data.projectdinosaur.gastornis.underside": "Underside: %1$s",
+  "data.projectdinosaur.gastornis.pattern": "Pattern: %1$s",
+  "data.projectdinosaur.gastornis.highlight": "Highlight: %1$s (%2$s)",
+  "data.projectdinosaur.gastornis.skin": "Skin: %1$s",
+  "data.projectdinosaur.gastornis.beak": "Beak: %1$s",
+
+  "data.projectdinosaur.australovenator.base": "Base: %1$s",
+  "data.projectdinosaur.australovenator.underside": "Underside: %1$s",
+  "data.projectdinosaur.australovenator.pattern": "Pattern: %1$s (%2$s)",
+  "data.projectdinosaur.australovenator.highlight": "Highlight: %1$s (%2$s)",
+
+  "data.projectdinosaur.aphaneramma.base": "Base: %1$s",
+  "data.projectdinosaur.aphaneramma.underside": "Underside: %1$s",
+  "data.projectdinosaur.aphaneramma.pattern": "Pattern: %1$s (%2$s)",
+
+  "data.projectdinosaur.scelidosaurus.base": "Base: %1$s",
+  "data.projectdinosaur.scelidosaurus.underside": "Underside: %1$s",
+  "data.projectdinosaur.scelidosaurus.pattern": "Pattern: %1$s",
+  "data.projectdinosaur.scelidosaurus.highlight": "Highlight: %1$s (%2$s)",
+
+  "data.projectdinosaur.trilobite.base": "Base: %1$s",
+  "data.projectdinosaur.trilobite.underside": "Underside: %1$s",
+  "data.projectdinosaur.trilobite.pattern": "Pattern: %1$s (%2$s)",
+  "data.projectdinosaur.trilobite.horn": "Horn Size: %1$s",
+
+
+  "genome.projectdinosaur.parent1": "%2$sParent 1: %1$s",
+  "genome.projectdinosaur.parent2": "%2$sParent 2: %1$s",
+
   "attribute.projectdinosaur.happy": "Happy",
   "attribute.projectdinosaur.moody": "Moody",
   "attribute.projectdinosaur.angry": "Angry",
@@ -216,6 +255,12 @@
   "dino.projectdinosaur.gastornis": "Gastornis",
   "dino.projectdinosaur.scelidosaurus": "Scelidosaurus",
   "dino.projectdinosaur.trilobite": "Trilobite",
+
+  "dino.projectdinosaur.aphaneramma.scientific": "Aphaneramma rostratum",
+  "dino.projectdinosaur.australovenator.scientific": "Australovenator wintonensis",
+  "dino.projectdinosaur.gastornis.scientific": "Gastornis gigantea",
+  "dino.projectdinosaur.scelidosaurus.scientific": "Scelidosaurus harrisonii",
+  "dino.projectdinosaur.trilobite.scientific": "Paradoxides paradoxissimus",
 
   "entity.projectdinosaur.aphaneramma": "Aphaneramma",
   "entity.projectdinosaur.australovenator": "Australovenator",

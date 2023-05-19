@@ -24,12 +24,4 @@ public class ModEventBusEvents {
         event.put(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusEntity.setCustomAttributes().build());
         event.put(EntityInit.TRILOBITE.get(), TrilobiteEntity.setCustomAttributes().build());
     }
-
-    /*@SubscribeEvent
-    public static void registerRecipeTypes(final  .<RecipeSerializer<?>> event) {
-        Registry.register(Registry.RECIPE_TYPE, ExcavatingRecipe.ExcavatingRecipeType.ID, ExcavatingRecipe.ExcavatingRecipeType.INSTANCE);
-        Registry.register(Registry.RECIPE_TYPE, ExtractingRecipe.ExtractingRecipeType.ID, ExtractingRecipe.ExtractingRecipeType.INSTANCE);
-        Registry.register(Registry.RECIPE_TYPE, RecombinatingRecipe.RecombinatingRecipeType.ID, RecombinatingRecipe.RecombinatingRecipeType.INSTANCE);
-        Registry.register(Registry.RECIPE_TYPE, IncubatingRecipe.IncubatingRecipeType.ID, IncubatingRecipe.IncubatingRecipeType.INSTANCE);
-    }*/
 }

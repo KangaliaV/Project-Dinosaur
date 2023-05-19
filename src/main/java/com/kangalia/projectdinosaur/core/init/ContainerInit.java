@@ -2,10 +2,8 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.container.*;
-import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.item.DinoScanner;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -57,5 +55,9 @@ public class ContainerInit {
     public static final RegistryObject<MenuType<DinoScannerContainer>> DINO_SCANNER_CONTAINER = CONTAINERS.register("dino_scanner_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
         ItemStack stack = inv.player.getItemInHand(inv.player.getUsedItemHand());
         return new DinoScannerContainer(windowId, stack, inv, inv.player);
+    }));
+    public static final RegistryObject<MenuType<GenomeScannerContainer>> GENOME_SCANNER_CONTAINER = CONTAINERS.register("genome_scanner_container", () -> IForgeMenuType.create((windowId, inv, data) -> {
+        ItemStack stack = inv.player.getItemInHand(inv.player.getUsedItemHand());
+        return new GenomeScannerContainer(windowId, stack, inv, inv.player);
     }));
 }

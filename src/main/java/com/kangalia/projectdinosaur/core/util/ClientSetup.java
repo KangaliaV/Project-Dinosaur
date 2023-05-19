@@ -3,7 +3,6 @@ package com.kangalia.projectdinosaur.core.util;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.client.gui.*;
 import com.kangalia.projectdinosaur.common.block.render.EmbryonicWombRenderer;
-import com.kangalia.projectdinosaur.common.container.GroundFeederContainer;
 import com.kangalia.projectdinosaur.common.entity.render.*;
 import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -30,6 +29,7 @@ public class ClientSetup {
         MenuScreens.register(ContainerInit.EMBRYONIC_WOMB_CONTAINER.get(), EmbryonicWombScreen::new);
         MenuScreens.register(ContainerInit.GROUND_FEEDER_CONTAINER.get(), GroundFeederScreen::new);
         MenuScreens.register(ContainerInit.DINO_SCANNER_CONTAINER.get(), DinoScannerScreen::new);
+        MenuScreens.register(ContainerInit.GENOME_SCANNER_CONTAINER.get(), GenomeScannerScreen::new);
 
         Sheets.addWoodType(WoodTypesInit.PETRIFIED);
 

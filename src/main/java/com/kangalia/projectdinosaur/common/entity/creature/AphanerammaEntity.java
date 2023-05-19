@@ -4,6 +4,7 @@ import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
 import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AphanerammaGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
@@ -18,6 +19,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,10 +28,7 @@ import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
@@ -40,10 +39,12 @@ import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,6 +52,7 @@ import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimatableModel;
@@ -69,8 +71,10 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     private static final EntityDataAccessor<BlockPos> TRAVEL_POS = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Boolean> TRAVELLING = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.STRING);
 
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AphanerammaGenome genome = new AphanerammaGenome();
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -81,23 +85,45 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         minSize = 0.25F;
         maxMaleSize = 0.8F;
         maxFemaleSize = 1.0F;
+        minHeight = 0.25f;
+        maxHeight = 0.45f;
+        minWidth = 0.4f;
+        maxWidth = 1.05f;
         maxFood = 50;
         diet = 2;
         soundVolume = 0.2F;
         sleepSchedule = 0;
-        adultHealth = 16.0F;
         name = Component.translatable("dino.projectdinosaur.aphaneramma");
+        nameScientific = Component.translatable("dino.projectdinosaur.aphaneramma.scientific");
         renderScale = 60;
+        breedingType = 1;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 4.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.1F)
+                .add(Attributes.MOVEMENT_SPEED, 0.09F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5F)
                 .add(Attributes.ATTACK_SPEED, 1.0F);
+    }
+
+    @Override
+    public void randomizeAttributes(int age) {
+        if (age == 0) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.09F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+        } else if (age == 1) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.09F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
+        } else {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.09F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4))/2);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
+        }
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -183,11 +209,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
     }
 
     @Override
-    public int getBreedingType() {
-        return 1;
-    }
-
-    @Override
     public ItemStack getSpawnType() {
         return ItemInit.APHANERAMMA_SPAWN_ITEM.get().getDefaultInstance();
     }
@@ -238,10 +259,113 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         return 5;
     }
 
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        this.setGenes(this.generateGenes(true));
+        System.out.println(this.getGenes());
+        this.setAttributes(0);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public float getGenderMaxSize() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxMaleSize;
+        } else {
+            return sizeCoefficient * maxFemaleSize;
+        }
+    }
+
+    @Override
+    public float getMaxHeight() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxHeight;
+        } else {
+            return sizeCoefficient * (maxHeight - 0.1f);
+        }
+    }
+
+    @Override
+    public float getMaxWidth() {
+        float sizeCoefficient = genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7));
+        if (this.getGender() == 0) {
+            return sizeCoefficient * maxWidth;
+        } else {
+            return sizeCoefficient * (maxWidth - 0.2f);
+        }
+    }
+
+    public String generateGenes(boolean allowed) {
+        if (allowed) {
+            return genome.setRandomGenes();
+        } else {
+            return genome.setRandomAllowedGenes();
+        }
+    }
+
+    public String inheritGenes(String parent1, String parent2) {
+        return genome.setInheritedGenes(parent1, parent2);
+    }
+
+    @Override
+    public String getGenes() {
+        return this.entityData.get(GENOME);
+    }
+
+    public void setGenes(String genes) {
+        this.entityData.set(GENOME, genes);
+    }
+
+    public String getGeneDominance(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        if (gene == 1) {
+            return genome.calculateDominanceBC(alleles);
+        } else if (gene == 2) {
+            return genome.calculateDominanceUC(alleles);
+        } else {
+            return genome.calculateDominancePC(alleles);
+        }
+    }
+
+    public String getCoefficientRating(int gene) {
+        String alleles = genome.getAlleles(this.getGenes(), gene);
+        float coefficient = genome.calculateCoefficient(alleles);
+        if (coefficient == 1.2f) {
+            return "Highest";
+        } else if (coefficient < 1.2f && coefficient >= 1.1f) {
+            return "High";
+        } else if (coefficient < 1.1f && coefficient >= 1f) {
+            return "Mid-High";
+        } else if (coefficient < 1f && coefficient >= 0.9f) {
+            return "Mid-Low";
+        } else if (coefficient < 0.9f && coefficient > 0.8f) {
+            return "Low";
+        } else if (coefficient == 0.8f) {
+            return "Lowest";
+        } else {
+            return "Error";
+        }
+    }
+
+    @Override
+    public String getColourMorph() {
+        if (genome.isAlbino(this.getGenes())) {
+            return "Albino";
+        } else if (genome.isMelanistic(this.getGenes())) {
+            return "Melanistic";
+        } else {
+            return "Normal";
+        }
+    }
+
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TRAVEL_POS, BlockPos.ZERO);
         this.entityData.define(TRAVELLING, false);
+        this.entityData.define(GENOME, "");
+
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
@@ -249,6 +373,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         pCompound.putInt("TravelPosX", this.getTravelPos().getX());
         pCompound.putInt("TravelPosY", this.getTravelPos().getY());
         pCompound.putInt("TravelPosZ", this.getTravelPos().getZ());
+        pCompound.putString("Genome", this.getGenes());
     }
 
     public void readAdditionalSaveData(CompoundTag pCompound) {
@@ -257,6 +382,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         int i1 = pCompound.getInt("TravelPosY");
         int j1 = pCompound.getInt("TravelPosZ");
         this.setTravelPos(new BlockPos(l, i1, j1));
+        this.setGenes(pCompound.getString("Genome"));
     }
 
     public void travel(Vec3 p_149181_) {
@@ -281,43 +407,19 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
     }
 
-    static class AphanerammaMoveControl extends MoveControl {
+    static class AphanerammaMoveControl extends SmoothSwimmingMoveControl {
         private final AphanerammaEntity aphaneramma;
 
-        AphanerammaMoveControl(AphanerammaEntity aphanerammaEntity) {
-            super(aphanerammaEntity);
-            this.aphaneramma = aphanerammaEntity;
-        }
-
-        private void updateSpeed() {
-            if (this.aphaneramma.isInWater()) {
-                this.aphaneramma.setDeltaMovement(this.aphaneramma.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
-                if (this.aphaneramma.isBaby()) {
-                    this.aphaneramma.setSpeed(Math.max(this.aphaneramma.getSpeed() / 2.0F, 0.06F));
-
-                }
-            } else if (this.aphaneramma.onGround) {
-                this.aphaneramma.setSpeed(Math.max(this.aphaneramma.getSpeed(), 0.06F));
-            }
+        public AphanerammaMoveControl(AphanerammaEntity Aphaneramma) {
+            super(Aphaneramma, 85, 10, 3.0F, 2.1F, false);
+            this.aphaneramma = Aphaneramma;
         }
 
         public void tick() {
-            this.updateSpeed();
-            if (this.operation == MoveControl.Operation.MOVE_TO && !this.aphaneramma.getNavigation().isDone()) {
-                double d0 = this.wantedX - this.aphaneramma.getX();
-                double d1 = this.wantedY - this.aphaneramma.getY();
-                double d2 = this.wantedZ - this.aphaneramma.getZ();
-                double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                d1 /= d3;
-                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.aphaneramma.setYRot(this.rotlerp(this.aphaneramma.getYRot(), f, 90.0F));
-                this.aphaneramma.yBodyRot = this.aphaneramma.getYRot();
-                float f1 = (float)(this.speedModifier * this.aphaneramma.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                this.aphaneramma.setSpeed(Mth.lerp(0.125F, this.aphaneramma.getSpeed(), f1));
-                this.aphaneramma.setDeltaMovement(this.aphaneramma.getDeltaMovement().add(0.0D, (double)this.aphaneramma.getSpeed() * d1 * 0.1D, 0.0D));
-            } else {
-                this.aphaneramma.setSpeed(0.0F);
+            if (!this.aphaneramma.isSleeping()) {
+                super.tick();
             }
+
         }
     }
 

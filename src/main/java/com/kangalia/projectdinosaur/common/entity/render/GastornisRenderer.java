@@ -1,8 +1,6 @@
 package com.kangalia.projectdinosaur.common.entity.render;
 
-import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
-import com.kangalia.projectdinosaur.common.entity.model.AustralovenatorModel;
 import com.kangalia.projectdinosaur.common.entity.model.GastornisModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -23,7 +21,7 @@ public class GastornisRenderer extends GeoEntityRenderer<GastornisEntity> {
     public void render(GeoModel model, GastornisEntity animatable, float partialTicks, RenderType type, PoseStack matrixStackIn, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         float scale = animatable.getAgeScaleData();
         matrixStackIn.scale(scale, scale, scale);
-        this.shadowRadius = scale * 0.2F;
+        this.shadowRadius = scale * 0.4F;
         super.render(model, animatable, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }

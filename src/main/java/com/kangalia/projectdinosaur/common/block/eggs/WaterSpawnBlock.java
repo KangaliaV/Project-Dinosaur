@@ -17,22 +17,25 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class WaterSpawnBlock extends Block {
+public class WaterSpawnBlock extends Block implements EntityBlock {
 
     protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
-    private static int minHatchTickDelay = 3600;
-    private static int maxHatchTickDelay = 12000;
+    private static int minHatchTickDelay = 1800;
+    private static int maxHatchTickDelay = 6000;
     private static int minYoung = 1;
     private static int maxYoung = 4;
-    private final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
+    public final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;
 
     public WaterSpawnBlock(Properties pProperties, Supplier<? extends EntityType<? extends PrehistoricEntity>> entity) {
         super(pProperties);
@@ -95,7 +98,7 @@ public class WaterSpawnBlock extends Block {
         pLevel.destroyBlock(pPos, true);
     }
 
-    private void spawnYoung(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+    public void spawnYoung(ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         int i = pRandom.nextInt(minYoung, maxYoung);
 
         for(int j = 1; j <= i; ++j) {
@@ -107,14 +110,25 @@ public class WaterSpawnBlock extends Block {
                 young.setHunger(young.getMaxFood() / 2);
                 young.setHungerTicks(1600);
                 young.setEnrichment(young.getMaxEnrichment() / 2);
-                if (young instanceof TrilobiteEntity) {
-                    ((TrilobiteEntity) young).setVariant(pRandom.nextInt(6));
-                }
                 young.moveTo((double)pPos.getX() + 0.3D + (double)j * 0.2D, (double)pPos.getY(), (double)pPos.getZ() + 0.3D, 0.0F, 0.0F);
                 young.setPersistenceRequired();
                 pLevel.addFreshEntity(young);
             }
         }
 
+    }
+
+    public int getMinYoung() {
+        return minYoung;
+    }
+
+    public int getMaxYoung() {
+        return maxYoung;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return null;
     }
 }

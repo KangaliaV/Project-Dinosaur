@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " r ",
-    "igi"
+    "gbg",
+    "iri"
   ],
   "key": {
     "i": {
@@ -12,7 +12,10 @@
       "item": "minecraft:redstone"
     },
     "g": {
-      "item": "minecraft:glass"
+      "item": "minecraft:glass_pane"
+    },
+    "b": {
+      "item": "minecraft:glass_bottle"
     }
   },
   "result": {

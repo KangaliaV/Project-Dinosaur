@@ -28,8 +28,8 @@ import java.util.function.Supplier;
 public class LandSpawnBlock extends Block {
 
     protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 6.0D, 14.0D);
-    private static int minHatchTickDelay = 3600;
-    private static int maxHatchTickDelay = 12000;
+    private static int minHatchTickDelay = 1800;
+    private static int maxHatchTickDelay = 6000;
     private static int minYoung = 1;
     private static int maxYoung = 4;
     private final Supplier<? extends EntityType<? extends PrehistoricEntity>> dino;

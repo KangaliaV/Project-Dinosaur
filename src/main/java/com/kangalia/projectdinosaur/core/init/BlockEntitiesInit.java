@@ -1,7 +1,9 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.common.block.eggs.AustralovenatorEggBlock;
 import com.kangalia.projectdinosaur.common.blockentity.*;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,6 +22,16 @@ public class BlockEntitiesInit {
 
     //Dino Care
     public static final RegistryObject<BlockEntityType<GroundFeederBlockEntity>> GROUND_FEEDER_ENTITY = TILE_ENTITIES.register("ground_feeder", () -> BlockEntityType.Builder.of(GroundFeederBlockEntity::new, BlockInit.GROUND_FEEDER.get()).build(null));
+
+    //Eggs
+    public static final RegistryObject<BlockEntityType<AustralovenatorEggBlockEntity>> AUSTRALOVENATOR_EGG_ENTITY = TILE_ENTITIES.register("australovenator_egg", () -> BlockEntityType.Builder.of(AustralovenatorEggBlockEntity::new, BlockInit.AUSTRALOVENATOR_EGG_INCUBATED.get()).build(null));
+    public static final RegistryObject<BlockEntityType<GastornisEggBlockEntity>> GASTORNIS_EGG_ENTITY = TILE_ENTITIES.register("gastornis_egg", () -> BlockEntityType.Builder.of(GastornisEggBlockEntity::new, BlockInit.GASTORNIS_EGG_INCUBATED.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ScelidosaurusEggBlockEntity>> SCELIDOSAURUS_EGG_ENTITY = TILE_ENTITIES.register("scelidosaurus_egg", () -> BlockEntityType.Builder.of(ScelidosaurusEggBlockEntity::new, BlockInit.SCELIDOSAURUS_EGG_INCUBATED.get()).build(null));
+
+    //Spawn
+    public static final RegistryObject<BlockEntityType<AphanerammaSpawnBlockEntity>> APHANERAMMA_SPAWN_ENTITY = TILE_ENTITIES.register("aphaneramma_spawn", () -> BlockEntityType.Builder.of(AphanerammaSpawnBlockEntity::new, BlockInit.APHANERAMMA_SPAWN.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TrilobiteSpawnBlockEntity>> TRILOBITE_SPAWN_ENTITY = TILE_ENTITIES.register("trilobite_spawn", () -> BlockEntityType.Builder.of(TrilobiteSpawnBlockEntity::new, BlockInit.TRILOBITE_SPAWN.get()).build(null));
+
 
     //Other
     public static final RegistryObject<BlockEntityType<PetrifiedSignTileEntity>> PETRIFIED_SIGN_ENTITY = TILE_ENTITIES.register("petrified_sign", () -> BlockEntityType.Builder.of(PetrifiedSignTileEntity::new, BlockInit.PETRIFIED_SIGN.get(), BlockInit.PETRIFIED_SIGN_WALL.get()).build(null));

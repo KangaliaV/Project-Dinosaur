@@ -5,7 +5,11 @@ import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
 import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
+import com.kangalia.projectdinosaur.common.blockentity.eggs.ScelidosaurusEggBlockEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
+import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -30,6 +34,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -37,6 +42,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.event.level.PistonEvent;
 import org.jetbrains.annotations.Nullable;
@@ -68,6 +74,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float minSize;
     public float maxMaleSize;
     public float maxFemaleSize;
+    public float minHeight;
+    public float maxHeight;
+    public float minWidth;
+    public float maxWidth;
     public int maxFood;
     public int diet;
     protected GroundFeederBlockEntity groundFeeder;
@@ -77,11 +87,14 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public float soundVolume;
     public int sleepSchedule;
     private UUID persistentAngerTarget;
-    public float adultHealth;
     public Component name;
+    public Component nameScientific;
     public int renderScale;
     public int maxEnrichment = 100;
     private boolean validTarget;
+    boolean adultFlag = false;
+    boolean juviFlag = false;
+    public int breedingType;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -98,13 +111,13 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         Random random = new Random();
         this.setAgeInDays(this.getAdultAge());
         this.setGender(random.nextInt(2));
-        this.setMatingTicks(1200);
+        this.setMatingTicks(7500);
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
         this.setRemainingCryosicknessTime(0);
         this.setEnrichment(maxEnrichment / 2);
         this.setEnrichmentTicks(2000);
-        this.setAdultAttributes();
+        this.setAttributes(0);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -120,11 +133,52 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     @Override
+    public EntityDimensions getDimensions(Pose pPose) {
+        if (!Objects.equals(this.getGenes(), "")) {
+            return super.getDimensions(pPose).scale(this.getDimensionScaleWidth(), this.getDimensionScaleHeight());
+        } else {
+            return super.getDimensions(pPose);
+        }
+    }
+
+    public float getDimensionScaleHeight() {
+        float step = (getMaxHeight() - this.minHeight) / ((this.getAdultAge() * 24000) + 1);
+        if (this.getAgeInTicks() >= this.getAdultAge() * 24000) {
+            return this.minHeight + ((step) * this.getAdultAge() * 24000);
+        }
+        return minHeight + (step * this.getAgeInTicks());
+    }
+
+    public float getDimensionScaleWidth() {
+        float step = (getMaxWidth() - this.minWidth) / ((this.getAdultAge() * 24000) + 1);
+        if (this.getAgeInTicks() >= this.getAdultAge() * 24000) {
+            return this.minWidth + ((step) * this.getAdultAge() * 24000);
+        }
+        return minWidth + (step * this.getAgeInTicks());
+    }
+
+    @Override
+    public int getExperienceReward() {
+        float multiplier = 2.0f * this.getBbWidth();
+        if (this.getDiet() == 1) {
+            multiplier = multiplier * 1.5f;
+        }
+
+        return Math.min(this.getAdultAge(), this.getAdultAge() * (int)multiplier) + this.level.random.nextInt(3);
+    }
+
+    @Override
     public void tick() {
         super.tick();
+        refreshDimensions();
         if (!level.isClientSide) {
-            if (this.getAgeInTicks() == this.getAdultAge() * 24000) {
-                this.setAdultAttributes();
+            if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !adultFlag) {
+                this.setAttributes(0);
+                adultFlag = true;
+            }
+            if (this.isJuvenile() && !juviFlag) {
+                this.setAttributes(1);
+                juviFlag = true;
             }
             if (!this.isStunted()) {
                 this.setAgeInTicks(this.getAgeInTicks() + 1);
@@ -168,8 +222,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 } else if (!isSleeping()) {
                     if (!this.isMoody()) {
                         this.breed();
-                    } else {
-                        this.setMatingTicks(this.random.nextInt(6000) + 6000);
                     }
                 }
             }
@@ -245,19 +297,60 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             Level level = prehistoric.level;
             level.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
             Block eggType = prehistoric.getEggType();
-            level.setBlock(prehistoric.getOnPos().above(), eggType.defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(prehistoric.getClutchSize()) + 1), 3);
+            BlockPos eggPos = prehistoric.getOnPos().above();
+            level.setBlock(eggPos, eggType.defaultBlockState().setValue(PrehistoricEggBlock.EGGS, prehistoric.random.nextInt(prehistoric.getClutchSize()) + 1), 3);
+            BlockEntity eggEntity = level.getBlockEntity(eggPos);
+            if (prehistoric instanceof GastornisEntity && this instanceof GastornisEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.GASTORNIS_EGG_ENTITY.get()) {
+                GastornisEggBlockEntity gastornisEggEntity = (GastornisEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
+                if (gastornisEggEntity != null) {
+                    System.out.println("Father: "+ this.getGenes());
+                    System.out.println("Mother: "+ prehistoric.getGenes());
+                    gastornisEggEntity.setParent1(this.getGenes());
+                    gastornisEggEntity.setParent2(prehistoric.getGenes());
+                }
+            } else if (prehistoric instanceof AustralovenatorEntity && this instanceof AustralovenatorEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.AUSTRALOVENATOR_EGG_ENTITY.get()) {
+                AustralovenatorEggBlockEntity australovenatorEggEntity = (AustralovenatorEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
+                if (australovenatorEggEntity != null) {
+                    System.out.println("Father: "+ this.getGenes());
+                    System.out.println("Mother: "+ prehistoric.getGenes());
+                    australovenatorEggEntity.setParent1(this.getGenes());
+                    australovenatorEggEntity.setParent2(prehistoric.getGenes());
+                }
+            } else if (prehistoric instanceof ScelidosaurusEntity && this instanceof ScelidosaurusEntity && eggEntity != null && eggEntity.getType() == BlockEntitiesInit.SCELIDOSAURUS_EGG_ENTITY.get()) {
+                ScelidosaurusEggBlockEntity scelidosaurusEggEntity = (ScelidosaurusEggBlockEntity) eggEntity.getType().getBlockEntity(level, eggPos);
+                if (scelidosaurusEggEntity != null) {
+                    System.out.println("Father: "+ this.getGenes());
+                    System.out.println("Mother: "+ prehistoric.getGenes());
+                    scelidosaurusEggEntity.setParent1(this.getGenes());
+                    scelidosaurusEggEntity.setParent2(prehistoric.getGenes());
+                }
+            }
         }
     }
 
     public void laySpawn(PrehistoricEntity prehistoric) {
         if (!prehistoric.level.isClientSide) {
-            ItemEntity item = new ItemEntity(prehistoric.level, prehistoric.getX(), prehistoric.getY(), prehistoric.getZ(), prehistoric.getSpawnType());
+            ItemStack itemstack = prehistoric.getSpawnType();
+            if (this instanceof AphanerammaEntity) {
+                itemstack = new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
+                CompoundTag compoundtag = new CompoundTag();
+                compoundtag.put("parentGenome", this.writeSpawnParents(prehistoric));
+                BlockItem.setBlockEntityData(itemstack, BlockEntitiesInit.APHANERAMMA_SPAWN_ENTITY.get(), compoundtag);
+            }
+            ItemEntity item = new ItemEntity(prehistoric.level, prehistoric.getX(), prehistoric.getY(), prehistoric.getZ(), itemstack);
             prehistoric.level.addFreshEntity(item);
         }
     }
 
+    public CompoundTag writeSpawnParents(PrehistoricEntity prehistoric) {
+        CompoundTag compoundTag = new CompoundTag();
+        compoundTag.putString("parent1", this.getGenes());
+        compoundTag.putString("parent2", prehistoric.getGenes());
+        return compoundTag;
+    }
+
     public int getBreedingType() {
-        return 0;
+        return breedingType;
     }
 
     public Block getEggType() {
@@ -305,6 +398,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 item.shrink(1);
                 playHormoneSound(pPlayer);
             }
+            refreshDimensions();
             return InteractionResult.SUCCESS;
         } else if (item.is(ItemInit.GROWTH_STUNTING_HORMONE.get()) && !this.isAdult() && !this.isStunted()) {
             this.setStunted(true);
@@ -488,13 +582,24 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         player.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE, 1.0F, 1.0F);
     }
 
-    public void setAdultAttributes() {
-        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(this.getAdultHealth());
-        this.setHealth(this.getAdultHealth());
+    public void randomizeAttributes(int age) {}
+
+    public void setAttributes(int age) {
+        this.randomizeAttributes(age);
+        this.setHealth((float)this.getAttribute(Attributes.MAX_HEALTH).getValue());
+        refreshDimensions();
     }
 
-    public float getAdultHealth() {
-        return adultHealth;
+    public String getGenes() {
+        return "";
+    }
+
+    public String getColourMorph() {
+        return "Normal";
+    }
+
+    public String getCoefficientRating(int gene) {
+        return "Error!";
     }
 
     public Block getEgg() {
@@ -613,6 +718,22 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         }
     }
 
+    public float getMaxHeight() {
+        if (this.getGender() == 0) {
+            return maxHeight;
+        } else {
+            return maxHeight - 0.5f;
+        }
+    }
+
+    public float getMaxWidth() {
+        if (this.getGender() == 0) {
+            return maxWidth;
+        } else {
+            return maxWidth - 0.2f;
+        }
+    }
+
     public void setScrem(boolean screm) {
         this.entityData.set(SCREM, screm);
     }
@@ -696,6 +817,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
     public Component getSpecies() {
         return name;
+    }
+
+    public Component getSpeciesScientific() {
+        return nameScientific;
     }
 
     public int getRenderScale() {

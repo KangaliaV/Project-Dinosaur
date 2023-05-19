@@ -103,7 +103,6 @@ public class ItemInit {
     public static final RegistryObject<ForgeSpawnEggItem> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.TRILOBITE, 0x212121, 0x9f5405, new Item.Properties().stacksTo(64).tab(DinoSpawnEggs.DINO_SPAWN_EGGS)));
 
     //Miscellaneous Items
-    public static final RegistryObject<Item> PETRIFIED_SIGN = ITEMS.register("petrified_sign", () -> new SignItem(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS), BlockInit.PETRIFIED_SIGN.get(), BlockInit.PETRIFIED_SIGN_WALL.get()));
     //public static final RegistryObject<Item> PETRIFIED_BOAT = ITEMS.register("petrified_boat", () -> new PetrifiedBoatItem(false, new Item.Properties().tab(DinoItems.DINO_ITEMS), Boat.Type.OAK));
     public static final RegistryObject<Item> ROTTEN_EGG = ITEMS.register("rotten_egg", () -> new Item(new Item.Properties().stacksTo(16).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
@@ -115,8 +114,15 @@ public class ItemInit {
     public static final RegistryObject<Item> GROWTH_STUNTING_HORMONE = ITEMS.register("growth_stunting_hormone", () -> new Item(new Item.Properties().stacksTo(64).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> DINO_SCANNER = ITEMS.register("dino_scanner", () -> new DinoScanner(new Item.Properties().stacksTo(1).tab(DinoItems.DINO_ITEMS)));
     public static final RegistryObject<Item> CRYOPORTER = ITEMS.register("cryoporter", () -> new Cryoporter(new Item.Properties().stacksTo(1).durability(10).tab(DinoItems.DINO_ITEMS)));
+    public static final RegistryObject<Item> GENOME_SCANNER = ITEMS.register("genome_scanner", () -> new GenomeScanner(new Item.Properties().stacksTo(1).tab(DinoItems.DINO_ITEMS)));
 
     //Specific Block Items
     public static final RegistryObject<Item> EMBRYONIC_WOMB_ITEM = ITEMS.register("embryonic_womb_item", () -> new EmbryonicWombBlockItem(BlockInit.EMBRYONIC_WOMB.get(), new Item.Properties().tab(DinoBlocks.DINO_BLOCKS)));
+    public static final RegistryObject<Item> PETRIFIED_SIGN = ITEMS.register("petrified_sign", () -> new SignItem(new Item.Properties().stacksTo(16).tab(DinoBlocks.DINO_BLOCKS), BlockInit.PETRIFIED_SIGN.get(), BlockInit.PETRIFIED_SIGN_WALL.get()));
+
+    //Dev Items
+    public static final RegistryObject<Item> LOVE_POTION = ITEMS.register("love_potion", () -> new LovePotion(new Item.Properties()));
+    public static final RegistryObject<Item> HUNGER_POTION = ITEMS.register("hunger_potion", () -> new HungerPotion(new Item.Properties()));
+    public static final RegistryObject<Item> ANGER_POTION = ITEMS.register("anger_potion", () -> new AngerPotion(new Item.Properties()));
 
 }
