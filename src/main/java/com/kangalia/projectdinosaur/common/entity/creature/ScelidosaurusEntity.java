@@ -66,7 +66,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         maxMaleSize = 1.1F;
         maxFemaleSize = 1.0F;
         minHeight = 0.45f;
-        maxHeight = 1.2f;
+        maxHeight = 1.1f;
         minWidth = 0.4f;
         maxWidth = 1.05f;
         maxFood = 60;
