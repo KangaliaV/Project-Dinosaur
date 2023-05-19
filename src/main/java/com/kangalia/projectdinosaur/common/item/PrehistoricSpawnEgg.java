@@ -1,10 +1,7 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.TrilobiteEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -48,6 +45,8 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
                     aphaneramma.setGenes(aphaneramma.generateGenes(true));
                 } else if (mob instanceof TrilobiteEntity trilobite) {
                     trilobite.setGenes(trilobite.generateGenes(true));
+                } else if (mob instanceof ScelidosaurusEntity scelidosaurus) {
+                    scelidosaurus.setGenes(scelidosaurus.generateGenes(true));
                 }
                 mob.setAgeInTicks(0);
                 mob.setGender(random.nextInt(2));

@@ -1,11 +1,8 @@
 package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyAvoidEntityGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricBabyPanicGoal;
-import com.kangalia.projectdinosaur.common.entity.ai.PrehistoricMeleeAttackGoal;
+import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AustralovenatorGenome;
-import com.kangalia.projectdinosaur.common.entity.genetics.genomes.GastornisGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
@@ -62,7 +59,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         super(entityType, world);
         this.moveControl = new AustralovenatorEntity.AustralovenatorMoveControl();
         this.lookControl = new AustralovenatorEntity.AustralovenatorLookControl();
-        this.maxUpStep = 0.5F;
+        this.maxUpStep = 1.0F;
         minSize = 0.25F;
         maxMaleSize = 1.3F;
         maxFemaleSize = 1.1F;
@@ -78,6 +75,11 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         nameScientific = Component.translatable("dino.projectdinosaur.australovenator.scientific");
         renderScale = 30;
         breedingType = 0;
+        maleRoamDistance = 64;
+        femaleRoamDistance = 48;
+        juvinileRoamDistance = 24;
+        babyRoamDistance = 4;
+        isLand = true;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -121,7 +123,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         return PlayState.CONTINUE;
     }
 
-
     @Override
     public void registerControllers(AnimationData data) {
         data.setResetSpeedInTicks(10);
@@ -137,6 +138,11 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
+        this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.25D, 200));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -151,11 +157,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
-
-    /*@Override
-    protected int getExperienceReward(Player player) {
-        return 1 + this.level.random.nextInt(4);
-    }*/
 
     @Override
     public int getAmbientSoundInterval() {
