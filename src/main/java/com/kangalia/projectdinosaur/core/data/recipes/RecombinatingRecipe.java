@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -47,11 +48,15 @@ public class RecombinatingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container inv) {
+    public ItemStack assemble(Container p_44001_, RegistryAccess p_267165_) {
         return output;
     }
 
     @Override
+    public ItemStack getResultItem(RegistryAccess p_267052_) {
+        return getResultItem();
+    }
+
     public ItemStack getResultItem() {
         return output.copy();
     }

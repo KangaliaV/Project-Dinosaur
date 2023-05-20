@@ -55,7 +55,8 @@ public class AphanerammaModel extends GeoModel<AphanerammaEntity> {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/aphaneramma.animation.json");
     }
 
-    @Override
+    // This breaks the rendering in the Dino Scanner for some reason - need to find a better solution.
+    /*@Override
     public void setCustomAnimations(AphanerammaEntity animatable, long instanceId, AnimationState<AphanerammaEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
 
@@ -68,5 +69,5 @@ public class AphanerammaModel extends GeoModel<AphanerammaEntity> {
             head.setRotX(extraDataOfType.headPitch() * Mth.DEG_TO_RAD / 2);
             head.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 2);
         }
-    }
+    }*/
 }

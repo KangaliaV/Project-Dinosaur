@@ -71,7 +71,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         sleepSchedule = 0;
         name = Component.translatable("dino.projectdinosaur.australovenator");
         nameScientific = Component.translatable("dino.projectdinosaur.australovenator.scientific");
-        renderScale = 30;
+        renderScale = 25;
         breedingType = 0;
         maleRoamDistance = 64;
         femaleRoamDistance = 48;
@@ -123,7 +123,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController<AustralovenatorEntity>(this, "controller", 10, this::predicate));
+        data.add(new AnimationController<AustralovenatorEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override

@@ -36,6 +36,7 @@ import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -141,7 +142,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController<AphanerammaEntity>(this, "controller", 4, this::predicate));
+        data.add(new AnimationController<AphanerammaEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override
@@ -184,6 +185,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         }
     }
 
+    @Override
+    public ItemStack getPrehistoricSpawnType() {
+        return new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
+    }
+
     void setTravelPos(BlockPos pTravelPos) {
         this.entityData.set(TRAVEL_POS, pTravelPos);
     }
@@ -198,11 +204,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
 
     void setTravelling(boolean pIsTravelling) {
         this.entityData.set(TRAVELLING, pIsTravelling);
-    }
-
-    @Override
-    public ItemStack getSpawnType() {
-        return ItemInit.APHANERAMMA_SPAWN_ITEM.get().getDefaultInstance();
     }
 
     @Override
@@ -481,7 +482,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
                 l = 0;
             }
 
-            BlockPos blockpos = new BlockPos((double)k + this.aphaneramma.getX(), (double)l + this.aphaneramma.getY(), (double)i1 + this.aphaneramma.getZ());
+            BlockPos blockpos = new BlockPos(k + (int)this.aphaneramma.getX(), l + (int)this.aphaneramma.getY(), i1 + (int)this.aphaneramma.getZ());
             this.aphaneramma.setTravelPos(blockpos);
             this.aphaneramma.setTravelling(true);
             this.stuck = false;

@@ -52,7 +52,8 @@ public class ScelidosaurusModel extends GeoModel<ScelidosaurusEntity> {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/scelidosaurus.animation.json");
     }
 
-    @Override
+    // This breaks the rendering in the Dino Scanner for some reason - need to find a better solution.
+    /*@Override
     public void setCustomAnimations(ScelidosaurusEntity animatable, long instanceId, AnimationState<ScelidosaurusEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
 
@@ -68,5 +69,5 @@ public class ScelidosaurusModel extends GeoModel<ScelidosaurusEntity> {
             shoulders.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
             neck.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
         }
-    }
+    }*/
 }

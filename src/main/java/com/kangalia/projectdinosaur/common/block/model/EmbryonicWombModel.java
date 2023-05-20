@@ -16,9 +16,9 @@ public class EmbryonicWombModel extends GeoModel<EmbryonicWombBlockEntity> {
     @Override
     public ResourceLocation getTextureResource(EmbryonicWombBlockEntity object) {
         if (object.getBlockState().getValue(BlockStateProperties.POWERED)) {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/blocks/embryonic_womb_powered.png");
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/block/embryonic_womb_powered.png");
         } else {
-            return new ResourceLocation(ProjectDinosaur.MODID, "textures/blocks/embryonic_womb.png");
+            return new ResourceLocation(ProjectDinosaur.MODID, "textures/block/embryonic_womb.png");
         }
     }
 

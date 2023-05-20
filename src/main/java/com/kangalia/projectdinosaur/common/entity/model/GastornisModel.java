@@ -51,8 +51,8 @@ public class GastornisModel extends GeoModel<GastornisEntity> {
     public ResourceLocation getAnimationResource(GastornisEntity animatable) {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/gastornis.animation.json");
     }
-
-    public void setCustomAnimations(GastornisEntity animatable, long instanceId, AnimationState<GastornisEntity> animationState) {
+    // This breaks the rendering in the Dino Scanner for some reason - need to find a better solution.
+    /*public void setCustomAnimations(GastornisEntity animatable, long instanceId, AnimationState<GastornisEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
 
         if (animationState == null) return;
@@ -68,5 +68,5 @@ public class GastornisModel extends GeoModel<GastornisEntity> {
             neck1.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
             neck2.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
         }
-    }
+    }*/
 }

@@ -112,7 +112,7 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController<TrilobiteEntity>(this, "controller", 4, this::predicate));
+        data.add(new AnimationController<TrilobiteEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override
@@ -155,6 +155,11 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
     }
 
     @Override
+    public ItemStack getPrehistoricSpawnType() {
+        return new ItemStack(ItemInit.TRILOBITE_SPAWN_ITEM.get());
+    }
+
+    @Override
     public int getAmbientSoundInterval() {
         return 100;
     }
@@ -168,11 +173,6 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
     @Override
     public int getBreedingType() {
         return 1;
-    }
-
-    @Override
-    public ItemStack getSpawnType() {
-        return ItemInit.TRILOBITE_SPAWN_ITEM.get().getDefaultInstance();
     }
 
     @Override

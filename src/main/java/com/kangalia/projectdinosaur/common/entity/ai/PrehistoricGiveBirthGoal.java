@@ -103,7 +103,7 @@ public class PrehistoricGiveBirthGoal extends MoveToBlockGoal {
 
     private void laySpawn(PrehistoricEntity female, String mate) {
         if (!female.level.isClientSide) {
-            ItemStack itemstack = female.getSpawnType();
+            ItemStack itemstack = female.getPrehistoricSpawnType();
             if (female instanceof AphanerammaEntity) {
                 itemstack = new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
                 CompoundTag compoundtag = new CompoundTag();

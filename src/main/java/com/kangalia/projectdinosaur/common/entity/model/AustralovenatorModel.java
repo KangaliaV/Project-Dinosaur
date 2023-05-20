@@ -52,7 +52,8 @@ public class AustralovenatorModel extends GeoModel<AustralovenatorEntity> {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/australovenator.animation.json");
     }
 
-    @Override
+    // This breaks the rendering in the Dino Scanner for some reason - need to find a better solution.
+    /*@Override
     public void setCustomAnimations(AustralovenatorEntity animatable, long instanceId, AnimationState<AustralovenatorEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
 
@@ -70,5 +71,5 @@ public class AustralovenatorModel extends GeoModel<AustralovenatorEntity> {
                 neck.setRotX(extraDataOfType.headPitch() * Mth.DEG_TO_RAD / 3);
             }
         }
-    }
+    }*/
 }

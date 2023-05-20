@@ -14,7 +14,7 @@ public class EmbryonicWombBlockItemModel extends GeoModel<EmbryonicWombBlockItem
 
     @Override
     public ResourceLocation getTextureResource(EmbryonicWombBlockItem object) {
-        return new ResourceLocation(ProjectDinosaur.MODID, "textures/blocks/embryonic_womb.png");
+        return new ResourceLocation(ProjectDinosaur.MODID, "textures/block/embryonic_womb.png");
     }
 
     @Override

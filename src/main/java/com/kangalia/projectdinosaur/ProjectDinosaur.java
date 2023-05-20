@@ -1,9 +1,7 @@
 package com.kangalia.projectdinosaur;
 
-import com.kangalia.projectdinosaur.common.worldgen.features.ConfiguredFeatures;
-import com.kangalia.projectdinosaur.common.worldgen.features.PlacedFeatures;
 import com.kangalia.projectdinosaur.core.init.*;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -14,8 +12,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib.GeckoLib;
-
-import java.util.List;
 
 @Mod(ProjectDinosaur.MODID)
 @Mod.EventBusSubscriber(modid = ProjectDinosaur.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -44,8 +40,8 @@ public class ProjectDinosaur {
 
     private void init(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            WoodType.register(WoodTypesInit.PETRIFIED);
-            //OreGen.registerConfiguredFeatures();
+            BlockSetType.register(BlockSetTypesInit.PETRIFIED_TYPE);
+            WoodType.register(BlockSetTypesInit.PETRIFIED_WOOD_TYPE);
         });
     }
 

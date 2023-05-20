@@ -122,7 +122,7 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController<GastornisEntity>(this, "controller", 4, this::predicate));
+        data.add(new AnimationController<GastornisEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override
