@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/button_pressed",
   "textures": {
-    "texture": "projectdinosaur:blocks/petrified_planks"
+    "texture": "projectdinosaur:block/petrified_planks"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/gorgonops_egg_incubated"
+    "layer0": "projectdinosaur:item/gorgonops_egg_incubated"
   }
 }

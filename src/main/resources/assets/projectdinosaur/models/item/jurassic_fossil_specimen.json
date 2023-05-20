@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/jurassic_fossil_specimen"
+    "layer0": "projectdinosaur:item/jurassic_fossil_specimen"
   }
 }

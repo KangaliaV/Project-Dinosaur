@@ -3,24 +3,22 @@ package com.kangalia.projectdinosaur.common.entity.model;
 import com.google.common.collect.Maps;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.entity.creature.ScelidosaurusEntity;
-import com.kangalia.projectdinosaur.common.entity.render.textures.AustralovenatorTextures;
 import com.kangalia.projectdinosaur.common.entity.render.textures.CustomTexture;
 import com.kangalia.projectdinosaur.common.entity.render.textures.ScelidosaurusTextures;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-public class ScelidosaurusModel extends AnimatedGeoModel<ScelidosaurusEntity> {
+public class ScelidosaurusModel extends GeoModel<ScelidosaurusEntity> {
 
     private static final Map<String, ResourceLocation> LOCATION_CACHE = Maps.newHashMap();
     ScelidosaurusTextures textures = new ScelidosaurusTextures();
@@ -54,21 +52,22 @@ public class ScelidosaurusModel extends AnimatedGeoModel<ScelidosaurusEntity> {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/scelidosaurus.animation.json");
     }
 
-    @Override
-    public void setCustomAnimations(ScelidosaurusEntity entity, int uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setCustomAnimations(entity, uniqueID, customPredicate);
+    // This breaks the rendering in the Dino Scanner for some reason - need to find a better solution.
+    /*@Override
+    public void setCustomAnimations(ScelidosaurusEntity animatable, long instanceId, AnimationState<ScelidosaurusEntity> animationState) {
+        super.setCustomAnimations(animatable, instanceId, animationState);
 
-        if (customPredicate == null) return;
+        if (animationState == null) return;
 
-        List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
+        EntityModelData extraDataOfType = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
-        IBone head = this.getAnimationProcessor().getBone("skull");
-        IBone shoulders = this.getAnimationProcessor().getBone("shoulders");
-        IBone neck = this.getAnimationProcessor().getBone("neck");
-        if (!entity.isSleeping()) {
-            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
-            shoulders.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
-            neck.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 3);
+        CoreGeoBone head = this.getAnimationProcessor().getBone("skull");
+        CoreGeoBone shoulders = this.getAnimationProcessor().getBone("shoulders");
+        CoreGeoBone neck = this.getAnimationProcessor().getBone("neck");
+        if (!animatable.isSleeping()) {
+            head.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
+            shoulders.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
+            neck.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 3);
         }
-    }
+    }*/
 }

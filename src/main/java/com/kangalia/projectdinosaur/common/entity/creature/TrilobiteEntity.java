@@ -30,24 +30,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
 
-public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
+public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
 
     private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(TrilobiteEntity.class, EntityDataSerializers.STRING);
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private TrilobiteGenome genome = new TrilobiteGenome();
 
     public TrilobiteEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -102,25 +99,24 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trilobite.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.trilobite.idle", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trilobite.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.trilobite.idle", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.5);
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<TrilobiteEntity>(this, "controller", 4, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<TrilobiteEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -159,6 +155,11 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
     }
 
     @Override
+    public ItemStack getPrehistoricSpawnType() {
+        return new ItemStack(ItemInit.TRILOBITE_SPAWN_ITEM.get());
+    }
+
+    @Override
     public int getAmbientSoundInterval() {
         return 100;
     }
@@ -172,11 +173,6 @@ public class TrilobiteEntity extends PrehistoricEntity implements IAnimatable {
     @Override
     public int getBreedingType() {
         return 1;
-    }
-
-    @Override
-    public ItemStack getSpawnType() {
-        return ItemInit.TRILOBITE_SPAWN_ITEM.get().getDefaultInstance();
     }
 
     @Override

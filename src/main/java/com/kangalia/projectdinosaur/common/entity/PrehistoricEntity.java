@@ -1,19 +1,8 @@
 package com.kangalia.projectdinosaur.common.entity;
 
-import com.kangalia.projectdinosaur.common.block.eggs.*;
-import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
-import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
-import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.ScelidosaurusEggBlockEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.*;
-import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
-import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -29,28 +18,26 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.event.level.PistonEvent;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 public abstract class PrehistoricEntity extends TamableAnimal implements NeutralMob {
 
@@ -237,8 +224,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 if (this.getHunger() > 0) {
                     this.setHunger(this.getHunger() - 1);
                 } else if (this.getHunger() <= 0) {
-                    this.hurt(DamageSource.STARVE, 1);
-                    this.playHurtSound(DamageSource.STARVE);
+                    this.hurt(this.damageSources().starve(), 1);
+                    this.playHurtSound(this.damageSources().starve());
                 }
                 this.setHungerTicks(this.random.nextInt(600) + 1000);
             }
@@ -275,6 +262,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             // CRYOSICKNESS
             if (this.getRemainingCryosicknessTime() > 0) {
                 this.setRemainingCryosicknessTime(this.getRemainingCryosicknessTime() - 1);
+                this.setSleeping(true);
+                if (this.getRemainingCryosicknessTime() == 1199) {
+                    this.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, this.getRemainingCryosicknessTime(), 0));
+                }
             }
 
 
@@ -287,10 +278,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                     this.addMissedSleep();
                 }
             }
-            if (!this.shouldSleep() && this.isSleeping()) {
+            if (!this.shouldSleep() && this.isSleeping() && this.getRemainingCryosicknessTime() == 0) {
                 this.setSleeping(false);
                 this.setCanSleep(false);
-                System.out.println("MissedSleep: "+this.getMissedSleep());
             }
 
 
@@ -314,6 +304,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         compoundTag.putString("parent1", this.getGenes());
         compoundTag.putString("parent2", prehistoric);
         return compoundTag;
+    }
+
+    public ItemStack getPrehistoricSpawnType() {
+        return ItemStack.EMPTY;
     }
 
     public String getMate() {
@@ -352,9 +346,6 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return 1;
     }
 
-    public ItemStack getSpawnType() {
-        return ItemStack.EMPTY;
-    }
 
     @Nonnull
     @Override
@@ -428,9 +419,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean shouldSleep() {
-        if (this.isCryosick()) {
-            return true;
-        } else if (this.isAngry() || this.isStarving()) {
+        if (this.isAngry() || this.isStarving()) {
             return false;
         } else if (this.isTerrestrial() && this.isInWater()) {
             return false;

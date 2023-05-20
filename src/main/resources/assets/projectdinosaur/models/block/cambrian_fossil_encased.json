@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/cambrian_fossil_encased"
+    "all": "projectdinosaur:block/cambrian_fossil_encased"
   }
 }

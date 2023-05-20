@@ -1,11 +1,8 @@
 package com.kangalia.projectdinosaur.common.item;
 
-import com.kangalia.projectdinosaur.client.gui.GenomeScannerScreen;
-import com.kangalia.projectdinosaur.common.container.DinoScannerContainer;
 import com.kangalia.projectdinosaur.common.container.GenomeScannerContainer;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,8 +16,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
@@ -32,21 +27,6 @@ public class GenomeScanner extends Item {
     public GenomeScanner(Properties pProperties) {
         super(pProperties);
     }
-
-    /*@Nonnull
-    @Override
-    public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
-        Level level = pPlayer.getLevel();
-        if (pInteractionTarget instanceof PrehistoricEntity prehistoric) {
-            ItemStack scanner = pPlayer.getItemInHand(pUsedHand);
-            saveNBT(scanner, prehistoric);
-            if (scanner.getTag() != null && level.isClientSide) {
-                openScanner(prehistoric, scanner);
-                return InteractionResult.SUCCESS;
-            }
-        }
-        return InteractionResult.PASS;
-    }*/
 
     @Nonnull
     @Override

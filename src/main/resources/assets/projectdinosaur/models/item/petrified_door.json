@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/petrified_door"
+    "layer0": "projectdinosaur:item/petrified_door"
   }
 }

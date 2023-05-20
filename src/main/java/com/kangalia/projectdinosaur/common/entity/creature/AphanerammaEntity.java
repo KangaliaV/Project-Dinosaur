@@ -3,7 +3,6 @@ package com.kangalia.projectdinosaur.common.entity.creature;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AphanerammaGenome;
-import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -22,56 +21,48 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
-import net.minecraft.world.entity.animal.Turtle;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimatableModel;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 
-public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable {
+public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
 
     private static final EntityDataAccessor<BlockPos> TRAVEL_POS = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Boolean> TRAVELLING = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(AphanerammaEntity.class, EntityDataSerializers.STRING);
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private AphanerammaGenome genome = new AphanerammaGenome();
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -129,34 +120,33 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.walk", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Aphaneramma.walk", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else if (this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.swim", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Aphaneramma.swim", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.sleep", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Aphaneramma.sleep", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.5);
         } else if (this.isScrem()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.screm", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Aphaneramma.screm", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.0);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Aphaneramma.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Aphaneramma.idle", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.0);
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<AphanerammaEntity>(this, "controller", 4, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<AphanerammaEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -195,6 +185,11 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
         }
     }
 
+    @Override
+    public ItemStack getPrehistoricSpawnType() {
+        return new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
+    }
+
     void setTravelPos(BlockPos pTravelPos) {
         this.entityData.set(TRAVEL_POS, pTravelPos);
     }
@@ -209,11 +204,6 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
 
     void setTravelling(boolean pIsTravelling) {
         this.entityData.set(TRAVELLING, pIsTravelling);
-    }
-
-    @Override
-    public ItemStack getSpawnType() {
-        return ItemInit.APHANERAMMA_SPAWN_ITEM.get().getDefaultInstance();
     }
 
     @Override
@@ -492,7 +482,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements IAnimatable 
                 l = 0;
             }
 
-            BlockPos blockpos = new BlockPos((double)k + this.aphaneramma.getX(), (double)l + this.aphaneramma.getY(), (double)i1 + this.aphaneramma.getZ());
+            BlockPos blockpos = new BlockPos(k + (int)this.aphaneramma.getX(), l + (int)this.aphaneramma.getY(), i1 + (int)this.aphaneramma.getZ());
             this.aphaneramma.setTravelPos(blockpos);
             this.aphaneramma.setTravelling(true);
             this.stuck = false;

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/megalograptus_spawn"
+    "layer0": "projectdinosaur:item/megalograptus_spawn"
   }
 }

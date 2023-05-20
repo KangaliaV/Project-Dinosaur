@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/diamond_chisel"
+    "layer0": "projectdinosaur:item/diamond_chisel"
   }
 }

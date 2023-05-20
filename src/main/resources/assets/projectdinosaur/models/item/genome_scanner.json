@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/genome_scanner"
+    "layer0": "projectdinosaur:item/genome_scanner"
   }
 }

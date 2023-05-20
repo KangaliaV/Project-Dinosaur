@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -40,21 +41,16 @@ public class ExcavatingRecipe implements Recipe<Container> {
         return false;
     }
 
+    @Override
+    public ItemStack assemble(Container p_44001_, RegistryAccess p_267165_) {
+        return output;
+    }
+
     public Integer getWeight() { return this.weight;}
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return inputs;
-    }
-
-    @Override
-    public ItemStack assemble(Container inv) {
-        return output;
-    }
-
-    @Override
-    public ItemStack getResultItem() {
-        return output.copy();
     }
 
     @Override
@@ -65,6 +61,15 @@ public class ExcavatingRecipe implements Recipe<Container> {
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return true;
+    }
+
+    @Override
+    public ItemStack getResultItem(RegistryAccess p_267052_) {
+        return getResultItem();
+    }
+
+    public ItemStack getResultItem() {
+        return output.copy();
     }
 
     @Override
@@ -132,27 +137,6 @@ public class ExcavatingRecipe implements Recipe<Container> {
             }
             buffer.writeItemStack(recipe.getResultItem(), false);
         }
-
-        /*@Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
-
-        @Nullable
-        @Override
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        @Override
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>)cls;
-        }*/
 
     }
 }

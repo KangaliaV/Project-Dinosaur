@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/gnawing_rock_red_sandstone_item"
+    "layer0": "projectdinosaur:item/gnawing_rock_red_sandstone_item"
   }
 }

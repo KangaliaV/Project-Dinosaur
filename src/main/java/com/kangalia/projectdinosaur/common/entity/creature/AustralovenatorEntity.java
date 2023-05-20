@@ -36,23 +36,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 
-public class AustralovenatorEntity extends PrehistoricEntity implements IAnimatable {
+public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntity {
 
     private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(AustralovenatorEntity.class, EntityDataSerializers.STRING);
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private AustralovenatorGenome genome = new AustralovenatorGenome();
 
     public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -73,7 +71,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         sleepSchedule = 0;
         name = Component.translatable("dino.projectdinosaur.australovenator");
         nameScientific = Component.translatable("dino.projectdinosaur.australovenator.scientific");
-        renderScale = 30;
+        renderScale = 25;
         breedingType = 0;
         maleRoamDistance = 64;
         femaleRoamDistance = 48;
@@ -109,31 +107,29 @@ public class AustralovenatorEntity extends PrehistoricEntity implements IAnimata
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.run", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Australovenator.run", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(3.5);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.sleep", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Australovenator.sleep", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.35);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Australovenator.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Australovenator.idle", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.5);
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(10);
-        data.addAnimationController(new AnimationController<AustralovenatorEntity>(this, "controller", 10, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<AustralovenatorEntity>(this, "controller", 20, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
-
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));

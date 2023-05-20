@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/trilobite_spawn"
+    "layer0": "projectdinosaur:item/trilobite_spawn"
   }
 }

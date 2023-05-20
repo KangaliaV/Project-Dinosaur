@@ -5,8 +5,6 @@ import com.kangalia.projectdinosaur.common.container.DinoScannerContainer;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,8 +14,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContainer> {
 
@@ -47,9 +48,9 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         int j = this.getGuiTop();
         this.blit(pPoseStack, i-40, j-20, 0, 0, 247, 169);
         if (scanner.getTag() != null) {
-            renderEntity(i + 112, j + 80, scanner.getTag().getInt("dino.scale"), container.getPrehistoricEntity());
+            renderEntityInInventoryFollowsAngle(pPoseStack, i + 112, j + 80, scanner.getTag().getInt("dino.scale"), 200, 180, container.getPrehistoricEntity());
         } else {
-            renderEntity(i + 112, j + 80, 50, container.getPrehistoricEntity());
+            renderEntityInInventoryFollowsAngle(pPoseStack, + 112, j + 80, 50, 10, 180, container.getPrehistoricEntity());
         }
     }
 
@@ -101,8 +102,62 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         }
     }
 
-    @SuppressWarnings( "deprecation" )
-    public static void renderEntity(int pPosX, int pPosY, int pScale, LivingEntity pLivingEntity) {
+    public static void renderEntityInInventoryFollowsAngle(PoseStack p_275396_, int p_275688_, int p_275245_, int p_275535_, float angleXComponent, float angleYComponent, LivingEntity p_275689_) {
+        float f = angleXComponent;
+        float f1 = angleYComponent;
+        Quaternionf quaternionf = (new Quaternionf()).rotateZ((float)Math.PI);
+        Quaternionf quaternionf1 = (new Quaternionf()).rotateX(f1 * 20.0F * ((float)Math.PI / 180F));
+        quaternionf.mul(quaternionf1);
+        float f2 = p_275689_.yBodyRot;
+        float f3 = p_275689_.getYRot();
+        float f4 = p_275689_.getXRot();
+        float f5 = p_275689_.yHeadRotO;
+        float f6 = p_275689_.yHeadRot;
+        p_275689_.yBodyRot = 180.0F + f * 20.0F;
+        p_275689_.setYRot(180.0F + f * 40.0F);
+        p_275689_.setXRot(-f1 * 20.0F);
+        p_275689_.yHeadRot = p_275689_.getYRot();
+        p_275689_.yHeadRotO = p_275689_.getYRot();
+        renderEntityInInventory(p_275396_, p_275688_, p_275245_, p_275535_, quaternionf, quaternionf1, p_275689_);
+        p_275689_.yBodyRot = f2;
+        p_275689_.setYRot(f3);
+        p_275689_.setXRot(f4);
+        p_275689_.yHeadRotO = f5;
+        p_275689_.yHeadRot = f6;
+    }
+
+    public static void renderEntityInInventory(PoseStack poseStack, int p_275470_, int p_275319_, int p_275605_, Quaternionf p_275229_, @Nullable Quaternionf p_275230_, LivingEntity p_275237_) {
+        double d0 = 1000.0D;
+        PoseStack posestack = RenderSystem.getModelViewStack();
+        posestack.pushPose();
+        posestack.translate(0.0D, 0.0D, 1000.0D);
+        RenderSystem.applyModelViewMatrix();
+        poseStack.pushPose();
+        poseStack.translate((double)p_275470_, (double)p_275319_, -950.0D);
+        poseStack.mulPoseMatrix((new Matrix4f()).scaling((float)p_275605_, (float)p_275605_, (float)(-p_275605_)));
+        poseStack.mulPose(p_275229_);
+        Lighting.setupForEntityInInventory();
+        EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        if (p_275230_ != null) {
+            p_275230_.conjugate();
+            entityrenderdispatcher.overrideCameraOrientation(p_275230_);
+        }
+
+        entityrenderdispatcher.setRenderShadow(false);
+        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
+        RenderSystem.runAsFancy(() -> {
+            entityrenderdispatcher.render(p_275237_, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, poseStack, multibuffersource$buffersource, 15728880);
+        });
+        multibuffersource$buffersource.endBatch();
+        entityrenderdispatcher.setRenderShadow(true);
+        poseStack.popPose();
+        Lighting.setupFor3DItems();
+        posestack.popPose();
+        RenderSystem.applyModelViewMatrix();
+    }
+
+    // TODO: Fix dino rendering
+    /*public static void renderEntity(int pPosX, int pPosY, int pScale, LivingEntity pLivingEntity) {
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
         posestack.translate(pPosX, pPosY, 1050.0D);
@@ -144,5 +199,5 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         posestack.popPose();
         RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
-    }
+    }*/
 }

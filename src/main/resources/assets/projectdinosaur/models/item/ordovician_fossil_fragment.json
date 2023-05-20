@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/ordovician_fossil_fragment"
+    "layer0": "projectdinosaur:item/ordovician_fossil_fragment"
   }
 }

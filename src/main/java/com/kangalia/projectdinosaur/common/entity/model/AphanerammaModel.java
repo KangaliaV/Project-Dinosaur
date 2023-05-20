@@ -11,18 +11,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
+public class AphanerammaModel extends GeoModel<AphanerammaEntity> {
 
     private static final Map<String, ResourceLocation> LOCATION_CACHE = Maps.newHashMap();
     AphanerammaTextures textures = new AphanerammaTextures();
@@ -56,18 +55,19 @@ public class AphanerammaModel extends AnimatedGeoModel<AphanerammaEntity> {
         return new ResourceLocation(ProjectDinosaur.MODID, "animations/aphaneramma.animation.json");
     }
 
-    @Override
-    public void setCustomAnimations(AphanerammaEntity entity, int uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setCustomAnimations(entity, uniqueID, customPredicate);
+    // This breaks the rendering in the Dino Scanner for some reason - need to find a better solution.
+    /*@Override
+    public void setCustomAnimations(AphanerammaEntity animatable, long instanceId, AnimationState<AphanerammaEntity> animationState) {
+        super.setCustomAnimations(animatable, instanceId, animationState);
 
-        if (customPredicate == null) return;
+        if (animationState == null) return;
 
-        List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
+        EntityModelData extraDataOfType = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
 
-        IBone head = this.getAnimationProcessor().getBone("bone10");
-        if (!entity.isSleeping()) {
-            head.setRotationX(extraDataOfType.get(0).headPitch * Mth.DEG_TO_RAD / 2);
-            head.setRotationY(extraDataOfType.get(0).netHeadYaw * Mth.DEG_TO_RAD / 2);
+        CoreGeoBone head = this.getAnimationProcessor().getBone("bone10");
+        if (!animatable.isSleeping()) {
+            head.setRotX(extraDataOfType.headPitch() * Mth.DEG_TO_RAD / 2);
+            head.setRotY(extraDataOfType.netHeadYaw() * Mth.DEG_TO_RAD / 2);
         }
-    }
+    }*/
 }

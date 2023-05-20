@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/gastornis_egg_incubated"
+    "layer0": "projectdinosaur:item/gastornis_egg_incubated"
   }
 }

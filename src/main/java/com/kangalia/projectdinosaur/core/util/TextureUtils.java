@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.util.FastColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +30,7 @@ public class TextureUtils {
         for(int y = 0; y < base.getHeight(); ++y) {
             for(int x = 0; x < base.getWidth(); ++x) {
                 int image_colour = image.getPixelRGBA(x, y);
-                if (NativeImage.getA(image_colour) > 0) {
+                if (FastColor.ABGR32.alpha(image_colour) > 0) {
                     base.setPixelRGBA(x, y, image_colour);
                 }
             }
@@ -41,7 +42,7 @@ public class TextureUtils {
             for(int x = 0; x < base.getWidth(); ++x) {
                 int base_colour = base.getPixelRGBA(x, y);
                 int image_colour = image.getPixelRGBA(x, y);
-                if (NativeImage.getA(image_colour) > 0) {
+                if (FastColor.ABGR32.alpha(image_colour) > 0) {
                     int final_colour = blendColour(new Color(base_colour), new Color(image_colour), weight).getRGB();
                     base.setPixelRGBA(x, y, final_colour);
                 }
@@ -67,7 +68,7 @@ public class TextureUtils {
         for(int y = 0; y < base.getHeight(); ++y) {
             for(int x = 0; x < base.getWidth(); ++x) {
                 int colourRGB = colour.getRGB();
-                int alpha = NativeImage.getA(base.getPixelRGBA(x, y));
+                int alpha = FastColor.ABGR32.alpha(base.getPixelRGBA(x, y));
                 Color base_colour = new Color(base.getPixelRGBA(x, y));
                 Color new_colour = new Color(this.multiply(base_colour.getRGB(), colourRGB));
                 Color luminance_colour = new Color(luminanceLayer.getPixelRGBA(x, y));
@@ -81,7 +82,7 @@ public class TextureUtils {
         for(int y = 0; y < base.getHeight(); ++y) {
             for(int x = 0; x < base.getWidth(); ++x) {
                 int colourRGB = colour.getRGB();
-                int alpha = NativeImage.getA(base.getPixelRGBA(x, y));
+                int alpha = FastColor.ABGR32.alpha(base.getPixelRGBA(x, y));
                 Color base_colour = new Color(base.getPixelRGBA(x, y));
                 Color new_colour = new Color(this.multiply(base_colour.getRGB(), colourRGB));
 
@@ -102,18 +103,18 @@ public class TextureUtils {
         int finalGreen = (int) ((colour2.getGreen() * L) / 255);
         int finalBlue = (int) ((colour2.getBlue() * L) / 255);
 
-        return NativeImage.combine(alpha, finalRed, finalGreen, finalBlue);
+        return FastColor.ABGR32.color(alpha, finalRed, finalGreen, finalBlue);
     }
 
     public int multiply(int color, int baseColour) {
-        int a = NativeImage.getA(color);
-        int r = NativeImage.getR(color);
-        r = (int)((float)r * NativeImage.getR(baseColour)) / 255;
-        int g = NativeImage.getG(color);
-        g = (int)((float)g * NativeImage.getG(baseColour)) / 255;
-        int b = NativeImage.getB(color);
-        b = (int)((float)b * NativeImage.getB(baseColour)) / 255;
-        return NativeImage.combine(a, r, g, b);
+        int a = FastColor.ABGR32.alpha(color);
+        int r = FastColor.ABGR32.red(color);
+        r = (int)((float)r * FastColor.ABGR32.red(baseColour)) / 255;
+        int g = FastColor.ABGR32.green(color);
+        g = (int)((float)g * FastColor.ABGR32.green(baseColour)) / 255;
+        int b = FastColor.ABGR32.blue(color);
+        b = (int)((float)b * FastColor.ABGR32.blue(baseColour)) / 255;
+        return FastColor.ABGR32.color(a, r, g, b);
     }
 
 }

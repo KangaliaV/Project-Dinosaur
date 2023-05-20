@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/petrified_sign"
+    "layer0": "projectdinosaur:item/petrified_sign"
   }
 }

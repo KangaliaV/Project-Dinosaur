@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "projectdinosaur:blocks/australovenator_egg_incubated",
-		"particle": "projectdinosaur:blocks/australovenator_egg_incubated"
+		"0": "projectdinosaur:block/australovenator_egg_incubated",
+		"particle": "projectdinosaur:block/australovenator_egg_incubated"
 	},
 	"elements": [
 		{

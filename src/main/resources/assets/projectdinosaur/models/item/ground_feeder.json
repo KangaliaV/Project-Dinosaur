@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/ground_feeder_item"
+    "layer0": "projectdinosaur:item/ground_feeder_item"
   }
 }

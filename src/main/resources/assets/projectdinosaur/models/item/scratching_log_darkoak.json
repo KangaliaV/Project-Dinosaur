@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/scratching_log_darkoak_item"
+    "layer0": "projectdinosaur:item/scratching_log_darkoak_item"
   }
 }

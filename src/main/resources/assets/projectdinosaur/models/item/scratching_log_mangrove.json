@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/scratching_log_mangrove_item"
+    "layer0": "projectdinosaur:item/scratching_log_mangrove_item"
   }
 }

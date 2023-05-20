@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/rotten_egg"
+    "layer0": "projectdinosaur:item/rotten_egg"
   }
 }

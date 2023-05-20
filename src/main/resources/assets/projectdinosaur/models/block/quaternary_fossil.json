@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/quaternary_fossil"
+    "all": "projectdinosaur:block/quaternary_fossil"
   }
 }

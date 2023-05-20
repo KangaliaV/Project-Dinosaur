@@ -78,8 +78,7 @@ public class PetrifiedBoatEntity extends Boat {
         return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ProjectDinosaur.MODID, this.getWoodType() + "_boat")));
     }
 
-    @Override
-    public Packet<?> getAddEntityPacket() {
+    /*public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
+    }*/
 }

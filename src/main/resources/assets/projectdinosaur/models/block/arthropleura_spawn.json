@@ -3,8 +3,8 @@
 	"texture_size": [32, 32],
 	"render_type": "translucent",
 	"textures": {
-		"0": "projectdinosaur:blocks/arthropleura_spawn_block",
-		"particle": "projectdinosaur:blocks/arthropleura_spawn_block"
+		"0": "projectdinosaur:block/arthropleura_spawn_block",
+		"particle": "projectdinosaur:block/arthropleura_spawn_block"
 	},
 	"elements": [
 		{

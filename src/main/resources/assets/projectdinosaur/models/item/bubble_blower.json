@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/bubble_blower_item"
+    "layer0": "projectdinosaur:item/bubble_blower_item"
   }
 }

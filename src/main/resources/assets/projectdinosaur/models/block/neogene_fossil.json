@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/neogene_fossil"
+    "all": "projectdinosaur:block/neogene_fossil"
   }
 }
