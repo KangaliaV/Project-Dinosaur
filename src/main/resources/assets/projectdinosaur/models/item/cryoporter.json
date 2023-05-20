@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/cryoporter"
+    "layer0": "projectdinosaur:item/cryoporter"
   }
 }

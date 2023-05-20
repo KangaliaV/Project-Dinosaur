@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/ordovician_fossil_encased"
+    "all": "projectdinosaur:block/ordovician_fossil_encased"
   }
 }

@@ -31,7 +31,7 @@ logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
 credits="Written in Java by our developers" #optional
 # A text field displayed in the mod UI
-authors="Kangalia, Paleo_Bantoo, PollyPlayz, FL_Animations, Kango_V, Beasty" #optional
+authors="Kangalia, Paleo_Bantoo, Moss, Beasty" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 A mod to bring dinosaurs, archeology and paleontology to Minecraft.
@@ -53,6 +53,6 @@ A mod to bring dinosaurs, archeology and paleontology to Minecraft.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18,)"
+    versionRange="[1.19.3,)"
     ordering="NONE"
     side="BOTH"

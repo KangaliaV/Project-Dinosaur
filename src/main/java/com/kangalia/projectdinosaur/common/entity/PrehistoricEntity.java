@@ -1,19 +1,8 @@
 package com.kangalia.projectdinosaur.common.entity;
 
-import com.kangalia.projectdinosaur.common.block.eggs.*;
-import com.kangalia.projectdinosaur.common.block.enrichment.BubbleBlowerBlock;
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
-import com.kangalia.projectdinosaur.common.block.enrichment.ScentDiffuserBlock;
-import com.kangalia.projectdinosaur.common.blockentity.GroundFeederBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.AustralovenatorEggBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.GastornisEggBlockEntity;
-import com.kangalia.projectdinosaur.common.blockentity.eggs.ScelidosaurusEggBlockEntity;
-import com.kangalia.projectdinosaur.common.entity.creature.*;
-import com.kangalia.projectdinosaur.core.init.BlockEntitiesInit;
-import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,26 +20,19 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.event.level.PistonEvent;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 public abstract class PrehistoricEntity extends TamableAnimal implements NeutralMob {
 

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/netherite_chisel"
+    "layer0": "projectdinosaur:item/netherite_chisel"
   }
 }

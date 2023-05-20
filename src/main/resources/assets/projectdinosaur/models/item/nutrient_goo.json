@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/nutrient_goo"
+    "layer0": "projectdinosaur:item/nutrient_goo"
   }
 }

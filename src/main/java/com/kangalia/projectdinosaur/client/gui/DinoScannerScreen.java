@@ -2,18 +2,11 @@ package com.kangalia.projectdinosaur.client.gui;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.container.DinoScannerContainer;
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
@@ -46,11 +39,11 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         int i = this.getGuiLeft();
         int j = this.getGuiTop();
         this.blit(pPoseStack, i-40, j-20, 0, 0, 247, 169);
-        if (scanner.getTag() != null) {
+        /*if (scanner.getTag() != null) {
             renderEntity(i + 112, j + 80, scanner.getTag().getInt("dino.scale"), container.getPrehistoricEntity());
         } else {
             renderEntity(i + 112, j + 80, 50, container.getPrehistoricEntity());
-        }
+        }*/
     }
 
     @Override
@@ -101,8 +94,8 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         }
     }
 
-    @SuppressWarnings( "deprecation" )
-    public static void renderEntity(int pPosX, int pPosY, int pScale, LivingEntity pLivingEntity) {
+    // TODO: Fix dino rendering
+    /*public static void renderEntity(int pPosX, int pPosY, int pScale, LivingEntity pLivingEntity) {
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
         posestack.translate(pPosX, pPosY, 1050.0D);
@@ -144,5 +137,5 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         posestack.popPose();
         RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
-    }
+    }*/
 }

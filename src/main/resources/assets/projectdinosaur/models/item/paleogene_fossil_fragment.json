@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/paleogene_fossil_fragment"
+    "layer0": "projectdinosaur:item/paleogene_fossil_fragment"
   }
 }

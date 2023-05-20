@@ -10,13 +10,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
 import java.io.IOException;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class TrilobiteModel extends AnimatedGeoModel<TrilobiteEntity> {
+public class TrilobiteModel extends GeoModel<TrilobiteEntity> {
 
     private static final Map<String, ResourceLocation> LOCATION_CACHE = Maps.newHashMap();
     TrilobiteTextures textures = new TrilobiteTextures();

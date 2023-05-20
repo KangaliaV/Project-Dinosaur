@@ -1,13 +1,13 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "projectdinosaur:blocks/incubator_bottom",
-    "down": "projectdinosaur:blocks/incubator_bottom",
-    "up": "projectdinosaur:blocks/incubator_top_powered",
-    "north": "projectdinosaur:blocks/incubator_side_powered",
-    "south": "projectdinosaur:blocks/incubator_side_powered",
-    "east": "projectdinosaur:blocks/incubator_side_powered",
-    "west": "projectdinosaur:blocks/incubator_side_powered"
+    "particle": "projectdinosaur:block/incubator_bottom",
+    "down": "projectdinosaur:block/incubator_bottom",
+    "up": "projectdinosaur:block/incubator_top_powered",
+    "north": "projectdinosaur:block/incubator_side_powered",
+    "south": "projectdinosaur:block/incubator_side_powered",
+    "east": "projectdinosaur:block/incubator_side_powered",
+    "west": "projectdinosaur:block/incubator_side_powered"
   },
   "render_type": "translucent"
 }

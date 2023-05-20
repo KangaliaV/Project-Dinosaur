@@ -42,6 +42,6 @@ public class ClientSetup {
         EntityRenderers.register(EntityInit.SCELIDOSAURUS.get(), ScelidosaurusRenderer::new);
         EntityRenderers.register(EntityInit.TRILOBITE.get(), TrilobiteRenderer::new);
 
-        BlockEntityRenderers.register(BlockEntitiesInit.EMBRYONIC_WOMB_ENTITY.get(), EmbryonicWombRenderer::new);
+        //BlockEntityRenderers.register(BlockEntitiesInit.EMBRYONIC_WOMB_ENTITY.get(), EmbryonicWombRenderer::new);
     }
 }

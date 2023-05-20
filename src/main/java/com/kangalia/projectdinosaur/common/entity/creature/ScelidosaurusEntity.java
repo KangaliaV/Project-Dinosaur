@@ -2,7 +2,6 @@ package com.kangalia.projectdinosaur.common.entity.creature;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.*;
-import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AustralovenatorGenome;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.ScelidosaurusGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
@@ -36,23 +35,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 
-public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatable {
+public class ScelidosaurusEntity extends PrehistoricEntity implements GeoEntity {
 
     private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(ScelidosaurusEntity.class, EntityDataSerializers.STRING);
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private ScelidosaurusGenome genome = new ScelidosaurusGenome();
 
     public ScelidosaurusEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
@@ -109,31 +106,29 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements IAnimatabl
         }
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.run", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Scelidosaurus.run", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(1.25);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.sleep", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Scelidosaurus.sleep", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.40);
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.Scelidosaurus.idle", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.Scelidosaurus.idle", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.75);
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.setResetSpeedInTicks(20);
-        data.addAnimationController(new AnimationController<ScelidosaurusEntity>(this, "controller", 10, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<ScelidosaurusEntity>(this, "controller", 4, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
-
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.0D, 1.5D));

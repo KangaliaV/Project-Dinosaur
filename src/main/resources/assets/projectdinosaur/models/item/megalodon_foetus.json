@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/megalodon_foetus"
+    "layer0": "projectdinosaur:item/megalodon_foetus"
   }
 }

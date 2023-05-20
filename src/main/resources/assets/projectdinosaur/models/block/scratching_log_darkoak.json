@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "projectdinosaur:blocks/scratching_log_darkoak",
-		"particle": "projectdinosaur:blocks/scratching_log_darkoak"
+		"1": "projectdinosaur:block/scratching_log_darkoak",
+		"particle": "projectdinosaur:block/scratching_log_darkoak"
 	},
 	"elements": [
 		{

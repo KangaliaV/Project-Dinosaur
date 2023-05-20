@@ -2,7 +2,7 @@
   "parent": "minecraft:block/door_top_left",
   "render_type": "cutout",
   "textures": {
-    "bottom": "projectdinosaur:blocks/petrified_door_bottom",
-    "top": "projectdinosaur:blocks/petrified_door_top"
+    "bottom": "projectdinosaur:block/petrified_door_bottom",
+    "top": "projectdinosaur:block/petrified_door_top"
   }
 }

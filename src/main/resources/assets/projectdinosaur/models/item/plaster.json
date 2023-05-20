@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/plaster"
+    "layer0": "projectdinosaur:item/plaster"
   }
 }

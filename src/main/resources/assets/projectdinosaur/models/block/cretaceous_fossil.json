@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/cretaceous_fossil"
+    "all": "projectdinosaur:block/cretaceous_fossil"
   }
 }

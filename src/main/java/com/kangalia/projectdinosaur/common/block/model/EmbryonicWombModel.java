@@ -4,9 +4,9 @@ import com.kangalia.projectdinosaur.ProjectDinosaur;
 import com.kangalia.projectdinosaur.common.blockentity.EmbryonicWombBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class EmbryonicWombModel extends AnimatedGeoModel<EmbryonicWombBlockEntity> {
+public class EmbryonicWombModel extends GeoModel<EmbryonicWombBlockEntity> {
 
     @Override
     public ResourceLocation getModelResource(EmbryonicWombBlockEntity object) {

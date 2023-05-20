@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "projectdinosaur:blocks/permian_fossil"
+    "all": "projectdinosaur:block/permian_fossil"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "projectdinosaur:items/permian_fossil_fragment"
+    "layer0": "projectdinosaur:item/permian_fossil_fragment"
   }
 }

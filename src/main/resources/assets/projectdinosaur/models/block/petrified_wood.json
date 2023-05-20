@@ -1,7 +1,7 @@
 {
   "parent": "block/cube_column",
   "textures": {
-    "end": "projectdinosaur:blocks/petrified_log",
-    "side": "projectdinosaur:blocks/petrified_log"
+    "end": "projectdinosaur:block/petrified_log",
+    "side": "projectdinosaur:block/petrified_log"
   }
 }

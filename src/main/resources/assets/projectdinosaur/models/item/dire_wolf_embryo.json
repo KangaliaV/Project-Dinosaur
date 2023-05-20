@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/dire_wolf_embryo"
+    "layer0": "projectdinosaur:item/dire_wolf_embryo"
   }
 }

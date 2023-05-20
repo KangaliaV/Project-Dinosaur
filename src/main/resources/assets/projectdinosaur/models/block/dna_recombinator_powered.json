@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "projectdinosaur:blocks/machine_bottom",
-    "down": "projectdinosaur:blocks/machine_bottom",
-    "up": "projectdinosaur:blocks/machine_bottom",
-    "north": "projectdinosaur:blocks/dna_recombinator_front_powered",
-    "south": "projectdinosaur:blocks/machine_side",
-    "east": "projectdinosaur:blocks/machine_side",
-    "west": "projectdinosaur:blocks/machine_side"
+    "particle": "projectdinosaur:block/machine_bottom",
+    "down": "projectdinosaur:block/machine_bottom",
+    "up": "projectdinosaur:block/machine_bottom",
+    "north": "projectdinosaur:block/dna_recombinator_front_powered",
+    "south": "projectdinosaur:block/machine_side",
+    "east": "projectdinosaur:block/machine_side",
+    "west": "projectdinosaur:block/machine_side"
   }
 }

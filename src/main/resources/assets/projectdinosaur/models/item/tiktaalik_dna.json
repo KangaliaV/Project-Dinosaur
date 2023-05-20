@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectdinosaur:items/tiktaalik_dna"
+    "layer0": "projectdinosaur:item/tiktaalik_dna"
   }
 }
