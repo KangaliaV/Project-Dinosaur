@@ -3,9 +3,11 @@ package com.kangalia.projectdinosaur.common.entity.creature;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AustralovenatorGenome;
+import com.kangalia.projectdinosaur.common.entity.parts.PrehistoricPart;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -34,6 +37,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -52,6 +62,29 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
 
     private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private AustralovenatorGenome genome = new AustralovenatorGenome();
+
+    private final PrehistoricPart[] partsBaby;
+    private final PrehistoricPart[] partsJuvi;
+    private final PrehistoricPart[] partsAdult;
+
+    public final PrehistoricPart head_baby;
+    public final PrehistoricPart neck_baby;
+    public final PrehistoricPart body_baby;
+    public final PrehistoricPart tail1_baby;
+    public final PrehistoricPart tail2_baby;
+
+    public final PrehistoricPart head_juvi;
+    public final PrehistoricPart neck_juvi;
+    public final PrehistoricPart body_juvi;
+    public final PrehistoricPart tail1_juvi;
+    public final PrehistoricPart tail2_juvi;
+
+    public final PrehistoricPart head;
+    public final PrehistoricPart neck;
+    public final PrehistoricPart body;
+    public final PrehistoricPart tail1;
+    public final PrehistoricPart tail2;
+
 
     public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -78,6 +111,28 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         juvinileRoamDistance = 24;
         babyRoamDistance = 4;
         isLand = true;
+
+        head_baby = new PrehistoricPart(this, 0.2f, 0.28f, "baby");
+        neck_baby = new PrehistoricPart(this, 0.3f, 0.35f, "baby");
+        body_baby = new PrehistoricPart(this, 0.43f, 0.48f, "baby");
+        tail1_baby = new PrehistoricPart(this, 0.33f, 0.3f, "baby");
+        tail2_baby = new PrehistoricPart(this, 0.3f, 0.23f, "baby");
+
+        head_juvi = new PrehistoricPart(this, 0.55f, 0.55f, "juvi");
+        neck_juvi = new PrehistoricPart(this, 0.6f, 0.8f, "juvi");
+        body_juvi = new PrehistoricPart(this, 0.85f, 0.95f, "juvi");
+        tail1_juvi = new PrehistoricPart(this, 0.75f, 0.6f, "juvi");
+        tail2_juvi = new PrehistoricPart(this, 0.6f, 0.45f, "juvi");
+
+        head = new PrehistoricPart(this, 1.1f, 1.1f, "adult");
+        neck = new PrehistoricPart(this, 1.2f, 1.6f, "adult");
+        body = new PrehistoricPart(this, 1.7f, 1.9f, "adult");
+        tail1 = new PrehistoricPart(this, 1.5f, 1.2f, "adult");
+        tail2 = new PrehistoricPart(this, 1.2f, 0.9f, "adult");
+
+        this.partsBaby = new PrehistoricPart[]{body_baby, head_baby, tail1_baby, tail2_baby, neck_baby};
+        this.partsJuvi = new PrehistoricPart[]{body_juvi, head_juvi, tail1_juvi, tail2_juvi, neck_juvi};
+        this.partsAdult = new PrehistoricPart[]{body, head, tail1, tail2, neck};
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -130,6 +185,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
@@ -152,6 +208,108 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Sheep.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Sheep));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
+    }
+
+    public boolean isCustomMultiPart() {
+        return isMultipartEntity();
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public @Nullable PartEntity<?>[] getParts() {
+        if (this.isBaby()) {
+            return partsBaby;
+        } else if (this.isJuvenile()) {
+            return partsJuvi;
+        } else {
+            return partsAdult;
+        }
+    }
+
+    @Override
+    public boolean isPickable() {
+        return !isCustomMultiPart();
+    }
+    @Override
+    public boolean canBeCollidedWith() {
+        return !isCustomMultiPart();
+    }
+
+    @Override
+    protected void doPush(Entity entity) {
+        if (!isCustomMultiPart()) {
+            super.doPush(entity);
+        }
+    }
+
+    @Override
+    public boolean isColliding(BlockPos pos, BlockState state) {
+        if (isCustomMultiPart()) {
+            VoxelShape voxelShape = state.getCollisionShape(this.level, pos, CollisionContext.of(this));
+            VoxelShape voxelShape2 = voxelShape.move(pos.getX(), pos.getY(), pos.getZ());
+            return Shapes.joinIsNotEmpty(voxelShape2, Shapes.create(getParts()[0].getBoundingBox()), BooleanOp.AND);
+        }
+        return super.isColliding(pos, state);
+    }
+
+    @Override
+    public float getPickRadius() {
+        if (isCustomMultiPart()) {
+            return getType().getWidth() * getAgeScale() - getBbWidth();
+        }
+        return super.getPickRadius();
+    }
+
+    @Override
+    protected AABB makeBoundingBox() {
+        if (isCustomMultiPart() && getParts() != null) {
+            return getParts()[0].getDimensions(Pose.STANDING).makeBoundingBox(position());
+        }
+        return super.makeBoundingBox();
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        PrehistoricPart[] parts;
+        if (this.isBaby()) {
+            parts = partsBaby;
+        } else if (this.isJuvenile()) {
+            parts = partsJuvi;
+        } else {
+            parts = partsAdult;
+        }
+        Vec3[] vec3s = new Vec3[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            vec3s[i] = parts[i].getPosition(1.0f);
+        }
+        Vec3 offset = calculateViewVector(getXRot(), yBodyRot).reverse().scale(0.3);
+        parts[0].setPos(getX() + offset.x, getY() + offset.y, getZ() + offset.z);
+
+        Vec3 offsetHor = calculateViewVector(0, yBodyRot).scale(0.8f * getAgeScale());
+        Vec3 headOffset = calculateViewVector(0, yBodyRot).with(Direction.Axis.Y, 0).add(0, getAgeScale(), 0);
+        Vec3 neckOffset = calculateViewVector(0, yBodyRot).with(Direction.Axis.Y, 0).scale(-0.02f).add(0, getAgeScale(), 0);
+        parts[1].setPos(getX() + headOffset.x + offsetHor.x, getY() + headOffset.y, getZ() + headOffset.z + offsetHor.z);
+        parts[4].setPos(getX() + neckOffset.x + offsetHor.x, getY() + neckOffset.y, getZ() + neckOffset.z + offsetHor.z);
+
+        offsetHor = offsetHor.yRot((float) Math.toRadians(180));
+        Vec3 tailOffset1 = calculateViewVector(0, yBodyRot).scale(-0.8).add(0, getAgeScale(), 0);
+        Vec3 tailOffset2 = calculateViewVector(0, yBodyRot).scale(-1.8).add(0, getAgeScale(), 0);
+        parts[2].setPos(getX() + tailOffset1.x + offsetHor.x, getY() + tailOffset1.y, getZ() + tailOffset1.z + offsetHor.z);
+        parts[3].setPos(getX() + tailOffset2.x + offsetHor.x, getY() + tailOffset2.y, getZ() + tailOffset2.z + offsetHor.z);
+
+        for (int i = 0; i < parts.length; i++) {
+            parts[i].xo = vec3s[i].x;
+            parts[i].yo = vec3s[i].y;
+            parts[i].zo = vec3s[i].z;
+            parts[i].xOld = vec3s[i].x;
+            parts[i].yOld = vec3s[i].y;
+            parts[i].zOld = vec3s[i].z;
+        }
     }
 
     @Override
@@ -213,6 +371,21 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         System.out.println(this.getGenes());
         this.setAttributes(0);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public void setId(int p_145769_1_) {
+        super.setId(p_145769_1_);
+        PrehistoricPart[] parts;
+        if (this.isBaby()) {
+            parts = partsBaby;
+        } else if (this.isJuvenile()) {
+            parts = partsJuvi;
+        } else {
+            parts = partsAdult;
+        }
+        for (int i = 0; i < parts.length; ++i) // Forge: Fix MC-158205: Set part ids to successors of parent mob id
+            parts[i].setId(p_145769_1_ + i + 1);
     }
 
     @Override

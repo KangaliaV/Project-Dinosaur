@@ -1,6 +1,8 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
+import com.kangalia.projectdinosaur.common.item.DinoScanner;
+import com.kangalia.projectdinosaur.common.item.GenomeScanner;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +29,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -306,6 +309,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         return compoundTag;
     }
 
+    public boolean hurt(Entity part, DamageSource source, float damage) {
+        return super.hurt(source, damage);
+    }
+
     public ItemStack getPrehistoricSpawnType() {
         return ItemStack.EMPTY;
     }
@@ -351,6 +358,14 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     @Override
     public InteractionResult mobInteract(Player pPlayer, @Nonnull InteractionHand pHand) {
         ItemStack item = pPlayer.getItemInHand(pHand);
+        if (item.getItem().equals(ItemInit.DINO_SCANNER.get())) {
+            DinoScanner dinoScanner = (DinoScanner) item.getItem();
+            dinoScanner.interactEntity(pPlayer, this, pHand);
+        }
+        if (item.getItem().equals(ItemInit.GENOME_SCANNER.get())) {
+            GenomeScanner genomeScanner = (GenomeScanner) item.getItem();
+            genomeScanner.interactEntity(pPlayer, this, pHand);
+        }
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {
                 if (item.getItem().equals(Items.WHEAT) || item.getItem().equals(Items.CARROT) || item.getItem().equals(Items.POTATO) || item.getItem().equals(Items.BEETROOT) || item.getItem().equals(Items.WHEAT_SEEDS) || item.getItem().equals(Items.BEETROOT_SEEDS) || item.getItem().equals(Items.APPLE) || item.getItem().equals(Items.MELON_SLICE) || item.getItem().equals(Items.MELON) || item.getItem().equals(Items.PUMPKIN) || item.getItem().equals(Items.MELON_SEEDS) || item.getItem().equals(Items.PUMPKIN_SEEDS) || item.getItem().equals(Items.GLOW_BERRIES)) {
@@ -542,20 +557,17 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean isAdult() {
-        return this.getAgeInDays() >= getAdultAge();
+        return this.getAgeInDays() >= this.getAdultAge();
     }
 
     public boolean isJuvenile() {
-        int adultTicks = this.getAdultAge() * 24000;
-        boolean isJuvi = this.getAgeInTicks() >= adultTicks * 0.6;
-        boolean isNotAdult = this.getAgeInDays() < this.getAdultAge();
-        return !isJuvi || !isNotAdult;
+        return !this.isBaby() && !this.isAdult();
     }
 
     @Override
     public boolean isBaby() {
-        boolean isNotAdult = this.getAgeInDays() < this.getAdultAge();
-        return isNotAdult && this.isJuvenile();
+        int adultTicks = this.getAdultAge() * 24000;
+        return this.getAgeInTicks() < (adultTicks * 0.5);
     }
 
     public int getAgeInDays() {
