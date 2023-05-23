@@ -333,5 +333,12 @@
   "sounds.projectdinosaur.australovenator_growl": "Australovenator Growl",
   "sounds.projectdinosaur.australovenator_snarl": "Australovenator Snarl",
   "sounds.projectdinosaur.australovenator_hurt": "Australovenator Hurt",
-  "sounds.projectdinosaur.australovenator_death": "Australovenator Death"
+  "sounds.projectdinosaur.australovenator_death": "Australovenator Death",
+
+  "sounds.projectdinosaur.gastornis_call": "Gastornis Call",
+  "sounds.projectdinosaur.gastornis_flapping": "Gastornis Wings Flapping",
+  "sounds.projectdinosaur.gastornis_hiss": "Gastornis Hiss",
+  "sounds.projectdinosaur.gastornis_hurt": "Gastornis Hurt",
+  "sounds.projectdinosaur.gastornis_death": "Gastornis Death"
+
 }

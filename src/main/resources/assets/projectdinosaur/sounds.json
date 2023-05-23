@@ -22,5 +22,35 @@
     "sounds": [
       "projectdinosaur:australovenator/australovenator_death"
     ]
+  },
+  "gastornis_call": {
+    "subtitle": "sounds.projectdinosaur.gastornis_call",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_call"
+    ]
+  },
+  "gastornis_flapping": {
+    "subtitle": "sounds.projectdinosaur.gastornis_flapping",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_flapping"
+    ]
+  },
+  "gastornis_hiss": {
+    "subtitle": "sounds.projectdinosaur.gastornis_hiss",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_hiss"
+    ]
+  },
+  "gastornis_hurt": {
+    "subtitle": "sounds.projectdinosaur.gastornis_hurt",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_hurt"
+    ]
+  },
+  "gastornis_death": {
+    "subtitle": "sounds.projectdinosaur.gastornis_death",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_death"
+    ]
   }
 }

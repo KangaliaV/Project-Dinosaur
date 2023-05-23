@@ -19,6 +19,13 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> AUSTRALOVENATOR_HURT = registerSoundEvent("australovenator_hurt");
     public static final RegistryObject<SoundEvent> AUSTRALOVENATOR_DEATH = registerSoundEvent("australovenator_death");
 
+    // Gastornis
+    public static final RegistryObject<SoundEvent> GASTORNIS_CALL = registerSoundEvent("gastornis_call");
+    public static final RegistryObject<SoundEvent> GASTORNIS_FLAPPING = registerSoundEvent("gastornis_flapping");
+    public static final RegistryObject<SoundEvent> GASTORNIS_HISS = registerSoundEvent("gastornis_hiss");
+    public static final RegistryObject<SoundEvent> GASTORNIS_HURT = registerSoundEvent("gastornis_hurt");
+    public static final RegistryObject<SoundEvent> GASTORNIS_DEATH = registerSoundEvent("gastornis_death");
+
 
     // Helper Methods
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
