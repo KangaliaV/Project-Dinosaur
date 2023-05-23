@@ -52,5 +52,29 @@
     "sounds": [
       "projectdinosaur:gastornis/gastornis_death"
     ]
+  },
+  "scelidosaurus_call": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_call",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_call"
+    ]
+  },
+  "scelidosaurus_warning": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_warning",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_warning"
+    ]
+  },
+  "scelidosaurus_hurt": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_hurt",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_hurt"
+    ]
+  },
+  "scelidosaurus_death": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_death",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_death"
+    ]
   }
 }

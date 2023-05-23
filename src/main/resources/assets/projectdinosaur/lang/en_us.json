@@ -339,6 +339,10 @@
   "sounds.projectdinosaur.gastornis_flapping": "Gastornis Wings Flapping",
   "sounds.projectdinosaur.gastornis_hiss": "Gastornis Hiss",
   "sounds.projectdinosaur.gastornis_hurt": "Gastornis Hurt",
-  "sounds.projectdinosaur.gastornis_death": "Gastornis Death"
+  "sounds.projectdinosaur.gastornis_death": "Gastornis Death",
 
+  "sounds.projectdinosaur.scelidosaurus_call": "Scelidosaurus Call",
+  "sounds.projectdinosaur.scelidosaurus_warning": "Scelidosaurus Warning Call",
+  "sounds.projectdinosaur.scelidosaurus_hurt": "Scelidosaurus Hurt",
+  "sounds.projectdinosaur.scelidosaurus_death": "Scelidosaurus Death"
 }

@@ -26,6 +26,12 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> GASTORNIS_HURT = registerSoundEvent("gastornis_hurt");
     public static final RegistryObject<SoundEvent> GASTORNIS_DEATH = registerSoundEvent("gastornis_death");
 
+    // Scelidosaurus
+    public static final RegistryObject<SoundEvent> SCELIDOSAURUS_CALL = registerSoundEvent("scelidosaurus_call");
+    public static final RegistryObject<SoundEvent> SCELIDOSAURUS_WARNING = registerSoundEvent("scelidosaurus_warning");
+    public static final RegistryObject<SoundEvent> SCELIDOSAURUS_HURT = registerSoundEvent("scelidosaurus_hurt");
+    public static final RegistryObject<SoundEvent> SCELIDOSAURUS_DEATH = registerSoundEvent("scelidosaurus_death");
+
 
     // Helper Methods
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
