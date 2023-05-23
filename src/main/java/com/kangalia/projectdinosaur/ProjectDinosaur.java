@@ -30,6 +30,7 @@ public class ProjectDinosaur {
         ContainerInit.CONTAINERS.register(bus);
         EntityInit.ENTITY_TYPES.register(bus);
         RecipeInit.register(bus);
+        SoundInit.register(bus);
 
         MinecraftForge.EVENT_BUS.register(this);
 

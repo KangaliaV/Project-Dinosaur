@@ -1,0 +1,26 @@
+{
+  "australovenator_growl": {
+    "subtitle": "sounds.projectdinosaur.australovenator_growl",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_growl"
+    ]
+  },
+  "australovenator_snarl": {
+    "subtitle": "sounds.projectdinosaur.australovenator_snarl",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_snarl"
+    ]
+  },
+  "australovenator_hurt": {
+    "subtitle": "sounds.projectdinosaur.australovenator_hurt",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_hurt"
+    ]
+  },
+  "australovenator_death": {
+    "subtitle": "sounds.projectdinosaur.australovenator_death",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_death"
+    ]
+  }
+}

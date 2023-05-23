@@ -328,5 +328,10 @@
   "cryoporter.projectdinosaur:gastornis": "Gastornis",
   "cryoporter.projectdinosaur:scelidosaurus": "Scelidosaurus",
   "cryoporter.projectdinosaur:trilobite": "Trilobite",
-  "cryoporter.projectdinosaur.empty": "Empty"
+  "cryoporter.projectdinosaur.empty": "Empty",
+
+  "sounds.projectdinosaur.australovenator_growl": "Australovenator Growl",
+  "sounds.projectdinosaur.australovenator_snarl": "Australovenator Snarl",
+  "sounds.projectdinosaur.australovenator_hurt": "Australovenator Hurt",
+  "sounds.projectdinosaur.australovenator_death": "Australovenator Death"
 }
