@@ -5,6 +5,7 @@ import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AustralovenatorGenome;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
+import com.kangalia.projectdinosaur.core.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -162,17 +163,21 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.BAT_AMBIENT;
+        if (this.isMoody()) {
+            return SoundInit.AUSTRALOVENATOR_SNARL.get();
+        } else {
+            return SoundInit.AUSTRALOVENATOR_GROWL.get();
+        }
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.BAT_HURT;
+        return SoundInit.AUSTRALOVENATOR_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.BAT_DEATH;
+        return SoundInit.AUSTRALOVENATOR_DEATH.get();
     }
 
     @Override

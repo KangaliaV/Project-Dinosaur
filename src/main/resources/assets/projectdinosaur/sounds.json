@@ -1,0 +1,80 @@
+{
+  "australovenator_growl": {
+    "subtitle": "sounds.projectdinosaur.australovenator_growl",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_growl"
+    ]
+  },
+  "australovenator_snarl": {
+    "subtitle": "sounds.projectdinosaur.australovenator_snarl",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_snarl"
+    ]
+  },
+  "australovenator_hurt": {
+    "subtitle": "sounds.projectdinosaur.australovenator_hurt",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_hurt"
+    ]
+  },
+  "australovenator_death": {
+    "subtitle": "sounds.projectdinosaur.australovenator_death",
+    "sounds": [
+      "projectdinosaur:australovenator/australovenator_death"
+    ]
+  },
+  "gastornis_call": {
+    "subtitle": "sounds.projectdinosaur.gastornis_call",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_call"
+    ]
+  },
+  "gastornis_flapping": {
+    "subtitle": "sounds.projectdinosaur.gastornis_flapping",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_flapping"
+    ]
+  },
+  "gastornis_hiss": {
+    "subtitle": "sounds.projectdinosaur.gastornis_hiss",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_hiss"
+    ]
+  },
+  "gastornis_hurt": {
+    "subtitle": "sounds.projectdinosaur.gastornis_hurt",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_hurt"
+    ]
+  },
+  "gastornis_death": {
+    "subtitle": "sounds.projectdinosaur.gastornis_death",
+    "sounds": [
+      "projectdinosaur:gastornis/gastornis_death"
+    ]
+  },
+  "scelidosaurus_call": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_call",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_call"
+    ]
+  },
+  "scelidosaurus_warning": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_warning",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_warning"
+    ]
+  },
+  "scelidosaurus_hurt": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_hurt",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_hurt"
+    ]
+  },
+  "scelidosaurus_death": {
+    "subtitle": "sounds.projectdinosaur.scelidosaurus_death",
+    "sounds": [
+      "projectdinosaur:scelidosaurus/scelidosaurus_death"
+    ]
+  }
+}
