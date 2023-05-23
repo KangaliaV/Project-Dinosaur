@@ -77,7 +77,7 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 4.0F)
+                .add(Attributes.MAX_HEALTH, 32.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
@@ -89,13 +89,13 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
     public void randomizeAttributes(int age) {
         if (age == 0) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(32.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
         } else if (age == 1) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 1.5);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(32.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)) / 2);
         } else {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(32.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
         }
     }
 

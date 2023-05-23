@@ -205,10 +205,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             // AGE
             if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !adultFlag) {
                 this.setAttributes(0);
+                refreshDimensions();
                 adultFlag = true;
             }
             if (this.isJuvenile() && !juviFlag) {
                 this.setAttributes(1);
+                refreshDimensions();
                 juviFlag = true;
             }
             if (!this.isStunted()) {

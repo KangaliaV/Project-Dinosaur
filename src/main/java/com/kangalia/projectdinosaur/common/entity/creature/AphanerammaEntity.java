@@ -95,7 +95,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 4.0F)
+                .add(Attributes.MAX_HEALTH, 24.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.09F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
@@ -108,15 +108,15 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         if (age == 0) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.09F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
         } else if (age == 1) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.09F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.09F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4))/2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/4);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/4);
         }
     }
 
