@@ -81,7 +81,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements GeoEntity 
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 5.0F)
+                .add(Attributes.MAX_HEALTH, 90.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.35F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0F)
@@ -94,15 +94,15 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements GeoEntity 
         if (age == 0) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(90.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
         } else if (age == 1) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(90.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 4);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(90.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
         }
     }
 
@@ -133,7 +133,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements GeoEntity 
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.0D));
-        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 10));
         this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
