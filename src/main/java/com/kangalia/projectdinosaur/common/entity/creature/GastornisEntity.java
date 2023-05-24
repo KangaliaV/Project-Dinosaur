@@ -77,6 +77,9 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         juvinileRoamDistance = 24;
         babyRoamDistance = 4;
         isLand = true;
+        maxPack = 8;
+        minPack = 2;
+        maxTotalPack = 14;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -136,6 +139,7 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 8));
         this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricCheckPackGoal(this, 2, 8));
         this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
@@ -146,6 +150,9 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AustralovenatorEntity.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, GastornisEntity.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, ScelidosaurusEntity.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 

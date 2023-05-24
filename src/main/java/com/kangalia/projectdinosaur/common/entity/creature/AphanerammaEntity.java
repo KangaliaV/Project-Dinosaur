@@ -91,6 +91,9 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         juvinileRoamDistance = 12;
         babyRoamDistance = 2;
         isLand = false;
+        maxPack = 4;
+        minPack = 1;
+        maxTotalPack = 6;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -155,6 +158,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 3));
         this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricCheckPackGoal(this, 1, 4));
         this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
@@ -166,6 +170,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AphanerammaEntity.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
     }

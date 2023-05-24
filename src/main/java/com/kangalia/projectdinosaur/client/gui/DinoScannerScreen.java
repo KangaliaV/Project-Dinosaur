@@ -98,6 +98,9 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
                 if (scanner.getTag().getBoolean("dino.iscryosick")) {
                     this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_cryosick"), -30, 140, 9544081);
                 }
+                if (scanner.getTag().getBoolean("dino.islonely")) {
+                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_lonely"), -30, 156, 9544081);
+                }
             }
         }
     }
