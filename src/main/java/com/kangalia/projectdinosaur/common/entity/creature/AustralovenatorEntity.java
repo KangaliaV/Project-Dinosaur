@@ -79,6 +79,9 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         juvinileRoamDistance = 24;
         babyRoamDistance = 4;
         isLand = true;
+        maxPack = 10;
+        minPack = 4;
+        maxTotalPack = 10;
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -137,6 +140,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 20));
         this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricCheckPackGoal(this, 4, 10));
         this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
@@ -147,11 +151,14 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AustralovenatorEntity.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Pig));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, ScelidosaurusEntity.class, 10, true, false, (p_28600_) -> p_28600_ instanceof ScelidosaurusEntity));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Chicken.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Chicken));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Rabbit.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Rabbit));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Sheep.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Sheep));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Cow.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Cow));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, GastornisEntity.class, 10, true, false, (p_28600_) -> p_28600_ instanceof GastornisEntity));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 

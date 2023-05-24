@@ -73,6 +73,9 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
         juvinileRoamDistance = 7;
         babyRoamDistance = 4;
         isLand = false;
+        maxPack = 0; // No max pack, so 0 disables it.
+        minPack = 1;
+        maxTotalPack = 0; // No max total pack, so 0 disables it.
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
