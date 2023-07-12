@@ -28,7 +28,7 @@ public class Cryoporter extends Item {
         super(pProperties);
     }
 
-    @Nonnull
+    /*@Nonnull
     @Override
     public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
         Level level = pPlayer.getLevel();
@@ -40,6 +40,14 @@ public class Cryoporter extends Item {
             }
         }
         return InteractionResult.PASS;
+    }*/
+
+    public void interactEntity(Player pPlayer, PrehistoricEntity prehistoric, InteractionHand pUsedHand) {
+        Level level = pPlayer.getLevel();
+        ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+        if (!level.isClientSide) {
+            saveEntity(stack, prehistoric);
+        }
     }
 
     @Nonnull

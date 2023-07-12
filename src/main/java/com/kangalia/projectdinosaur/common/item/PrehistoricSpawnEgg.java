@@ -24,6 +24,8 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
     @Override
     public Optional<Mob> spawnOffspringFromSpawnEgg(Player pPlayer, Mob pMob, EntityType<? extends Mob> pEntityType, ServerLevel pServerLevel, Vec3 pPos, ItemStack pStack) {
         Random random = new Random();
+        System.out.println("pStack.getTag(): "+pStack.getTag()+" | pEntityType: "+pEntityType);
+        System.out.println("spawnsEntity: "+this.spawnsEntity(pStack.getTag(), pEntityType));
         if (!this.spawnsEntity(pStack.getTag(), pEntityType)) {
             return Optional.empty();
         } else {

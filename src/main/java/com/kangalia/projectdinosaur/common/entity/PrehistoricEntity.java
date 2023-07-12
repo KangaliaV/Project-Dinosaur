@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
+import com.kangalia.projectdinosaur.common.item.Cryoporter;
 import com.kangalia.projectdinosaur.common.item.DinoScanner;
 import com.kangalia.projectdinosaur.common.item.GenomeScanner;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
@@ -365,6 +366,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         if (item.getItem().equals(ItemInit.GENOME_SCANNER.get())) {
             GenomeScanner genomeScanner = (GenomeScanner) item.getItem();
             genomeScanner.interactEntity(pPlayer, this, pHand);
+        }
+        if (item.getItem().equals(ItemInit.CRYOPORTER.get())) {
+            Cryoporter cryoporter = (Cryoporter) item.getItem();
+            cryoporter.interactEntity(pPlayer, this, pHand);
         }
         if (this.isHungry() || this.getHealth() < this.getMaxHealth()) {
             if (diet == 0) {

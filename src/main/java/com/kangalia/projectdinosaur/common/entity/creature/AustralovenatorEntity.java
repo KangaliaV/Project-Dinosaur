@@ -32,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -44,6 +45,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.event.level.PistonEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -55,17 +57,19 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 
 public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntity {
 
     private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(AustralovenatorEntity.class, EntityDataSerializers.STRING);
 
-    private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private AustralovenatorGenome genome = new AustralovenatorGenome();
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private final AustralovenatorGenome genome = new AustralovenatorGenome();
 
     private final PrehistoricPart[] partsBaby;
     private final PrehistoricPart[] partsJuvi;
     private final PrehistoricPart[] partsAdult;
+    private final PrehistoricPart[] partsAll;
 
     public final PrehistoricPart head_baby;
     public final PrehistoricPart neck_baby;
@@ -85,6 +89,12 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
     public final PrehistoricPart tail1;
     public final PrehistoricPart tail2;
 
+    public final double[][] positions = new double[64][3];
+    public int posPointer = -1;
+    public float yRotA;
+    private boolean babyCheck = false;
+    private boolean juviCheck = false;
+    private boolean adultCheck = false;
 
     public AustralovenatorEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -94,10 +104,10 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         minSize = 0.25F;
         maxMaleSize = 1.3F;
         maxFemaleSize = 1.1F;
-        minHeight = 0.45f;
-        maxHeight = 1.2f;
-        minWidth = 0.4f;
-        maxWidth = 1.05f;
+        minHeight = 0.75f;
+        maxHeight = 1.5f;
+        minWidth = 1.1f;
+        maxWidth = 1.75f;
         maxFood = 80;
         diet = 1;
         soundVolume = 0.3F;
@@ -133,6 +143,8 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         this.partsBaby = new PrehistoricPart[]{body_baby, head_baby, tail1_baby, tail2_baby, neck_baby};
         this.partsJuvi = new PrehistoricPart[]{body_juvi, head_juvi, tail1_juvi, tail2_juvi, neck_juvi};
         this.partsAdult = new PrehistoricPart[]{body, head, tail1, tail2, neck};
+        this.partsAll = new PrehistoricPart[]{body_baby, head_baby, tail1_baby, tail2_baby, neck_baby, body_juvi, head_juvi, tail1_juvi, tail2_juvi, neck_juvi, body, head, tail1, tail2, neck};
+
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -222,28 +234,25 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
     @Override
     public @Nullable PartEntity<?>[] getParts() {
         if (this.isBaby()) {
+            System.out.println("Baby Parts: "+ Arrays.toString(partsBaby));
             return partsBaby;
         } else if (this.isJuvenile()) {
+            System.out.println("Juvi Parts: "+ Arrays.toString(partsJuvi));
             return partsJuvi;
         } else {
+            System.out.println("Adult Parts: "+ Arrays.toString(partsAdult));
             return partsAdult;
         }
     }
 
     @Override
-    public boolean isPickable() {
-        return !isCustomMultiPart();
-    }
-    @Override
-    public boolean canBeCollidedWith() {
-        return !isCustomMultiPart();
+    public boolean isPushable() {
+        return true;
     }
 
     @Override
-    protected void doPush(Entity entity) {
-        if (!isCustomMultiPart()) {
-            super.doPush(entity);
-        }
+    public boolean canBeCollidedWith() {
+        return !isCustomMultiPart();
     }
 
     @Override
@@ -275,41 +284,217 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
     @Override
     public void aiStep() {
         super.aiStep();
-        PrehistoricPart[] parts;
         if (this.isBaby()) {
-            parts = partsBaby;
+            if (babyCheck != this.isBaby()) {
+                babyCheck = this.isBaby();
+                refreshDimensions();
+            }
+            babyPartControl();
         } else if (this.isJuvenile()) {
-            parts = partsJuvi;
+            if (juviCheck != this.isJuvenile()) {
+                juviCheck = this.isJuvenile();
+                refreshDimensions();
+            }
+            juviPartControl();
         } else {
-            parts = partsAdult;
+            if (adultCheck != this.isAdult()) {
+                adultCheck = this.isAdult();
+                refreshDimensions();
+            }
+            adultPartControl();
         }
-        Vec3[] vec3s = new Vec3[parts.length];
-        for (int i = 0; i < parts.length; i++) {
-            vec3s[i] = parts[i].getPosition(1.0f);
+    }
+
+    private void babyPartControl() {
+        System.out.println("Baby Control");
+        Vec3[] avec3 = new Vec3[this.partsBaby.length];
+        for(int j = 0; j < this.partsBaby.length; ++j) {
+            avec3[j] = new Vec3(this.partsBaby[j].getX(), this.partsBaby[j].getY(), this.partsBaby[j].getZ());
         }
-        Vec3 offset = calculateViewVector(getXRot(), yBodyRot).reverse().scale(0.3);
-        parts[0].setPos(getX() + offset.x, getY() + offset.y, getZ() + offset.z);
-
-        Vec3 offsetHor = calculateViewVector(0, yBodyRot).scale(0.8f * getAgeScale());
-        Vec3 headOffset = calculateViewVector(0, yBodyRot).with(Direction.Axis.Y, 0).add(0, getAgeScale(), 0);
-        Vec3 neckOffset = calculateViewVector(0, yBodyRot).with(Direction.Axis.Y, 0).scale(-0.02f).add(0, getAgeScale(), 0);
-        parts[1].setPos(getX() + headOffset.x + offsetHor.x, getY() + headOffset.y, getZ() + headOffset.z + offsetHor.z);
-        parts[4].setPos(getX() + neckOffset.x + offsetHor.x, getY() + neckOffset.y, getZ() + neckOffset.z + offsetHor.z);
-
-        offsetHor = offsetHor.yRot((float) Math.toRadians(180));
-        Vec3 tailOffset1 = calculateViewVector(0, yBodyRot).scale(-0.8).add(0, getAgeScale(), 0);
-        Vec3 tailOffset2 = calculateViewVector(0, yBodyRot).scale(-1.8).add(0, getAgeScale(), 0);
-        parts[2].setPos(getX() + tailOffset1.x + offsetHor.x, getY() + tailOffset1.y, getZ() + tailOffset1.z + offsetHor.z);
-        parts[3].setPos(getX() + tailOffset2.x + offsetHor.x, getY() + tailOffset2.y, getZ() + tailOffset2.z + offsetHor.z);
-
-        for (int i = 0; i < parts.length; i++) {
-            parts[i].xo = vec3s[i].x;
-            parts[i].yo = vec3s[i].y;
-            parts[i].zo = vec3s[i].z;
-            parts[i].xOld = vec3s[i].x;
-            parts[i].yOld = vec3s[i].y;
-            parts[i].zOld = vec3s[i].z;
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body_baby, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        if (this.isSleeping()) {
+            this.tickPart(this.head_baby, (-f3 * 0.5F * f13), (f4 + f1), (f16 * 0.5F * f13));
+            this.tickPart(this.neck_baby, (-f3 * 0.25F * f13), (f4 + f1), (f16 * 0.25F * f13));
         }
+        this.tickPart(this.head_baby, (-f3 * 0.5F * f13), (f4 + f1) + 0.35F, (f16 * 0.5F * f13));
+        this.tickPart(this.neck_baby, (-f3 * 0.25F * f13), (f4 + f1) + 0.25F, (f16 * 0.25F * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        for(int k = 0; k < 2; ++k) {
+            PrehistoricPart prehistoricPart = null;
+            if (k == 0) {
+                prehistoricPart = this.tail1_baby;
+            }
+
+            if (k == 1) {
+                prehistoricPart = this.tail2_baby;
+            }
+            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
+            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+            float f18 = Mth.sin(f17);
+            float f20 = Mth.cos(f17);
+            float f22 = (float)(k + 1) * 0.3F;
+            if (this.isSleeping()) {
+                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
+            } else {
+                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
+            }
+        }
+        for(int l = 0; l < this.partsBaby.length; ++l) {
+            this.partsBaby[l].xo = avec3[l].x;
+            this.partsBaby[l].yo = avec3[l].y;
+            this.partsBaby[l].zo = avec3[l].z;
+            this.partsBaby[l].xOld = avec3[l].x;
+            this.partsBaby[l].yOld = avec3[l].y;
+            this.partsBaby[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void juviPartControl() {
+        System.out.println("Juvi Control");
+        Vec3[] avec3 = new Vec3[this.partsJuvi.length];
+        for(int j = 0; j < this.partsJuvi.length; ++j) {
+            avec3[j] = new Vec3(this.partsJuvi[j].getX(), this.partsJuvi[j].getY(), this.partsJuvi[j].getZ());
+        }
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body_juvi, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        if (this.isSleeping()) {
+            this.tickPart(this.head_juvi, (-f3 * 0.5F * f13), (f4 + f1), (f16 * 0.5F * f13));
+            this.tickPart(this.neck_juvi, (-f3 * 0.25F * f13), (f4 + f1), (f16 * 0.25F * f13));
+        }
+        this.tickPart(this.head_juvi, (-f3 * 0.5F * f13), (f4 + f1) + 0.35F, (f16 * 0.5F * f13));
+        this.tickPart(this.neck_juvi, (-f3 * 0.25F * f13), (f4 + f1) + 0.25F, (f16 * 0.25F * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        for(int k = 0; k < 2; ++k) {
+            PrehistoricPart prehistoricPart = null;
+            if (k == 0) {
+                prehistoricPart = this.tail1_juvi;
+            }
+
+            if (k == 1) {
+                prehistoricPart = this.tail2_juvi;
+            }
+            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
+            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+            float f18 = Mth.sin(f17);
+            float f20 = Mth.cos(f17);
+            float f22 = (float)(k + 1) * 0.3F;
+            if (this.isSleeping()) {
+                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
+            } else {
+                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
+            }
+        }
+        for(int l = 0; l < this.partsJuvi.length; ++l) {
+            this.partsJuvi[l].xo = avec3[l].x;
+            this.partsJuvi[l].yo = avec3[l].y;
+            this.partsJuvi[l].zo = avec3[l].z;
+            this.partsJuvi[l].xOld = avec3[l].x;
+            this.partsJuvi[l].yOld = avec3[l].y;
+            this.partsJuvi[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void adultPartControl() {
+        System.out.println("Adult Control");
+        Vec3[] avec3 = new Vec3[this.partsAdult.length];
+        for(int j = 0; j < this.partsAdult.length; ++j) {
+            avec3[j] = new Vec3(this.partsAdult[j].getX(), this.partsAdult[j].getY(), this.partsAdult[j].getZ());
+        }
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        if (this.isSleeping()) {
+            this.tickPart(this.head, (-f3 * 0.5F * f13), (f4 + f1), (f16 * 0.5F * f13));
+            this.tickPart(this.neck, (-f3 * 0.25F * f13), (f4 + f1), (f16 * 0.25F * f13));
+        }
+        this.tickPart(this.head, (-f3 * 0.5F * f13), (f4 + f1) + 0.35F, (f16 * 0.5F * f13));
+        this.tickPart(this.neck, (-f3 * 0.25F * f13), (f4 + f1) + 0.25F, (f16 * 0.25F * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        for(int k = 0; k < 2; ++k) {
+            PrehistoricPart prehistoricPart = null;
+            if (k == 0) {
+                prehistoricPart = this.tail1;
+            }
+
+            if (k == 1) {
+                prehistoricPart = this.tail2;
+            }
+            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
+            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+            float f18 = Mth.sin(f17);
+            float f20 = Mth.cos(f17);
+            float f22 = (float)(k + 1) * 0.3F;
+            if (this.isSleeping()) {
+                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
+            } else {
+                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
+            }
+        }
+        for(int l = 0; l < this.partsAdult.length; ++l) {
+            this.partsAdult[l].xo = avec3[l].x;
+            this.partsAdult[l].yo = avec3[l].y;
+            this.partsAdult[l].zo = avec3[l].z;
+            this.partsAdult[l].xOld = avec3[l].x;
+            this.partsAdult[l].yOld = avec3[l].y;
+            this.partsAdult[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void tickPart(PrehistoricPart pPart, double pOffsetX, double pOffsetY, double pOffsetZ) {
+        pPart.setPos(this.getX() + pOffsetX, this.getY() + pOffsetY, this.getZ() + pOffsetZ);
+    }
+
+    public double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
+        if (this.isDeadOrDying()) {
+            pPartialTicks = 0.0F;
+        }
+
+        pPartialTicks = 1.0F - pPartialTicks;
+        int i = this.posPointer - pBufferIndexOffset & 63;
+        int j = this.posPointer - pBufferIndexOffset - 1 & 63;
+        double[] adouble = new double[3];
+        double d0 = this.positions[i][0];
+        double d1 = Mth.wrapDegrees(this.positions[j][0] - d0);
+        adouble[0] = d0 + d1 * (double)pPartialTicks;
+        d0 = this.positions[i][1];
+        d1 = this.positions[j][1] - d0;
+        adouble[1] = d0 + d1 * (double)pPartialTicks;
+        adouble[2] = Mth.lerp(pPartialTicks, this.positions[i][2], this.positions[j][2]);
+        return adouble;
+    }
+
+    private float getHeadYOffset() {
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        double[] adouble1 = this.getLatencyPos(0, 1.0F);
+        return (float)(adouble[1] - adouble1[1]);
+    }
+
+    private float rotWrap(double pAngle) {
+        return (float)Mth.wrapDegrees(pAngle);
     }
 
     @Override
@@ -374,18 +559,11 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
     }
 
     @Override
-    public void setId(int p_145769_1_) {
+    public void setId(int p_145769_1_) { // Forge: Fix MC-158205: Set part ids to successors of parent mob id
         super.setId(p_145769_1_);
-        PrehistoricPart[] parts;
-        if (this.isBaby()) {
-            parts = partsBaby;
-        } else if (this.isJuvenile()) {
-            parts = partsJuvi;
-        } else {
-            parts = partsAdult;
+        for (int i = 0; i < partsAll.length; ++i) {
+            partsAll[i].setId(p_145769_1_ + i + 1);
         }
-        for (int i = 0; i < parts.length; ++i) // Forge: Fix MC-158205: Set part ids to successors of parent mob id
-            parts[i].setId(p_145769_1_ + i + 1);
     }
 
     @Override
