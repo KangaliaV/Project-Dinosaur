@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.common.entity.creature;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.ai.*;
 import com.kangalia.projectdinosaur.common.entity.genetics.genomes.AphanerammaGenome;
+import com.kangalia.projectdinosaur.common.entity.parts.PrehistoricPart;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -43,7 +44,13 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -55,6 +62,8 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
 
@@ -64,6 +73,18 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
 
     private AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private AphanerammaGenome genome = new AphanerammaGenome();
+
+    private final PrehistoricPart[] partsAll;
+
+    public final PrehistoricPart body;
+    public final PrehistoricPart head;
+    public final PrehistoricPart tail;
+
+    public final double[][] positions = new double[64][3];
+    public int posPointer = -1;
+    public float yRotA;
+    int counter = 0;
+
 
     public AphanerammaEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -88,12 +109,19 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         breedingType = 1;
         maleRoamDistance = 32;
         femaleRoamDistance = 24;
-        juvinileRoamDistance = 12;
+        juvinileRoamDistance = 16;
+        childRoamDistance = 8;
         babyRoamDistance = 2;
         isLand = false;
         maxPack = 4;
         minPack = 1;
         maxTotalPack = 6;
+
+        body = new PrehistoricPart(this, "body");
+        head = new PrehistoricPart(this, "head");
+        tail = new PrehistoricPart(this, "tail");
+
+        this.partsAll = new PrehistoricPart[]{body, head, tail};
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -173,6 +201,251 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AphanerammaEntity.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractFish.class, 20, false, false, (p_28600_) -> p_28600_ instanceof AbstractSchoolingFish));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Squid.class, 20, false, false, (p_28600_) -> p_28600_ instanceof Squid));
+    }
+
+    public boolean isCustomMultiPart() {
+        return isMultipartEntity();
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public @Nullable PartEntity<?>[] getParts() {
+        return partsAll;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return !isCustomMultiPart();
+    }
+
+    @Override
+    public boolean isColliding(BlockPos pos, BlockState state) {
+        if (isCustomMultiPart()) {
+            VoxelShape voxelShape = state.getCollisionShape(this.level, pos, CollisionContext.of(this));
+            VoxelShape voxelShape2 = voxelShape.move(pos.getX(), pos.getY(), pos.getZ());
+            return Shapes.joinIsNotEmpty(voxelShape2, Shapes.create(getParts()[0].getBoundingBox()), BooleanOp.AND);
+        }
+        return super.isColliding(pos, state);
+    }
+
+    @Override
+    public float getPickRadius() {
+        if (isCustomMultiPart()) {
+            return getType().getWidth() * getAgeScale() - getBbWidth();
+        }
+        return super.getPickRadius();
+    }
+
+    @Override
+    protected AABB makeBoundingBox() {
+        if (isCustomMultiPart() && getParts() != null) {
+            return getParts()[0].getDimensions(Pose.STANDING).makeBoundingBox(position());
+        }
+        return super.makeBoundingBox();
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (counter < 20) {
+            counter++;
+        } else {
+            refreshDimensions();
+            Arrays.stream(getParts()).filter(Objects::nonNull).forEach(Entity::refreshDimensions);
+            counter = 0;
+        }
+        if (this.isBaby()) {
+            babyPartControl();
+        } else if (this.isChild()) {
+            childPartControl();
+        } else if (this.isJuvenile()) {
+            juviPartControl();
+        } else {
+            adultPartControl();
+        }
+    }
+
+    private void babyPartControl() {
+        Vec3[] avec3 = new Vec3[this.partsAll.length];
+        for(int j = 0; j < this.partsAll.length; ++j) {
+            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
+        }
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        this.tickPart(this.head, (-f3 * 0.2f * f13), (f4 + f1), (f16 * 0.2f * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        double[] adouble1 = this.getLatencyPos(12, 1.0F);
+        float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+        float f18 = Mth.sin(f17);
+        float f20 = Mth.cos(f17);
+        float f22 = 0.1F;
+        this.tickPart(this.tail, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1), (-(f15 * 0.1F + f20 * f22) * f13));
+        for(int l = 0; l < this.partsAll.length; ++l) {
+            this.partsAll[l].xo = avec3[l].x;
+            this.partsAll[l].yo = avec3[l].y;
+            this.partsAll[l].zo = avec3[l].z;
+            this.partsAll[l].xOld = avec3[l].x;
+            this.partsAll[l].yOld = avec3[l].y;
+            this.partsAll[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void childPartControl() {
+        Vec3[] avec3 = new Vec3[this.partsAll.length];
+        for(int j = 0; j < this.partsAll.length; ++j) {
+            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
+        }
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        this.tickPart(this.head, (-f3 * 0.35f * f13), (f4 + f1), (f16 * 0.35f * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        double[] adouble1 = this.getLatencyPos(12, 1.0F);
+        float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+        float f18 = Mth.sin(f17);
+        float f20 = Mth.cos(f17);
+        float f22 = 0.2F;
+        this.tickPart(this.tail, ((f2 * 0.15F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1), (-(f15 * 0.15F + f20 * f22) * f13));
+        for(int l = 0; l < this.partsAll.length; ++l) {
+            this.partsAll[l].xo = avec3[l].x;
+            this.partsAll[l].yo = avec3[l].y;
+            this.partsAll[l].zo = avec3[l].z;
+            this.partsAll[l].xOld = avec3[l].x;
+            this.partsAll[l].yOld = avec3[l].y;
+            this.partsAll[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void juviPartControl() {
+        Vec3[] avec3 = new Vec3[this.partsAll.length];
+        for(int j = 0; j < this.partsAll.length; ++j) {
+            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
+        }
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        this.tickPart(this.head, (-f3 * 0.4f * f13), (f4 + f1), (f16 * 0.4f * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        double[] adouble1 = this.getLatencyPos(12, 1.0F);
+        float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+        float f18 = Mth.sin(f17);
+        float f20 = Mth.cos(f17);
+        float f22 = 0.3F;
+        this.tickPart(this.tail, ((f2 * 0.22F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1), (-(f15 * 0.22F + f20 * f22) * f13));
+        for(int l = 0; l < this.partsAll.length; ++l) {
+            this.partsAll[l].xo = avec3[l].x;
+            this.partsAll[l].yo = avec3[l].y;
+            this.partsAll[l].zo = avec3[l].z;
+            this.partsAll[l].xOld = avec3[l].x;
+            this.partsAll[l].yOld = avec3[l].y;
+            this.partsAll[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void adultPartControl() {
+        Vec3[] avec3 = new Vec3[this.partsAll.length];
+        for(int j = 0; j < this.partsAll.length; ++j) {
+            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
+        }
+        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
+        float f13 = Mth.cos(f12);
+        float f1 = Mth.sin(f12);
+        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
+        float f2 = Mth.sin(f14);
+        float f15 = Mth.cos(f14);
+        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
+        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
+        float f4 = this.getHeadYOffset();
+        this.tickPart(this.head, (-f3 * 0.55f * f13), (f4 + f1), (f16 * 0.55f * f13));
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        double[] adouble1 = this.getLatencyPos(12, 1.0F);
+        float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
+        float f18 = Mth.sin(f17);
+        float f20 = Mth.cos(f17);
+        float f22 = 0.4F;
+        this.tickPart(this.tail, ((f2 * 0.3F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1), (-(f15 * 0.3F + f20 * f22) * f13));
+        for(int l = 0; l < this.partsAll.length; ++l) {
+            this.partsAll[l].xo = avec3[l].x;
+            this.partsAll[l].yo = avec3[l].y;
+            this.partsAll[l].zo = avec3[l].z;
+            this.partsAll[l].xOld = avec3[l].x;
+            this.partsAll[l].yOld = avec3[l].y;
+            this.partsAll[l].zOld = avec3[l].z;
+        }
+    }
+
+    private void tickPart(PrehistoricPart pPart, double pOffsetX, double pOffsetY, double pOffsetZ) {
+        pPart.setPos(this.getX() + pOffsetX, this.getY() + pOffsetY, this.getZ() + pOffsetZ);
+    }
+
+    private double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
+        if (this.isDeadOrDying()) {
+            pPartialTicks = 0.0F;
+        }
+
+        pPartialTicks = 1.0F - pPartialTicks;
+        int i = this.posPointer - pBufferIndexOffset & 63;
+        int j = this.posPointer - pBufferIndexOffset - 1 & 63;
+        double[] adouble = new double[3];
+        double d0 = this.positions[i][0];
+        double d1 = Mth.wrapDegrees(this.positions[j][0] - d0);
+        adouble[0] = d0 + d1 * (double)pPartialTicks;
+        d0 = this.positions[i][1];
+        d1 = this.positions[j][1] - d0;
+        adouble[1] = d0 + d1 * (double)pPartialTicks;
+        adouble[2] = Mth.lerp(pPartialTicks, this.positions[i][2], this.positions[j][2]);
+        return adouble;
+    }
+
+    private float getHeadYOffset() {
+        double[] adouble = this.getLatencyPos(5, 1.0F);
+        double[] adouble1 = this.getLatencyPos(0, 1.0F);
+        return (float)(adouble[1] - adouble1[1]);
+    }
+
+    private float rotWrap(double pAngle) {
+        return (float)Mth.wrapDegrees(pAngle);
+    }
+
+    @Override
+    public boolean isInWall() {
+        if (this.isInWater()) {
+            return false;
+        } else {
+            return super.isInWall();
+        }
     }
 
     @Override
@@ -263,6 +536,14 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         System.out.println(this.getGenes());
         this.setAttributes(0);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+    }
+
+    @Override
+    public void setId(int p_145769_1_) { // Forge: Fix MC-158205: Set part ids to successors of parent mob id
+        super.setId(p_145769_1_);
+        for (int i = 0; i < partsAll.length; ++i) {
+            partsAll[i].setId(p_145769_1_ + i + 1);
+        }
     }
 
     @Override

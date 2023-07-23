@@ -70,7 +70,8 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
         breedingType = 1;
         maleRoamDistance = 20;
         femaleRoamDistance = 15;
-        juvinileRoamDistance = 7;
+        juvinileRoamDistance = 10;
+        childRoamDistance = 7;
         babyRoamDistance = 4;
         isLand = false;
         maxPack = 0; // No max pack, so 0 disables it.

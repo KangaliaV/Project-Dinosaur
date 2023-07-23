@@ -28,19 +28,15 @@ public class DinoScanner extends Item {
         super(pProperties);
     }
 
-    @Nonnull
-    @Override
-    public InteractionResult interactLivingEntity(@Nonnull ItemStack pStack, Player pPlayer, @Nonnull LivingEntity pInteractionTarget, @Nonnull InteractionHand pUsedHand) {
-        Level level = pPlayer.getLevel();
-        if (pInteractionTarget instanceof PrehistoricEntity) {
-            setClickedEntity((PrehistoricEntity) pInteractionTarget);
+    public void interactEntity(Player player, PrehistoricEntity prehistoric, InteractionHand hand) {
+        Level level = player.getLevel();
+        if (prehistoric != null) {
+            setClickedEntity(prehistoric);
             if (!level.isClientSide) {
-                MenuProvider containerProvider = createContainerProvider((PrehistoricEntity) pInteractionTarget, pPlayer.getItemInHand(pUsedHand));
-                NetworkHooks.openScreen((ServerPlayer) pPlayer, containerProvider);
-                return InteractionResult.SUCCESS;
+                MenuProvider containerProvider = createContainerProvider(prehistoric, player.getItemInHand(hand));
+                NetworkHooks.openScreen((ServerPlayer) player, containerProvider);
             }
         }
-        return InteractionResult.PASS;
     }
 
     private MenuProvider createContainerProvider(PrehistoricEntity entity, ItemStack stack) {
