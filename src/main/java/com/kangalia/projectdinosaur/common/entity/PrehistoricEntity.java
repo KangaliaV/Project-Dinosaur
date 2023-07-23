@@ -45,6 +45,22 @@ import java.util.UUID;
 
 public abstract class PrehistoricEntity extends TamableAnimal implements NeutralMob {
 
+    public enum Age {
+        BABY,
+        JUVENILE,
+        ADULT
+    }
+
+    public Age getPrehistoricAge() {
+        if (this.isBaby()) {
+            return Age.BABY;
+        } else if (this.isJuvenile()) {
+            return Age.JUVENILE;
+        } else {
+            return Age.ADULT;
+        }
+    }
+
     private static final EntityDataAccessor<Integer> AGE_IN_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> AGE_SCALE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
@@ -566,13 +582,19 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     }
 
     public boolean isJuvenile() {
-        return !this.isBaby() && !this.isAdult();
+        int adultTicks = this.getAdultAge() * 24000;
+        return this.getAgeInTicks() < adultTicks && this.getAgeInTicks() > (adultTicks * 0.6);
+    }
+
+    public boolean isChild() {
+        int adultTicks = this.getAdultAge() * 24000;
+        return this.getAgeInTicks() < (adultTicks * 0.6) && this.getAgeInTicks() > (adultTicks * 0.25);
     }
 
     @Override
     public boolean isBaby() {
         int adultTicks = this.getAdultAge() * 24000;
-        return this.getAgeInTicks() < (adultTicks * 0.5);
+        return this.getAgeInTicks() < (adultTicks * 0.25);
     }
 
     public int getAgeInDays() {

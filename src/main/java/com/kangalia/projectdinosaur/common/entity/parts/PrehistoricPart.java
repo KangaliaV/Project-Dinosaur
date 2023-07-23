@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.parts;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -15,25 +16,26 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.entity.PartEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> {
+
     public final PrehistoricEntity prehistoric;
 
-    private final EntityDimensions activeSize;
-    private final EntityDimensions unactiveSize = EntityDimensions.scalable(0.0f, 0.0f);
-    private final String age;
-    private boolean active;
+    private final String part;
 
-    public PrehistoricPart(T parent, float width, float height, String age) {
+    public PrehistoricPart(T parent, String part) {
         super(parent);
         this.prehistoric = parent;
-        this.activeSize = EntityDimensions.scalable(width, height);
-        this.age = age;
+        this.part = part;
         this.refreshDimensions();
     }
 
@@ -54,20 +56,47 @@ public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> 
 
     @Override
     public EntityDimensions getDimensions(Pose pPose) {
-        if (this.age != null) {
-            boolean a = this.prehistoric.isBaby() && this.age.equals("baby");
-            boolean b = this.prehistoric.isJuvenile() && this.age.equals("juvi");
-            boolean c = this.prehistoric.isAdult() && this.age.equals("adult");
-            if (a || b || c) {
-                this.active = true;
-                return this.activeSize;
-            } else {
-                this.active = false;
-                return this.unactiveSize;
+        if (this.prehistoric instanceof AustralovenatorEntity) {
+            return australovenatorDimensions();
+        }
+        return EntityDimensions.scalable(1.0f, 1.0f);
+    }
+
+    public EntityDimensions australovenatorDimensions() {
+        if (this.prehistoric.isBaby()) {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.3f, 0.38f);
+                case "neck": return EntityDimensions.scalable(0.4f, 0.45f);
+                case "body": return EntityDimensions.scalable(0.53f, 0.58f);
+                case "tail1": return EntityDimensions.scalable(0.43f, 0.4f);
+                case "tail2": return EntityDimensions.scalable(0.4f, 0.33f);
+            }
+        } else if (this.prehistoric.isChild()) {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.65f, 0.65f);
+                case "neck": return EntityDimensions.scalable(0.7f, 0.9f);
+                case "body": return EntityDimensions.scalable(0.95f, 0.85f);
+                case "tail1": return EntityDimensions.scalable(0.85f, 0.7f);
+                case "tail2": return EntityDimensions.scalable(0.7f, 0.55f);
+            }
+        } else if (this.prehistoric.isJuvenile()) {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.85f, 0.85f);
+                case "neck": return EntityDimensions.scalable(0.9f, 1.1f);
+                case "body": return EntityDimensions.scalable(1.15f, 1.15f);
+                case "tail1": return EntityDimensions.scalable(1.05f, 0.9f);
+                case "tail2": return EntityDimensions.scalable(0.9f, 0.75f);
             }
         } else {
-            return this.unactiveSize;
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(1.1f, 1.1f);
+                case "neck": return EntityDimensions.scalable(1.2f, 1.6f);
+                case "body": return EntityDimensions.scalable(1.7f, 1.9f);
+                case "tail1": return EntityDimensions.scalable(1.5f, 1.2f);
+                case "tail2": return EntityDimensions.scalable(1.2f, 0.9f);
+            }
         }
+        return EntityDimensions.scalable(1.0f, 1.0f);
     }
 
     @Override
@@ -97,9 +126,8 @@ public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> 
         zOld = getZ();
         yRotO = getYRot();
         xRotO = getXRot();
-        if (this.active) {
-            this.collideWithOthers();
-        }
+        this.collideWithOthers();
+        this.refreshDimensions();
         super.tick();
     }
 
