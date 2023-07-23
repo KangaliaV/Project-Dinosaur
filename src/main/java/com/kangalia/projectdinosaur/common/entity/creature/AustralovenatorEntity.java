@@ -113,7 +113,6 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         tail2 = new PrehistoricPart(this, "tail2");
         
         this.partsAll = new PrehistoricPart[]{body, head, tail1, tail2, neck};
-
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
@@ -480,7 +479,7 @@ public class AustralovenatorEntity extends PrehistoricEntity implements GeoEntit
         pPart.setPos(this.getX() + pOffsetX, this.getY() + pOffsetY, this.getZ() + pOffsetZ);
     }
 
-    public double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
+    private double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
         if (this.isDeadOrDying()) {
             pPartialTicks = 0.0F;
         }

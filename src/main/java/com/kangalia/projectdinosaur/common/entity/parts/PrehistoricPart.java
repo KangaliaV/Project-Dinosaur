@@ -3,6 +3,7 @@ package com.kangalia.projectdinosaur.common.entity.parts;
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.GastornisEntity;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -61,6 +62,8 @@ public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> 
             return australovenatorDimensions();
         } else if (this.prehistoric instanceof AphanerammaEntity) {
             return aphanerammaDimensions();
+        } else if (this.prehistoric instanceof GastornisEntity) {
+            return gastornisDimensions();
         }
         return EntityDimensions.scalable(1.0f, 1.0f);
     }
@@ -130,6 +133,39 @@ public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> 
                 case "body": return EntityDimensions.scalable(1.7f, 1.9f);
                 case "tail1": return EntityDimensions.scalable(1.5f, 1.2f);
                 case "tail2": return EntityDimensions.scalable(1.2f, 0.9f);
+            }
+        }
+        return EntityDimensions.scalable(1.0f, 1.0f);
+    }
+
+    public EntityDimensions gastornisDimensions() {
+        if (this.prehistoric.isBaby()) {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.2f, 0.2f);
+                case "neck": return EntityDimensions.scalable(0.18f, 0.3f);
+                case "body": return EntityDimensions.scalable(0.27f, 0.4f);
+                case "tail": return EntityDimensions.scalable(0.22f, 0.22f);
+            }
+        } else if (this.prehistoric.isChild()) {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.4f, 0.4f);
+                case "neck": return EntityDimensions.scalable(0.38f, 0.5f);
+                case "body": return EntityDimensions.scalable(0.47f, 0.65f);
+                case "tail": return EntityDimensions.scalable(0.42f, 0.42f);
+            }
+        } else if (this.prehistoric.isJuvenile()) {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.6f, 0.8f);
+                case "neck": return EntityDimensions.scalable(0.58f, 0.9f);
+                case "body": return EntityDimensions.scalable(0.67f, 1.15f);
+                case "tail": return EntityDimensions.scalable(0.62f, 0.62f);
+            }
+        } else {
+            switch (this.part) {
+                case "head": return EntityDimensions.scalable(0.7f, 0.7f);
+                case "neck": return EntityDimensions.scalable(0.7f, 0.9f);
+                case "body": return EntityDimensions.scalable(0.8f, 1.5f);
+                case "tail": return EntityDimensions.scalable(0.8f, 0.9f);
             }
         }
         return EntityDimensions.scalable(1.0f, 1.0f);

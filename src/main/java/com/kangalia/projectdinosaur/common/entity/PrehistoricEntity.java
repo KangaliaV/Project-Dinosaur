@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity;
 
 import com.kangalia.projectdinosaur.common.block.enrichment.EnrichmentBlock;
+import com.kangalia.projectdinosaur.common.entity.parts.PrehistoricPart;
 import com.kangalia.projectdinosaur.common.item.Cryoporter;
 import com.kangalia.projectdinosaur.common.item.DinoScanner;
 import com.kangalia.projectdinosaur.common.item.GenomeScanner;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
@@ -44,22 +46,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public abstract class PrehistoricEntity extends TamableAnimal implements NeutralMob {
-
-    public enum Age {
-        BABY,
-        JUVENILE,
-        ADULT
-    }
-
-    public Age getPrehistoricAge() {
-        if (this.isBaby()) {
-            return Age.BABY;
-        } else if (this.isJuvenile()) {
-            return Age.JUVENILE;
-        } else {
-            return Age.ADULT;
-        }
-    }
 
     private static final EntityDataAccessor<Integer> AGE_IN_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> AGE_SCALE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.FLOAT);

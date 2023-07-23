@@ -404,7 +404,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         pPart.setPos(this.getX() + pOffsetX, this.getY() + pOffsetY, this.getZ() + pOffsetZ);
     }
 
-    public double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
+    private double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
         if (this.isDeadOrDying()) {
             pPartialTicks = 0.0F;
         }
