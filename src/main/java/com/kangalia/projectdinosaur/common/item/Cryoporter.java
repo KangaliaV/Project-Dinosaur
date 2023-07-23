@@ -43,7 +43,7 @@ public class Cryoporter extends Item {
     }*/
 
     public void interactEntity(Player pPlayer, PrehistoricEntity prehistoric, InteractionHand pUsedHand) {
-        Level level = pPlayer.getLevel();
+        Level level = pPlayer.level();
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
         if (!level.isClientSide) {
             saveEntity(stack, prehistoric);
@@ -57,7 +57,7 @@ public class Cryoporter extends Item {
         Player player = pContext.getPlayer();
         assert player != null;
         ItemStack stack = player.getItemInHand(hand);
-        Level level = player.getLevel();
+        Level level = player.level();
         BlockPos clickedPos = pContext.getClickedPos().above();
         if (!level.isClientSide) {
             releaseEntity(stack, clickedPos, level, player, hand);

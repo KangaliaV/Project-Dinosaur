@@ -29,7 +29,7 @@ public class DinoScanner extends Item {
     }
 
     public void interactEntity(Player player, PrehistoricEntity prehistoric, InteractionHand hand) {
-        Level level = player.getLevel();
+        Level level = player.level();
         if (prehistoric != null) {
             setClickedEntity(prehistoric);
             if (!level.isClientSide) {

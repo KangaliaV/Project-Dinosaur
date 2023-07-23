@@ -52,7 +52,7 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new TrilobiteEntity.TrilobiteMoveControl();
         this.lookControl = new TrilobiteEntity.TrilobiteLookControl();
-        this.maxUpStep = 1.0F;
+        this.setMaxUpStep(1.0F);
         minSize = 0.25F;
         maxMaleSize = 1.0F;
         maxFemaleSize = 1.2F;

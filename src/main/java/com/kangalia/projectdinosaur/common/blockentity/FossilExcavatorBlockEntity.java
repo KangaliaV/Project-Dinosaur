@@ -257,7 +257,7 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
                         input.shrink(1);
                         break;
                     } else {
-                        if (ItemStack.isSame(stack, output) && stack.getCount() + 1 < 64) {
+                        if (ItemStack.isSameItem(stack, output) && stack.getCount() + 1 < 64) {
                             stack.grow(1);
                             chisel.setDamageValue(chisel.getDamageValue()+1);
                             input.shrink(1);

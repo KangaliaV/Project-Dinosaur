@@ -82,7 +82,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements GeoEntity 
         super(entityType, world);
         this.moveControl = new ScelidosaurusEntity.ScelidosaurusMoveControl();
         this.lookControl = new ScelidosaurusEntity.ScelidosaurusLookControl();
-        this.maxUpStep = 0.5F;
+        this.setMaxUpStep(0.5F);
         minSize = 0.25F;
         maxMaleSize = 1.1F;
         maxFemaleSize = 1.0F;
@@ -216,7 +216,7 @@ public class ScelidosaurusEntity extends PrehistoricEntity implements GeoEntity 
     @Override
     public boolean isColliding(BlockPos pos, BlockState state) {
         if (isCustomMultiPart()) {
-            VoxelShape voxelShape = state.getCollisionShape(this.level, pos, CollisionContext.of(this));
+            VoxelShape voxelShape = state.getCollisionShape(this.level(), pos, CollisionContext.of(this));
             VoxelShape voxelShape2 = voxelShape.move(pos.getX(), pos.getY(), pos.getZ());
             return Shapes.joinIsNotEmpty(voxelShape2, Shapes.create(getParts()[0].getBoundingBox()), BooleanOp.AND);
         }

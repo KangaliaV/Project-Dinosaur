@@ -134,11 +134,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.isAngry()) {
                 this.setLastHurtByMob(this.getLastHurtByMob());
             }
-            this.updatePersistentAnger((ServerLevel)this.level, true);
+            this.updatePersistentAnger((ServerLevel)this.level(), true);
         }
     }
 
@@ -206,7 +206,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             multiplier = multiplier * 1.5f;
         }
 
-        return Math.min(this.getAdultAge(), this.getAdultAge() * (int)multiplier) + this.level.random.nextInt(3);
+        return Math.min(this.getAdultAge(), this.getAdultAge() * (int)multiplier) + this.level().random.nextInt(3);
     }
 
     @Override
@@ -231,7 +231,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public void tick() {
         super.tick();
         refreshDimensions();
-        if (!level.isClientSide) {
+        if (!level().isClientSide) {
 
             // AGE
             if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !adultFlag) {
@@ -468,7 +468,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 this.heal(this.random.nextInt(3) + 1);
             }
             item.shrink(1);
-            this.level.playSound(null, this.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
+            this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.getSoundVolume(), this.getVoicePitch());
         }
     }
 
@@ -489,9 +489,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             return false;
         } else if (this.isTerrestrial() && this.isInWater()) {
             return false;
-        } else if (this.level.isDay() && getSleepSchedule() == 1) {
+        } else if (this.level().isDay() && getSleepSchedule() == 1) {
             return true;
-        } else if (!this.level.isDay() && getSleepSchedule() == 0) {
+        } else if (!this.level().isDay() && getSleepSchedule() == 0) {
             return true;
         } else return false;
     }
@@ -921,7 +921,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setScrem(pCompound.getBoolean("Screm"));
         this.setStunted(pCompound.getBoolean("Stunted"));
         this.setRemainingCryosicknessTime(pCompound.getInt("RemainingCryosicknessTime"));
-        this.readPersistentAngerSaveData(this.level, pCompound);
+        this.readPersistentAngerSaveData(this.level(), pCompound);
         this.setEnrichment(pCompound.getInt("Enrichment"));
         this.setEnrichmentTicks(pCompound.getInt("EnrichmentTicks"));
         this.setEnrichmentCooldown(pCompound.getInt("EnrichmentCooldown"));

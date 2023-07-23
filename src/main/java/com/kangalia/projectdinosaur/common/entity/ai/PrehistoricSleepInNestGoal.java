@@ -65,7 +65,7 @@ public class PrehistoricSleepInNestGoal extends MoveToBlockGoal {
         } else {
             if (prehistoricEntity.getNestPos() != BlockPos.ZERO) {
                 this.blockPos = prehistoricEntity.getNestPos();
-                return this.isValidTarget(this.mob.level, this.blockPos);
+                return this.isValidTarget(this.mob.level(), this.blockPos);
             }
         }
         return false;

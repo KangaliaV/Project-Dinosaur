@@ -170,7 +170,7 @@ public class GroundFeederBlockEntity extends BlockEntity {
                         flag = true;
                     }
                     if (flag) {
-                        entity.level.playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, entity.getVoicePitch());
+                        entity.level().playSound(null, entity.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, entity.getVoicePitch());
                         assert level != null;
                         updateBlock();
                         level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);

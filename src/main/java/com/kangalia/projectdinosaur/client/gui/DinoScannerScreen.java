@@ -6,6 +6,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -35,18 +36,18 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
     }
 
     @Override
-    public void render(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+    public void render(GuiGraphics stack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(stack);
+        super.render(stack, mouseX, mouseY, partialTicks);
+        this.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(@Nonnull PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics pPoseStack, float x, int y, int z) {
         RenderSystem.setShaderTexture(0, SCANNER);
         int i = this.getGuiLeft();
         int j = this.getGuiTop();
-        this.blit(pPoseStack, i-40, j-20, 0, 0, 247, 169);
+        pPoseStack.blit(SCANNER, i-40, j-20, 0, 0, 247, 169);
         if (scanner.getTag() != null) {
             renderEntityInInventoryFollowsAngle(pPoseStack, i + 112, j + 80, scanner.getTag().getInt("dino.scale"), 200, 180, container.getPrehistoricEntity());
         } else {
@@ -55,57 +56,57 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
     }
 
     @Override
-    protected void renderLabels(@Nonnull PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.title, (float)this.titleLabelX, (float)this.titleLabelY, 9544081);
+    protected void renderLabels(GuiGraphics pPoseStack, int pMouseX, int pMouseY) {
+        pPoseStack.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 9544081);
         if (scanner.hasTag()) {
             if (scanner.getTag() != null) {
                 if (scanner.getTag().getBoolean("dino.hasnickname")) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_nickname", scanner.getTag().getString("dino.nickname")), 55, 126, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_nickname", scanner.getTag().getString("dino.nickname")), 55, 126, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_nickname", "-----"), 55, 126, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_nickname", "-----"), 55, 126, 9544081);
                 }
-                pPoseStack.scale(0.8f, 0.8f, 0.8f);
-                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_age", scanner.getTag().getInt("dino.age")), -30, 12, 9544081);
+                pPoseStack.pose().scale(0.8f, 0.8f, 0.8f);
+                pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_age", scanner.getTag().getInt("dino.age")), -30, 12, 9544081);
                 if (scanner.getTag().getInt("dino.sex") == 0) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_sex", Component.translatable("attribute.projectdinosaur.male")), -30, 28, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_sex", Component.translatable("attribute.projectdinosaur.male")), -30, 28, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_sex", Component.translatable("attribute.projectdinosaur.female")), -30, 28, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_sex", Component.translatable("attribute.projectdinosaur.female")), -30, 28, 9544081);
                 }
-                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_health", scanner.getTag().getInt("dino.health"), scanner.getTag().getInt("dino.maxhealth")), -30, 44, 9544081);
-                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_food", scanner.getTag().getInt("dino.food"), scanner.getTag().getInt("dino.maxfood")), -30, 60, 9544081);
-                this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_enrichment", scanner.getTag().getInt("dino.enrichment"), scanner.getTag().getInt("dino.maxenrichment")), -30, 76, 9544081);
+                pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_health", scanner.getTag().getInt("dino.health"), scanner.getTag().getInt("dino.maxhealth")), -30, 44, 9544081);
+                pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_food", scanner.getTag().getInt("dino.food"), scanner.getTag().getInt("dino.maxfood")), -30, 60, 9544081);
+                pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_enrichment", scanner.getTag().getInt("dino.enrichment"), scanner.getTag().getInt("dino.maxenrichment")), -30, 76, 9544081);
                 if (scanner.getTag().getInt("dino.mood") == 0) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.happy")), -30, 92, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.happy")), -30, 92, 9544081);
                 } else if (scanner.getTag().getInt("dino.mood") == 1) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.moody")), -30, 92, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.moody")), -30, 92, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.angry")), -30, 92, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_mood", Component.translatable("attribute.projectdinosaur.angry")), -30, 92, 9544081);
                 }
                 if (scanner.getTag().getInt("dino.diet") == 0) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.herbivore")), -30, 108, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.herbivore")), -30, 108, 9544081);
                 } else if (scanner.getTag().getInt("dino.diet") == 1) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.carnivore")), -30, 108, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.carnivore")), -30, 108, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.piscivore")), -30, 108, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_diet", Component.translatable("attribute.projectdinosaur.piscivore")), -30, 108, 9544081);
                 }
                 if (scanner.getTag().getInt("dino.schedule") == 0) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.diurnal")), -30, 124, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.diurnal")), -30, 124, 9544081);
                 } else if (scanner.getTag().getInt("dino.schedule") == 1) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.nocturnal")), -30, 124, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.nocturnal")), -30, 124, 9544081);
                 } else {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.cathemeral")), -30, 124, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_schedule", Component.translatable("attribute.projectdinosaur.cathemeral")), -30, 124, 9544081);
                 }
                 if (scanner.getTag().getBoolean("dino.iscryosick")) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_cryosick"), -30, 140, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_cryosick"), -30, 140, 9544081);
                 }
                 if (scanner.getTag().getBoolean("dino.islonely")) {
-                    this.font.draw(pPoseStack, Component.translatable("data.projectdinosaur.dino_lonely"), -30, 156, 9544081);
+                    pPoseStack.drawString(this.font, Component.translatable("data.projectdinosaur.dino_lonely"), -30, 156, 9544081);
                 }
             }
         }
     }
 
-    public static void renderEntityInInventoryFollowsAngle(PoseStack p_275396_, int p_275688_, int p_275245_, int p_275535_, float angleXComponent, float angleYComponent, LivingEntity p_275689_) {
+    public static void renderEntityInInventoryFollowsAngle(GuiGraphics p_275396_, int p_275688_, int p_275245_, int p_275535_, float angleXComponent, float angleYComponent, LivingEntity p_275689_) {
         float f = angleXComponent;
         float f1 = angleYComponent;
         Quaternionf quaternionf = (new Quaternionf()).rotateZ((float)Math.PI);
@@ -121,7 +122,7 @@ public class DinoScannerScreen extends AbstractContainerScreen<DinoScannerContai
         p_275689_.setXRot(-f1 * 20.0F);
         p_275689_.yHeadRot = p_275689_.getYRot();
         p_275689_.yHeadRotO = p_275689_.getYRot();
-        renderEntityInInventory(p_275396_, p_275688_, p_275245_, p_275535_, quaternionf, quaternionf1, p_275689_);
+        renderEntityInInventory(p_275396_.pose(), p_275688_, p_275245_, p_275535_, quaternionf, quaternionf1, p_275689_);
         p_275689_.yBodyRot = f2;
         p_275689_.setYRot(f3);
         p_275689_.setXRot(f4);
