@@ -29,7 +29,7 @@ public class PrehistoricCheckPackGoal extends Goal {
         this.prehistoricEntity = prehistoric;
         this.minPack = minPack;
         this.maxPack = maxPack;
-        this.level = prehistoric.getLevel();
+        this.level = prehistoric.level();
         this.packClass = prehistoric.getClass();
         this.setFlags(EnumSet.of(Goal.Flag.LOOK));
     }

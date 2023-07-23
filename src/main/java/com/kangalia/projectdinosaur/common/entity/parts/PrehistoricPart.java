@@ -256,7 +256,7 @@ public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> 
     }
 
     private void collideWithOthers() {
-        List<Entity> list = this.getLevel().getEntities(this, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
+        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
 
         for (Entity entity : list) {
             if (entity.isPushable()) {

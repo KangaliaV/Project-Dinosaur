@@ -91,7 +91,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new AphanerammaEntity.AphanerammaMoveControl(this);
         this.lookControl = new AphanerammaEntity.AphanerammaLookControl(this, 20);
-        this.maxUpStep = 1.0F;
+        this.setMaxUpStep(1.0F);
         minSize = 0.25F;
         maxMaleSize = 0.8F;
         maxFemaleSize = 1.0F;
@@ -230,7 +230,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
     @Override
     public boolean isColliding(BlockPos pos, BlockState state) {
         if (isCustomMultiPart()) {
-            VoxelShape voxelShape = state.getCollisionShape(this.level, pos, CollisionContext.of(this));
+            VoxelShape voxelShape = state.getCollisionShape(this.level(), pos, CollisionContext.of(this));
             VoxelShape voxelShape2 = voxelShape.move(pos.getX(), pos.getY(), pos.getZ());
             return Shapes.joinIsNotEmpty(voxelShape2, Shapes.create(getParts()[0].getBoundingBox()), BooleanOp.AND);
         }
@@ -764,7 +764,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
             int k = randomsource.nextInt(1025) - 512;
             int l = randomsource.nextInt(9) - 4;
             int i1 = randomsource.nextInt(1025) - 512;
-            if ((double)l + this.aphaneramma.getY() > (double)(this.aphaneramma.level.getSeaLevel() - 1)) {
+            if ((double)l + this.aphaneramma.getY() > (double)(this.aphaneramma.level().getSeaLevel() - 1)) {
                 l = 0;
             }
 
@@ -788,7 +788,7 @@ public class AphanerammaEntity extends PrehistoricEntity implements GeoEntity {
                     int i = Mth.floor(vec31.x);
                     int j = Mth.floor(vec31.z);
                     int k = 34;
-                    if (!this.aphaneramma.level.hasChunksAt(i - 34, j - 34, i + 34, j + 34)) {
+                    if (!this.aphaneramma.level().hasChunksAt(i - 34, j - 34, i + 34, j + 34)) {
                         vec31 = null;
                     }
                 }

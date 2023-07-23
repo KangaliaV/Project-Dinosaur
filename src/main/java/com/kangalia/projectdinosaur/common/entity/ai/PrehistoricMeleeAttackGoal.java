@@ -37,7 +37,7 @@ public class PrehistoricMeleeAttackGoal extends MeleeAttackGoal {
     }
 
     public boolean canUse() {
-        long i = this.mob.level.getGameTime();
+        long i = this.mob.level().getGameTime();
         LivingEntity livingentity = this.mob.getTarget();
         if (!this.prehistoric.isAngry()) {
             if (!this.prehistoric.isHungry()) {
@@ -112,7 +112,7 @@ public class PrehistoricMeleeAttackGoal extends MeleeAttackGoal {
             this.mob.doHurtTarget(pEnemy);
             if (pEnemy.isDeadOrDying()) {
                 this.prehistoric.setHunger(this.prehistoric.getHunger() + this.random.nextInt(8) + 3);
-                this.prehistoric.level.playSound(null, this.prehistoric.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.prehistoric.getSoundVolume(), this.prehistoric.getVoicePitch());
+                this.prehistoric.level().playSound(null, this.prehistoric.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, this.prehistoric.getSoundVolume(), this.prehistoric.getVoicePitch());
                 if (this.prehistoric.getHunger() > prehistoric.maxFood) {
                     this.prehistoric.setHunger(prehistoric.maxFood);
                 }

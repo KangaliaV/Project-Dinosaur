@@ -4,7 +4,7 @@ import com.kangalia.projectdinosaur.core.init.*;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,6 +31,7 @@ public class ProjectDinosaur {
         EntityInit.ENTITY_TYPES.register(bus);
         RecipeInit.register(bus);
         SoundInit.register(bus);
+        CreativeTabInit.register(bus);
 
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -46,8 +47,8 @@ public class ProjectDinosaur {
         });
     }
 
-    private void addCreative(CreativeModeTabEvent.BuildContents event) {
-        if (event.getTab() == CreativeTabInit.DINO_BLOCKS) {
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTab() == CreativeTabInit.DINO_BLOCKS.get()) {
 
             // PETRIFIED WOOD
             event.accept(BlockInit.PETRIFIED_LOG);
@@ -130,7 +131,7 @@ public class ProjectDinosaur {
 
 
 
-        } else if (event.getTab() == CreativeTabInit.DINO_ITEMS) {
+        } else if (event.getTab() == CreativeTabInit.DINO_ITEMS.get()) {
 
             // TOOLS
             event.accept(ItemInit.IRON_CHISEL);
@@ -178,7 +179,7 @@ public class ProjectDinosaur {
             event.accept(ItemInit.CRYOPORTER);
             event.accept(ItemInit.GENOME_SCANNER);
 
-        } else if (event.getTab() == CreativeTabInit.DINO_CREATURES) {
+        } else if (event.getTab() == CreativeTabInit.DINO_CREATURES.get()) {
 
             // DNA
             event.accept(ItemInit.APHANERAMMA_DNA);
@@ -222,7 +223,7 @@ public class ProjectDinosaur {
             event.accept(BlockInit.GORGONOPS_EGG_INCUBATED);
             event.accept(BlockInit.SCELIDOSAURUS_EGG_INCUBATED);
 
-        } else if (event.getTab() == CreativeTabInit.DINO_SPAWN_EGGS) {
+        } else if (event.getTab() == CreativeTabInit.DINO_SPAWN_EGGS.get()) {
             event.accept(ItemInit.APHANERAMMA_SPAWN_EGG);
             event.accept(ItemInit.ATHROPLEURA_SPAWN_EGG);
             event.accept(ItemInit.AUSTRALOVENATOR_SPAWN_EGG);

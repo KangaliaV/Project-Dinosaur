@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -198,7 +199,7 @@ public class AustralovenatorEggBlock extends PrehistoricEggBlock {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         return Collections.emptyList();
     }
 

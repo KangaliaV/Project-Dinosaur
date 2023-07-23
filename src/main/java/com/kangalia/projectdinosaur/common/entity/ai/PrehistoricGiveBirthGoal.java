@@ -70,7 +70,7 @@ public class PrehistoricGiveBirthGoal extends MoveToBlockGoal {
 
     private void layEgg(PrehistoricEntity female, String mate) {
         if (!female.isInWater()) {
-            Level level = female.level;
+            Level level = female.level();
             BlockPos eggPos = this.blockPos.above();
             level.playSound(null, eggPos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + level.random.nextFloat() * 0.2F);
             Block eggType = female.getEggType();
@@ -102,7 +102,7 @@ public class PrehistoricGiveBirthGoal extends MoveToBlockGoal {
     }
 
     private void laySpawn(PrehistoricEntity female, String mate) {
-        if (!female.level.isClientSide) {
+        if (!female.level().isClientSide) {
             ItemStack itemstack = female.getPrehistoricSpawnType();
             if (female instanceof AphanerammaEntity) {
                 itemstack = new ItemStack(ItemInit.APHANERAMMA_SPAWN_ITEM.get());
@@ -115,8 +115,8 @@ public class PrehistoricGiveBirthGoal extends MoveToBlockGoal {
                 compoundtag.put("parentGenome", female.writeSpawnParents(mate));
                 BlockItem.setBlockEntityData(itemstack, BlockEntitiesInit.TRILOBITE_SPAWN_ENTITY.get(), compoundtag);
             }
-            ItemEntity item = new ItemEntity(female.level, female.getX(), female.getY(), female.getZ(), itemstack);
-            female.level.addFreshEntity(item);
+            ItemEntity item = new ItemEntity(female.level(), female.getX(), female.getY(), female.getZ(), itemstack);
+            female.level().addFreshEntity(item);
         }
         female.setPregnant(false);
     }
