@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.entity.parts;
 
 import com.kangalia.projectdinosaur.common.entity.PrehistoricEntity;
+import com.kangalia.projectdinosaur.common.entity.creature.AphanerammaEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.AustralovenatorEntity;
 import com.kangalia.projectdinosaur.core.init.ItemInit;
 import net.minecraft.nbt.CompoundTag;
@@ -58,6 +59,41 @@ public class PrehistoricPart<T extends PrehistoricEntity> extends PartEntity<T> 
     public EntityDimensions getDimensions(Pose pPose) {
         if (this.prehistoric instanceof AustralovenatorEntity) {
             return australovenatorDimensions();
+        } else if (this.prehistoric instanceof AphanerammaEntity) {
+            return aphanerammaDimensions();
+        }
+        return EntityDimensions.scalable(1.0f, 1.0f);
+    }
+
+    public EntityDimensions aphanerammaDimensions() {
+        if (this.prehistoric.isBaby()) {
+            switch (this.part) {
+                case "body": return EntityDimensions.scalable(0.25f, 0.1f);
+                case "head":
+                case "tail":
+                    return EntityDimensions.scalable(0.15f, 0.1f);
+            }
+        } else if (this.prehistoric.isChild()) {
+            switch (this.part) {
+                case "body": return EntityDimensions.scalable(0.4f, 0.2f);
+                case "head":
+                case "tail":
+                    return EntityDimensions.scalable(0.3f, 0.2f);
+            }
+        } else if (this.prehistoric.isJuvenile()) {
+            switch (this.part) {
+                case "body": return EntityDimensions.scalable(0.55f, 0.3f);
+                case "head":
+                case "tail":
+                    return EntityDimensions.scalable(0.45f, 0.3f);
+            }
+        } else {
+            switch (this.part) {
+                case "body": return EntityDimensions.scalable(0.7f, 0.4f);
+                case "head":
+                case "tail":
+                    return EntityDimensions.scalable(0.6f, 0.4f);
+            }
         }
         return EntityDimensions.scalable(1.0f, 1.0f);
     }
