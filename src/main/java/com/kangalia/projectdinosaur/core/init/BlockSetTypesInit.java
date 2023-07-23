@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BlockSetTypesInit {
 
-    public static final BlockSetType PETRIFIED_TYPE = BlockSetType.register(new BlockSetType(ProjectDinosaur.MODID + "petrified_type"));
+    public static final BlockSetType PETRIFIED_TYPE = BlockSetType.register(new BlockSetType(ProjectDinosaur.MODID + "petrified"));
 
-    public static final WoodType PETRIFIED_WOOD_TYPE = new WoodType(new ResourceLocation(ProjectDinosaur.MODID, "petrified_wood_type").toString(), BlockSetTypesInit.PETRIFIED_TYPE);
+    public static final WoodType PETRIFIED_WOOD_TYPE = new WoodType(new ResourceLocation(ProjectDinosaur.MODID, "petrified").toString(), BlockSetTypesInit.PETRIFIED_TYPE);
 
 }

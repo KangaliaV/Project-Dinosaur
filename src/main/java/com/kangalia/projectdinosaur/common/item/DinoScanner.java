@@ -72,6 +72,7 @@ public class DinoScanner extends Item {
             nbt.putString("dino.nickname", "null");
         }
         nbt.putBoolean("dino.iscryosick", prehistoric.isCryosick());
+        nbt.putBoolean("dino.islonely", prehistoric.isLonely());
         nbt.putInt("dino.age", prehistoric.getAgeInDays());
         nbt.putInt("dino.sex", prehistoric.getGender());
         nbt.putInt("dino.health", Math.round((int)prehistoric.getHealth()));

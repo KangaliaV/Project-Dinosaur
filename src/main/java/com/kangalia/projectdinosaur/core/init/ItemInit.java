@@ -119,5 +119,6 @@ public class ItemInit {
     public static final RegistryObject<Item> LOVE_POTION = ITEMS.register("love_potion", () -> new LovePotion(new Item.Properties()));
     public static final RegistryObject<Item> HUNGER_POTION = ITEMS.register("hunger_potion", () -> new HungerPotion(new Item.Properties()));
     public static final RegistryObject<Item> ANGER_POTION = ITEMS.register("anger_potion", () -> new AngerPotion(new Item.Properties()));
+    public static final RegistryObject<Item> PACK_POTION = ITEMS.register("pack_potion", () -> new PackPotion(new Item.Properties()));
 
 }

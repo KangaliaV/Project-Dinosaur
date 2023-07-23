@@ -67,6 +67,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> PREGNANCY_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> MATE = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> CHECK_PACK_TICKS = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> LONELY = SynchedEntityData.defineId(PrehistoricEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
@@ -96,8 +98,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int maleRoamDistance;
     public int femaleRoamDistance;
     public int juvinileRoamDistance;
+    public int childRoamDistance;
     public int babyRoamDistance;
     public boolean isLand;
+    public int maxPack;
+    public int minPack;
+    public int maxTotalPack;
 
     protected PrehistoricEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
@@ -118,6 +124,7 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setHunger(maxFood);
         this.setHungerTicks(1600);
         this.setRemainingCryosicknessTime(0);
+        this.setCheckPackTicks(this.random.nextInt(3000) + 6000);
         this.setEnrichment(maxEnrichment / 2);
         this.setEnrichmentTicks(2000);
         this.setAttributes(0);
@@ -138,8 +145,10 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
     public int getRoamDistance() {
         if (this.isBaby()) {
             return babyRoamDistance;
+        } else if (this.isChild()) {
+            return childRoamDistance;
         } else if (this.isJuvenile()) {
-            return juvinileRoamDistance;
+                return juvinileRoamDistance;
         } else {
             if (this.getGender() == 0) {
                 return maleRoamDistance;
@@ -147,6 +156,22 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 return femaleRoamDistance;
             }
         }
+    }
+
+    public int getCheckPackTicks() {
+        return this.entityData.get(CHECK_PACK_TICKS);
+    }
+
+    public void setCheckPackTicks(int ticks) {
+        this.entityData.set(CHECK_PACK_TICKS, ticks);
+    }
+
+    public boolean isLonely() {
+        return this.entityData.get(LONELY);
+    }
+
+    public void setLonely(boolean lonely) {
+        this.entityData.set(LONELY, lonely);
     }
 
     @Override
@@ -211,10 +236,12 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             // AGE
             if (this.getAgeInTicks() == this.getAdultAge() * 24000 && !adultFlag) {
                 this.setAttributes(0);
+                refreshDimensions();
                 adultFlag = true;
             }
             if (this.isJuvenile() && !juviFlag) {
                 this.setAttributes(1);
+                refreshDimensions();
                 juviFlag = true;
             }
             if (!this.isStunted()) {
@@ -225,7 +252,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
             // HUNGER
             if (this.getHungerTicks() > 0) {
-                this.setHungerTicks(this.getHungerTicks() - 1);
+                int hungerLoss = 1;
+                if (this.isLonely()) {
+                    hungerLoss = 2;
+                }
+                this.setHungerTicks(this.getHungerTicks() - hungerLoss);
             } else if (this.getHungerTicks() <= 0) {
                 if (this.getHunger() > 0) {
                     this.setHunger(this.getHunger() - 1);
@@ -239,7 +270,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
 
             // ENRICHMENT
             if (this.getEnrichmentTicks() > 0) {
-                this.setEnrichmentTicks(this.getEnrichmentTicks() - 1);
+                int enrichmentLoss = 1;
+                if (this.isLonely()) {
+                    enrichmentLoss = 2;
+                }
+                this.setEnrichmentTicks(this.getEnrichmentTicks() - enrichmentLoss);
             } else if (this.getEnrichmentTicks() <= 0) {
                 if (this.getEnrichment() > 0) {
                     this.setEnrichment(this.getEnrichment() - 1);
@@ -264,6 +299,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
                 this.setPregnancyTicks(this.getPregnancyTicks() - 1);
             }
 
+
+            // CHECK PACK
+            if (this.getCheckPackTicks() > 0) {
+                this.setCheckPackTicks(this.getCheckPackTicks() - 1);
+            }
 
             // CRYOSICKNESS
             if (this.getRemainingCryosicknessTime() > 0) {
@@ -293,7 +333,11 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
             // HEALTH REGEN
             if (this.getHealth() < this.getMaxHealth() && !this.isStarving()) {
                 this.setHealingTicks(this.getHealingTicks() + 1);
-                if (this.getHealingTicks() == 100) {
+                int healingTicksNeeded = 100;
+                if (this.isLonely()) {
+                    healingTicksNeeded = 200;
+                }
+                if (this.getHealingTicks() == healingTicksNeeded) {
                     this.setHealth(this.getHealth() + 1);
                     this.setHunger(this.getHunger() - 1);
                     if (this.getHealth() > this.getMaxHealth()) {
@@ -826,6 +870,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.entityData.define(PREGNANT, false);
         this.entityData.define(PREGNANCY_TICKS, 0);
         this.entityData.define(MATE, "");
+        this.entityData.define(CHECK_PACK_TICKS, 0);
+        this.entityData.define(LONELY, false);
+
     }
 
     @Override
@@ -854,6 +901,9 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         pCompound.putBoolean("Pregnant", this.isPregnant());
         pCompound.putInt("PregnancyTicks", this.getPregnancyTicks());
         pCompound.putString("Mate", this.getMate());
+        pCompound.putInt("CheckPackTicks", this.getCheckPackTicks());
+        pCompound.putBoolean("Lonely", this.isLonely());
+
     }
 
     @Override
@@ -882,5 +932,8 @@ public abstract class PrehistoricEntity extends TamableAnimal implements Neutral
         this.setPregnant(pCompound.getBoolean("Pregnant"));
         this.setPregnancyTicks(pCompound.getInt("PregnancyTicks"));
         this.setMate(pCompound.getString("Mate"));
+        this.setCheckPackTicks(pCompound.getInt("CheckPackTicks"));
+        this.setLonely(pCompound.getBoolean("Lonely"));
+
     }
 }

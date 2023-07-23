@@ -70,14 +70,18 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
         breedingType = 1;
         maleRoamDistance = 20;
         femaleRoamDistance = 15;
-        juvinileRoamDistance = 7;
+        juvinileRoamDistance = 10;
+        childRoamDistance = 7;
         babyRoamDistance = 4;
         isLand = false;
+        maxPack = 0; // No max pack, so 0 disables it.
+        minPack = 1;
+        maxTotalPack = 0; // No max total pack, so 0 disables it.
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 4.0F)
+                .add(Attributes.MAX_HEALTH, 32.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
@@ -89,13 +93,13 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
     public void randomizeAttributes(int age) {
         if (age == 0) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(32.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)));
         } else if (age == 1) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 1.5);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(32.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8)) / 2);
         } else {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6))/2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(32.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 8))/4);
         }
     }
 
@@ -123,7 +127,7 @@ public class TrilobiteEntity extends PrehistoricEntity implements GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.5D));
-        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 3));
         this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));

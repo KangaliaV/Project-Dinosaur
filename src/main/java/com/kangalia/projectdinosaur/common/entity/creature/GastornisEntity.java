@@ -6,6 +6,7 @@ import com.kangalia.projectdinosaur.common.entity.genetics.genomes.GastornisGeno
 import com.kangalia.projectdinosaur.common.entity.parts.PrehistoricPart;
 import com.kangalia.projectdinosaur.core.init.BlockInit;
 import com.kangalia.projectdinosaur.core.init.EntityInit;
+import com.kangalia.projectdinosaur.core.init.SoundInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -97,8 +98,12 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         maleRoamDistance = 64;
         femaleRoamDistance = 48;
         juvinileRoamDistance = 24;
+        childRoamDistance = 10;
         babyRoamDistance = 4;
         isLand = true;
+        maxPack = 8;
+        minPack = 2;
+        maxTotalPack = 14;
 
         head = new PrehistoricPart(this, "head");
         neck = new PrehistoricPart(this, "neck");
@@ -110,7 +115,7 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 13.0F)
+                .add(Attributes.MAX_HEALTH, 80.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.4F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
@@ -123,15 +128,15 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         if (age == 0) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)));
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)));
         } else if (age == 1) {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 1.5);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9)) / 2);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)) / 2);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10)) / 2);
         } else {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7))/2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 9))/4);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10))/4);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 10))/4);
         }
     }
 
@@ -164,8 +169,9 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
-        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 8));
         this.goalSelector.addGoal(0, new PrehistoricGiveBirthGoal(this, this.getMate(), 2.0D, 32));
+        this.goalSelector.addGoal(0, new PrehistoricCheckPackGoal(this, 2, 8));
         this.goalSelector.addGoal(1, new PrehistoricBreedGoal(this, 2.0D));
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
@@ -176,6 +182,9 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, 25, true, false, this::isMoodyAt));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, AustralovenatorEntity.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, GastornisEntity.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, ScelidosaurusEntity.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(2, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
@@ -483,17 +492,26 @@ public class GastornisEntity extends PrehistoricEntity implements GeoEntity {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.BAT_AMBIENT;
+        if (this.isMoody()) {
+            return SoundInit.GASTORNIS_HISS.get();
+        } else {
+            if (this.random.nextBoolean()) {
+                return SoundInit.GASTORNIS_FLAPPING.get();
+            } else {
+                return SoundInit.GASTORNIS_CALL.get();
+
+            }
+        }
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.BAT_HURT;
+        return SoundInit.GASTORNIS_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.BAT_DEATH;
+        return SoundInit.GASTORNIS_DEATH.get();
     }
 
     @Override
