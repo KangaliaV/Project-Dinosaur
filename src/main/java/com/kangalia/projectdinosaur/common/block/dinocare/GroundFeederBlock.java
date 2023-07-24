@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -122,7 +124,7 @@ public class GroundFeederBlock extends Block implements EntityBlock, SimpleWater
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         FluidState fluidState = pContext.getLevel().getFluidState(pContext.getClickedPos());
-        boolean flag = fluidState.getType() != Fluids.EMPTY;
+        boolean flag = fluidState.getType() == Fluids.WATER;
         return super.getStateForPlacement(pContext).setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.POWERED, false).setValue(WATERLOGGED, flag);
     }
 
