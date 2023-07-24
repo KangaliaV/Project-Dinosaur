@@ -40,43 +40,43 @@ public class PlacedFeatures {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
         register(context, QUATERNARY_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.QUATERNARY_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(52), VerticalAnchor.absolute(64))));
         register(context, NEOGENE_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.QUATERNARY_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(42), VerticalAnchor.absolute(54))));
         register(context, PALEOGENE_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.NEOGENE_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(32), VerticalAnchor.absolute(44))));
         register(context, CRETACEOUS_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.CRETACEOUS_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(22), VerticalAnchor.absolute(34))));
         register(context, JURASSIC_FOSSI_PLACEDL_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.JURASSIC_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(12), VerticalAnchor.absolute(24))));
         register(context, TRIASSIC_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.TRIASSIC_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(2), VerticalAnchor.absolute(14))));
         register(context, PERMIAN_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.PERMIAN_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(-8), VerticalAnchor.absolute(4))));
         register(context, CARBONIFEROUS_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.CARBONIFEROUS_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(-18), VerticalAnchor.absolute(-6))));
         register(context, DEVONIAN_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.DEVONIAN_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(-28), VerticalAnchor.absolute(-16))));
         register(context, SILURIAN_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.SILURIAN_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(-38), VerticalAnchor.absolute(-26))));
         register(context, ORDOVICIAN_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.ORDOVICIAN_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(-48), VerticalAnchor.absolute(-36))));
         register(context, CAMBRIAN_FOSSIL_PLACED_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.CAMBRIAN_FOSSIL_KEY),
-                commonOrePlacement(10, // VeinsPerChunk
+                commonOrePlacement(6, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(-58), VerticalAnchor.absolute(-46))));
 
-        register(context, PETRIFIED_LOG_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.PETRIFIED_LOG_KEY), commonOrePlacement(12, // VeinsPerChunk
+        register(context, PETRIFIED_LOG_KEY, configuredFeatures.getOrThrow(ConfiguredFeatures.PETRIFIED_LOG_KEY), commonOrePlacement(8, // VeinsPerChunk
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(8), VerticalAnchor.absolute(64))));
     }
 
