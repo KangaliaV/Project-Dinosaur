@@ -101,7 +101,7 @@ public class ItemInit {
     //Miscellaneous Items
     public static final RegistryObject<Item> PETRIFIED_BOAT = ITEMS.register("petrified_boat", () -> new PetrifiedBoatItem(false, new Item.Properties().stacksTo(1), BlockSetTypesInit.PETRIFIED_WOOD_TYPE));
     public static final RegistryObject<Item> PETRIFIED_CHEST_BOAT = ITEMS.register("petrified_chest_boat", () -> new PetrifiedBoatItem(true, new Item.Properties().stacksTo(1), BlockSetTypesInit.PETRIFIED_WOOD_TYPE));
-    public static final RegistryObject<Item> ROTTEN_EGG = ITEMS.register("rotten_egg", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> ROTTEN_EGG = ITEMS.register("rotten_egg", () -> new RottenEggItem(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> SYRINGE = ITEMS.register("syringe", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> NUTRIENT_GOO = ITEMS.register("nutrient_goo", () -> new Item(new Item.Properties().stacksTo(64)));
 
