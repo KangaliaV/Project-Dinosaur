@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.common.item;
 
 import com.kangalia.projectdinosaur.common.entity.PetrifiedBoatEntity;
+import com.kangalia.projectdinosaur.common.entity.PetrifiedChestBoatEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -11,6 +12,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -20,56 +23,60 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class PetrifiedBoatItem extends BoatItem {
-    private static final Predicate<Entity> field_219989_a = EntitySelector.NO_SPECTATORS.and(Entity::canBeCollidedWith);
-    private final Boat.Type woodType;
+    private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
+    private final String woodType;
     private final boolean hasChest;
 
-    public PetrifiedBoatItem(boolean hasChest, Item.Properties properties, Boat.Type woodType) {
-        super(hasChest, woodType, properties);
-        this.woodType = woodType;
+    public PetrifiedBoatItem(boolean hasChest, Item.Properties properties, WoodType woodType) {
+        super(hasChest, Boat.Type.OAK, properties);
+        this.woodType = woodType.name();
         this.hasChest = hasChest;
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
-        ItemStack itemstack = p_77659_2_.getItemInHand(p_77659_3_);
-        HitResult raytraceresult = getPlayerPOVHitResult(p_77659_1_, p_77659_2_, ClipContext.Fluid.ANY);
-        if (raytraceresult.getType() == HitResult.Type.MISS) {
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        HitResult hitresult = getPlayerPOVHitResult(pLevel, pPlayer, ClipContext.Fluid.ANY);
+        if(hitresult.getType() == HitResult.Type.MISS) {
             return InteractionResultHolder.pass(itemstack);
         } else {
-            Vec3 vector3d = p_77659_2_.getViewVector(1.0F);
-            double d0 = 5.0D;
-            List<Entity> list = p_77659_1_.getEntities(p_77659_2_, p_77659_2_.getBoundingBox().expandTowards(vector3d.scale(5.0D)).inflate(1.0D), field_219989_a);
-            if (!list.isEmpty()) {
-                Vec3 vector3d1 = p_77659_2_.getEyePosition(1.0F);
+            Vec3 vec3 = pPlayer.getViewVector(1);
+            List<Entity> list = pLevel.getEntities(pPlayer, pPlayer.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
+            if(!list.isEmpty()) {
+                Vec3 vec31 = pPlayer.getEyePosition();
 
                 for(Entity entity : list) {
-                    AABB axisalignedbb = entity.getBoundingBox().inflate((double)entity.getPickRadius());
-                    if (axisalignedbb.contains(vector3d1)) {
+                    AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
+                    if(aabb.contains(vec31)) {
                         return InteractionResultHolder.pass(itemstack);
                     }
                 }
             }
 
-            if (raytraceresult.getType() == HitResult.Type.BLOCK) {
-                PetrifiedBoatEntity boatentity = new PetrifiedBoatEntity(p_77659_1_, raytraceresult.getLocation().x, raytraceresult.getLocation().y, raytraceresult.getLocation().z);
-                //boatentity.setWoodType(woodType);
-                boatentity.yRotO = p_77659_2_.yRotO;
-                if (!p_77659_1_.noCollision(boatentity, boatentity.getBoundingBox().inflate(-0.1D))) {
+            if(hitresult.getType() == HitResult.Type.BLOCK) {
+                Boat boat = getBoat(pLevel, hitresult);
+                boat.setYRot(pPlayer.getYRot());
+                if(!pLevel.noCollision(boat, boat.getBoundingBox())) {
                     return InteractionResultHolder.fail(itemstack);
                 } else {
-                    if (!p_77659_1_.isClientSide) {
-                        p_77659_1_.addFreshEntity(boatentity);
-                        if (!p_77659_2_.getAbilities().instabuild) {
+                    if(!pLevel.isClientSide) {
+                        pLevel.addFreshEntity(boat);
+                        pLevel.gameEvent(pPlayer, GameEvent.ENTITY_PLACE, hitresult.getLocation());
+                        if(!pPlayer.getAbilities().instabuild) {
                             itemstack.shrink(1);
                         }
                     }
 
-                    p_77659_2_.awardStat(Stats.ITEM_USED.get(this));
-                    return InteractionResultHolder.sidedSuccess(itemstack, p_77659_1_.isClientSide());
+                    pPlayer.awardStat(Stats.ITEM_USED.get(this));
+                    return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
                 }
             } else {
                 return InteractionResultHolder.pass(itemstack);
             }
         }
+    }
+
+    private Boat getBoat(Level level, HitResult hitResult) {
+        return hasChest ? new PetrifiedChestBoatEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, woodType) : new PetrifiedBoatEntity(level, hitResult.getLocation().x, hitResult.getLocation().y, hitResult.getLocation().z, woodType);
     }
 }

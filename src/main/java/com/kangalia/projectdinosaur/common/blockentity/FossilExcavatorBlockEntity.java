@@ -249,17 +249,29 @@ public class FossilExcavatorBlockEntity extends BlockEntity {
             ItemStack chisel = inputs.getStackInSlot(0);
             ItemStack output = getOutput(selectedRecipe);
             if (!output.isEmpty()) {
+                boolean slotFlag = false;
                 for (int slot = 0; slot < 6; slot++) {
                     ItemStack stack = outputs.getStackInSlot(slot);
-                    if (stack.isEmpty()) {
-                        outputs.insertItem(slot, output, false);
-                        chisel.setDamageValue(chisel.getDamageValue()+1);
+                    if (ItemStack.isSameItem(stack, output) && stack.getCount() + 1 < 65) {
+                        stack.grow(1);
+                        chisel.setDamageValue(chisel.getDamageValue() + 1);
+                        if (chisel.getDamageValue() > chisel.getMaxDamage()) {
+                            chisel.shrink(1);
+                        }
                         input.shrink(1);
+                        slotFlag = true;
                         break;
-                    } else {
-                        if (ItemStack.isSameItem(stack, output) && stack.getCount() + 1 < 64) {
-                            stack.grow(1);
-                            chisel.setDamageValue(chisel.getDamageValue()+1);
+                    }
+                }
+                if (!slotFlag) {
+                    for (int slot = 0; slot < 6; slot++) {
+                        ItemStack stack = outputs.getStackInSlot(slot);
+                        if (stack.isEmpty()) {
+                            outputs.insertItem(slot, output, false);
+                            chisel.setDamageValue(chisel.getDamageValue() + 1);
+                            if (chisel.getDamageValue() > chisel.getMaxDamage()) {
+                                chisel.shrink(1);
+                            }
                             input.shrink(1);
                             break;
                         }
