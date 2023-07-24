@@ -167,6 +167,8 @@ public class ProjectDinosaur {
             event.accept(ItemInit.CAMBRIAN_FOSSIL_SPECIMEN);
 
             // MISCELLANEOUS
+            event.accept(ItemInit.PETRIFIED_BOAT);
+            event.accept(ItemInit.PETRIFIED_CHEST_BOAT);
             event.accept(ItemInit.ROTTEN_EGG);
             event.accept(ItemInit.SYRINGE);
             event.accept(ItemInit.NUTRIENT_GOO);

@@ -1,6 +1,7 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
+import com.kangalia.projectdinosaur.common.entity.PetrifiedChestBoatEntity;
 import com.kangalia.projectdinosaur.common.entity.creature.*;
 import com.kangalia.projectdinosaur.common.entity.PetrifiedBoatEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -17,6 +18,9 @@ public class EntityInit {
     public static final RegistryObject<EntityType<PetrifiedBoatEntity>> PETRIFIED_BOAT = ENTITY_TYPES.register("petrified_boat",
             () -> EntityType.Builder.<PetrifiedBoatEntity>of(PetrifiedBoatEntity::new, MobCategory.MISC).sized(0.5f, 0.5f)
                     .build(new ResourceLocation(ProjectDinosaur.MODID, "petrified_boat").toString()));
+    public static final RegistryObject<EntityType<PetrifiedChestBoatEntity>> PETRIFIED_CHEST_BOAT = ENTITY_TYPES.register("petrified_chest_boat",
+            () -> EntityType.Builder.<PetrifiedChestBoatEntity>of(PetrifiedChestBoatEntity::new, MobCategory.MISC).sized(0.5f, 0.5f)
+                    .build(new ResourceLocation(ProjectDinosaur.MODID, "petrified_chest_boat").toString()));
 
     //Dinos
     public static final RegistryObject<EntityType<AphanerammaEntity>> APHANERAMMA = ENTITY_TYPES.register("aphaneramma",
