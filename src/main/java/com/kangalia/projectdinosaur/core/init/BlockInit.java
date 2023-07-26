@@ -114,9 +114,9 @@ public class BlockInit {
 
     //Spawn
     public static final RegistryObject<Block> APHANERAMMA_SPAWN = registerWaterSpawnBlock("aphaneramma_spawn", () -> new AphanerammaSpawnBlock(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.APHANERAMMA));
-    public static final RegistryObject<Block> ARTHROPLEURA_SPAWN = registerEggBlock("arthropleura_spawn", () -> new Block(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> GUIYU_SPAWN = registerEggBlock("guiyu_spawn", () -> new Block(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> MEGALOGRAPTUS_SPAWN = registerEggBlock("megalograptus_spawn", () -> new Block(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> MEGANEURA_SPAWN = registerEggBlock("meganeura_spawn", () -> new MeganeuraSpawnBlock(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion(), EntityInit.MEGANEURA));
     public static final RegistryObject<Block> TIKTAALIK_SPAWN = registerEggBlock("tiktaalik_spawn", () -> new Block(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion()));
     public static final RegistryObject<Block> TRILOBITE_SPAWN = registerEggBlock("trilobite_spawn", () -> new TrilobiteSpawnBlock(BlockBehaviour.Properties.copy(Blocks.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN), EntityInit.TRILOBITE));
 

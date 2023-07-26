@@ -135,7 +135,7 @@
   "item.projectdinosaur.nutrient_goo": "Nutrient Goo",
 
   "item.projectdinosaur.aphaneramma_spawn_egg": "Aphaneramma Spawn Egg",
-  "item.projectdinosaur.arthropleura_spawn_egg": "Arthropleura Spawn Egg",
+  "item.projectdinosaur.meganeura_spawn_egg": "Meganeura Spawn Egg",
   "item.projectdinosaur.australovenator_spawn_egg": "Australovenator Spawn Egg",
   "item.projectdinosaur.dire_wolf_spawn_egg": "Dire Wolf Spawn Egg",
   "item.projectdinosaur.guiyu_spawn_egg": "Guiyu Spawn Egg",
@@ -148,7 +148,7 @@
   "item.projectdinosaur.trilobite_spawn_egg": "Trilobite Spawn Egg",
 
   "item.projectdinosaur.aphaneramma_dna": "Aphaneramma DNA",
-  "item.projectdinosaur.arthropleura_dna": "Arthropleura DNA",
+  "item.projectdinosaur.meganeura_dna": "Meganeura DNA",
   "item.projectdinosaur.australovenator_dna": "Australovenator DNA",
   "item.projectdinosaur.dire_wolf_dna": "Dire Wolf DNA",
   "item.projectdinosaur.guiyu_dna": "Guiyu DNA",
@@ -161,7 +161,7 @@
   "item.projectdinosaur.trilobite_dna": "Trilobite DNA",
 
   "block.projectdinosaur.aphaneramma_spawn": "Aphaneramma Spawn",
-  "block.projectdinosaur.arthropleura_spawn": "Arthropleura Spawn",
+  "block.projectdinosaur.meganeura_spawn": "Meganeura Spawn",
   "block.projectdinosaur.guiyu_spawn": "Guiyu Spawn",
   "block.projectdinosaur.megalograptus_spawn": "Megalograptus Spawn",
   "block.projectdinosaur.tiktaalik_spawn": "Tiktaalik Spawn",

@@ -88,7 +88,7 @@ public class DNARecombinatorBlockEntity extends BlockEntity {
                 }
                 if (slot == 0) {
                     return stack.getItem() == ItemInit.APHANERAMMA_DNA.get() ||
-                            stack.getItem() == ItemInit.ARTHROPLEURA_DNA.get() ||
+                            stack.getItem() == ItemInit.MEGANEURA_DNA.get() ||
                             stack.getItem() == ItemInit.AUSTRALOVENATOR_DNA.get() ||
                             stack.getItem() == ItemInit.DIRE_WOLF_DNA.get() ||
                             stack.getItem() == ItemInit.GUIYU_DNA.get() ||

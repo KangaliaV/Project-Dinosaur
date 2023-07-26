@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "projectdinosaur:aphaneramma_dna",
-    "projectdinosaur:arthropleura_dna",
     "projectdinosaur:australovenator_dna",
     "projectdinosaur:dire_wolf_dna",
     "projectdinosaur:guiyu_dna",
@@ -10,6 +9,7 @@
     "projectdinosaur:gorgonops_dna",
     "projectdinosaur:megalodon_dna",
     "projectdinosaur:megalograptus_dna",
+    "projectdinosaur:meganeura_dna",
     "projectdinosaur:scelidosaurus_dna",
     "projectdinosaur:tiktaalik_dna",
     "projectdinosaur:trilobite_dna"

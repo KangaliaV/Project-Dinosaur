@@ -30,6 +30,7 @@ public class BlockEntitiesInit {
 
     //Spawn
     public static final RegistryObject<BlockEntityType<AphanerammaSpawnBlockEntity>> APHANERAMMA_SPAWN_ENTITY = TILE_ENTITIES.register("aphaneramma_spawn", () -> BlockEntityType.Builder.of(AphanerammaSpawnBlockEntity::new, BlockInit.APHANERAMMA_SPAWN.get()).build(null));
+    public static final RegistryObject<BlockEntityType<MeganeuraSpawnBlockEntity>> MEGANEURA_SPAWN_ENTITY = TILE_ENTITIES.register("meganeura_spawn", () -> BlockEntityType.Builder.of(MeganeuraSpawnBlockEntity::new, BlockInit.MEGANEURA_SPAWN.get()).build(null));
     public static final RegistryObject<BlockEntityType<TrilobiteSpawnBlockEntity>> TRILOBITE_SPAWN_ENTITY = TILE_ENTITIES.register("trilobite_spawn", () -> BlockEntityType.Builder.of(TrilobiteSpawnBlockEntity::new, BlockInit.TRILOBITE_SPAWN.get()).build(null));
 
 

@@ -1,15 +1,15 @@
 {
   "type": "projectdinosaur:extracting",
-  "weight": 3,
+  "weight": 5,
   "ingredients": [
     {
       "item": "projectdinosaur:syringe"
     },
     {
-      "item": "projectdinosaur:permian_fossil_specimen"
+      "item": "projectdinosaur:carboniferous_fossil_specimen"
     }
   ],
   "result": {
-    "item": "projectdinosaur:arthropleura_dna"
+    "item": "projectdinosaur:meganeura_dna"
   }
 }

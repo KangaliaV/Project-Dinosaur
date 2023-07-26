@@ -50,7 +50,6 @@ public class ItemInit {
 
     //DNA
     public static final RegistryObject<Item> APHANERAMMA_DNA = ITEMS.register("aphaneramma_dna", () -> new Item(new Item.Properties().stacksTo(64)));
-    public static final RegistryObject<Item> ARTHROPLEURA_DNA = ITEMS.register("arthropleura_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> AUSTRALOVENATOR_DNA = ITEMS.register("australovenator_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> DIRE_WOLF_DNA = ITEMS.register("dire_wolf_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> GUIYU_DNA = ITEMS.register("guiyu_dna", () -> new Item(new Item.Properties().stacksTo(64)));
@@ -58,6 +57,7 @@ public class ItemInit {
     public static final RegistryObject<Item> GORGONOPS_DNA = ITEMS.register("gorgonops_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> MEGALODON_DNA = ITEMS.register("megalodon_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> MEGALOGRAPTUS_DNA = ITEMS.register("megalograptus_dna", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> MEGANEURA_DNA = ITEMS.register("meganeura_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> SCELIDOSAURUS_DNA = ITEMS.register("scelidosaurus_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> TIKTAALIK_DNA = ITEMS.register("tiktaalik_dna", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> TRILOBITE_DNA = ITEMS.register("trilobite_dna", () -> new Item(new Item.Properties().stacksTo(64)));
@@ -70,9 +70,9 @@ public class ItemInit {
 
     //Spawn
     public static final RegistryObject<Item> APHANERAMMA_SPAWN_ITEM = ITEMS.register("aphaneramma_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.APHANERAMMA_SPAWN.get(), new Item.Properties()));
-    public static final RegistryObject<Item> ARTHROPLEURA_SPAWN_ITEM = ITEMS.register("arthropleura_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.ARTHROPLEURA_SPAWN.get(), new Item.Properties()));
     public static final RegistryObject<Item> GUIYU_SPAWN_ITEM = ITEMS.register("guiyu_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.GUIYU_SPAWN.get(), new Item.Properties()));
     public static final RegistryObject<Item> MEGALOGRAPTUS_SPAWN_ITEM = ITEMS.register("megalograptus_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.MEGALOGRAPTUS_SPAWN.get(), new Item.Properties()));
+    public static final RegistryObject<Item> MEGANEURA_SPAWN_ITEM = ITEMS.register("meganeura_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.MEGANEURA_SPAWN.get(), new Item.Properties()));
     public static final RegistryObject<Item> TIKTAALIK_SPAWN_ITEM = ITEMS.register("tiktaalik_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.TIKTAALIK_SPAWN.get(), new Item.Properties()));
     public static final RegistryObject<Item> TRILOBITE_SPAWN_ITEM = ITEMS.register("trilobite_spawn_item", () -> new PlaceOnWaterBlockItem(BlockInit.TRILOBITE_SPAWN.get(), new Item.Properties()));
 
@@ -86,11 +86,11 @@ public class ItemInit {
 
     //Spawn Eggs
     public static final RegistryObject<ForgeSpawnEggItem> APHANERAMMA_SPAWN_EGG = ITEMS.register("aphaneramma_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x223602, 0x395905, new Item.Properties().stacksTo(64)));
-    public static final RegistryObject<ForgeSpawnEggItem> ATHROPLEURA_SPAWN_EGG = ITEMS.register("arthropleura_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x1d1d1d, 0xa6b1b5, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> AUSTRALOVENATOR_SPAWN_EGG = ITEMS.register("australovenator_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.AUSTRALOVENATOR, 0x805e2d, 0x4d4943, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> DIRE_WOLF_SPAWN_EGG = ITEMS.register("dire_wolf_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x544742, 0x403e3d, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> GUIYU_SPAWN_EGG = ITEMS.register("guiyu_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x274f41, 0x773f28, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> GASTORNIS_SPAWN_EGG = ITEMS.register("gastornis_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.GASTORNIS, 0x433727, 0x938878, new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<ForgeSpawnEggItem> MEGANEURA_SPAWN_EGG = ITEMS.register("meganeura_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.MEGANEURA, 0x1d1d1d, 0xa6b1b5, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> GORGONOPS_SPAWN_EGG = ITEMS.register("gorgonops_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x262422, 0x968670, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> MEGALODON_SPAWN_EGG = ITEMS.register("megalodon_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0x5c6163, 0xbbc4c7, new Item.Properties().stacksTo(64)));
     public static final RegistryObject<ForgeSpawnEggItem> MEGALOGRAPTUS_SPAWN_EGG = ITEMS.register("megalograptus_spawn_egg", () -> new PrehistoricSpawnEgg(EntityInit.APHANERAMMA, 0xbbc4c7, 0xb2a3a0, new Item.Properties().stacksTo(64)));

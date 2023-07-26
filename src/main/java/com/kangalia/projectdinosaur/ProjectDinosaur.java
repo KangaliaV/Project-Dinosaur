@@ -185,7 +185,7 @@ public class ProjectDinosaur {
 
             // DNA
             event.accept(ItemInit.APHANERAMMA_DNA);
-            event.accept(ItemInit.ARTHROPLEURA_DNA);
+            event.accept(ItemInit.MEGANEURA_DNA);
             event.accept(ItemInit.AUSTRALOVENATOR_DNA);
             event.accept(ItemInit.DIRE_WOLF_DNA);
             event.accept(ItemInit.GUIYU_DNA);
@@ -205,7 +205,7 @@ public class ProjectDinosaur {
 
             // SPAWN
             event.accept(ItemInit.APHANERAMMA_SPAWN_ITEM);
-            event.accept(ItemInit.ARTHROPLEURA_SPAWN_ITEM);
+            event.accept(ItemInit.MEGANEURA_SPAWN_ITEM);
             event.accept(ItemInit.GUIYU_SPAWN_ITEM);
             event.accept(ItemInit.MEGALOGRAPTUS_SPAWN_ITEM);
             event.accept(ItemInit.TIKTAALIK_SPAWN_ITEM);
@@ -227,7 +227,7 @@ public class ProjectDinosaur {
 
         } else if (event.getTab() == CreativeTabInit.DINO_SPAWN_EGGS.get()) {
             event.accept(ItemInit.APHANERAMMA_SPAWN_EGG);
-            event.accept(ItemInit.ATHROPLEURA_SPAWN_EGG);
+            event.accept(ItemInit.MEGANEURA_SPAWN_EGG);
             event.accept(ItemInit.AUSTRALOVENATOR_SPAWN_EGG);
             event.accept(ItemInit.GUIYU_SPAWN_EGG);
             event.accept(ItemInit.DIRE_WOLF_SPAWN_EGG);

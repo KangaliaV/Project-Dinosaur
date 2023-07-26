@@ -1,0 +1,37 @@
+{
+  "parent": "projectdinosaur:pd/dna",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:gastornis_egg_incubated"
+    },
+    "title": {
+      "translate": "advancements.pd.gastornis.title"
+    },
+    "description": {
+      "translate": "advancements.pd.gastornis.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "gastornis": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:gastornis_egg_incubated"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "gastornis"
+    ]
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "parent": "projectdinosaur:challenges/root",
+  "display": {
+    "icon": {
+      "item": "projectdinosaur:aphaneramma_spawn_item"
+    },
+    "title": {
+      "translate": "advancements.challenges.incubated_egg.title"
+    },
+    "description": {
+      "translate": "advancements.challenges.incubated_egg.description"
+    },
+    "frame": "challenge",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 500
+  },
+  "criteria": {
+    "aphaneramma": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:aphaneramma_spawn_item"
+            ]
+          }
+        ]
+      }
+    },
+    "guiyu": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:guiyu_spawn_item"
+            ]
+          }
+        ]
+      }
+    },
+    "megalograptus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:megalograptus_spawn_item"
+            ]
+          }
+        ]
+      }
+    },
+    "meganeura": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:meganeura_spawn_item"
+            ]
+          }
+        ]
+      }
+    },
+    "tiktaalik": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:tiktaalik_spawn_item"
+            ]
+          }
+        ]
+      }
+    },
+    "trilobite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "projectdinosaur:trilobite_spawn_item"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "aphaneramma"
+    ],
+    [
+      "guiyu"
+    ],
+    [
+      "megalograptus"
+    ],
+    [
+      "meganeura"
+    ],
+    [
+      "tiktaalik"
+    ],
+    [
+      "trilobite"
+    ]
+  ]
+}

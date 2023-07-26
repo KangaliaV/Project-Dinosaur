@@ -3,7 +3,7 @@
   "weight": 4,
   "ingredients": [
     {
-      "item": "projectdinosaur:arthropleura_dna"
+      "item": "projectdinosaur:meganeura_dna"
     },
     {
       "item": "minecraft:egg"
@@ -16,6 +16,6 @@
     }
   ],
   "result": {
-    "item": "projectdinosaur:arthropleura_spawn_item"
+    "item": "projectdinosaur:meganeura_spawn_item"
   }
 }
