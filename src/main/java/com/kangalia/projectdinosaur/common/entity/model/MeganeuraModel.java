@@ -42,7 +42,7 @@ public class MeganeuraModel extends GeoModel<MeganeuraEntity> {
                 e.printStackTrace();
             }
         }
-        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/meganeura/meganeura_invis.png");
+        return new ResourceLocation(ProjectDinosaur.MODID, "textures/entity/mob/dino/meganeura/meganeura-invisible.png");
     }
 
     @Override

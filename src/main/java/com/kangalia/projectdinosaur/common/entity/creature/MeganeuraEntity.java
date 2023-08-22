@@ -22,15 +22,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -56,31 +58,22 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Objects;
 
-public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
+public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, FlyingAnimal {
 
     private static final EntityDataAccessor<String> GENOME = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> REST_TIMER = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> RESTING_TIME = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> RESTING = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final MeganeuraGenome genome = new MeganeuraGenome();
 
-    private final PrehistoricPart[] partsAll;
-
-    public final PrehistoricPart head;
-    public final PrehistoricPart neck;
-    public final PrehistoricPart body;
-    public final PrehistoricPart tail1;
-    public final PrehistoricPart tail2;
-
-    public final double[][] positions = new double[64][3];
-    public int posPointer = -1;
-    public float yRotA;
-    int counter = 0;
-
     public MeganeuraEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
-        this.moveControl = new MeganeuraEntity.MeganeuraMoveControl();
+        this.moveControl = new FlyingMoveControl(this, 20, true);
         this.lookControl = new MeganeuraEntity.MeganeuraLookControl();
         this.setMaxUpStep(0.5F);
         minSize = 0.25F;
@@ -107,19 +100,12 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
         maxPack = 10;
         minPack = 4;
         maxTotalPack = 10;
-
-        head = new PrehistoricPart(this, "head");
-        neck = new PrehistoricPart(this, "neck");
-        body = new PrehistoricPart(this, "body");
-        tail1 = new PrehistoricPart(this, "tail1");
-        tail2 = new PrehistoricPart(this, "tail2");
-
-        this.partsAll = new PrehistoricPart[]{body, head, tail1, tail2, neck};
     }
 
     public static AttributeSupplier.Builder setCustomAttributes() {
         return LivingEntity.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0F)
+                .add(Attributes.FLYING_SPEED, 1.4F)
                 .add(Attributes.MOVEMENT_SPEED, 0.35F)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0F)
@@ -130,30 +116,36 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
     @Override
     public void randomizeAttributes(int age) {
         if (age == 0) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)));
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(1.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
         } else if (age == 1) {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 1.5);
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(1.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 4)) / 2);
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(1.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 4);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
         }
     }
 
     private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.05F && event.getLimbSwingAmount() < 0.05F) && !this.isInWater()) {
-            event.getController().setAnimation(RawAnimation.begin().then("animation.Meganeura.run", Animation.LoopType.LOOP));
+        if (!this.isInWater() && this.isFlying()) {
+            event.getController().setAnimation(RawAnimation.begin().then("animation.meganeura.fly", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(3.5);
+        } else if (this.isInWater()) {
+            event.getController().setAnimation(RawAnimation.begin().then("animation.meganeura.swim", Animation.LoopType.LOOP));
+            event.getController().setAnimationSpeed(0.35);
         } else if (this.isSleeping()) {
-            event.getController().setAnimation(RawAnimation.begin().then("animation.Meganeura.sleep", Animation.LoopType.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.meganeura.sleep", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.35);
         } else {
-            event.getController().setAnimation(RawAnimation.begin().then("animation.Meganeura.idle", Animation.LoopType.LOOP));
-            event.getController().setAnimationSpeed(1.5);
+            event.getController().setAnimation(RawAnimation.begin().then("animation.meganeura.idle", Animation.LoopType.LOOP));
+            event.getController().setAnimationSpeed(1);
         }
         return PlayState.CONTINUE;
     }
@@ -169,7 +161,6 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 20));
@@ -179,7 +170,8 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
         this.goalSelector.addGoal(1, new PrehistoricEatFromFeederGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.25D, 200));
+        this.goalSelector.addGoal(2, new MeganeuraWanderGoal(this));
+        this.goalSelector.addGoal(3, new FloatGoal(this));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
@@ -196,20 +188,47 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            if (this.getRestTimer() > 0) {
+                this.setRestTimer(this.getRestTimer() - 1);
+            } else {
+                this.setResting(true);
+            }
+            if (this.isResting() && this.getRestingTime() < 400) {
+                this.setRestingTime(this.getRestingTime() + 1);
+            } else {
+                this.setResting(false);
+                this.setRestTimer(this.random.nextInt(1000) + 1600);
+                this.setRestingTime(0);
+            }
+        }
+    }
+
+    @Override
+    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level pLevel) {
+        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, pLevel);
+        flyingpathnavigation.setCanOpenDoors(false);
+        flyingpathnavigation.setCanFloat(true);
+        flyingpathnavigation.setCanPassDoors(false);
+        return flyingpathnavigation;
+    }
+
     public boolean isCustomMultiPart() {
         return isMultipartEntity();
     }
 
     @Override
     public boolean isMultipartEntity() {
-        return true;
+        return false;
     }
-
-    @Override
-    public @Nullable PartEntity<?>[] getParts() {
-        return partsAll;
-    }
-
+    
     @Override
     public boolean isPushable() {
         return true;
@@ -221,299 +240,13 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isColliding(BlockPos pos, BlockState state) {
-        if (isCustomMultiPart()) {
-            VoxelShape voxelShape = state.getCollisionShape(this.level(), pos, CollisionContext.of(this));
-            VoxelShape voxelShape2 = voxelShape.move(pos.getX(), pos.getY(), pos.getZ());
-            return Shapes.joinIsNotEmpty(voxelShape2, Shapes.create(getParts()[0].getBoundingBox()), BooleanOp.AND);
-        }
-        return super.isColliding(pos, state);
-    }
-
-    @Override
     public float getPickRadius() {
         if (isCustomMultiPart()) {
             return getType().getWidth() * getAgeScale() - getBbWidth();
         }
         return super.getPickRadius();
     }
-
-    @Override
-    protected AABB makeBoundingBox() {
-        if (isCustomMultiPart() && getParts() != null) {
-            return getParts()[0].getDimensions(Pose.STANDING).makeBoundingBox(position());
-        }
-        return super.makeBoundingBox();
-    }
-
-    @Override
-    public void aiStep() {
-        super.aiStep();
-        if (counter < 20) {
-            counter++;
-        } else {
-            refreshDimensions();
-            Arrays.stream(getParts()).filter(Objects::nonNull).forEach(Entity::refreshDimensions);
-            counter = 0;
-        }
-        if (this.isBaby()) {
-            babyPartControl();
-        } else if (this.isChild()) {
-            childPartControl();
-        } else if (this.isJuvenile()) {
-            juviPartControl();
-        } else {
-            adultPartControl();
-        }
-    }
-
-    private void babyPartControl() {
-        Vec3[] avec3 = new Vec3[this.partsAll.length];
-        for(int j = 0; j < this.partsAll.length; ++j) {
-            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
-        }
-        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
-        float f13 = Mth.cos(f12);
-        float f1 = Mth.sin(f12);
-        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
-        float f2 = Mth.sin(f14);
-        float f15 = Mth.cos(f14);
-        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
-        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f4 = this.getHeadYOffset();
-        if (this.isSleeping()) {
-            this.tickPart(this.head, (-f3 * 0.5F * f13), (f4 + f1), (f16 * 0.5F * f13));
-            this.tickPart(this.neck, (-f3 * 0.25F * f13), (f4 + f1), (f16 * 0.25F * f13));
-        }
-        this.tickPart(this.head, (-f3 * 0.5F * f13), (f4 + f1) + 0.35F, (f16 * 0.5F * f13));
-        this.tickPart(this.neck, (-f3 * 0.25F * f13), (f4 + f1) + 0.25F, (f16 * 0.25F * f13));
-        double[] adouble = this.getLatencyPos(5, 1.0F);
-        for(int k = 0; k < 2; ++k) {
-            PrehistoricPart prehistoricPart = null;
-            if (k == 0) {
-                prehistoricPart = this.tail1;
-            }
-
-            if (k == 1) {
-                prehistoricPart = this.tail2;
-            }
-            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
-            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
-            float f18 = Mth.sin(f17);
-            float f20 = Mth.cos(f17);
-            float f22 = (float)(k + 1) * 0.3F;
-            if (this.isSleeping()) {
-                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
-            } else {
-                this.tickPart(prehistoricPart, ((f2 * 0.1F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.25D, (-(f15 * 0.1F + f20 * f22) * f13));
-            }
-        }
-        for(int l = 0; l < this.partsAll.length; ++l) {
-            this.partsAll[l].xo = avec3[l].x;
-            this.partsAll[l].yo = avec3[l].y;
-            this.partsAll[l].zo = avec3[l].z;
-            this.partsAll[l].xOld = avec3[l].x;
-            this.partsAll[l].yOld = avec3[l].y;
-            this.partsAll[l].zOld = avec3[l].z;
-        }
-    }
-
-    private void childPartControl() {
-        Vec3[] avec3 = new Vec3[this.partsAll.length];
-        for(int j = 0; j < this.partsAll.length; ++j) {
-            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
-        }
-        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
-        float f13 = Mth.cos(f12);
-        float f1 = Mth.sin(f12);
-        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
-        float f2 = Mth.sin(f14);
-        float f15 = Mth.cos(f14);
-        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
-        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f4 = this.getHeadYOffset();
-        if (this.isSleeping()) {
-            this.tickPart(this.head, (-f3 * 0.9F * f13), (f4 + f1), (f16 * 0.9F * f13));
-            this.tickPart(this.neck, (-f3 * 0.45F * f13), (f4 + f1), (f16 * 0.45F * f13));
-        }
-        this.tickPart(this.head, (-f3 * 0.9F * f13), (f4 + f1) + 0.55F, (f16 * 0.9F * f13));
-        this.tickPart(this.neck, (-f3 * 0.45F * f13), (f4 + f1) + 0.45F, (f16 * 0.45F * f13));
-        double[] adouble = this.getLatencyPos(5, 1.0F);
-        for(int k = 0; k < 2; ++k) {
-            PrehistoricPart prehistoricPart = null;
-            if (k == 0) {
-                prehistoricPart = this.tail1;
-            }
-
-            if (k == 1) {
-                prehistoricPart = this.tail2;
-            }
-            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
-            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
-            float f18 = Mth.sin(f17);
-            float f20 = Mth.cos(f17);
-            float f22 = (float)(k + 1) * 0.5F;
-            if (this.isSleeping()) {
-                this.tickPart(prehistoricPart, ((f2 * 0.4F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.25D, (-(f15 * 0.4F + f20 * f22) * f13));
-            } else {
-                this.tickPart(prehistoricPart, ((f2 * 0.4F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.25D, (-(f15 * 0.4F + f20 * f22) * f13));
-            }
-        }
-        for(int l = 0; l < this.partsAll.length; ++l) {
-            this.partsAll[l].xo = avec3[l].x;
-            this.partsAll[l].yo = avec3[l].y;
-            this.partsAll[l].zo = avec3[l].z;
-            this.partsAll[l].xOld = avec3[l].x;
-            this.partsAll[l].yOld = avec3[l].y;
-            this.partsAll[l].zOld = avec3[l].z;
-        }
-    }
-
-    private void juviPartControl() {
-        Vec3[] avec3 = new Vec3[this.partsAll.length];
-        for(int j = 0; j < this.partsAll.length; ++j) {
-            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
-        }
-        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
-        float f13 = Mth.cos(f12);
-        float f1 = Mth.sin(f12);
-        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
-        float f2 = Mth.sin(f14);
-        float f15 = Mth.cos(f14);
-        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
-        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f4 = this.getHeadYOffset();
-        if (this.isSleeping()) {
-            this.tickPart(this.head, (-f3 * 1.2F * f13), (f4 + f1), (f16 * 1.2F * f13));
-            this.tickPart(this.neck, (-f3 * 0.6F * f13), (f4 + f1), (f16 * 0.6F * f13));
-        }
-        this.tickPart(this.head, (-f3 * 1.2F * f13), (f4 + f1) + 0.85F, (f16 * 1.2F * f13));
-        this.tickPart(this.neck, (-f3 * 0.5F * f13), (f4 + f1) + 0.55F, (f16 * 0.5F * f13));
-        double[] adouble = this.getLatencyPos(5, 1.0F);
-        for(int k = 0; k < 2; ++k) {
-            PrehistoricPart prehistoricPart = null;
-            if (k == 0) {
-                prehistoricPart = this.tail1;
-            }
-
-            if (k == 1) {
-                prehistoricPart = this.tail2;
-            }
-            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
-            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
-            float f18 = Mth.sin(f17);
-            float f20 = Mth.cos(f17);
-            float f22 = (float) (k + 1) * 0.75F;
-            if (this.isSleeping()) {
-                this.tickPart(prehistoricPart, ((f2 * 0.3F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.35D, (-(f15 * 0.3F + f20 * f22) * f13));
-            } else {
-                this.tickPart(prehistoricPart, ((f2 * 0.3F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.35D, (-(f15 * 0.3F + f20 * f22) * f13));
-            }
-        }
-        for(int l = 0; l < this.partsAll.length; ++l) {
-            this.partsAll[l].xo = avec3[l].x;
-            this.partsAll[l].yo = avec3[l].y;
-            this.partsAll[l].zo = avec3[l].z;
-            this.partsAll[l].xOld = avec3[l].x;
-            this.partsAll[l].yOld = avec3[l].y;
-            this.partsAll[l].zOld = avec3[l].z;
-        }
-    }
-
-    private void adultPartControl() {
-        Vec3[] avec3 = new Vec3[this.partsAll.length];
-        for(int j = 0; j < this.partsAll.length; ++j) {
-            avec3[j] = new Vec3(this.partsAll[j].getX(), this.partsAll[j].getY(), this.partsAll[j].getZ());
-        }
-        float f12 = (float)(this.getLatencyPos(5, 1.0F)[1] - this.getLatencyPos(10, 1.0F)[1]) * 10.0F * ((float)Math.PI / 180F);
-        float f13 = Mth.cos(f12);
-        float f1 = Mth.sin(f12);
-        float f14 = this.getViewYRot(1) * ((float)Math.PI / 180F);
-        float f2 = Mth.sin(f14);
-        float f15 = Mth.cos(f14);
-        this.tickPart(this.body, (f2 * 0.05F), 0.0D, (-f15 * 0.05F));
-        float f3 = Mth.sin(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f16 = Mth.cos(this.getViewYRot(1) * ((float)Math.PI / 180F) - this.yRotA * 0.01F);
-        float f4 = this.getHeadYOffset();
-        if (this.isSleeping()) {
-            this.tickPart(this.head, (-f3 * 1.6F * f13), (f4 + f1), (f16 * 1.6F * f13));
-            this.tickPart(this.neck, (-f3 * 0.9F * f13), (f4 + f1), (f16 * 0.9F * f13));
-        } else {
-            if (this.getGender() == 0) {
-                this.tickPart(this.head, (-f3 * 1.6F * f13), (f4 + f1) + 1.5F, (f16 * 1.6F * f13));
-                this.tickPart(this.neck, (-f3 * 0.9F * f13), (f4 + f1) + 0.75F, (f16 * 0.9F * f13));
-            } else {
-                this.tickPart(this.head, (-f3 * 1.6F * f13), (f4 + f1) + 1.3F, (f16 * 1.6F * f13));
-                this.tickPart(this.neck, (-f3 * 0.9F * f13), (f4 + f1) + 0.75F, (f16 * 0.9F * f13));
-            }
-        }
-        double[] adouble = this.getLatencyPos(5, 1.0F);
-        for(int k = 0; k < 2; ++k) {
-            PrehistoricPart prehistoricPart = null;
-            if (k == 0) {
-                prehistoricPart = this.tail1;
-            }
-
-            if (k == 1) {
-                prehistoricPart = this.tail2;
-            }
-            double[] adouble1 = this.getLatencyPos(12 + k * 2, 1.0F);
-            float f17 = this.getViewYRot(1) * ((float)Math.PI / 180F) + this.rotWrap(adouble1[0] - adouble[0]) * ((float)Math.PI / 180F);
-            float f18 = Mth.sin(f17);
-            float f20 = Mth.cos(f17);
-            float f22 = (float)(k + 1) * 1.1F;
-            if (this.isSleeping()) {
-                this.tickPart(prehistoricPart, ((f2 * 0.4F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double)((f22 + 1.5F) * f1) - 0.65D, (-(f15 * 0.4F + f20 * f22) * f13));
-            } else {
-                this.tickPart(prehistoricPart, ((f2 * 0.4F + f18 * f22) * f13), adouble1[1] - adouble[1] - (double) ((f22 + 1.5F) * f1) + 0.65D, (-(f15 * 0.4F + f20 * f22) * f13));
-            }
-        }
-        for(int l = 0; l < this.partsAll.length; ++l) {
-            this.partsAll[l].xo = avec3[l].x;
-            this.partsAll[l].yo = avec3[l].y;
-            this.partsAll[l].zo = avec3[l].z;
-            this.partsAll[l].xOld = avec3[l].x;
-            this.partsAll[l].yOld = avec3[l].y;
-            this.partsAll[l].zOld = avec3[l].z;
-        }
-    }
-
-    private void tickPart(PrehistoricPart pPart, double pOffsetX, double pOffsetY, double pOffsetZ) {
-        pPart.setPos(this.getX() + pOffsetX, this.getY() + pOffsetY, this.getZ() + pOffsetZ);
-    }
-
-    private double[] getLatencyPos(int pBufferIndexOffset, float pPartialTicks) {
-        if (this.isDeadOrDying()) {
-            pPartialTicks = 0.0F;
-        }
-
-        pPartialTicks = 1.0F - pPartialTicks;
-        int i = this.posPointer - pBufferIndexOffset & 63;
-        int j = this.posPointer - pBufferIndexOffset - 1 & 63;
-        double[] adouble = new double[3];
-        double d0 = this.positions[i][0];
-        double d1 = Mth.wrapDegrees(this.positions[j][0] - d0);
-        adouble[0] = d0 + d1 * (double)pPartialTicks;
-        d0 = this.positions[i][1];
-        d1 = this.positions[j][1] - d0;
-        adouble[1] = d0 + d1 * (double)pPartialTicks;
-        adouble[2] = Mth.lerp(pPartialTicks, this.positions[i][2], this.positions[j][2]);
-        return adouble;
-    }
-
-    private float getHeadYOffset() {
-        double[] adouble = this.getLatencyPos(5, 1.0F);
-        double[] adouble1 = this.getLatencyPos(0, 1.0F);
-        return (float)(adouble[1] - adouble1[1]);
-    }
-
-    private float rotWrap(double pAngle) {
-        return (float)Mth.wrapDegrees(pAngle);
-    }
-
+    
     @Override
     public int getAmbientSoundInterval() {
         return 120;
@@ -540,7 +273,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.SHEEP_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
     }
 
     @Override
@@ -557,12 +290,12 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
 
     @Override
     public int getClutchSize() {
-        return 3;
+        return 1;
     }
 
     @Override
     public int getAdultAge() {
-        return 10;
+        return 4;
     }
 
     @Override
@@ -570,15 +303,8 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
         this.setGenes(this.generateGenes(true));
         System.out.println(this.getGenes());
         this.setAttributes(0);
+        this.setRestTimer(2000);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
-    }
-
-    @Override
-    public void setId(int p_145769_1_) { // Forge: Fix MC-158205: Set part ids to successors of parent mob id
-        super.setId(p_145769_1_);
-        for (int i = 0; i < partsAll.length; ++i) {
-            partsAll[i].setId(p_145769_1_ + i + 1);
-        }
     }
 
     @Override
@@ -665,6 +391,31 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
         }
     }
 
+    public boolean isResting() {
+        return entityData.get(RESTING);
+    }
+
+    public void setResting(boolean resting) {
+        entityData.set(RESTING, resting);
+    }
+
+    public int getRestTimer() {
+        return entityData.get(REST_TIMER);
+    }
+
+    public void setRestTimer(int timer) {
+        entityData.set(REST_TIMER, timer);
+    }
+
+    public int getRestingTime() {
+        return entityData.get(RESTING_TIME);
+    }
+
+    public void setRestingTime(int timer) {
+        entityData.set(RESTING_TIME, timer);
+    }
+
+
     @Override
     public String getColourMorph() {
         if (genome.isAlbino(this.getGenes())) {
@@ -680,31 +431,35 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(GENOME, "");
+        this.entityData.define(REST_TIMER, 0);
+        this.entityData.define(RESTING_TIME, 0);
+        this.entityData.define(RESTING, false);
+
     }
 
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putString("Genome", this.getGenes());
+        pCompound.putInt("RestTimer", this.getRestTimer());
+        pCompound.putInt("RestingTime", this.getRestingTime());
+        pCompound.putBoolean("Resting", this.isResting());
+
     }
 
     @Override
     public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setGenes(pCompound.getString("Genome"));
+        this.setRestTimer(pCompound.getInt("RestTimer"));
+        this.setRestingTime(pCompound.getInt("RestingTime"));
+        this.setResting(pCompound.getBoolean("Resting"));
+
     }
 
-    class MeganeuraMoveControl extends MoveControl {
-        public MeganeuraMoveControl() {
-            super(MeganeuraEntity.this);
-        }
-
-        public void tick() {
-            if (!MeganeuraEntity.this.isSleeping()) {
-                super.tick();
-            }
-
-        }
+    @Override
+    public boolean isFlying() {
+        return !this.onGround();
     }
 
     public class MeganeuraLookControl extends LookControl {
@@ -717,6 +472,43 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity {
                 super.tick();
             }
 
+        }
+    }
+
+    class MeganeuraWanderGoal extends Goal {
+
+        MeganeuraEntity meganeura;
+        MeganeuraWanderGoal(MeganeuraEntity entity) {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            meganeura = entity;
+        }
+        
+        public boolean canUse() {
+            return MeganeuraEntity.this.navigation.isDone() && MeganeuraEntity.this.random.nextInt(10) == 0;
+        }
+        
+        public boolean canContinueToUse() {
+            return MeganeuraEntity.this.navigation.isInProgress();
+        }
+        
+        public void start() {
+            if (meganeura.isResting()) {
+                meganeura.setDeltaMovement(Vec3.ZERO);
+                meganeura.setPosRaw(meganeura.getX(), (double)Mth.floor(meganeura.getY()) + 1.0D - (double)meganeura.getBbHeight(), meganeura.getZ());
+            } else {
+                Vec3 vec3 = this.findPos();
+                if (vec3 != null) {
+                    MeganeuraEntity.this.navigation.moveTo(MeganeuraEntity.this.navigation.createPath(BlockPos.containing(vec3), 1), 3.0D);
+                }
+            }
+
+        }
+
+        @javax.annotation.Nullable
+        private Vec3 findPos() {
+            Vec3 vec3 = MeganeuraEntity.this.getViewVector(0.0F);
+            Vec3 vec32 = HoverRandomPos.getPos(MeganeuraEntity.this, 16, 4, vec3.x, vec3.z, ((float) Math.PI / 2F), 3, 1);
+            return vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(MeganeuraEntity.this, 16, 4, -2, vec3.x, vec3.z, (double) ((float) Math.PI / 2F));
         }
     }
 }

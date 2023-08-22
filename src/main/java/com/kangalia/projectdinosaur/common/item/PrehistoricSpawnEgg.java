@@ -49,6 +49,8 @@ public class PrehistoricSpawnEgg extends ForgeSpawnEggItem {
                     trilobite.setGenes(trilobite.generateGenes(true));
                 } else if (mob instanceof ScelidosaurusEntity scelidosaurus) {
                     scelidosaurus.setGenes(scelidosaurus.generateGenes(true));
+                } else if (mob instanceof MeganeuraEntity meganeura) {
+                    meganeura.setGenes(meganeura.generateGenes(true));
                 }
                 mob.setAgeInTicks(0);
                 mob.setGender(random.nextInt(2));
