@@ -118,17 +118,17 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     @Override
     public void randomizeAttributes(int age) {
         if (age == 0) {
-            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(1.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(10.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
         } else if (age == 1) {
-            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(1.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(10.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
-            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(1.4F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(10.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 4);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
@@ -203,6 +203,11 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
             maxTimer = 800;
         }
         if (!this.level().isClientSide()) {
+            if (this.isAngry() || this.isStarving()) {
+                this.setResting(false);
+                this.setRestingTime(0);
+                this.shouldRest = false;
+            }
             if (this.getRestTimer() > 0) {
                 this.setRestTimer(this.getRestTimer() - 1);
             } else {
