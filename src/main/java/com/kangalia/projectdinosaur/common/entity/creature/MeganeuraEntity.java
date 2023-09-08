@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -25,13 +26,16 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
+import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.*;
@@ -39,6 +43,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -68,15 +73,18 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     private static final EntityDataAccessor<Integer> REST_TIMER = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> RESTING_TIME = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> RESTING = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockPos> TRAVEL_POS = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> TRAVELLING = SynchedEntityData.defineId(MeganeuraEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final MeganeuraGenome genome = new MeganeuraGenome();
     public boolean shouldRest = false;
+    private int savedAge = 3;
 
     public MeganeuraEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
-        this.moveControl = new FlyingMoveControl(this, 20, true);
-        this.lookControl = new MeganeuraEntity.MeganeuraLookControl();
+        this.moveControl = new MeganeuraMoveControl(this, 20, true, 85, 10, 3.0F, 2.1F, false);
+        this.lookControl = new MeganeuraEntity.MeganeuraLookControl(this, 10);
         this.setMaxUpStep(0.5F);
         minSize = 0.25F;
         maxMaleSize = 1.3F;
@@ -92,7 +100,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         name = Component.translatable("dino.projectdinosaur.meganeura");
         nameScientific = Component.translatable("dino.projectdinosaur.meganeura.scientific");
         renderScale = 25;
-        breedingType = 0;
+        breedingType = 1;
         maleRoamDistance = 64;
         femaleRoamDistance = 48;
         juvinileRoamDistance = 24;
@@ -118,17 +126,17 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     @Override
     public void randomizeAttributes(int age) {
         if (age == 0) {
-            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(10.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(100.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)));
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)));
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)));
         } else if (age == 1) {
-            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(10.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(100.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 1.5);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 2);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 2);
         } else {
-            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(10.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
+            this.getAttribute(Attributes.FLYING_SPEED).setBaseValue(100.0F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F * genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 5)) / 2);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 6)) / 4);
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0F*genome.calculateCoefficient(genome.getAlleles(this.getGenes(), 7)) / 4);
@@ -142,7 +150,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         } else if (this.isInWater()) {
             event.getController().setAnimation(RawAnimation.begin().then("animation.meganeura.swim", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.35);
-        } else if (this.isResting()) {
+        } else if (this.isResting() && !this.level().isDay()) {
             event.getController().setAnimation(RawAnimation.begin().then("animation.meganeura.sleep", Animation.LoopType.LOOP));
             event.getController().setAnimationSpeed(0.35);
         } else {
@@ -173,6 +181,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(2, new MeganeuraWanderGoal(this));
+        this.goalSelector.addGoal(2, new MeganeuraBabyTravelGoal(this, 0.1D));
         this.goalSelector.addGoal(3, new FloatGoal(this));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
@@ -193,6 +202,16 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     @Override
     public void tick() {
         super.tick();
+        int currentAge;
+        if (this.isJuvenile() || this.isAdult()) {
+            currentAge = 1;
+        } else {
+            currentAge = 0;
+        }
+        if (currentAge != savedAge) {
+            this.navigation = this.createNavigation(this.level());
+            savedAge = currentAge;
+        }
         int maxRestingTime;
         int maxTimer;
         if (this.level().isDay()) {
@@ -224,17 +243,33 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         }
     }
 
+    public void travel(Vec3 p_149181_) {
+        if (this.isBaby() || this.isChild()) {
+            if (this.isEffectiveAi() && this.isInWater()) {
+                this.moveRelative(this.getSpeed(), p_149181_);
+                this.move(MoverType.SELF, this.getDeltaMovement());
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            }
+        } else {
+            super.travel(p_149181_);
+        }
+    }
+
     @Override
     protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
     @Override
     protected PathNavigation createNavigation(Level pLevel) {
-        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, pLevel);
-        flyingpathnavigation.setCanOpenDoors(false);
-        flyingpathnavigation.setCanFloat(true);
-        flyingpathnavigation.setCanPassDoors(false);
-        return flyingpathnavigation;
+        if (this.isAdult() || this.isJuvenile()) {
+            FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, pLevel);
+            flyingpathnavigation.setCanOpenDoors(false);
+            flyingpathnavigation.setCanFloat(true);
+            flyingpathnavigation.setCanPassDoors(false);
+            return flyingpathnavigation;
+        } else {
+            return new MeganeuraSwimmingPathNavigation(this, this.level());
+        }
     }
 
     public boolean isCustomMultiPart() {
@@ -253,7 +288,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
 
     @Override
     public boolean canBeCollidedWith() {
-        return !isCustomMultiPart();
+        return true;
     }
 
     @Override
@@ -432,6 +467,22 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         entityData.set(RESTING_TIME, timer);
     }
 
+    void setTravelPos(BlockPos pTravelPos) {
+        this.entityData.set(TRAVEL_POS, pTravelPos);
+    }
+
+    BlockPos getTravelPos() {
+        return this.entityData.get(TRAVEL_POS);
+    }
+
+    boolean isTravelling() {
+        return this.entityData.get(TRAVELLING);
+    }
+
+    void setTravelling(boolean pIsTravelling) {
+        this.entityData.set(TRAVELLING, pIsTravelling);
+    }
+
 
     @Override
     public String getColourMorph() {
@@ -451,6 +502,8 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         this.entityData.define(REST_TIMER, 0);
         this.entityData.define(RESTING_TIME, 0);
         this.entityData.define(RESTING, false);
+        this.entityData.define(TRAVEL_POS, BlockPos.ZERO);
+        this.entityData.define(TRAVELLING, false);
 
     }
 
@@ -461,6 +514,9 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         pCompound.putInt("RestTimer", this.getRestTimer());
         pCompound.putInt("RestingTime", this.getRestingTime());
         pCompound.putBoolean("Resting", this.isResting());
+        pCompound.putInt("TravelPosX", this.getTravelPos().getX());
+        pCompound.putInt("TravelPosY", this.getTravelPos().getY());
+        pCompound.putInt("TravelPosZ", this.getTravelPos().getZ());
 
     }
 
@@ -471,24 +527,184 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         this.setRestTimer(pCompound.getInt("RestTimer"));
         this.setRestingTime(pCompound.getInt("RestingTime"));
         this.setResting(pCompound.getBoolean("Resting"));
+        int l = pCompound.getInt("TravelPosX");
+        int i1 = pCompound.getInt("TravelPosY");
+        int j1 = pCompound.getInt("TravelPosZ");
+        this.setTravelPos(new BlockPos(l, i1, j1));
 
     }
 
     @Override
     public boolean isFlying() {
-        return !this.onGround();
+        return !this.onGround() && !this.isInWater();
     }
 
     public class MeganeuraLookControl extends LookControl {
-        public MeganeuraLookControl() {
-            super(MeganeuraEntity.this);
+
+        private final int maxYRotFromCenter;
+        private final MeganeuraEntity meganeura;
+
+        public MeganeuraLookControl(MeganeuraEntity entity, int pMaxYRotFromCenter) {
+            super(entity);
+            this.maxYRotFromCenter = pMaxYRotFromCenter;
+            this.meganeura = entity;
         }
 
         public void tick() {
-            if (!MeganeuraEntity.this.isResting()) {
-                super.tick();
+            if (!this.meganeura.isResting()) {
+                if (this.meganeura.isAdult() || this.meganeura.isJuvenile()) {
+                    super.tick();
+                } else {
+                    //From SmoothSwimmingLookControl
+                    if (this.lookAtCooldown > 0) {
+                        --this.lookAtCooldown;
+                        this.getYRotD().ifPresent((p_287449_) -> {
+                            this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, p_287449_ + 20.0F, this.yMaxRotSpeed);
+                        });
+                        this.getXRotD().ifPresent((p_289401_) -> {
+                            this.mob.setXRot(this.rotateTowards(this.mob.getXRot(), p_289401_ + 10.0F, this.xMaxRotAngle));
+                        });
+                    } else {
+                        if (this.mob.getNavigation().isDone()) {
+                            this.mob.setXRot(this.rotateTowards(this.mob.getXRot(), 0.0F, 5.0F));
+                        }
+
+                        this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.mob.yBodyRot, this.yMaxRotSpeed);
+                    }
+
+                    float f = Mth.wrapDegrees(this.mob.yHeadRot - this.mob.yBodyRot);
+                    if (f < (float)(-this.maxYRotFromCenter)) {
+                        this.mob.yBodyRot -= 4.0F;
+                    } else if (f > (float)this.maxYRotFromCenter) {
+                        this.mob.yBodyRot += 4.0F;
+                    }
+
+                }
+            }
+        }
+    }
+
+    class MeganeuraMoveControl extends MoveControl {
+        private final int maxTurn;
+        private final boolean hoversInPlace;
+        private final int maxTurnX;
+        private final int maxTurnY;
+        private final float inWaterSpeedModifier;
+        private final float outsideWaterSpeedModifier;
+        private boolean applyGravity;
+        private final MeganeuraEntity meganeuraEntity;
+
+        public MeganeuraMoveControl(MeganeuraEntity pMob, int pMaxTurn, boolean pHoversInPlace, int pMaxTurnX, int pMaxTurnY, float pInWaterSpeedModifier, float pOutsideWaterSpeedModifier, boolean pApplyGravity) {
+            super(pMob);
+            this.meganeuraEntity = pMob;
+            this.maxTurn = pMaxTurn;
+            this.hoversInPlace = pHoversInPlace;
+            this.maxTurnX = pMaxTurnX;
+            this.maxTurnY = pMaxTurnY;
+            this.inWaterSpeedModifier = pInWaterSpeedModifier;
+            this.outsideWaterSpeedModifier = pOutsideWaterSpeedModifier;
+            this.applyGravity = pApplyGravity;
+        }
+
+        public void tick() {
+            if (this.meganeuraEntity.isAdult() || this.meganeuraEntity.isJuvenile()) {
+                this.flying();
+            } else {
+                this.swimming();
+            }
+        }
+
+        public void swimming() {
+            if (this.meganeuraEntity.isFlying() && !this.mob.isInWater()) {
+                this.applyGravity = true;
+            }
+            if (this.applyGravity && this.mob.isInWater()) {
+                this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
             }
 
+            if (this.operation == MoveControl.Operation.MOVE_TO && !this.mob.getNavigation().isDone()) {
+                double d0 = this.wantedX - this.mob.getX();
+                double d1 = this.wantedY - this.mob.getY();
+                double d2 = this.wantedZ - this.mob.getZ();
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                if (d3 < (double)2.5000003E-7F) {
+                    this.mob.setZza(0.0F);
+                } else {
+                    float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                    this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, (float)this.maxTurnY));
+                    this.mob.yBodyRot = this.mob.getYRot();
+                    this.mob.yHeadRot = this.mob.getYRot();
+                    float f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                    if (this.mob.isInWater()) {
+                        this.mob.setSpeed(f1 * this.inWaterSpeedModifier);
+                        double d4 = Math.sqrt(d0 * d0 + d2 * d2);
+                        if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
+                            float f3 = -((float)(Mth.atan2(d1, d4) * (double)(180F / (float)Math.PI)));
+                            f3 = Mth.clamp(Mth.wrapDegrees(f3), (float)(-this.maxTurnX), (float)this.maxTurnX);
+                            this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f3, 5.0F));
+                        }
+
+                        float f6 = Mth.cos(this.mob.getXRot() * ((float)Math.PI / 180F));
+                        float f4 = Mth.sin(this.mob.getXRot() * ((float)Math.PI / 180F));
+                        this.mob.zza = f6 * f1;
+                        this.mob.yya = -f4 * f1;
+                    } else {
+                        float f5 = Math.abs(Mth.wrapDegrees(this.mob.getYRot() - f));
+                        float f2 = getTurningSpeedFactor(f5);
+                        this.mob.setSpeed(f1 * this.outsideWaterSpeedModifier * f2);
+                    }
+
+                }
+            } else {
+                this.mob.setSpeed(0.0F);
+                this.mob.setXxa(0.0F);
+                this.mob.setYya(0.0F);
+                this.mob.setZza(0.0F);
+            }
+        }
+
+        private static float getTurningSpeedFactor(float p_249853_) {
+            return 1.0F - Mth.clamp((p_249853_ - 10.0F) / 50.0F, 0.0F, 1.0F);
+        }
+
+        public void flying() {
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                this.operation = MoveControl.Operation.WAIT;
+                this.mob.setNoGravity(true);
+                double d0 = this.wantedX - this.mob.getX();
+                double d1 = this.wantedY - this.mob.getY();
+                double d2 = this.wantedZ - this.mob.getZ();
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                if (d3 < (double)2.5000003E-7F) {
+                    this.mob.setYya(0.0F);
+                    this.mob.setZza(0.0F);
+                    return;
+                }
+
+                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f, 90.0F));
+                float f1;
+                if (this.mob.onGround()) {
+                    f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                } else {
+                    f1 = (float)(this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED));
+                }
+
+                this.mob.setSpeed(f1);
+                double d4 = Math.sqrt(d0 * d0 + d2 * d2);
+                if (Math.abs(d1) > (double)1.0E-5F || Math.abs(d4) > (double)1.0E-5F) {
+                    float f2 = (float)(-(Mth.atan2(d1, d4) * (double)(180F / (float)Math.PI)));
+                    this.mob.setXRot(this.rotlerp(this.mob.getXRot(), f2, (float)this.maxTurn));
+                    this.mob.setYya(d1 > 0.0D ? f1 : -f1);
+                }
+            } else {
+                if (!this.hoversInPlace) {
+                    this.mob.setNoGravity(false);
+                }
+
+                this.mob.setYya(0.0F);
+                this.mob.setZza(0.0F);
+            }
         }
     }
 
@@ -501,41 +717,142 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         }
         
         public boolean canUse() {
-            return MeganeuraEntity.this.navigation.isDone() && MeganeuraEntity.this.random.nextInt(10) == 0 && MeganeuraEntity.this.getRestingTime() < 400;
+            if (this.meganeura.isBaby() || this.meganeura.isChild()) {
+                return false;
+            } else {
+                return this.meganeura.navigation.isDone() && this.meganeura.random.nextInt(10) == 0 && this.meganeura.getRestingTime() < 400;
+            }
         }
         
         public boolean canContinueToUse() {
-            return MeganeuraEntity.this.navigation.isInProgress() && !MeganeuraEntity.this.isResting();
+            return this.meganeura.navigation.isInProgress() && !this.meganeura.isResting();
         }
         
         public void start() {
             Vec3 vec3 = this.findPos();
-            if (!MeganeuraEntity.this.isResting()) {
+            if (!this.meganeura.isResting()) {
                 if (vec3 != null) {
-                    MeganeuraEntity.this.navigation.moveTo(MeganeuraEntity.this.navigation.createPath(BlockPos.containing(vec3), 1), 1.0D);
+                    this.meganeura.navigation.moveTo(this.meganeura.navigation.createPath(BlockPos.containing(vec3), 1), 0.1D);
                 }
             }
         }
 
         public void tick() {
-            if (!MeganeuraEntity.this.isFlying() && MeganeuraEntity.this.shouldRest) {
-                MeganeuraEntity.this.setResting(true);
-                MeganeuraEntity.this.shouldRest = false;
-                MeganeuraEntity.this.navigation.stop();
-                MeganeuraEntity.this.setDeltaMovement(Vec3.ZERO);
+            if (!this.meganeura.isFlying() && this.meganeura.shouldRest) {
+                this.meganeura.setResting(true);
+                this.meganeura.shouldRest = false;
+                this.meganeura.navigation.stop();
+                this.meganeura.setDeltaMovement(Vec3.ZERO);
             }
         }
 
         @javax.annotation.Nullable
         private Vec3 findPos() {
-            Vec3 vec3 = MeganeuraEntity.this.getViewVector(0.0F);
+            Vec3 vec3 = this.meganeura.getViewVector(0.0F);
             Vec3 vec32;
-            if (MeganeuraEntity.this.shouldRest) {
-                vec32 = LandRandomPos.getPos(MeganeuraEntity.this, 16, 4);
+            if (this.meganeura.shouldRest) {
+                vec32 = LandRandomPos.getPos(this.meganeura, 16, 4);
             } else {
-                vec32 = HoverRandomPos.getPos(MeganeuraEntity.this, 16, 4, vec3.x, vec3.z, 0, 3, 1);
+                vec32 = HoverRandomPos.getPos(this.meganeura, 20, 4, vec3.x, vec3.z, 0, 3, 1);
             }
-            return vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(MeganeuraEntity.this, 16, 4, -2, vec3.x, vec3.z, 0);
+            return vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(this.meganeura, 20, 4, -2, vec3.x, vec3.z, 0);
+        }
+    }
+
+    static class MeganeuraBabyTravelGoal extends Goal {
+        private final MeganeuraEntity meganeura;
+        private final double speedModifier;
+        private boolean stuck;
+
+        MeganeuraBabyTravelGoal(MeganeuraEntity entity, double pSpeedModifier) {
+            this.meganeura = entity;
+            this.speedModifier = pSpeedModifier;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            return this.meganeura.isBaby() || this.meganeura.isChild();
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            int i = 512;
+            int j = 4;
+            RandomSource randomsource = this.meganeura.random;
+            int k = randomsource.nextInt(1025) - 512;
+            int l = randomsource.nextInt(9) - 4;
+            int i1 = randomsource.nextInt(1025) - 512;
+            if ((double)l + this.meganeura.getY() > (double)(this.meganeura.level().getSeaLevel() - 1)) {
+                l = 0;
+            }
+
+            BlockPos blockpos = new BlockPos(k + (int)this.meganeura.getX(), l + (int)this.meganeura.getY(), i1 + (int)this.meganeura.getZ());
+            this.meganeura.setTravelPos(blockpos);
+            this.meganeura.setTravelling(true);
+            this.stuck = false;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            if (this.meganeura.getNavigation().isDone()) {
+                Vec3 vec3 = Vec3.atBottomCenterOf(this.meganeura.getTravelPos());
+                Vec3 vec31 = DefaultRandomPos.getPosTowards(this.meganeura, 16, 3, vec3, (double)((float)Math.PI / 10F));
+                if (vec31 == null) {
+                    vec31 = DefaultRandomPos.getPosTowards(this.meganeura, 8, 7, vec3, (double)((float)Math.PI / 2F));
+                }
+                if (vec31 != null) {
+                    int i = Mth.floor(vec31.x);
+                    int j = Mth.floor(vec31.z);
+                    int k = 34;
+                    if (!this.meganeura.level().hasChunksAt(i - 34, j - 34, i + 34, j + 34)) {
+                        vec31 = null;
+                    }
+                }
+                if (vec31 == null) {
+                    this.stuck = true;
+                    return;
+                }
+                this.meganeura.getNavigation().moveTo(vec31.x, vec31.y, vec31.z, this.speedModifier);
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            return !this.meganeura.getNavigation().isDone() && !this.stuck;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            this.meganeura.setTravelling(false);
+            super.stop();
+        }
+    }
+
+    static class MeganeuraSwimmingPathNavigation extends AmphibiousPathNavigation {
+        MeganeuraSwimmingPathNavigation(MeganeuraEntity entity, Level pLevel) {
+            super(entity, pLevel);
+        }
+
+        public boolean isStableDestination(BlockPos pPos) {
+            Mob mob = this.mob;
+            if (mob instanceof MeganeuraEntity meganeuraEntity) {
+                if (meganeuraEntity.isTravelling()) {
+                    return this.level.getBlockState(pPos).is(Blocks.WATER);
+                }
+            }
+
+            return !this.level.getBlockState(pPos.below()).isAir();
         }
     }
 }
