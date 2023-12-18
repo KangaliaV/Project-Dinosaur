@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
@@ -81,6 +83,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     private final MeganeuraGenome genome = new MeganeuraGenome();
     public boolean shouldRest = false;
     private int savedAge = 3;
+
 
     public MeganeuraEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -172,6 +175,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     }
 
     protected void registerGoals() {
+        //this.goalSelector.addGoal(0, new MeganeuraFloatGoal(this));
         this.goalSelector.addGoal(0, new PrehistoricBabyAvoidEntityGoal<>(this, Player.class, 4.0F, 2.0D, 1.5D));
         this.goalSelector.addGoal(0, new PrehistoricBabyPanicGoal(this, 2.0D));
         this.goalSelector.addGoal(0, new PrehistoricSleepInNestGoal(this, 2.0D, 32, 20));
@@ -182,7 +186,8 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         this.goalSelector.addGoal(1, new PrehistoricPlayWithEnrichmentGoal(this, 2.0D, 32));
         this.goalSelector.addGoal(1, new PrehistoricMeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(2, new MeganeuraWanderGoal(this));
-        this.goalSelector.addGoal(2, new MeganeuraBabyTravelGoal(this, 0.1D));
+        this.goalSelector.addGoal(2, new MeganeuraSwimmingGoal(this));
+        //this.goalSelector.addGoal(2, new MeganeuraBabyTravelGoal(this, 0.3D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)).setAlertOthers());
@@ -246,9 +251,14 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     public void travel(Vec3 pTravelVector) {
         if (this.isBaby() || this.isChild()) {
             if (this.isEffectiveAi() && this.isInWater()) {
-                this.moveRelative(this.getSpeed(), pTravelVector);
+                this.moveRelative(0.01F, pTravelVector);
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+                if (this.getTarget() == null) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
+                }
+            } else {
+                super.travel(pTravelVector);
             }
         } else {
             if (this.isControlledByLocalInstance()) {
@@ -376,6 +386,15 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     @Override
     public boolean canBreatheUnderwater() {
         return this.isBaby() || this.isChild();
+    }
+
+    @Override
+    public MobType getMobType() {
+        if (this.isAdult() || this.isJuvenile()) {
+            return MobType.UNDEFINED;
+        } else {
+            return MobType.WATER;
+        }
     }
 
     @Nullable
@@ -579,6 +598,15 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
     }
 
     @Override
+    public PathNavigation getNavigation() {
+        if (this.isAdult() || this.isJuvenile()) {
+            return super.getNavigation();
+        } else {
+            return new MeganeuraSwimmingPathNavigation(this, this.level());
+        }
+    }
+
+    @Override
     public boolean isFlying() {
         return !this.onGround() && !this.isInWater();
     }
@@ -659,7 +687,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         }
 
         public void swimming() {
-            if (this.meganeuraEntity.isFlying() && !this.mob.isInWater()) {
+            /*if (this.meganeuraEntity.isFlying() && !this.mob.isInWater()) {
                 this.applyGravity = true;
             }
             if (this.applyGravity && this.mob.isInWater()) {
@@ -704,6 +732,31 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
                 this.mob.setXxa(0.0F);
                 this.mob.setYya(0.0F);
                 this.mob.setZza(0.0F);
+            }*/
+
+            if (this.meganeuraEntity.isEyeInFluid(FluidTags.WATER)) {
+                this.meganeuraEntity.setDeltaMovement(this.meganeuraEntity.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
+            }
+
+            if (this.operation == MoveControl.Operation.MOVE_TO && !this.meganeuraEntity.getNavigation().isDone()) {
+                float f = (float)(this.speedModifier * this.meganeuraEntity.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                this.meganeuraEntity.setSpeed(Mth.lerp(0.125F, this.meganeuraEntity.getSpeed(), f));
+                double d0 = this.wantedX - this.meganeuraEntity.getX();
+                double d1 = this.wantedY - this.meganeuraEntity.getY();
+                double d2 = this.wantedZ - this.meganeuraEntity.getZ();
+                if (d1 != 0.0D) {
+                    double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    this.meganeuraEntity.setDeltaMovement(this.meganeuraEntity.getDeltaMovement().add(0.0D, (double)this.meganeuraEntity.getSpeed() * (d1 / d3) * 0.1D, 0.0D));
+                }
+
+                if (d0 != 0.0D || d2 != 0.0D) {
+                    float f1 = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                    this.meganeuraEntity.setYRot(this.rotlerp(this.meganeuraEntity.getYRot(), f1, 90.0F));
+                    this.meganeuraEntity.yBodyRot = this.meganeuraEntity.getYRot();
+                }
+
+            } else {
+                this.meganeuraEntity.setSpeed(0.0F);
             }
         }
 
@@ -804,7 +857,7 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
         }
     }
 
-    static class MeganeuraBabyTravelGoal extends Goal {
+    /*static class MeganeuraBabyTravelGoal extends Goal {
         private final MeganeuraEntity meganeura;
         private final double speedModifier;
         private boolean stuck;
@@ -814,17 +867,10 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
             this.speedModifier = pSpeedModifier;
         }
 
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
         public boolean canUse() {
             return this.meganeura.isBaby() || this.meganeura.isChild();
         }
 
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
         public void start() {
             RandomSource randomsource = this.meganeura.random;
             int k = randomsource.nextInt(1025) - 512;
@@ -840,15 +886,14 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
             this.stuck = false;
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
+
+        // vec31 returns null for some reason - needs work.
         public void tick() {
             if (this.meganeura.getNavigation().isDone()) {
                 Vec3 vec3 = Vec3.atBottomCenterOf(this.meganeura.getTravelPos());
-                Vec3 vec31 = DefaultRandomPos.getPosTowards(this.meganeura, 32, 3, vec3, (double)((float)Math.PI / 10F));
+                Vec3 vec31 = DefaultRandomPos.getPosTowards(this.meganeura, 32, 3, vec3, (float)Math.PI / 10F);
                 if (vec31 == null) {
-                    vec31 = DefaultRandomPos.getPosTowards(this.meganeura, 16, 7, vec3, (double)((float)Math.PI / 2F));
+                    vec31 = DefaultRandomPos.getPosTowards(this.meganeura, 16, 7, vec3, (float)Math.PI / 2F);
                 }
                 if (vec31 != null) {
                     int i = Mth.floor(vec31.x);
@@ -861,23 +906,39 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
                     this.stuck = true;
                     return;
                 }
-                this.meganeura.getNavigation().moveTo(vec31.x, vec31.y, vec31.z, this.speedModifier);
+                this.meganeura.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, this.speedModifier);
             }
         }
 
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
         public boolean canContinueToUse() {
             return !this.meganeura.getNavigation().isDone() && !this.stuck;
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
+
         public void stop() {
             this.meganeura.setTravelling(false);
             super.stop();
+        }
+    }*/
+
+    static class MeganeuraSwimmingGoal extends RandomSwimmingGoal {
+        private final MeganeuraEntity meganeuraSwim;
+
+        public MeganeuraSwimmingGoal(MeganeuraEntity entity) {
+            super(entity, 1.0D, 40);
+            this.meganeuraSwim = entity;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            if (this.meganeuraSwim.isChild() || this.meganeuraSwim.isBaby()) {
+                return super.canUse();
+            } else {
+                return false;
+            }
         }
     }
 
@@ -895,6 +956,35 @@ public class MeganeuraEntity extends PrehistoricEntity implements GeoEntity, Fly
             }
 
             return !this.level.getBlockState(pPos.below()).isAir();
+        }
+    }
+
+    public static class MeganeuraFloatGoal extends FloatGoal {
+
+        public MeganeuraEntity meganeura;
+
+        public MeganeuraFloatGoal(Mob pMob) {
+            super(pMob);
+            this.meganeura = (MeganeuraEntity) pMob;
+        }
+
+        @Override
+        public boolean canUse() {
+            //System.out.println("Adult: "+this.meganeura.isAdult()+" | Juvenile: "+this.meganeura.isJuvenile()+" | Child: "+this.meganeura.isChild()+" | Baby: +"+this.meganeura.isBaby());
+            if (this.meganeura.isAdult() || this.meganeura.isJuvenile()) {
+                return super.canUse();
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if (this.meganeura.isAdult() || this.meganeura.isJuvenile()) {
+                return super.canContinueToUse();
+            } else {
+                return false;
+            }
         }
     }
 }
