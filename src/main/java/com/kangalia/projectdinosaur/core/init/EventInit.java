@@ -1,7 +1,6 @@
 package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
-import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -61,12 +60,10 @@ public class EventInit {
                 mystuff.createFragment(ItemInit.CAMBRIAN_FOSSIL_FRAGMENT.get())
         );
 
-        fragments.forEach(stuff -> {
-            rareTrades.add((pTrader, pRandom) ->  new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 4),
-                    new ItemStack(stuff.buyItem(), 1),
-                    10, 3, 0.2f));
-        });
+        fragments.forEach(stuff -> rareTrades.add((pTrader, pRandom) ->  new MerchantOffer(
+                new ItemStack(Items.EMERALD, 4),
+                new ItemStack(stuff.buyItem(), 1),
+                10, 3, 0.2f)));
 
     }
 }
