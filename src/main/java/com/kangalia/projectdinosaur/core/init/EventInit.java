@@ -2,7 +2,6 @@ package com.kangalia.projectdinosaur.core.init;
 
 import com.kangalia.projectdinosaur.ProjectDinosaur;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,13 +19,13 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = ProjectDinosaur.MODID)
 public class EventInit {
 
-    private record mystuff (Item sellItem, int sellCost, Item buyItem, int buyCost, int maxUses, int xp, float multiplier) {
-        static mystuff create(Item sellitem, int sellCost, Item buyItem, int buyCost, int maxUses, int xp, float multiplier) {
-            return new mystuff(sellitem, sellCost, buyItem, buyCost, maxUses, xp, multiplier);
+    private record tradesRecord (int stage, Item sellItem, int sellCost, Item buyItem, int buyCost, int maxUses, int xp, float multiplier) {
+        static tradesRecord create(int stage, Item sellitem, int sellCost, Item buyItem, int buyCost, int maxUses, int xp, float multiplier) {
+            return new tradesRecord(stage, sellitem, sellCost, buyItem, buyCost, maxUses, xp, multiplier);
         }
 
-        static mystuff createFragment(Item buyItem) {
-            return mystuff.create(Items.EMERALD, 4, buyItem, 1, 10, 3, 0.2f);
+        static tradesRecord createFragment(Item buyItem) {
+            return tradesRecord.create(0, Items.EMERALD, 4, buyItem, 1, 10, 3, 0.2f);
         }
     }
 
@@ -64,65 +63,33 @@ public class EventInit {
                     ItemInit.CAMBRIAN_FOSSIL_SPECIMEN.get()
             );
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.PAPER, 24),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 2, 0.05f
-            ));
+            var allTrades = List.of(
+                    //STAGE 1
+                    tradesRecord.create(1, Items.PAPER, 24, Items.EMERALD, 1, 16, 2, 0.05f),
+                    tradesRecord.create(1, Items.CLAY_BALL, 16, Items.EMERALD, 1, 16, 3, 0.05f),
+                    tradesRecord.create(1, Blocks.WHITE_WOOL.asItem(), 12, Items.EMERALD, 1, 16, 3, 0.05f),
+                    tradesRecord.create(1, Items.EMERALD, 1, ItemInit.PLASTER.get(), 4, 8, 2, 0.05f),
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.CLAY_BALL, 16),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 3, 0.05f
-            ));
+                    //STAGE 2
+                    tradesRecord.create(2, fragments.get(random.nextInt(fragments.size())), 4, Items.EMERALD, 1, 16, 8, 0.2f),
+                    tradesRecord.create(2, Items.EMERALD, 6, ItemInit.IRON_CHISEL.get(), 1, 4, 6, 0.25f),
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Blocks.WHITE_WOOL.asItem(), 12),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 3, 0.05f
-            ));
+                    //STAGE 3
+                    tradesRecord.create(3, Items.EMERALD, 6, fragments.get(random.nextInt(fragments.size())), 1, 12, 8, 0.2f),
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 1),
-                    new ItemStack(ItemInit.PLASTER.get(), 4),
-                    8, 2, 0.05f
-            ));
+                    //STAGE 4
+                    tradesRecord.create(4, specimens.get(random.nextInt(specimens.size())), 2, Items.EMERALD, 1, 6, 10, 0.25f),
+                    tradesRecord.create(4, Items.EMERALD, 12, specimens.get(random.nextInt(specimens.size())), 1, 10, 10, 0.25f),
 
-            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(fragments.get(random.nextInt(fragments.size())), 4),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 8, 0.2f
-            ));
+                    //STAGE 5
+                    tradesRecord.create(4, Items.EMERALD, 20, ItemInit.DIAMOND_CHISEL.get(), 1, 2, 12, 0.3f)
+            );
 
-            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 6),
-                    new ItemStack(ItemInit.IRON_CHISEL.get(), 1),
-                    4, 6, 0.25f
-            ));
+            allTrades.forEach(stuff -> trades.get(stuff.stage()).add((pTrader, pRandom) -> new MerchantOffer(
+                    new ItemStack(stuff.sellItem(), stuff.sellCost()),
+                    new ItemStack(stuff.buyItem(), stuff.buyCost()),
+                    stuff.maxUses(), stuff.xp(), stuff.multiplier())));
 
-            trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 6),
-                    new ItemStack(fragments.get(random.nextInt(fragments.size())), 1),
-                    12, 8, 0.2f
-            ));
-
-            trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(specimens.get(random.nextInt(specimens.size())), 1),
-                    new ItemStack(Items.EMERALD, 1),
-                    6, 10, 0.25f
-            ));
-
-            trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 12),
-                    new ItemStack(specimens.get(random.nextInt(specimens.size())), 1),
-                    16, 10, 0.25f
-            ));
-
-            trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 20),
-                    new ItemStack(ItemInit.DIAMOND_CHISEL.get(), 1),
-                    2, 12, 0.3f
-            ));
         }
         if(event.getType() == VillagerInit.PALEONTOLOGIST.get()) {
             Random random = new Random();
@@ -142,53 +109,92 @@ public class EventInit {
                     ItemInit.TRILOBITE_DNA.get()
             );
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Blocks.GLASS_PANE, 11),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 4, 0.05f
-            ));
+            var allTrades = List.of(
+                    // STAGE 1
+                    tradesRecord.create(1, Blocks.GLASS_PANE.asItem(), 11, Items.EMERALD, 1, 16, 4, 0.05f),
+                    tradesRecord.create(1, ItemInit.ROTTEN_EGG.get(), 4, Items.EMERALD, 1, 16, 3, 0.05f),
+                    tradesRecord.create(1, Items.EMERALD, 1, ItemInit.SYRINGE.get(), 4, 8, 2, 0.05f),
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(ItemInit.ROTTEN_EGG.get(), 4),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 3, 0.05f
-            ));
+                    //STAGE 2
+                    tradesRecord.create(2, dna.get(random.nextInt(dna.size())), 1, Items.EMERALD, 1, 16, 8, 0.2f),
+                    tradesRecord.create(2, Items.EMERALD, 1, ItemInit.NUTRIENT_GOO.get(), 4, 4, 6, 0.25f),
 
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 1),
-                    new ItemStack(ItemInit.SYRINGE.get(), 4),
-                    8, 2, 0.05f
-            ));
+                    //STAGE 3
+                    tradesRecord.create(3, Items.EMERALD, 8, ItemInit.DINO_SCANNER.get(), 1, 8, 8, 0.2f),
 
-            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(dna.get(random.nextInt(dna.size())), 1),
-                    new ItemStack(Items.EMERALD, 1),
-                    16, 8, 0.2f
-            ));
+                    //STAGE 4
+                    tradesRecord.create(4, Items.EMERALD, 12, ItemInit.GENOME_SCANNER.get(), 1, 6, 10, 0.25f),
 
-            trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 1),
-                    new ItemStack(ItemInit.NUTRIENT_GOO.get(), 4),
-                    4, 6, 0.25f
-            ));
+                    //STAGE 5
+                    tradesRecord.create(5, Items.EMERALD, 24, ItemInit.CRYOPORTER.get(), 1, 4, 12, 0.3f)
+            );
 
-            trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 8),
-                    new ItemStack(ItemInit.DINO_SCANNER.get(), 1),
-                    12, 8, 0.2f
-            ));
+            allTrades.forEach(stuff -> trades.get(stuff.stage).add((pTrader, pRandom) -> new MerchantOffer(
+                    new ItemStack(stuff.sellItem(), stuff.sellCost()),
+                    new ItemStack(stuff.buyItem(), stuff.buyCost()),
+                    stuff.maxUses(), stuff.xp(), stuff.multiplier())));
+        }
+        if(event.getType() == VillagerInit.KEEPER.get()) {
+            Random random = new Random();
+            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
-            trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 12),
-                    new ItemStack(ItemInit.GENOME_SCANNER.get(), 1),
-                    16, 10, 0.25f
-            ));
+            var veggies = List.of(
+                    Items.CARROT,
+                    Items.POTATO,
+                    Items.BEETROOT
+            );
 
-            trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 24),
-                    new ItemStack(ItemInit.CRYOPORTER.get(), 1),
-                    2, 12, 0.3f
-            ));
+            var meats = List.of(
+                    Items.BEEF,
+                    Items.PORKCHOP,
+                    Items.CHICKEN,
+                    Items.RABBIT,
+                    Items.MUTTON,
+                    Items.COD,
+                    Items.SALMON
+            );
+
+            var leaves = List.of(
+                    Blocks.OAK_LEAVES.asItem(),
+                    Blocks.DARK_OAK_LEAVES.asItem(),
+                    Blocks.BIRCH_LEAVES.asItem(),
+                    Blocks.JUNGLE_LEAVES.asItem(),
+                    Blocks.SPRUCE_LEAVES.asItem(),
+                    Blocks.ACACIA_LEAVES.asItem(),
+                    Blocks.MANGROVE_LEAVES.asItem(),
+                    Blocks.CHERRY_LEAVES.asItem(),
+                    Blocks.AZALEA_LEAVES.asItem(),
+                    Blocks.FLOWERING_AZALEA_LEAVES.asItem()
+            );
+
+            var allTrades = List.of(
+                    // STAGE 1
+                    tradesRecord.create(1, Items.WHEAT, 20, Items.EMERALD, 1, 16, 2, 0.05f),
+                    tradesRecord.create(1, veggies.get(random.nextInt(veggies.size())), 20, Items.EMERALD, 1, 16, 2, 0.05f),
+                    tradesRecord.create(1, Items.EMERALD, 3, BlockInit.NEST.get().asItem(), 1, 12, 3, 0.1f),
+
+                    // STAGE 2
+                    tradesRecord.create(2, Items.LEATHER, 4, Items.EMERALD, 1, 16, 3, 0.1f),
+                    tradesRecord.create(2, meats.get(random.nextInt(meats.size())), 12, Items.EMERALD, 1, 12, 4, 0.2f),
+                    tradesRecord.create(2, Items.EMERALD, 3, BlockInit.GROUND_FEEDER.get().asItem(), 1, 12, 3, 0.1f),
+
+                    // STAGE 3
+                    tradesRecord.create(3, leaves.get(random.nextInt(leaves.size())), 24, Items.EMERALD, 1, 16, 5, 0.25f),
+                    tradesRecord.create(3, Items.EMERALD, 4, ItemInit.GROWTH_STUNTING_HORMONE.get(), 1, 12, 8, 0.25f),
+
+                    // STAGE 4
+                    tradesRecord.create(4, Items.EMERALD, 6, ItemInit.GROWTH_ACCELERATING_HORMONE.get(), 1, 12, 9, 0.25f),
+
+                    // STAGE 5
+                    tradesRecord.create(5, Items.EMERALD, 20, Items.NAME_TAG, 1, 12, 12, 0.3f)
+
+            );
+
+            allTrades.forEach(stuff -> trades.get(stuff.stage).add((pTrader, pRandom) -> new MerchantOffer(
+                    new ItemStack(stuff.sellItem(), stuff.sellCost()),
+                    new ItemStack(stuff.buyItem(), stuff.buyCost()),
+                    stuff.maxUses(), stuff.xp(), stuff.multiplier())));
+
         }
     }
 
@@ -199,32 +205,36 @@ public class EventInit {
 
         // GENERIC TRADES
 
-        genericTrades.add((pTrader, pRandom) ->  new MerchantOffer(
-                new ItemStack(Items.EMERALD, 1),
-                new ItemStack(ItemInit.PLASTER.get(), 1),
-                24, 3, 0.2f));
+        var generics = List.of(
+                tradesRecord.create(0, Items.EMERALD, 1, ItemInit.PLASTER.get(), 1, 24, 3, 0.2f)
+        );
+
+        generics.forEach(stuff -> genericTrades.add((pTrader, pRandom) ->  new MerchantOffer(
+                new ItemStack(stuff.sellItem(), stuff.sellCost()),
+                new ItemStack(stuff.buyItem(), stuff.buyCost()),
+                stuff.maxUses(), stuff.xp(), stuff.multiplier())));
 
         // RARE TRADES
 
-        var fragments = List.of(
-                mystuff.createFragment(ItemInit.QUATERNARY_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.NEOGENE_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.PALEOGENE_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.CRETACEOUS_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.JURASSIC_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.TRIASSIC_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.PERMIAN_FOSSIL_SPECIMEN.get()),
-                mystuff.createFragment(ItemInit.CARBONIFEROUS_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.DEVONIAN_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.SILURIAN_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.ORDOVICIAN_FOSSIL_FRAGMENT.get()),
-                mystuff.createFragment(ItemInit.CAMBRIAN_FOSSIL_FRAGMENT.get())
+        var rares = List.of(
+                tradesRecord.createFragment(ItemInit.QUATERNARY_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.NEOGENE_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.PALEOGENE_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.CRETACEOUS_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.JURASSIC_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.TRIASSIC_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.PERMIAN_FOSSIL_SPECIMEN.get()),
+                tradesRecord.createFragment(ItemInit.CARBONIFEROUS_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.DEVONIAN_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.SILURIAN_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.ORDOVICIAN_FOSSIL_FRAGMENT.get()),
+                tradesRecord.createFragment(ItemInit.CAMBRIAN_FOSSIL_FRAGMENT.get())
         );
 
-        fragments.forEach(stuff -> rareTrades.add((pTrader, pRandom) ->  new MerchantOffer(
-                new ItemStack(Items.EMERALD, 4),
-                new ItemStack(stuff.buyItem(), 1),
-                10, 3, 0.2f)));
+        rares.forEach(stuff -> rareTrades.add((pTrader, pRandom) ->  new MerchantOffer(
+                new ItemStack(stuff.sellItem(), stuff.sellCost()),
+                new ItemStack(stuff.buyItem(), stuff.buyCost()),
+                stuff.maxUses(), stuff.xp(), stuff.multiplier())));
 
     }
 }
