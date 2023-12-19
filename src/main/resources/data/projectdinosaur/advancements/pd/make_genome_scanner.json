@@ -1,14 +1,14 @@
 {
-  "parent": "projectdinosaur:pd/dna",
+  "parent": "projectdinosaur:pd/root",
   "display": {
     "icon": {
-      "item": "projectdinosaur:australovenator_egg_fertilised"
+      "item": "projectdinosaur:genome_scanner"
     },
     "title": {
-      "translate": "advancements.pd.fertilised_egg.title"
+      "translate": "advancements.pd.make_genome_scanner.title"
     },
     "description": {
-      "translate": "advancements.pd.fertilised_egg.description"
+      "translate": "advancements.pd.make_genome_scanner.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +16,14 @@
     "hidden": false
   },
   "criteria": {
-    "eggs": {
+    "genome_scanner": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "projectdinosaur:fertilised_eggs"
+            "items": [
+              "projectdinosaur:genone_scanner"
+            ]
           }
         ]
       }
@@ -29,7 +31,7 @@
   },
   "requirements": [
     [
-      "eggs"
+      "genome_scanner"
     ]
   ]
 }

@@ -2,13 +2,13 @@
   "parent": "projectdinosaur:pd/dna",
   "display": {
     "icon": {
-      "item": "projectdinosaur:australovenator_egg_incubated"
+      "item": "projectdinosaur:gastornis_egg_incubated"
     },
     "title": {
-      "translate": "advancements.pd.australovenator.title"
+      "translate": "advancements.pd.gastornis.title"
     },
     "description": {
-      "translate": "advancements.pd.australovenator.description"
+      "translate": "advancements.pd.gastornis.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,13 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "australovenator": {
+    "gastornis": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:australovenator_egg_incubated"
+              "projectdinosaur:gastornis_egg_incubated"
             ]
           }
         ]
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "australovenator"
+      "gastornis"
     ]
   ]
 }
