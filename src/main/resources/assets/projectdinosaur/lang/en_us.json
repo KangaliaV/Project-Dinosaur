@@ -346,6 +346,8 @@
   "sounds.projectdinosaur.scelidosaurus_death": "Scelidosaurus Death",
 
   "entity.minecraft.villager.projectdinosaur.archeologist": "Archeologist",
-  "entity.minecraft.villager.projectdinosaur.paleontologist": "Paleontologist"
+  "entity.minecraft.villager.projectdinosaur.paleontologist": "Paleontologist",
+  "entity.minecraft.villager.projectdinosaur.keeper": "Keeper"
+
 
 }
