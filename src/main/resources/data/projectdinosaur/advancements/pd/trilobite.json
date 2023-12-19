@@ -2,13 +2,13 @@
   "parent": "projectdinosaur:pd/dna",
   "display": {
     "icon": {
-      "item": "projectdinosaur:australovenator_egg_incubated"
+      "item": "projectdinosaur:trilobite_spawn_item"
     },
     "title": {
-      "translate": "advancements.pd.australovenator.title"
+      "translate": "advancements.pd.trilobite.title"
     },
     "description": {
-      "translate": "advancements.pd.australovenator.description"
+      "translate": "advancements.pd.trilobite.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,13 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "australovenator": {
+    "trilobite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "projectdinosaur:australovenator_egg_incubated"
+              "projectdinosaur:trilobite_spawn_item"
             ]
           }
         ]
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "australovenator"
+      "trilobite"
     ]
   ]
 }
