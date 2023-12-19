@@ -345,5 +345,9 @@
   "sounds.projectdinosaur.scelidosaurus_call": "Scelidosaurus Call",
   "sounds.projectdinosaur.scelidosaurus_warning": "Scelidosaurus Warning Call",
   "sounds.projectdinosaur.scelidosaurus_hurt": "Scelidosaurus Hurt",
-  "sounds.projectdinosaur.scelidosaurus_death": "Scelidosaurus Death"
+  "sounds.projectdinosaur.scelidosaurus_death": "Scelidosaurus Death",
+
+  "entity.minecraft.villager.projectdinosaur.archeologist": "Archeologist",
+  "entity.minecraft.villager.projectdinosaur.paleontologist": "Paleontologist"
+
 }

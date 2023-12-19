@@ -32,6 +32,8 @@ public class ProjectDinosaur {
         RecipeInit.register(bus);
         SoundInit.register(bus);
         CreativeTabInit.register(bus);
+        VillagerInit.POI_TYPES.register(bus);
+        VillagerInit.VILLAGER_PROFESSIONS.register(bus);
 
         MinecraftForge.EVENT_BUS.register(this);
 

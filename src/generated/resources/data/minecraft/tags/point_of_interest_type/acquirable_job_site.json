@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "projectdinosaur:archeologist_poi",
+      "required": false
+    },
+    {
+      "id": "projectdinosaur:paleontologist_poi",
+      "required": false
+    },
+    {
+      "id": "projectdinosaur:keeper_poi",
+      "required": false
+    }
+  ]
+}
